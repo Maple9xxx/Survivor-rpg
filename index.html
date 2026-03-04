@@ -671,6 +671,15 @@ canvas{display:block;image-rendering:pixelated;}
   box-shadow: 0 0 6px var(--cg-color,#ffd700);
   width: 18px; border-radius: 3px;
 }
+
+.dmg-row{display:grid;grid-template-columns:1fr 80px 70px;align-items:center;gap:4px;padding:3px 0;border-bottom:1px solid rgba(255,255,255,0.04);}
+.dmg-row:last-child{border-bottom:none;}
+.dmg-label{font-size:10px;color:#c8c8d0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.dmg-bar-wrap{height:6px;background:rgba(255,255,255,0.07);border-radius:3px;overflow:hidden;}
+.dmg-bar{height:100%;border-radius:3px;transition:width 0.4s ease;}
+.dmg-val{font-size:10px;color:#e0e0e8;text-align:right;white-space:nowrap;}
+.dmg-pct{color:#888;font-size:9px;}
+
 </style>
 </head>
 <body>
@@ -2295,7 +2304,7 @@ const UI = (() => {
           {name:'% Sát Thương',    icon:'⚔️', desc:'+10% mỗi cấp',     maxLv:6, baseCost:100},
           {name:'Tỉ Lệ Crit',      icon:'🎯', desc:'+6% crit rate',     maxLv:4, baseCost:200},
           {name:'Crit Damage',     icon:'💢', desc:'+30% crit dmg',     maxLv:3, baseCost:300},
-          {name:'Xuyên Giáp',      icon:'🗡️', desc:'+12% xuyên giáp',  maxLv:3, baseCost:450},
+          {name:'Xuyên Giáp',      icon:'🗡️', desc:'+15% xuyên giáp/cấp: bypass khiên địch + bonus dmg với Boss/Elite',  maxLv:3, baseCost:450},
         ]
       },
       {
@@ -2503,11 +2512,11 @@ const UI = (() => {
         },
         {
           c: CHARS.find(c=>c.id==='am_sat'),
-          dps: '38.4 (raw) → ~57.6 khi HP <40%',
+          dps: '~46.1 (raw) → ~57.6 khi HP <40%',
           difficulty: '⭐⭐⭐ Khó',
           playstyle: 'Glass cannon — burst khi nguy hiểm',
-          guide: `<b>Bóng Tối:</b> Khi HP xuống dưới <b>40%</b>: SPD +40%, sát thương +50%, giảm 30% sát thương nhận, vô hình với quái xa >4m trong 5 giây (CD 15s).<br><br>
-<b>Chiến thuật:</b> Đây là nhân vật "reverse risk" — càng nguy hiểm càng mạnh. Có thể chủ động để nhận 1-2 đòn để kích Bóng Tối sớm trong boss fight. Trong 5 giây vô hình, tập trung burst toàn lực.<br><br>
+          guide: `<b>Bóng Tối:</b> Luôn có <b>ATK +20%</b> bị động. Khi HP xuống dưới <b>40%</b>: ATK tăng lên <b>+50%</b>, SPD +40%, giảm 30% sát thương nhận, vô hình với quái xa >4m trong 5 giây (CD 15s).<br><br>
+<b>Chiến thuật:</b> Nhân vật "reverse risk" nhưng nay có nền sát thương tốt ngay từ đầu. Khi HP thấp sẽ bùng phát mạnh hơn. Có thể chủ động để nhận 1-2 đòn để kích Bóng Tối trong boss fight. Trong 5 giây vô hình, tập trung burst toàn lực.<br><br>
 <b>Tiến hoá:</b> Hư Vô Đoản Kiếm — mỗi đòn tạo phân thân lặp lại sau 0.3 giây (hiệu quả đánh 2 lần). Với tốc độ tấn công 2.4/s → cực kỳ nguy hiểm.<br><br>
 <b>Active Ám Sát Liên Hoàn:</b> Teleport đến 5 mục tiêu, ×5 DMG mỗi đích + iframe 0.8s. Lý tưởng để xóa elite hoặc burst boss.`,
         },
@@ -2557,8 +2566,8 @@ const UI = (() => {
           '<b>Lợi ích khi tiến hoá:</b> +30% sát thương, +15% AoE, +20% tốc đánh, và thay đổi hoàn toàn cơ chế vũ khí.<br><br>' +
           '<b>Chiến lược:</b> Ưu tiên nâng vũ khí chính thay vì lấy nhiều vũ khí phụ. 1 vũ khí tiến hoá mạnh hơn 3 vũ khí phụ thường.<br><br>' +
           '⚔️ <b>Lưu Phong</b> → Thần Kiếm Vong Linh: mỗi nhát chém bắn kiếm khí 8 hướng + 2 lưỡi ảo đánh trễ 150ms/300ms.<br>' +
-          '🌙 <b>Huyền Nguyệt</b> → Hắc Nhật Ma Cầu: trúng địch tách 3 mini orb homing vào 3 quái gần nhất (×0.45/orb, pierce 1) + áp độc 4 giây.<br>' +
-          '🏹 <b>Thiết Tâm</b> → Tử Thần Chi Tên: áp độc khi trúng + xuyên qua địch đầu phân thành 3 tên nhỏ.<br>' +
+          '🌙 <b>Huyền Nguyệt</b> → Hắc Nhật Ma Cầu: trúng địch tách 3 mini orb homing vào 3 quái gần nhất (×0.55/orb, pierce 1) + áp độc 4 giây.<br>' +
+          '🏹 <b>Thiết Tâm</b> → Tử Thần Chi Tên: áp độc khi trúng + xuyên qua địch đầu phân thành 3 tên nhỏ (×0.55/tên).<br>' +
           '🥋 <b>Kim Cang</b> → Hộ Pháp Thần Trượng: tạo cột sáng thiêng liêng tại mỗi điểm trúng, gây sát thương liên tục 2 giây.<br>' +
           '🗡️ <b>Ám Sát</b> → Hư Vô Đoản Kiếm: mỗi đòn đánh tạo phân thân ảo lặp lại đòn đó sau 0.3 giây.<br>' +
           '💀 <b>Tử Linh</b> → Vong Hồn Đại Liềm: liềm to gấp 1.8 lần, hút quái vào khi bay, xuyên tất cả địch khi về.'));
@@ -2599,7 +2608,102 @@ const UI = (() => {
       });
 
     } else if (tab === 'enemies') {
-      ENEMY_TYPES.forEach(e => { entry(e.icon, e.name, p(e.desc)); });
+      // Codex quai vat theo tung map
+      const MCED=[
+        {map:'Map 1 — Làng Hoang Tàn',icon:'🏚️',tier:1,e:[
+          {i:'🧟',n:'Zombie',      hp:225,d:40, s:75, ai:'Lao thẳng',  t:'HP cao nhất nhóm đầu. Chậm nhưng bền. Dễ farm — lý tưởng để tích Kiếm Ý / Linh Hồn.'},
+          {i:'🐛',n:'Crawler',     hp:125,d:25, s:110,ai:'Lao thẳng',  t:'Nhỏ và nhanh hơn Zombie. HP thấp nhưng hay bị bỏ sót trong đám đông.'},
+        ]},
+        {map:'Map 2 — Rừng Tối',icon:'🌲',tier:1,e:[
+          {i:'🐺',n:'Người Sói',hp:275,d:60, s:140,ai:'Vòng cánh', t:'Nhanh nhất map đầu. Chạy vòng cánh tấn công từ hông — nguy hiểm khi bị nhiều con bao.'},
+          {i:'🦇',n:'Dơi',          hp:100,d:30, s:120,ai:'Lao thẳng',  t:'HP rất thấp, dễ xử. Xuất hiện thành bầy lớn, gây xao nhãng.'},
+          {i:'👁️',n:'Lurker',     hp:300,d:75, s:85, ai:'Vòng cánh', t:'HP và dmg cao. Tiếp cận từ bên cạnh — khó né, ưu tiên xử lý sớm.'},
+        ]},
+        {map:'Map 3 — Đầm Lầy Độc',icon:'🌿',tier:1,e:[
+          {i:'🐍',n:'Rắn',          hp:175,d:50, s:100,ai:'Lao thẳng',  t:'Trung bình mọi mặt. Nguy hiểm hơn khi đứng trên vùng đất độc của map.'},
+          {i:'🦟',n:'Bọ Độc',      hp:150,d:35, s:90, ai:'Lao thẳng',  t:'Số lượng nhiều. Kết hợp debuff độc map tạo áp lực liên tục.'},
+          {i:'🧟',n:'Zombie',      hp:225,d:40, s:75, ai:'Lao thẳng',  t:'Tái xuất từ Map 1. Chướng ngại khi bị ép vào vùng độc.'},
+        ]},
+        {map:'Map 4 — Thành Cổ Đổ Nát',icon:'🏰',tier:2,e:[
+          {i:'🧟',n:'Zombie',      hp:225,d:40, s:75, ai:'Lao thẳng',  t:'Hay xuất hiện bất ngờ từ sau tường đổ (cơ chế Ambush). Không chủ quan.'},
+          {i:'🏹',n:'Cung Thủ',   hp:200,d:70, s:70, ai:'Tấn công xa',t:'DMG cao, bắn từ xa. Ưu tiên tiêu diệt trước khi đến gần quái melee.'},
+          {i:'🛡️',n:'Lính Khiên', hp:600,d:50, s:60, ai:'Lao thẳng',  t:'HP cực cao (600) + khiên 200. Chậm nhưng cực bền — dùng AoE hoặc xuyên giáp.'},
+        ]},
+        {map:'Map 5 — Sa Mạc Lửa',icon:'🏜️',tier:2,e:[
+          {i:'🔥',n:'Chó Lửa',     hp:275,d:70, s:120,ai:'Lao thẳng',  t:'Nhanh và mạnh. Kết hợp mưa thiên thạch 30s/lần — dễ bị kẹp bất ngờ.'},
+          {i:'🦂',n:'Bọ Cạp Cát',  hp:200,d:40, s:95, ai:'Lao thẳng',  t:'Trung bình, không đặc sắc. Số lượng lớn.'},
+          {i:'💣',n:'Kẻ Nổ',       hp:250,d:175,s:130,ai:'Lao nổ',     t:'DMG nổ cao nhất (175 AoE). Chạy nhanh rồi tự nổ — luôn xử lý ngay khi thấy.'},
+        ]},
+        {map:'Map 6 — Hang Động Băng',icon:'❄️',tier:2,e:[
+          {i:'🧊',n:'Băng Golem',  hp:750,d:80, s:50, ai:'Lao thẳng',  t:'HP cực cao (750). Cực chậm nhưng sàn trơn khiến khó né. Kite và AoE.'},
+          {i:'❄️',n:'Dơi Tuyết',  hp:125,d:35, s:130,ai:'Lao thẳng',  t:'Nhanh, hay gây xao nhãng khi xử lý Băng Golem.'},
+          {i:'🌨️',n:'Freezer',    hp:350,d:60, s:80, ai:'Tấn công xa',t:'Bắn từ xa, gây chậm. Kết hợp sàn trơn = khó thoát. Ưu tiên diệt trước.'},
+        ]},
+        {map:'Map 7 — Nghĩa Địa Cổ',icon:'⚰️',tier:3,e:[
+          {i:'👻',n:'Bóng Ma',      hp:225,d:50, s:100,ai:'Lao thẳng',  t:'Vô hình định kỳ, xuyên chướng ngại. Không để tiếp cận khi đang vô hình.'},
+          {i:'💀',n:'Skeleton',     hp:250,d:60, s:85, ai:'Tấn công xa',t:'Bắn xương từ xa. Hồi sinh sau 20 giây nếu không diệt hết (cơ chế map).'},
+          {i:'☠️',n:'Revenant',    hp:400,d:90, s:95, ai:'Lao thẳng',  t:'HP và dmg cao nhất map 7. Cũng bị cơ chế hồi sinh — diệt nhanh.'},
+        ]},
+        {map:'Map 8 — Tháp Phù Thuỷ',icon:'🗼',tier:3,e:[
+          {i:'🧙',n:'Pháp Sư',     hp:275,d:90, s:70, ai:'Tấn công xa',t:'DMG cao, bắn phép từ xa. Bẫy ma thuật theo chu kỳ tạo thêm áp lực.'},
+          {i:'🐱',n:'Familiar',    hp:150,d:40, s:110,ai:'Lao thẳng',  t:'Nhanh, đi cùng Pháp Sư. HP thấp — đừng để phân tán sự chú ý.'},
+          {i:'🗿',n:'Golem',       hp:1000,d:100,s:45, ai:'Lao thẳng', t:'HP cao nhất game thường (1000). Cực chậm nhưng đòn rất đau — kite liên tục.'},
+        ]},
+        {map:'Map 9 — Biển Máu',icon:'🌊',tier:3,e:[
+          {i:'🐟',n:'Cá Máu',      hp:200,d:70, s:130,ai:'Lao thẳng',  t:'Nhảy lên từ biển máu bất ngờ. Luôn di chuyển để tránh bị tập kích.'},
+          {i:'🐬',n:'Diver',       hp:350,d:80, s:100,ai:'Vòng cánh', t:'HP khá, tiếp cận từ hông. Phối hợp với cơ chế nhảy của map.'},
+          {i:'🐙',n:'Kraken',      hp:900,d:120,s:55, ai:'Lao thẳng',  t:'Quái mạnh nhất map (HP 900, DMG 120). Xuất hiện thưa nhưng rất nguy hiểm — ưu tiên tuyệt đối.'},
+        ]},
+        {map:'Map 10 — Rừng Cơ Khí',icon:'⚙️',tier:4,e:[
+          {i:'🚁',n:'Drone',       hp:175,d:50, s:120,ai:'Tấn công xa',t:'Bắn đạn từ xa. Kết hợp turret cơ khí cố định tạo áp lực bắn chéo.'},
+          {i:'🤖',n:'Mech Dog',    hp:450,d:90, s:110,ai:'Lao thẳng',  t:'HP cao, nhanh, dmg mạnh. Nguy hiểm nhất nhóm — ưu tiên diệt.'},
+        ]},
+        {map:'Map 11 — Vùng Hỗn Mang',icon:'🌀',tier:4,e:[
+          {i:'🌀',n:'Chaos',       hp:300,d:75, s:105,ai:'Vòng cánh', t:'Tiếp cận từ hông. Hiệu ứng Hỗn Mang (chậm/đảo chiều/mù) mỗi phút làm khó đoán.'},
+          {i:'👁️',n:'Phantom',   hp:250,d:60, s:115,ai:'Lao thẳng',  t:'Nhanh và khó bắt. Kết hợp hiệu ứng ngẫu nhiên của map.'},
+          {i:'🕳️',n:'Rift',       hp:200,d:85, s:0,  ai:'Tấn công xa',t:'Lỗ hổng không gian — đứng yên bắn tia tối từ xa, không di chuyển. Nguy hiểm khi bị đám quái che khuất.'},
+        ]},
+        {map:'Map 12 — Bầu Trời Sụp Đổ',icon:'⛈️',tier:4,e:[
+          {i:'⚡',n:'Stormbird',    hp:325,d:80, s:140,ai:'Vòng cánh', t:'Nhanh nhất map 12. Sét ngẫu nhiên + quái vòng cánh = cực kỳ nguy hiểm.'},
+          {i:'🦬',n:'Thunderbeast',hp:550,d:95, s:80, ai:'Lao thẳng',  t:'Trâu sét khổng lồ — HP cao (550), đòn mạnh. Hay xuất hiện cuối wave cùng Stormbird.'},
+          {i:'🌩️',n:'Lightning',   hp:150,d:110,s:160,ai:'Vòng cánh', t:'Nhanh nhất game (SPD 160). HP thấp nhưng DMG cực cao (110). Xuất hiện như chớp, rất khó bắn hạ.'},
+        ]},
+        {map:'Map 13 — Mê Cung Gương',icon:'🪱',tier:5,e:[
+          {i:'🪱',n:'Mirror',      hp:300,d:70, s:90, ai:'Lao thẳng',  t:'Bản sao gương — tiếp cận từ hướng đối diện. Cơ chế map: nhận biết đúng quái thật mới gây full dmg.'},
+          {i:'🌫️',n:'Illusion',   hp:175,d:65, s:130,ai:'Vòng cánh', t:'Nhanh và mờ ảo — có thể phân thân thành 2. HP thấp, dễ xử nếu nhận biết đúng con thật.'},
+          {i:'🌑',n:'Shade',       hp:450,d:100,s:75, ai:'Lao thẳng',  t:'Bóng tối ngưng tụ — HP cao (450), chậm nhưng dmg mạnh. Giai đoạn cuối có thể vô hình ngắn.'},
+        ]},
+        {map:'Map 14 — Địa Ngục Thứ 9',icon:'🔥',tier:5,e:[
+          {i:'🔥',n:'Hellhound',   hp:400,d:100,s:120,ai:'Lao thẳng',  t:'Nhanh và mạnh. Tất cả quái có khiên 50% HP — phá khiên trước khi gây dmg thật.'},
+          {i:'😈',n:'Demon Knight',hp:800,d:110,s:75, ai:'Lao thẳng',  t:'HP rất cao (800) + khiên 50%. Chậm nhưng cực bền — cần xuyên giáp hoặc AoE liên tục.'},
+          {i:'🧿',n:'Hell Mage',   hp:325,d:120,s:65, ai:'Tấn công xa',t:'DMG cao nhất map (120) + bắn xa + khiên 50% — mục tiêu số 1.'},
+        ]},
+        {map:'Map 15 — Tâm Vũ Trụ',icon:'🌌',tier:5,e:[
+          {i:'⬛',n:'Void',        hp:350,d:90, s:100,ai:'Lao thẳng',  t:'Gravity thay đổi ngẫu nhiên + boss clone liên tục. Luôn chú ý hướng di chuyển thực.'},
+          {i:'⭐',n:'Starspawn',   hp:275,d:70, s:110,ai:'Vòng cánh', t:'Nhanh, dễ nhầm với clone boss. Diệt nhanh để tập trung vào boss thật.'},
+          {i:'🌠',n:'Nebula',     hp:425,d:80, s:65, ai:'Tấn công xa',t:'Tinh vân vũ trụ — bắn loạt đạn đề viên từ xa, di chuyển chậm. Kết hợp gravity = khó thoát khi bị bao vây.'},
+        ]},
+      ];
+      const _tc=['','#88cc44','#ffcc00','#ff9040','#ff5050','#cc40ff'];
+      MCED.forEach(md=>{
+        const tc=_tc[md.tier]||'#888';
+        let rows='';
+        md.e.forEach(e=>{
+          const err=e.hp===0;
+          rows+='<div style="display:flex;gap:8px;align-items:flex-start;background:rgba(255,255,255,.04);border-radius:6px;padding:7px 10px;border-left:3px solid '+(err?'#ff4040':tc)+';margin-bottom:5px">'
+            +'<span style="font-size:20px;min-width:26px;text-align:center">'+e.i+'</span>'
+            +'<div style="flex:1"><div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:3px">'
+            +'<span style="font-size:12px;font-weight:700;color:'+(err?'#ff6060':'#ffd700')+'">'+e.n+'</span>'
+            +(!err?'<span style="font-size:10px;color:#707070">\u2764\ufe0f'+e.hp+' \u2694\ufe0f'+e.d+' \U0001f4a8'+e.s+'</span>':'')
+            +'<span style="font-size:9px;background:rgba(255,255,255,.07);padding:1px 5px;border-radius:3px;color:#606070">'+e.ai+'</span>'
+            +'</div><div style="font-size:11px;color:#a08050;line-height:1.5">'+e.t+'</div></div></div>';
+        });
+        const html='<div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">'
+          +'<span style="font-size:20px">'+md.icon+'</span>'
+          +'<div><div style="font-size:13px;font-weight:700;color:#ffd700">'+md.map+'</div>'
+          +'<div style="font-size:10px;color:'+tc+'">\u2605 Tier '+md.tier+'</div></div></div>'+rows;
+        entry(md.icon, md.map, html);
+      });
 
     } else if (tab === 'tips') {
       const tips = [
@@ -2613,7 +2717,7 @@ const UI = (() => {
         ['🏹','Thiết Tâm — Mắt Đại Bàng','Giữ khoảng cách >300 đơn vị để khai thác +25% sát thương. Chạy vòng tròn liên tục — cung xuyên thấu qua nhiều quái. Ưu tiên diệt quái bắn xa trước.'],
         ['🥋','Kim Cang — 20% Block','Để quái tấn công để kích Kim Cang Thể: 20% chặn hoàn toàn + hồi 25 HP + stack tốc đánh. HP 210 là cao nhất game. Phật Nộ Giáng Thiên dùng khi bị vây — knockback toàn màn.'],
         ['🗡️','Ám Sát — Bóng Tối','HP xuống <40%: vô hình, +40% tốc, +50% sát thương, -30% sát thương nhận trong 5 giây. Có thể chủ động nhận 1-2 đòn để kích sớm. Effective DPS ~57.6 khi kích hoạt.'],
-        ['💀','Tử Linh — Thu Hoạch Linh Hồn','Mỗi kill = +3% sát thương, tối đa 20 linh hồn = +60%. Tích đủ trước boss để đạt effective DPS ~49.7. HP <20% tự tiêu thụ toàn bộ để hồi 25 HP/linh hồn — đừng dùng active khi HP còn cao.'],
+        ['💀','Tử Linh — Thu Hoạch Linh Hồn','Mỗi kill = +3% sát thương, tối đa 20 linh hồn = +60%. Tích đủ trước boss để đạt effective DPS cao nhất. Dùng active để Soul Burst (×0.6/linh hồn, AoE 160px) + triệu 3 bộ xương tự truy đuổi quái — tối đa 9 cùng lúc sau 3 lần active.'],
       ];
       tips.forEach(([icon, title, text]) => { entry(icon, title, p(text)); });
     }
@@ -2811,6 +2915,46 @@ const UI = (() => {
         <span class="stat-value">${stats.level}</span></div>
       <div class="stat-row"><span class="stat-label">⚔ Tiến hoá vũ khí</span>
         <span class="stat-value ${stats.evolved ? 'good' : ''}">${stats.evolved ? 'CÓ ✓' : 'KHÔNG'}</span></div>`;
+
+
+    // ── SKILL DAMAGE BREAKDOWN ──────────────────────────────────
+    const skillDmg = stats.skillDmg || {};
+    const dmgEntries = Object.entries(skillDmg)
+      .filter(([,v]) => v > 0)
+      .sort(([,a],[,b]) => b - a);
+
+    if (dmgEntries.length > 0) {
+      const SKILL_LABELS = {'main_luu_phong': '⚔️ Kiếm Khách (chính)', 'main_huyen_nguyet': '🌙 Huyền Nguyệt (chính)', 'main_thiet_tam': '🏹 Thiết Tâm (chính)', 'main_kim_cang': '🥋 Kim Cang (chính)', 'main_am_sat': '🗡️ Ám Sát (chính)', 'main_tu_linh': '💀 Tử Linh (chính)', 'active_luu_phong': '⚔️ Kiếm Ý (chủ động)', 'active_huyen_nguyet': '🌙 Nguyệt Ảnh (chủ động)', 'active_thiet_tam': '🏹 Bão Tên (chủ động)', 'active_kim_cang': '🥋 Đại Địa Chấn (chủ động)', 'active_am_sat': '🗡️ Bóng Tối (chủ động)', 'active_tu_linh': '💀 Hồn Bùng Phát (chủ động)', 'halo': '✨ Hào Quang Thánh', 'thunder': '⚡ Sét Đánh', 'icetrail': '❄️ Vệt Băng', 'poisoncloud': '☠️ Đám Mây Độc', 'fireorb': '🔥 Cầu Lửa', 'bloodthorn': '🩸 Gai Máu (phản đòn)', 'shadow_clone': '👥 Bóng Phân Thân', 'explosion': '💥 Nổ (AoE)'};
+      const totalTracked = dmgEntries.reduce((s,[,v]) => s+v, 0);
+      const dmgEl = document.createElement('div');
+      dmgEl.className = 'bonus-section';
+      let dmgHtml = '<div class="bonus-section-title">⚔ NGUỒN SÁT THƯƠNG</div>';
+      dmgEntries.forEach(([id, val]) => {
+        const label = SKILL_LABELS[id] || id;
+        const pct   = totalTracked > 0 ? (val / totalTracked * 100) : 0;
+        const barW  = Math.max(2, Math.round(pct));
+        const barColor = id.startsWith('main_')   ? '#60d0ff'
+                       : id.startsWith('active_') ? '#ffd700'
+                       : id === 'bloodthorn'       ? '#ff4060'
+                       : id === 'poisoncloud'      ? '#40cc40'
+                       : id === 'thunder'          ? '#ffe040'
+                       : id === 'halo'             ? '#fff080'
+                       : id === 'fireorb'          ? '#ff8040'
+                       : id === 'shadow_clone'     ? '#a060ff'
+                       : '#a0b0c0';
+        dmgHtml += `
+          <div class="dmg-row">
+            <div class="dmg-label">${label}</div>
+            <div class="dmg-bar-wrap">
+              <div class="dmg-bar" style="width:${barW}%;background:${barColor}"></div>
+            </div>
+            <div class="dmg-val">${Math.floor(val).toLocaleString()} <span class="dmg-pct">${pct.toFixed(1)}%</span></div>
+          </div>`;
+      });
+      dmgEl.innerHTML = dmgHtml;
+      statsEl.appendChild(dmgEl);
+    }
+    // ── END SKILL DAMAGE BREAKDOWN ──────────────────────────────
 
     // Gold breakdown section
     const totalGold = stats.baseGold + (stats.streakBonus||0) + (stats.achievementBonus||0);
@@ -3553,7 +3697,7 @@ const CHARS = [
     activeDesc: 'Triệu hồi 8 tia thiên lôi AoE trong vùng rộng, kéo dài 3 giây. (+1 sét / lv AoE)',
     activeIcon: '⚡', activeCooldown: 9,
     evolvedWeapon: 'Hắc Nhật Ma Cầu',
-    evolveDesc: 'Khi trúng địch: tách 3 mini orb homing tự truy đuổi 3 quái gần nhất (×0.45/orb, pierce 1) + áp độc mạnh (0.15×/s × 4 giây).',
+    evolveDesc: 'Khi trúng địch: tách 3 mini orb homing tự truy đuổi 3 quái gần nhất (×0.55/orb, pierce 1) + áp độc mạnh (0.15×/s × 4 giây).',
     color: '#a060ff',
   },
   {
@@ -3568,7 +3712,7 @@ const CHARS = [
     activeDesc: 'Bắn 8 mũi tên hình quạt 180° phía trước (×1.0 sát thương mỗi tên, pierce).',
     activeIcon: '🎯', activeCooldown: 7,
     evolvedWeapon: 'Tử Thần Chi Tên',
-    evolveDesc: 'Mũi tên áp độc khi trúng; xuyên qua địch đầu phân thành 3 tên nhỏ.',
+    evolveDesc: 'Mũi tên áp độc khi trúng; xuyên qua địch đầu phân thành 3 tên nhỏ (×0.55/tên).',
     color: '#ff9060',
   },
   {
@@ -3593,7 +3737,7 @@ const CHARS = [
     weapon: 'Song Tà Đao', weaponDesc: 'Chém cực nhanh xung quanh, tốc độ gấp đôi nhân vật khác.',
     weaponIcon: '🗡️',
     passiveName: 'Bóng Tối',
-    passiveDesc: 'HP <40%: SPD +40%, ATK +50%, giảm 30% sát thương nhận vào, vô hình với quái xa >4m trong 5 giây (CD 15s).',
+    passiveDesc: 'ATK +20% thường xuyên. HP <40%: ATK tăng lên +50%, SPD +40%, giảm 30% sát thương nhận vào, vô hình với quái xa >4m trong 5 giây (CD 15s).',
     activeName: 'Ám Sát Liên Hoàn',
     activeDesc: 'Dịch chuyển đến 3 mục tiêu gần nhất, chém ×4.0 sát thương mỗi mục tiêu.',
     activeIcon: '🌀', activeCooldown: 10,
@@ -3608,10 +3752,10 @@ const CHARS = [
     weapon: 'Lưỡi Liềm Tử Thần', weaponDesc: 'Ném liềm quay vòng ra ngoài rồi quay lại (boomerang).',
     weaponIcon: '☠️',
     passiveName: 'Thu Hoạch Linh Hồn',
-    passiveDesc: 'Giết quái tạo Linh Hồn (tối đa 20), mỗi cái +3% sát thương (+60% tối đa). HP<20%: tiêu thụ tất cả để hồi 25 HP/linh hồn.',
+    passiveDesc: 'Giết quái tạo Linh Hồn (tối đa 20), mỗi cái +3% sát thương (+60% tối đa). Bộ xương triệu hồi cũng tạo Linh Hồn khi giết quái. HP<20%: tiêu thụ tất cả để hồi 25 HP/linh hồn.',
     activeName: 'Quân Đoàn Bất Tử',
-    activeDesc: 'Tiêu thụ toàn bộ Linh Hồn tích lũy thành AoE bùng nổ, rồi triệu hồi 3 bộ xương chiến đấu (dmg ×1.0) trong 10 giây.',
-    activeIcon: '💀', activeCooldown: 12,
+    activeDesc: 'Tiêu thụ toàn bộ Linh Hồn thành Soul Burst AoE (×0.6/linh hồn), triệu hồi 3 bộ xương tự truy đuổi (dmg ×0.7, crit, 12 giây). Bộ xương giết quái → tạo Linh Hồn → spam active liên tục.',
+    activeIcon: '💀', activeCooldown: 9,
     evolvedWeapon: 'Vong Hồn Đại Liềm',
     evolveDesc: 'Liềm to gấp 1.8 lần, hút quái vào khi bay, khi về xuyên tất cả địch còn lại.',
     color: '#ff4060',
@@ -3943,7 +4087,8 @@ class Player {
     this.cdReduce  = (potentialBonus.mobility[1] || 0) * 0.10;  // -10%/lv (was 8%)
     this.critRate  = (potentialBonus.damage[1]   || 0) * 0.06;  // +6%/lv (was 5%)
     this.critDmg   = 1.5 + (potentialBonus.damage[2] || 0) * 0.30;  // +30%/lv (was 25%)
-    this.pierce    = (potentialBonus.damage[3]   || 0) * 0.12;  // +12%/lv (was 10%)
+    this.pierce    = (potentialBonus.damage[3]   || 0) * 0.12;  // projectile pierce count
+    this.armorPen  = (potentialBonus.damage[3]   || 0) * 0.15;  // +15% armor pen per lv: bypass shield + bonus vs boss/elite
     this.moveDmgReduce = (potentialBonus.mobility[3] || 0) * 0.10;  // -10% ST khi di chuyển/lv (REPLACE DASH)
 
     // Position
@@ -3959,6 +4104,7 @@ class Player {
     this.kills    = { normal: 0, elite: 0, boss: 0 };
     this.dmgDealt = 0;
     this.dmgTaken = 0;
+    this.skillDmg  = {};   // { skillId: totalDamage }
 
     // Animation
     this.facing   = 1;   // 1 = right, -1 = left
@@ -4011,9 +4157,9 @@ class Player {
     // Char passives
     if (this.charData.id === 'huyen_nguyet') {
       d *= (1 + (this.stillTimer >= 0.5 ? 0.20 : 0));
-    } else if (this.charData.id === 'am_sat' && this.hp < this.maxHp * 0.40) {
-      // Bóng Tối: ATK +50% khi HP thấp
-      d *= 1.5;
+    } else if (this.charData.id === 'am_sat') {
+      // Bóng Tối: ATK +20% thường xuyên, +50% khi HP<40%
+      d *= (this.hp < this.maxHp * 0.40) ? 1.5 : 1.2;
     } else if (this.charData.id === 'tu_linh') {
       d *= (1 + this.soulCount * 0.03);
     }
@@ -4267,6 +4413,7 @@ class Player {
       const reflectPct = 0.3 + reflectLv * 0.08;
       const reflectDmg = finalDmg * reflectPct;
       source.takeDamage(reflectDmg, null);
+      this.trackSkillDmg('bloodthorn', reflectDmg);
       // Blood thorn visual: red spikes burst toward attacker
       const angle = MathU.angle(this.x, this.y, source.x, source.y);
       for (let i = -2; i <= 2; i++) {
@@ -4301,6 +4448,12 @@ class Player {
       this.hp = 0;
       Game.onPlayerDeath();
     }
+  }
+
+  // Track skill-specific damage output
+  trackSkillDmg(skillId, amount) {
+    this.skillDmg[skillId] = (this.skillDmg[skillId] || 0) + amount;
+    this.dmgDealt += amount;
   }
 
   gainExp(amount) {
@@ -4635,16 +4788,17 @@ class Player {
 
     // Soul burst: tiêu thụ linh hồn tích lũy thành AoE khi triệu hồi
     if (this.soulCount > 0) {
-      const burstDmg = this.soulCount * this.totalDmg * 0.4;
-      Game.explosionAt(this.x, this.y, 100 * this.aoeSize, burstDmg, '#ff4060');
-      Game.spawnRing(this.x, this.y, 90 * this.aoeSize, '#ff2050');
+      const burstDmg = this.soulCount * this.totalDmg * 0.6;
+      Game.explosionAt(this.x, this.y, 160 * this.aoeSize, burstDmg, '#ff4060');
+      Game.spawnRing(this.x, this.y, 150 * this.aoeSize, '#ff2050');
+      Game.spawnRing(this.x, this.y, 90 * this.aoeSize, '#cc0030');
       Toast.show(`💀 Soul Burst! ${this.soulCount} linh hồn — ${Math.round(burstDmg)} sát thương!`);
       this.soulCount = 0;
     }
 
-    // Summon 3 skeleton warriors (tối đa 6 minion cùng lúc)
+    // Summon 3 skeleton warriors (tối đa 9 minion cùng lúc)
     const activeMinionCount = Game.minions ? Game.minions.filter(m => !m.dead).length : 0;
-    const slotsLeft = Math.max(0, 6 - activeMinionCount);
+    const slotsLeft = Math.max(0, 9 - activeMinionCount);
     for (let i = 0; i < Math.min(3, slotsLeft); i++) {
       const angle = (i / 3) * Math.PI * 2;
       const spawnX = this.x + Math.cos(angle) * 40;
@@ -4655,10 +4809,11 @@ class Player {
       Game.summonMinion({
         x: spawnX, y: spawnY,
         hp: 80 + this.level * 5,
-        dmg: this.totalDmg * 1.0,
-        duration: 10,
+        dmg: this.totalDmg * 0.7,
+        duration: 12,
         icon: '💀',
         color: '#ff4060',
+        owner: this,  // pass player ref for crit/armorPen/lifesteal
       });
     }
     Toast.show('💀 Triệu hồi quân đoàn xương!');
@@ -5190,16 +5345,36 @@ class Enemy {
   takeDamage(dmg, source, type) {
     if (this.dead) return;
 
+    // Armor penetration: bypass shield proportionally + bonus dmg vs boss/elite
+    const armorPen = (source && source.armorPen) ? source.armorPen : 0;
+
     // Shield mechanic (map 14)
     if (this.shield > 0) {
-      this.shield -= dmg;
+      // armorPen bypasses shield — e.g. 45% armorPen = only 55% dmg absorbed by shield
+      const shieldAbsorb = dmg * (1 - armorPen);
+      const shieldPierce = dmg * armorPen; // goes straight to HP
+      this.shield -= shieldAbsorb;
       if (this.shield < 0) {
-        dmg = -this.shield;
+        dmg = -this.shield + shieldPierce;
         this.shield = 0;
       } else {
-        DmgNumbers.show(this.x, this.y, '🛡️', 'normal');
+        // Dmg mostly absorbed, but pierce portion still hits HP
+        if (shieldPierce > 0) {
+          this.hp -= shieldPierce;
+          this.hitT = 0.1;
+          DmgNumbers.show(this.x, this.y, Math.ceil(shieldPierce), 'normal');
+          if (source && source.lifesteal) source.hp = Math.min(source.maxHp, source.hp + shieldPierce * source.lifesteal);
+          if (this.hp <= 0) this.die(source);
+        } else {
+          DmgNumbers.show(this.x, this.y, '🛡️', 'normal');
+        }
         return;
       }
+    }
+
+    // Bonus dmg vs high-HP targets (boss/elite) proportional to armorPen
+    if (armorPen > 0 && (this.isBoss || this.isElite)) {
+      dmg *= 1 + armorPen * 0.8; // up to +36% dmg vs boss at max armorPen (45%)
     }
 
     this.hp  -= dmg;
@@ -5449,11 +5624,23 @@ class Enemy {
 
     if (this._bossCharging > 0) {
       this._bossCharging -= dt;
-      this.x += (dx / dist) * moveSpd * 3 * dt;
-      this.y += (dy / dist) * moveSpd * 3 * dt;
+      // Cap charge movement so boss stops at player's edge, not through them
+      const chargeSpd = moveSpd * 3;
+      const stepDist = chargeSpd * dt;
+      const stopDist = this.r + player.r + 6;
+      if (dist > stopDist + stepDist) {
+        this.x += (dx / dist) * stepDist;
+        this.y += (dy / dist) * stepDist;
+      } else if (dist > stopDist) {
+        this.x += (dx / dist) * (dist - stopDist);
+        this.y += (dy / dist) * (dist - stopDist);
+      }
     } else {
-      this.x += (dx / dist) * moveSpd * dt;
-      this.y += (dy / dist) * moveSpd * dt;
+      const stopDist = this.r + player.r + 6;
+      if (dist > stopDist) {
+        this.x += (dx / dist) * moveSpd * dt;
+        this.y += (dy / dist) * moveSpd * dt;
+      }
     }
 
     // Phase-specific attacks
@@ -5462,6 +5649,17 @@ class Enemy {
     if (this._bossSkillTimer <= 0) {
       this._bossSkillTimer = 5 - this.phase;
       this._useBossSkill(player);
+    }
+
+    // Push player out if boss overlaps — prevents player getting stuck inside boss
+    const minSep = this.r + player.r + 4;
+    const overlapDx = player.x - this.x;
+    const overlapDy = player.y - this.y;
+    const overlapDist = Math.sqrt(overlapDx * overlapDx + overlapDy * overlapDy) || 1;
+    if (overlapDist < minSep) {
+      const pushForce = (minSep - overlapDist);
+      player.x = MathU.clamp(player.x + (overlapDx / overlapDist) * pushForce, player.r, CFG.WORLD_W - player.r);
+      player.y = MathU.clamp(player.y + (overlapDy / overlapDist) * pushForce, player.r, CFG.WORLD_H - player.r);
     }
 
     // Update boss HP bar
@@ -5652,7 +5850,7 @@ class Projectile {
         if (MathU.dist(this.x, this.y, e.x, e.y) < this.r + e.r) {
           const { val, crit } = Game.player.rollCrit(this.dmg);
           e.takeDamage(val, Game.player, crit ? 'crit' : 'normal');
-          Game.player.dmgDealt += val;
+          Game.player.trackSkillDmg(this._skillId || 'main_' + (Game.player.charData ? Game.player.charData.id : 'unknown'), val);
           if (this.onHit) this.onHit(e, this);
           this._hitSet.add(e);
           if (this.pierce <= 0) { this.dead = true; break; }
@@ -5928,36 +6126,80 @@ class Minion {
     this.duration = opts.duration;
     this.icon  = opts.icon  || '💀';
     this.color = opts.color || '#ff4060';
+    this.owner = opts.owner || null;  // player ref for crit/armorPen/lifesteal
     this.r  = 10;
     this.dead = false;
     this.atkTimer = 0;
     this.animT = 0;
-    this.orbit = Math.random() * Math.PI * 2;
+    this.vx = 0; this.vy = 0;
+    this._target = null;
   }
 
   update(dt, player) {
     if (this.dead) return;
     this.animT    += dt;
     this.duration -= dt;
-    this.orbit    += dt * 1.5;
     if (this.duration <= 0 || this.hp <= 0) { this.dead = true; return; }
 
-    // Orbit player
-    const orbitR = 50 + Math.sin(this.animT * 0.5) * 10;
-    const tx = player.x + Math.cos(this.orbit) * orbitR;
-    const ty = player.y + Math.sin(this.orbit) * orbitR;
-    this.x = MathU.lerp(this.x, tx, dt * 6);
-    this.y = MathU.lerp(this.y, ty, dt * 6);
+    const spd = 110;
 
-    // Attack nearest enemy
+    // Find nearest enemy within 300px
+    const enemies = Game.enemies.filter(e => !e.dead);
+    let nearest = null, nearestDist = 300;
+    for (const e of enemies) {
+      const d = MathU.dist(this.x, this.y, e.x, e.y);
+      if (d < nearestDist) { nearestDist = d; nearest = e; }
+    }
+    this._target = nearest;
+
+    if (nearest) {
+      // Chase enemy
+      const dx = nearest.x - this.x;
+      const dy = nearest.y - this.y;
+      const d  = Math.sqrt(dx*dx + dy*dy) || 1;
+      if (d > 18) {
+        this.x += (dx / d) * spd * dt;
+        this.y += (dy / d) * spd * dt;
+      }
+    } else {
+      // No enemy nearby — orbit player loosely
+      const orbitR = 55;
+      const orbitAngle = this.animT * 1.5 + (this.owner ? 0 : Math.random());
+      const tx = player.x + Math.cos(orbitAngle) * orbitR;
+      const ty = player.y + Math.sin(orbitAngle) * orbitR;
+      this.x = MathU.lerp(this.x, tx, dt * 5);
+      this.y = MathU.lerp(this.y, ty, dt * 5);
+    }
+
+    // Clamp to world
+    this.x = MathU.clamp(this.x, this.r, CFG.WORLD_W - this.r);
+    this.y = MathU.clamp(this.y, this.r, CFG.WORLD_H - this.r);
+
+    // Attack nearest enemy in range
     this.atkTimer += dt;
-    if (this.atkTimer >= 0.8) {
+    if (this.atkTimer >= 0.6) {
       this.atkTimer = 0;
-      const nearest = Game.enemies
-        .filter(e => !e.dead && MathU.dist(e.x,e.y,this.x,this.y) < 70)[0];
-      if (nearest) {
-        nearest.takeDamage(this.dmg, null, 'normal');
-        Game.particles.spawn(nearest.x, nearest.y, {
+      const atk = this._target && MathU.dist(this.x, this.y, this._target.x, this._target.y) < 90
+        ? this._target
+        : enemies.find(e => MathU.dist(this.x, this.y, e.x, e.y) < 90);
+      if (atk) {
+        const wasAlive = !atk.dead;
+        // Use owner (player) as source so crit/armorPen/lifesteal apply
+        const src = this.owner || null;
+        let dmg = this.dmg;
+        if (src && src.rollCrit) {
+          const { val, crit } = src.rollCrit(dmg);
+          dmg = val;
+          atk.takeDamage(dmg, src, crit ? 'crit' : 'normal');
+          if (src.lifesteal) src.hp = Math.min(src.maxHp, src.hp + dmg * src.lifesteal);
+        } else {
+          atk.takeDamage(dmg, null, 'normal');
+        }
+        // Tử Linh: minion kill → tạo linh hồn cho player (giúp spam active)
+        if (wasAlive && atk.dead && src && src.charData && src.charData.id === 'tu_linh') {
+          src.soulCount = Math.min(20, src.soulCount + 1);
+        }
+        Game.particles.spawn(atk.x, atk.y, {
           count: 4, color: this.color, speedMin: 40, speedMax: 100, life: 0.3,
         });
       }
@@ -6380,6 +6622,9 @@ const Game = (() => {
     mirrorClones   = [];
     mirrorCloneTimer = 0;
 
+    // Reset UI elements that persist across runs
+    UI.hideBossBar();
+
     currentMap = mapData;
     player     = new Player(charData, pot);
 
@@ -6648,7 +6893,7 @@ const Game = (() => {
           if (diff < Math.PI * 0.45) {
             const { val, crit } = p.rollCrit(dmg);
             e.takeDamage(val, p, crit ? 'crit' : 'normal');
-            p.dmgDealt += val;
+            p.trackSkillDmg('main_' + p.charData.id, val);
             // Snake pet: apply poison
             if (p._pendingPoison) { p._pendingPoison = false; e.applyPoison(3, 25); Audio.playSFX('pet_skill'); }
             if (p.mainWeapon.evolved) {
@@ -6692,12 +6937,12 @@ const Game = (() => {
         break;
       }
 
-      case 'huyen_nguyet': {
+      case 'huyen_nguyet': { const _HNID = 'main_huyen_nguyet';
         Audio.playSFX('orb');
         // Homing orb — pulsing purple sphere with glowing trail
         const pierce = Math.floor(p.pierce * 10);
         const manaBuff = p.stillTimer >= 0.5 ? 1.20 : 1;
-        spawnProjectile({
+        spawnProjectile({ _skillId: 'main_huyen_nguyet',
           x: p.x, y: p.y,
           vx: MathU.rand(-50, 50),
           vy: MathU.rand(-50, 50),
@@ -6719,11 +6964,11 @@ const Game = (() => {
               const a = tgt
                 ? Math.atan2(tgt.y - proj.y, tgt.x - proj.x)
                 : (i / 3) * Math.PI * 2;
-              spawnProjectile({
+              spawnProjectile({ _skillId: 'main_huyen_nguyet',
                 x: proj.x, y: proj.y,
                 vx: Math.cos(a) * 200 + MathU.rand(-30, 30),
                 vy: Math.sin(a) * 200 + MathU.rand(-30, 30),
-                dmg: dmg * 0.45, r: 6, life: 1.2,
+                dmg: dmg * 0.55, r: 6, life: 1.2,
                 color: '#60ff88', owner: 'player',
                 homing: true, pierce: 1, shape: 'orb_mini',
               });
@@ -6751,7 +6996,7 @@ const Game = (() => {
         const baseProjDmg = dmg;
         const spread = 0;
         const a = Math.atan2(dy, dx) + spread;
-        spawnProjectile({
+        spawnProjectile({ _skillId: 'main_thiet_tam',
           x: p.x, y: p.y,
           vx: Math.cos(a) * 600,
           vy: Math.sin(a) * 600,
@@ -6766,7 +7011,7 @@ const Game = (() => {
             const rangeDist = MathU.dist(p.x, p.y, e.x, e.y);
             if (rangeDist > 300) {
               e.takeDamage(baseProjDmg * 0.25, p, 'normal');
-              p.dmgDealt += baseProjDmg * 0.25;
+              p.trackSkillDmg('main_thiet_tam', baseProjDmg * 0.25);
               // Eagle Eye flash at hit point
               particles.spawn(e.x, e.y, { count:5, color:'#ffcc60', speedMin:40, speedMax:90, life:0.3 });
             }
@@ -6777,11 +7022,11 @@ const Game = (() => {
               const hitAngle = Math.atan2(proj.vy, proj.vx);
               for (let j = 0; j < 3; j++) {
                 const splitA = hitAngle + (j - 1) * 0.45;
-                spawnProjectile({
+                spawnProjectile({ _skillId: 'main_thiet_tam',
                   x: e.x, y: e.y,
                   vx: Math.cos(splitA) * 380,
                   vy: Math.sin(splitA) * 380,
-                  dmg: baseProjDmg * 0.5,
+                  dmg: baseProjDmg * 0.55,
                   r: 4 * aoe, life: 0.9,
                   color: '#ffaa60',
                   owner: 'player',
@@ -6799,7 +7044,7 @@ const Game = (() => {
         Audio.playSFX('slam');
         // AoE ground slam with shockwave visual
         const radius = 75 * aoe;
-        explosionAt(p.x, p.y, radius, dmg, '#ffd700');
+        explosionAt(p.x, p.y, radius, dmg, '#ffd700', 'main_kim_cang');
         // Radial crack lines emanating from impact
         for (let i = 0; i < 6; i++) {
           const crackA = (i / 6) * Math.PI * 2 + Math.random() * 0.2;
@@ -6823,7 +7068,7 @@ const Game = (() => {
               for (let tick = 1; tick <= 5; tick++) {
                 setTimeout(() => {
                   if (!capturedE.dead) {
-                    capturedE.takeDamage(dmg * 0.4, p, 'normal');
+                    capturedE.takeDamage(dmg * 0.45, p, 'normal');
                     spawnRing(e.x, e.y, 22 + tick * 2, '#fff0a0');
                   }
                 }, tick * 400);
@@ -6837,13 +7082,13 @@ const Game = (() => {
       case 'am_sat': {
         Audio.playSFX('blade');
         // Ultra-fast multi-hit around player
-        const atkRadius = 50 * aoe;
+        const atkRadius = 65 * aoe;
         let hitCount = 0;
         enemies.forEach(e => {
           if (MathU.dist(e.x, e.y, p.x, p.y) < atkRadius) {
             const { val, crit } = p.rollCrit(dmg);
             e.takeDamage(val, p, crit ? 'crit' : 'normal');
-            p.dmgDealt += val;
+            p.trackSkillDmg('active_' + p.charData.id, val);
             hitCount++;
             if (p.mainWeapon.evolved) {
               // Phantom copy hits again after 0.3s
@@ -6919,7 +7164,9 @@ const Game = (() => {
             for (const e of enemies) {
               if (e.dead || this._hitSet.has(e)) continue;
               if (MathU.dist(this.x,this.y,e.x,e.y) < this.r + e.r) {
-                const {val} = player.rollCrit(this.dmg);
+                const returnMult = returning ? 1.15 : 1.0;
+                const {val: baseVal} = player.rollCrit(this.dmg);
+                const val = baseVal * returnMult;
                 e.takeDamage(val, player, 'normal');
                 player.dmgDealt += val;
                 if (this.onHit) this.onHit(e, this);
@@ -7015,7 +7262,7 @@ const Game = (() => {
             if (MathU.dist(e.x, e.y, p.x, p.y) < r) {
               const dmg = (sk.baseDmg + lv * 8) * p.dmgMult;
               e.takeDamage(dmg, p, 'normal');
-              p.dmgDealt += dmg;
+              p.trackSkillDmg('halo', dmg);
               hitAny = true;
               // Spark at each hit enemy
               particles.spawn(e.x, e.y, {
@@ -7039,7 +7286,7 @@ const Game = (() => {
             if (!target) break;
             const dmg = (sk.baseDmg + lv * 25) * p.dmgMult;
             target.takeDamage(dmg, p, 'normal');
-            p.dmgDealt += dmg;
+            p.trackSkillDmg('thunder', dmg);
 
             // ── Lightning bolt from sky ──
             const boltSrcX = target.x + MathU.rand(-30, 30);
@@ -7145,7 +7392,7 @@ const Game = (() => {
           });
 
           dirs.forEach(([dx, dy]) => {
-            spawnProjectile({
+            spawnProjectile({ _skillId: 'fireorb',
               x: p.x, y: p.y,
               vx: dx * sk.speed,
               vy: dy * sk.speed,
@@ -7158,7 +7405,7 @@ const Game = (() => {
               shape: 'fire_orb',
               onHit: (e, proj) => {
                 const exDmg = (sk.baseDmg + lv * 10) * p.dmgMult;
-                explosionAt(e.x, e.y, 45 * aoe, exDmg, '#ff4000');
+                explosionAt(e.x, e.y, 45 * aoe, exDmg, '#ff4000', 'fireorb');
                 // Explosion particle burst
                 particles.spawn(e.x, e.y, {
                   count:10, color:'#ff8020',
@@ -7221,7 +7468,7 @@ const Game = (() => {
             const dx  = nearest.x - sw._ghostX;
             const dy  = nearest.y - sw._ghostY;
             const len = Math.sqrt(dx*dx+dy*dy)||1;
-            spawnProjectile({
+            spawnProjectile({ _skillId: 'shadow_clone',
               x: sw._ghostX,
               y: sw._ghostY,
               vx: (dx/len) * 420,
@@ -7255,6 +7502,7 @@ const Game = (() => {
         enemies.forEach(e => {
           if (MathU.dist(e.x, e.y, z.x, z.y) < z.r) {
             e.applyPoison(0.5, z.dmg);
+            if (player) player.trackSkillDmg('poisoncloud', z.dmg * 0.5);
           }
         });
         // Map poison ground hurts player too (map03)
@@ -7482,8 +7730,24 @@ const Game = (() => {
       hellhound: { hp:400,  dmg:100, spd:120, r:15, exp:9,  icon:'🔥', color:'#8a2a1a', ai:'chase' },
       demonknight:{hp:800,  dmg:110, spd:75,  r:18, exp:10, icon:'😈', color:'#6a1a1a', ai:'chase' },
       hellmage:  { hp:325,  dmg:120, spd:65,  r:13, exp:9,  icon:'🧿', color:'#4a1a4a', ai:'ranged' },
-      void:      { hp:350,  dmg:90, spd:100, r:14, exp:8,  icon:'⬛', color:'#1a1a2a', ai:'chase' },
-      starspawn: { hp:275,  dmg:70, spd:110, r:12, exp:7,  icon:'⭐', color:'#2a2a6a', ai:'flank', flankDir:1 },
+      void:      { hp:350,  dmg:90,  spd:100, r:14, exp:8,  icon:'⬛', color:'#1a1a2a', ai:'chase' },
+      starspawn: { hp:275,  dmg:70,  spd:110, r:12, exp:7,  icon:'⭐', color:'#2a2a6a', ai:'flank', flankDir:1 },
+      kraken:    { hp:900,  dmg:120, spd:55,  r:22, exp:14, icon:'🐙', color:'#4a1a6a', ai:'chase' },
+
+      // Map 11 — Vùng Hỗn Mang
+      rift:         { hp:200,  dmg:85,  spd:0,   r:18, exp:7,  icon:'🕳️', color:'#5a0a8a', ai:'ranged' },
+
+      // Map 12 — Bầu Trời Sụp Đổ
+      thunderbeast: { hp:550,  dmg:95,  spd:80,  r:17, exp:9,  icon:'🦬', color:'#4a5a9a', ai:'chase' },
+      lightning:    { hp:150,  dmg:110, spd:160, r:10, exp:7,  icon:'⚡', color:'#8a9aff', ai:'flank', flankDir:1 },
+
+      // Map 13 — Mê Cung Gương
+      mirror:       { hp:300,  dmg:70,  spd:90,  r:13, exp:7,  icon:'🪞', color:'#8a9aaa', ai:'chase' },
+      illusion:     { hp:175,  dmg:65,  spd:130, r:11, exp:6,  icon:'🌫️', color:'#6a7a9a', ai:'flank', flankDir:-1 },
+      shade:        { hp:450,  dmg:100, spd:75,  r:15, exp:9,  icon:'🌑', color:'#2a2a3a', ai:'chase' },
+
+      // Map 15 — Tâm Vũ Trụ
+      nebula:       { hp:425,  dmg:80,  spd:65,  r:16, exp:9,  icon:'🌠', color:'#3a1a6a', ai:'ranged' },
     };
     return templates[typeKey] || templates['zombie'];
   }
@@ -8101,7 +8365,7 @@ const Game = (() => {
     return sorted[skip] || null;
   }
 
-  function explosionAt(x, y, radius, dmg, color) {
+  function explosionAt(x, y, radius, dmg, color, _skillId) {
     particles.spawn(x, y, {
       count: Math.floor(radius / 4),
       color, speedMin: radius * 0.8, speedMax: radius * 2.5,
@@ -8112,7 +8376,7 @@ const Game = (() => {
       enemies.forEach(e => {
         if (!e.dead && MathU.dist(e.x,e.y,x,y) < radius + e.r) {
           e.takeDamage(dmg, player, 'normal');
-          player.dmgDealt += dmg;
+          player.trackSkillDmg(_skillId || 'explosion', dmg);
         }
       });
     }
@@ -8121,6 +8385,7 @@ const Game = (() => {
 
   function spawnProjectile(opts) {
     const p = new Projectile(opts);
+    if (opts._skillId) p._skillId = opts._skillId;
     projectiles.push(p);
 
     // Rune necklace: extra projectile
@@ -8515,6 +8780,7 @@ const Game = (() => {
       gold:        totalGold,
       level:       player ? player.level        : 1,
       evolved:     weaponEvolved,
+      skillDmg:    player ? {...player.skillDmg} : {},
       baseGold,
       streakBonus,
       achievementBonus,
@@ -9659,7 +9925,7 @@ window.addEventListener('DOMContentLoaded', () => {
 });
 /* ============================================================
    END OF FILE
-   Game version: 1.1.3
+   Game version: 1.1.4
    Thay đổi từ v1.1.2 (Huyền Nguyệt Evolved Rework):
      ✅ HN Evo 1: Mini orb 2→3 cái, dmg ×0.3→×0.45 mỗi cái
      ✅ HN Evo 2: Mini orb homing targeted vào 3 quái gần nhất (was random direction)
@@ -9669,6 +9935,8 @@ window.addEventListener('DOMContentLoaded', () => {
      ✅ HN Evo 6: Cập nhật tất cả mô tả (evolveDesc, passiveDesc, CG_CHAR_DATA, guide, tips)
      → Effective: ×1.9 (cũ) → ×2.95 baseline | ×3.54 khi đứng yên (đúng tier ◈500)
    Thay đổi từ v1.1.1 (Difficulty + Active Balance):
+     ✅ Fix XG1: Xuyên Giáp — armorPen thực sự bypass shield địch + bonus dmg Boss/Elite (was chỉ tăng projectile pierce)
+     ✅ Fix XG2: armorPen 15%/cấp, max 45%: shield bypass 45%, boss/elite +36% dmg
      ✅ Fix D1: Boss HP dùng tierBaseHP[tier]+wave×1000 — T5 full build: 77-135s (avg 103s)
      ✅ Fix D2: Boss DMG formula: 60+tier×35+wave×8 (T5=283, tăng dần theo tier)
      ✅ Fix A1: CD reduce tổng cap 40% (skill + potential gộp, was 60%)
