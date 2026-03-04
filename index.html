@@ -680,9 +680,21 @@ canvas{display:block;image-rendering:pixelated;}
 .dmg-val{font-size:10px;color:#e0e0e8;text-align:right;white-space:nowrap;}
 .dmg-pct{color:#888;font-size:9px;}
 
+
+  /* TEST MODE badge */
+  #test-badge {
+    position: fixed; top: 8px; right: 8px; z-index: 99999;
+    background: rgba(255,60,0,.85); color: #fff;
+    font-size: 11px; font-weight: bold; font-family: monospace;
+    padding: 4px 10px; border-radius: 4px;
+    pointer-events: none; letter-spacing: 1px;
+  }
+
 </style>
 </head>
 <body>
+<div id="test-badge">🧪 TEST MODE v1.2.0</div>
+
     
     <!-- ============================================================
      LOADING SCREEN
@@ -2487,7 +2499,7 @@ const UI = (() => {
           playstyle: 'Stationary — đứng yên farm',
           guide: `<b>Mana Tích Tụ:</b> Đứng yên <b>0.5 giây</b> → sát thương +20%. Di chuyển reset về 0 ngay lập tức.<br><br>
 <b>Chiến thuật:</b> Chọn vị trí an toàn ở giữa màn, dùng Tinh Linh Cầu (tự truy đuổi) và để quái kéo đến. Kết hợp với vũ khí phụ AoE để khóa đám đông trong khi đứng yên.<br><br>
-<b>Tiến hoá — Hắc Nhật Ma Cầu:</b> Mỗi orb trúng địch tách <b>3 mini orb</b> (×0.45 mỗi cái, pierce 1) tự homing vào <b>3 quái gần nhất</b> riêng biệt + áp độc 0.15×/s trong 4 giây. Effective ×2.95 per target — <b>×3.54 khi đứng yên</b>. Đứng góc tường để không bị đẩy.<br><br>
+<b>Tiến hoá — Hắc Nhật Ma Cầu:</b> Mỗi orb trúng địch tách <b>3 mini orb</b> (×0.55 mỗi cái, pierce 1) tự homing vào <b>3 quái gần nhất</b> riêng biệt + áp độc 0.15×/s trong 4 giây. Effective ×2.95 per target — <b>×3.54 khi đứng yên</b>. Đứng góc tường để không bị đẩy.<br><br>
 <b>Active Hắc Động Lôi:</b> Dùng khi bị vây để mở đường thoát — giúp đứng yên lại sớm hơn.`,
         },
         {
@@ -2713,7 +2725,7 @@ const UI = (() => {
         ['⚡','Thưởng Trong Run','Đạt 100 kill trước phút 2 (+30 ◈), không bị đánh 30 giây (+15 ◈), hạ tinh anh trong 5 giây (+20 ◈). Chơi tích cực luôn có lợi hơn chỉ tồn tại.'],
         ['🐾','Thú Cưng','Mỗi pet có lối chơi riêng: Linh Hồ (+20% vàng, +5% mỗi 50 kill) cho econ; Bạch Hổ (+15% tốc đánh) cho damage ổn định; Hắc Xà (hút máu 5% + độc scale theo ST) cho sustain; Thần Ưng (+18% tốc, +12% AoE) cho chars AoE; Thần Quy (+25% HP, phản đòn AoE) cho tank; Ma Long (+8% crit) cho burst damage.'],
         ['⚔️','Lưu Phong — Kiếm Ý','Tích lũy kill để stack Kiếm Ý (+1.5% tốc/kill, tối đa 30 stack = +45%). Bị đánh mất 65% stack (giữ lại 35%). Dùng Tàn Phong Trảm để thoát vây — không phải để tấn công. Effective DPS ~40+ với full stack.'],
-        ['🌙','Huyền Nguyệt — Mana Tích Tụ','Đứng yên 0.5 giây: sát thương +20%. Di chuyển reset ngay. Sau tiến hoá: mỗi orb trúng tách 3 mini orb (×0.45 mỗi cái, pierce 1) homing vào 3 quái riêng + độc 4 giây. Đứng yên khi evolved = ×3.54 effective — đứng góc tường để tối đa hóa.'],
+        ['🌙','Huyền Nguyệt — Mana Tích Tụ','Đứng yên 0.5 giây: sát thương +20%. Di chuyển reset ngay. Sau tiến hoá: mỗi orb trúng tách 3 mini orb (×0.55 mỗi cái, pierce 1) homing vào 3 quái riêng + độc 4 giây. Đứng yên khi evolved = ×3.54 effective — đứng góc tường để tối đa hóa.'],
         ['🏹','Thiết Tâm — Mắt Đại Bàng','Giữ khoảng cách >300 đơn vị để khai thác +25% sát thương. Chạy vòng tròn liên tục — cung xuyên thấu qua nhiều quái. Ưu tiên diệt quái bắn xa trước.'],
         ['🥋','Kim Cang — 20% Block','Để quái tấn công để kích Kim Cang Thể: 20% chặn hoàn toàn + hồi 25 HP + stack tốc đánh. HP 210 là cao nhất game. Phật Nộ Giáng Thiên dùng khi bị vây — knockback toàn màn.'],
         ['🗡️','Ám Sát — Bóng Tối','HP xuống <40%: vô hình, +40% tốc, +50% sát thương, -30% sát thương nhận trong 5 giây. Có thể chủ động nhận 1-2 đòn để kích sớm. Effective DPS ~57.6 khi kích hoạt.'],
@@ -3125,7 +3137,7 @@ const UI = (() => {
         weapon:  { icon:'🔮', tag:'VŨ KHÍ CHÍNH', name:'Tinh Linh Cầu', desc:'Bắn cầu ma thuật tự truy đuổi (homing) kẻ thù gần nhất. Sát thương cao nhất, tốc độ tấn công thấp nhất.' },
         passive: { icon:'🧘', tag:'PASSIVE', name:'Mana Tích Tụ', desc:'Đứng yên liên tục 0.5 giây: sát thương +20%. Di chuyển sẽ reset ngay — đòi hỏi định vị chủ động. Khi tiến hoá: mini orb và độc đều hưởng buff này.' },
         active:  { icon:'🌩️', tag:'ACTIVE', name:'Hắc Động Lôi', desc:'Triệu hồi 8 tia sét rải đều trong 3 giây, bán kính 200 đơn vị. Hiệu quả cực mạnh khi kết hợp passive đứng yên.', cd:9 },
-        evolve:  { icon:'☄️', tag:'TIẾN HÓA', name:'Hắc Nhật Ma Cầu', desc:'Khi trúng địch: tách 3 mini orb (×0.45 mỗi cái, pierce 1) tự homing vào 3 quái gần nhất + áp độc 0.15×/s trong 4 giây. Effective ×2.95 per target; ×3.54 khi đứng yên.' },
+        evolve:  { icon:'☄️', tag:'TIẾN HÓA', name:'Hắc Nhật Ma Cầu', desc:'Khi trúng địch: tách 3 mini orb (×0.55 mỗi cái, pierce 1) tự homing vào 3 quái gần nhất + áp độc 0.15×/s trong 4 giây. Effective ×2.95 per target; ×3.54 khi đứng yên.' },
       }
     },
     {
@@ -3150,7 +3162,7 @@ const UI = (() => {
       extra: {
         statHP: 95, statSPD: 155, statDMG: 14, statATK: 2.2,
         weapon:  { icon:'🗡️', tag:'VŨ KHÍ CHÍNH', name:'Song Tà Đao', desc:'Chém AoE bán kính 50 đ cực nhanh. Tốc độ tấn công cao nhất (2.2×), DMG/đòn thấp nhất — bù bằng tần suất cao.' },
-        passive: { icon:'🌑', tag:'PASSIVE', name:'Bóng Tối', desc:'HP <40%: SPD +40%, ATK +50%, giảm 30% damage nhận. Mỗi 15 giây: vô hình với quái xa >400 đ trong 5 giây.' },
+        passive: { icon:'🌑', tag:'PASSIVE', name:'Bóng Tối', desc:'ATK +20% thường xuyên. HP <40%: ATK tăng lên +50%, SPD +40%, giảm 30% damage nhận. Mỗi 15 giây: vô hình với quái xa >400 đ trong 5 giây.' },
         active:  { icon:'🌀', tag:'ACTIVE', name:'Ám Sát Liên Hoàn', desc:'Dịch chuyển đến 3 mục tiêu gần nhất (cách 100ms/đòn), ×4.0 DMG mỗi đích. Iframe 0.8 giây toàn quá trình.', cd:10 },
         evolve:  { icon:'👥', tag:'TIẾN HÓA', name:'Hư Vô Đoản Kiếm', desc:'Mỗi đòn đánh tạo phân thân ảo lặp lại 300ms sau với 85% DMG — về thực chất mỗi hit đánh 2 lần.' },
       }
@@ -3160,7 +3172,7 @@ const UI = (() => {
         statHP: 105, statSPD: 115, statDMG: 20, statATK: 1.0,
         weapon:  { icon:'☠️', tag:'VŨ KHÍ CHÍNH', name:'Lưỡi Liềm Tử Thần', desc:'Boomerang: bay ra rồi tự quay lại, pierce 5 kẻ thù mỗi chiều. Cả đường đi lẫn đường về đều gây sát thương.' },
         passive: { icon:'💀', tag:'PASSIVE', name:'Thu Hoạch Linh Hồn', desc:'Mỗi kill tạo 1 Linh Hồn (max 20), mỗi stack +3% DMG (tối đa +60%). HP <20%: tiêu thụ toàn bộ để hồi 25 HP/linh hồn.' },
-        active:  { icon:'💀', tag:'ACTIVE', name:'Quân Đoàn Bất Tử', desc:'Tiêu thụ toàn bộ Linh Hồn thành AoE bùng nổ, rồi triệu hồi 3 bộ xương tấn công quái gần nhất mỗi 0.8 giây trong 10 giây.', cd:12 },
+        active:  { icon:'💀', tag:'ACTIVE', name:'Quân Đoàn Bất Tử', desc:'Tiêu thụ toàn bộ Linh Hồn thành AoE bùng nổ, rồi triệu hồi 3 bộ xương tấn công quái gần nhất mỗi 0.8 giây trong 12 giây.', cd:12 },
         evolve:  { icon:'🌀', tag:'TIẾN HÓA', name:'Vong Hồn Đại Liềm', desc:'Liềm to ×1.8, hút quái vào khi bay đi (knockback ngược). Đường về: xuyên tất cả kẻ thù còn lại, không giới hạn.' },
       }
     },
@@ -9932,6 +9944,22 @@ const POTENTIAL_UPGRADES = []; // stub — data lives inside UI's renderPotentia
 window.addEventListener('DOMContentLoaded', () => {
   // 1. Load save data first — must be before anything reads Save.get()
   Save.load();
+
+  // ══ TEST MODE: 1M vàng + mở khoá tất cả map + tất cả nhân vật ══
+  (function injectTestData() {
+    const d = Save.get();
+    // Vàng khởi đầu 1,000,000 nếu chưa đủ
+    if (d.gold < 1000000) d.gold = 1000000;
+    // Mở khoá tất cả map (completedMaps phải chứa id của map trước đó)
+    const allMapIds = ['map01','map02','map03','map04','map05','map06','map07',
+                       'map08','map09','map10','map11','map12','map13','map14','map15'];
+    allMapIds.forEach(id => { if (!d.completedMaps.includes(id)) d.completedMaps.push(id); });
+    // Mở khoá tất cả nhân vật
+    const allChars = ['luu_phong','huyen_nguyet','thiet_tam','kim_cang','am_sat','tu_linh'];
+    allChars.forEach(id => { if (!d.unlockedChars.includes(id)) d.unlockedChars.push(id); });
+    Save.save();
+  })();
+  // ══ END TEST MODE ══
 
   // 2. Init audio with saved settings
   const savedSettings = Save.get().settings || {};
