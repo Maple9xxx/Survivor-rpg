@@ -9830,9 +9830,15 @@ const Game = (() => {
     const mapData = currentMap || {};
     const goldMin = mapData.goldMin || 50;
     const goldMax = mapData.goldMax || 80;
-    let baseGold = victory
-      ? MathU.randInt(goldMin, goldMax)
-      : Math.floor(MathU.randInt(goldMin, goldMax) * 0.35); // lose: 35% consolation
+    let baseGold;
+    if (victory) {
+      baseGold = MathU.randInt(goldMin, goldMax);
+    } else {
+      // Consolation gold scales với thời gian sống — chống farm bằng cách die nhanh
+      // Full 35% rate sau 120 giây, tuyến tính từ 0→120s, tối thiểu 3 vàng
+      const timeFactor = Math.min(elapsedTime / 120, 1.0);
+      baseGold = Math.max(3, Math.floor(MathU.randInt(goldMin, goldMax) * 0.35 * timeFactor));
+    }
 
     // Apply player in-run gold fortune bonus
     baseGold = Math.floor(baseGold * (player ? player.goldBonus : 1));
