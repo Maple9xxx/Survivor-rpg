@@ -775,7 +775,82 @@ canvas{display:block;image-rendering:pixelated;}
 .dmg-val{font-size:10px;color:#e0e0e8;text-align:right;white-space:nowrap;}
 .dmg-pct{color:#888;font-size:9px;}
 
+/* ======================================================
+   TUTORIAL SYSTEM
+   ====================================================== */
+#tutorial-overlay{
+  position:fixed;inset:0;
+  background:rgba(0,0,0,0.94);
+  z-index:99990;
+  display:flex;align-items:center;justify-content:center;
+  padding:20px;
+}
+#tutorial-box{
+  background:linear-gradient(160deg,#1a1228,#120e20);
+  border:1.5px solid #6a3fa0;
+  border-radius:16px;
+  padding:26px 22px;
+  max-width:420px;width:100%;
+  color:#e8d8f8;
+  max-height:90vh;overflow-y:auto;
+}
+#tutorial-box h2{
+  text-align:center;font-size:18px;
+  color:#c090ff;margin:0 0 4px;
+  letter-spacing:2px;
+}
+#tutorial-box .tut-subtitle{
+  text-align:center;font-size:11px;
+  color:#8070a0;margin-bottom:18px;
+}
+.tut-steps{
+  display:flex;flex-direction:column;gap:10px;
+  margin-bottom:20px;
+}
+.tut-step{
+  display:flex;align-items:flex-start;gap:12px;
+  background:rgba(255,255,255,0.04);
+  border-radius:10px;padding:12px;
+  border-left:3px solid #6a3fa0;
+}
+.tut-step-icon{font-size:24px;flex-shrink:0;line-height:1;margin-top:2px;}
+.tut-step-title{font-size:13px;font-weight:700;color:#d0aaff;margin-bottom:3px;}
+.tut-step-desc{font-size:11px;color:#a090c0;line-height:1.6;}
+.tut-step-desc b{color:#e8c060;}
+#tutorial-start-btn{
+  width:100%;padding:14px;
+  background:linear-gradient(135deg,#7c3aed,#9d5aff);
+  border:none;border-radius:10px;
+  color:#fff;font-size:15px;
+  font-weight:700;letter-spacing:2px;
+  cursor:pointer;transition:opacity 0.2s;
+}
+#tutorial-start-btn:hover{opacity:0.85;}
 
+/* In-game floating hint bubble */
+#tutorial-hint{
+  position:fixed;
+  top:50%;left:50%;
+  transform:translate(-50%,-50%);
+  background:rgba(16,8,32,0.97);
+  border:1.5px solid #7c3aed;
+  border-radius:14px;
+  padding:16px 20px;
+  max-width:260px;width:80vw;
+  text-align:center;
+  z-index:9980;
+  pointer-events:none;
+  opacity:0;
+  transition:opacity 0.45s;
+}
+#tutorial-hint.tut-visible{opacity:1;}
+#tutorial-hint .hint-icon{font-size:28px;display:block;margin-bottom:6px;}
+#tutorial-hint .hint-title{
+  font-weight:700;color:#b080ff;
+  font-size:13px;margin-bottom:5px;
+  letter-spacing:1px;
+}
+#tutorial-hint .hint-text{font-size:11px;color:#c0b0d8;line-height:1.6;}
 
 </style>
 </head>
@@ -1182,6 +1257,7 @@ const Save = (() => {
     settings: { bgm: true, sfx: true },
     activePet: null,     // pet id currently equipped
     ownedPets: [],       // [petId, ...]
+    firstPlay: true,     // tutorial flag — set false after first run
   };
 
   let data = null;
@@ -2808,7 +2884,7 @@ const UI = (() => {
           '💀 <b>Tử Linh</b> → Vong Hồn Đại Liềm: liềm to gấp 1.8 lần, hút quái vào khi bay, xuyên tất cả địch khi về.'));
       entry('🗡️','Vũ Khí Phụ (Sub Weapons)',
         p('Nhận qua level-up, tối đa <b>6 vũ khí phụ</b> cùng lúc. Mỗi loại nâng tối đa cấp 5.<br>' +
-          '⚠️ Vũ khí phụ <b>không</b> nhận crit/hút máu/xuyên giáp — chỉ nhân DMGMult của người chơi.'));
+          '⚠️ Vũ khí phụ <b>không</b> nhận crit/hút máu/xuyên giáp — chỉ nhân hệ số Sát Thương (DMGMult).'));
       SKILL_POOL.filter(s => s.type === 'weapon').forEach(w => {
         entry(w.icon, w.name, p(w.desc));
       });
@@ -2816,7 +2892,7 @@ const UI = (() => {
         p('Thẻ stat tích lũy trong mỗi run, tối đa cấp 5 mỗi thẻ:<br><br>' +
           '💨 <b>Tốc Độ Di Chuyển:</b> +8% SPD/cấp (cấp 5: +40%).<br>' +
           '⚔️ <b>Tốc Độ Tấn Công:</b> +15% AtkSpeedMult/cấp (cấp 5: +75%). Không giới hạn trên.<br>' +
-          '💥 <b>Sát Thương:</b> +8% DMGMult/cấp (cấp 5: +40%). Ảnh hưởng toàn bộ vũ khí phụ.<br>' +
+          '💥 <b>Sát Thương:</b> +8% sát thương/cấp (cấp 5: +40%). Áp dụng toàn bộ vũ khí và kỹ năng.<br>' +
           '🧛 <b>Hút Máu:</b> +4% lifesteal/cấp (cấp 5: +20%). Tổng tối đa 50%.<br>' +
           '🛡️ <b>Giáp:</b> +6% armor/cấp (cấp 5: +30%). Tổng tối đa 78%.<br>' +
           '🌐 <b>Diện Tích AoE:</b> +10% aoeSize/cấp (cấp 5: ×1.5 AoE).<br>' +
@@ -2999,7 +3075,7 @@ const UI = (() => {
       entry('⚔️','Sát Thương (Damage)',
         p('Công thức: <b>BaseDMG × DMGMult × CritMult</b>.<br><br>' +
           '• <b>BaseDMG:</b> chỉ số gốc của nhân vật, tăng qua Tiềm Năng Sát Thương[0] (+10%/cấp) và nâng cấp vũ khí chính (+10%/lv).<br>' +
-          '• <b>DMGMult:</b> nhân từ thẻ kỹ năng (Sức Mạnh, Hủy Diệt...) và Tiến Hoá (+35%).<br>' +
+          '• <b>DMGMult:</b> nhân từ thẻ Sát Thương (+8%/cấp) và Tiến Hoá (+35%). Áp dụng toàn bộ vũ khí và kỹ năng.<br>' +
           '• <b>CritMult:</b> khi kích crit, nhân thêm CritDMG (mặc định 150%).<br><br>' +
           '⚠️ Crit · Hút Máu · Xuyên Giáp <b>chỉ áp dụng cho vũ khí chính và bản Tiến Hoá</b>, không áp dụng vũ khí phụ.'));
       entry('🎯','Crit Rate & Crit DMG',
@@ -3297,9 +3373,7 @@ const UI = (() => {
       <div class="stat-row"><span class="stat-label">🩸 Tổng sát thương nhận</span>
         <span class="stat-value">${Math.floor(stats.dmgTaken)}</span></div>
       <div class="stat-row"><span class="stat-label">✨ Level đạt được</span>
-        <span class="stat-value">${stats.level}</span></div>
-      <div class="stat-row"><span class="stat-label">✨ Tiến Hoá</span>
-        <span class="stat-value ${stats.evolved ? 'good' : ''}">${stats.evolved ? stats.evolvedName || 'CÓ ✓' : 'Chưa tiến hoá'}</span></div>`;
+        <span class="stat-value">${stats.level}</span></div>`;
 
 
     // ── SKILL DAMAGE BREAKDOWN ──────────────────────────────────
@@ -3452,8 +3526,8 @@ const UI = (() => {
   }
 
   function startRun() {
-    showScreen('game');
-    Game.startRun(selectedChar, selectedMap);
+    // Kiểm tra và hiện tutorial nếu lần đầu chơi
+    Tutorial.check(selectedChar, selectedMap);
   }
 
   function getSelected() { return { char: selectedChar, map: selectedMap }; }
@@ -3703,7 +3777,16 @@ const UI = (() => {
     const body = document.getElementById('isp-body');
     if (!body || !player) return;
 
-    const aps       = (player.atkSpd * player.atkSpeed).toFixed(2);
+    // Tốc đánh thực: cộng tất cả nguồn đang active
+    const liuPhongBonus  = (player.charData && player.charData.id === 'luu_phong')
+                           ? (player.passiveStacks || 0) * 0.015 : 0;
+    const kimCangBonus   = player._kimCangBlockBoost || 0;
+    const totalAtkMult   = player.atkSpeed + liuPhongBonus + kimCangBonus;
+    const aps            = (player.atkSpd * totalAtkMult).toFixed(2);
+
+    // Sát thương thực: dùng getter totalDmg (đã tính passive Huyền Nguyệt/Ám Sát/Tử Linh)
+    const dmg       = Math.round(player.totalDmg);
+
     const critRate  = Math.round((player.critRate || 0) * 100);
     const critDmg   = Math.round((player.critDmg  || 1.5) * 100);
     const armor     = Math.round((player.armor     || 0) * 100);
@@ -3712,7 +3795,6 @@ const UI = (() => {
     const cdReduce  = Math.round((player.cdReduce  || 0) * 100);
     const regen     = player.hpRegenRate || 0;
     const hpOnKill  = player.hpOnKill   || 0;
-    const dmg       = Math.round(player.baseDmg * (player.dmgMult || 1));
 
     function row(icon, label, val, cls) {
       cls = cls || '';
@@ -3722,7 +3804,7 @@ const UI = (() => {
     let html = '';
     html += row('❤️','HP',         Math.ceil(player.hp) + '/' + player.maxHp);
     html += row('⚔️','Sát thương', dmg);
-    html += row('⚡','Tốc đánh',  aps + '/s', player.atkSpeed > 1.5 ? 'up' : '');
+    html += row('⚡','Tốc đánh',  aps + '/s', totalAtkMult > 1.5 ? 'up' : '');
     html += row('🏃','Tốc độ',    Math.round(player.speed));
     html += row('🎯','Crit Rate',  critRate + '%', critRate > 0 ? 'up' : '');
     html += row('💢','Crit DMG',  critDmg + '%', critDmg > 150 ? 'up' : '');
@@ -3732,6 +3814,26 @@ const UI = (() => {
     if (cdReduce > 0)  html += row('🔄','Hồi Chiêu',  '-' + cdReduce + '%', 'up');
     if (regen > 0)     html += row('💚','Hồi HP/s',   '+' + regen.toFixed(1), 'up');
     if (hpOnKill > 0)  html += row('🩸','HP/Kill',    '+' + hpOnKill, 'up');
+
+    // Row passive riêng từng nhân vật — hiển thị trạng thái đang active
+    if (player.charData) {
+      const cid = player.charData.id;
+      if (cid === 'luu_phong') {
+        const stacks = player.passiveStacks || 0;
+        html += row('🌬️','Kiếm Ý', stacks + '/30 (+' + Math.floor(stacks * 1.5) + '%⚡)', stacks > 0 ? 'up' : '');
+      } else if (cid === 'tu_linh') {
+        const souls = player.soulCount || 0;
+        html += row('💀','Linh Hồn', souls + '/20 (+' + Math.round(souls * 3.5) + '%ST)', souls > 0 ? 'up' : '');
+      } else if (cid === 'kim_cang' && kimCangBonus > 0) {
+        html += row('🛡️','Kim Cang Thể', '+' + Math.round(kimCangBonus * 100) + '%⚡', 'up');
+      } else if (cid === 'huyen_nguyet') {
+        const buffed = (player.stillTimer || 0) >= 0.4;
+        if (buffed) html += row('🌙','Tĩnh Công', '+20% ST', 'up');
+      } else if (cid === 'am_sat') {
+        const isLow = player.hp < player.maxHp * 0.40;
+        html += row('🗡️','Bóng Tối', isLow ? '+50% ST' : '+20% ST', 'up');
+      }
+    }
 
     body.innerHTML = html;
   }
@@ -4407,42 +4509,42 @@ const SKILL_POOL = [
     id:'halo', type:'weapon', name:'Hào Quang Thánh',
     icon:'✨', rarity:'rare', maxLevel:5,
     tickRate:0.4, radius:80, baseDmg:22,
-    desc:'Vùng hào quang bán kính 80đv quanh người, gây <b>(22 + cấp×9) × DMGMult</b> mỗi 0.4 giây. Cấp 5: 67 × DMGMult / tick. Tổng DPS ≈ 167 × DMGMult/s. Không crit/hút máu.',
+    desc:'Vùng sáng xung quanh người, liên tục gây sát thương cho quái trong phạm vi.',
   },
   {
     id:'thunder', type:'weapon', name:'Sét Đánh Trúng Đích',
     icon:'⚡', rarity:'rare', maxLevel:5,
     cooldown:4, baseDmg:95,
-    desc:'Đánh sét vào quái gần nhất: <b>(95 + cấp×26) × DMGMult</b> + choáng <b>(0.35 + cấp×0.05)s</b>. CD: <b>4 × (1 − cấp×0.08)s</b> (cấp 5: CD 2.4s). Cấp 5: 225 × DMGMult/đòn. Không crit.',
+    desc:'Định kỳ đánh sét vào quái gần nhất, gây sát thương và làm choáng.',
   },
   {
     id:'icetrail', type:'weapon', name:'Vệt Băng',
     icon:'❄️', rarity:'common', maxLevel:5,
     trailDuration:3, slowFactor:0.45,
-    desc:'Để lại vùng băng bán kính 32đv khi di chuyển (mỗi 0.3s), tồn tại 3 giây. Tốc chậm: <b>0.45 × (1 + cấp×0.08)</b> — cấp 5: chậm 81%. Không gây sát thương, chỉ giảm tốc.',
+    desc:'Để lại vùng băng khi di chuyển, làm chậm quái bước vào.',
   },
   {
     id:'poisoncloud', type:'weapon', name:'Đám Mây Độc',
     icon:'☠️', rarity:'rare', maxLevel:5,
     cooldown:5, radius:60, baseDmg:20,
-    desc:'Phun mây độc bán kính <b>60×AoE×(1+cấp×0.1)đv</b>, gây <b>(20 + cấp×50) × DMGMult</b> mỗi 0.5s trong 3 giây. CD: <b>(5 − cấp×0.5)s</b> (cấp 5: CD 2.5s). Cấp 5: 270 × DMGMult tổng/đám mây. Không crit.',
+    desc:'Định kỳ phun đám mây độc, gây sát thương liên tục trong vùng.',
   },
   {
     id:'fireorb', type:'weapon', name:'Cầu Lửa',
     icon:'🔥', rarity:'rare', maxLevel:5,
     cooldown:4.5, speed:300, baseDmg:50,
-    desc:'Bắn 4 cầu lửa 4 hướng, pierce <b>(cấp−1)</b>. Trúng địch: <b>(50 + cấp×5) × DMGMult</b> va chạm + nổ AoE <b>(50 + cấp×14) × DMGMult</b>. CD: <b>(4.5 − cấp×0.3)s</b> (cấp 5: CD 3s). Không crit.',
+    desc:'Định kỳ bắn 4 cầu lửa 4 hướng, gây sát thương và nổ AoE khi trúng.',
   },
   {
     id:'shadow_clone', type:'weapon', name:'Bóng Phân Thân',
     icon:'👥', rarity:'epic', maxLevel:5,
     dmgRatio:0.42,
-    desc:'Bóng phân thân quay quanh nhân vật, bắn đạn mỗi 0.55s vào quái gần nhất: <b>(0.42 + (cấp−1)×0.05) × totalDmg</b>. Cấp 5: 0.62× totalDmg/phát. Không crit/hút máu.',
+    desc:'Bóng phân thân quay quanh người, định kỳ bắn đạn vào quái gần nhất.',
   },
   {
     id:'bloodthorn', type:'weapon', name:'Gai Máu',
     icon:'🩸', rarity:'common', maxLevel:5,
-    desc:'Phản <b>(30 + cấp×8)%</b> sát thương nhận vào lại kẻ tấn công. Cấp 1: 38%, Cấp 5: 70%. Chỉ phản khi bị đánh trực tiếp (không phản sát thương vùng). Không crit.',
+    desc:'Phản lại một phần sát thương khi bị kẻ địch tấn công.',
   },
 
   // ─── STATS ───────────────────────────────────────────────────
@@ -4450,49 +4552,49 @@ const SKILL_POOL = [
     id:'stat_spd', type:'stat', name:'Tốc Độ Di Chuyển',
     icon:'💨', rarity:'common', maxLevel:5,
     statKey:'speed', statVal:0.08,
-    desc:'+8% tốc độ di chuyển mỗi cấp.',
+    desc:'+8% tốc độ di chuyển.',
   },
   {
     id:'stat_atkspd', type:'stat', name:'Tốc Độ Tấn Công',
     icon:'⚔️', rarity:'common', maxLevel:5,
     statKey:'atkSpeed', statVal:0.15,
-    desc:'+15% tốc đánh/cấp (cộng vào AtkSpeedMult). Cấp 5: +75%. Không giới hạn trên.',
+    desc:'+15% tốc độ tấn công.',
   },
   {
     id:'stat_dmg', type:'stat', name:'Sát Thương',
     icon:'💥', rarity:'common', maxLevel:5,
     statKey:'dmgMult', statVal:0.08,
-    desc:'+8% DMGMult/cấp (nhân vào baseDmg). Cấp 5: +40% (×1.40 tổng). Ảnh hưởng toàn bộ vũ khí phụ và chủ động.',
+    desc:'+8% sát thương.',
   },
   {
     id:'stat_lifesteal', type:'stat', name:'Hút Máu',
     icon:'🧛', rarity:'rare', maxLevel:5,
     statKey:'lifesteal', statVal:0.04,
-    desc:'Hút máu +4%/cấp (cộng dồn). Cấp 5: +20%. Tối đa 50% (tổng từ mọi nguồn). Chỉ áp dụng vũ khí chính và Tiến Hoá.',
+    desc:'+4% hút máu.',
   },
   {
     id:'stat_armor', type:'stat', name:'Giáp Phòng Thủ',
     icon:'🛡️', rarity:'common', maxLevel:5,
     statKey:'armor', statVal:0.06,
-    desc:'+6% Giáp/cấp (cộng dồn). Cấp 5: +30%. Tổng tối đa tất cả nguồn: <b>78%</b> (bao gồm Tiềm Năng + thẻ + pet).',
+    desc:'+6% giáp, giảm sát thương nhận.',
   },
   {
     id:'stat_aoe', type:'stat', name:'Diện Tích AoE',
     icon:'🌐', rarity:'rare', maxLevel:5,
     statKey:'aoeSize', statVal:0.10,
-    desc:'+10% kích thước vùng AoE mỗi cấp.',
+    desc:'+10% diện tích vùng tấn công.',
   },
   {
     id:'stat_cd', type:'stat', name:'Hồi Chiêu Nhanh',
     icon:'⏱️', rarity:'rare', maxLevel:5,
     statKey:'cdReduce', statVal:0.08,
-    desc:'-8% CD/cấp. Cấp 5: -40% (giống tối đa Tiềm Năng Cơ Động[1]). Công thức: CD thực = CD gốc × (1 − tổng cdReduce).',
+    desc:'-8% thời gian hồi chiêu.',
   },
   {
     id:'stat_maxhp', type:'stat', name:'Tăng HP Tối Đa',
     icon:'❤️', rarity:'common', maxLevel:5,
     statKey:'maxHp', statVal:125,
-    desc:'+125 HP tối đa và hồi ngay 125 HP. Cấp 5: +625 HP. Cộng với Tiềm Năng Sinh Tồn[0] tối đa +500 HP.',
+    desc:'+125 HP tối đa, hồi ngay 125 HP.',
   },
 
   // ─── SPECIALS ────────────────────────────────────────────────
@@ -4504,7 +4606,7 @@ const SKILL_POOL = [
   {
     id:'special_clock', type:'special', name:'Đồng Hồ Tốc Độ',
     icon:'🕐', rarity:'epic', maxLevel:1,
-    desc:'+20% AtkSpeedMult nhưng HP tối đa ×0.85 (−15%). HP hiện tại cũng bị giảm nếu vượt ngưỡng mới. Cân nhắc khi đã có nhiều nguồn hồi HP.',
+    desc:'+20% tốc độ tấn công, đổi lấy -15% HP tối đa.',
   },
   {
     id:'special_rune', type:'special', name:'Rune Vòng Cổ',
@@ -7865,8 +7967,8 @@ const Game = (() => {
             // Snake pet: apply poison
             if (p._pendingPoison) { p._pendingPoison = false; e.applyPoison(3, p.totalDmg * 0.08); Audio.playSFX('pet_skill'); }
             if (p.mainWeapon.evolved) {
-              setTimeout(() => { if (!e.dead) e.takeDamage(dmg * 0.5, p, 'normal'); }, 150);
-              setTimeout(() => { if (!e.dead) e.takeDamage(dmg * 0.5, p, 'normal'); }, 300);
+              setTimeout(() => { if (!e.dead) { e.takeDamage(dmg * 0.5, p, 'normal'); p.trackSkillDmg('main_luu_phong', dmg * 0.5); } }, 150);
+              setTimeout(() => { if (!e.dead) { e.takeDamage(dmg * 0.5, p, 'normal'); p.trackSkillDmg('main_luu_phong', dmg * 0.5); } }, 300);
             }
           }
         });
@@ -7889,7 +7991,7 @@ const Game = (() => {
         if (p.mainWeapon.evolved) {
           for (let i = 0; i < 8; i++) {
             const a = (i / 8) * Math.PI * 2;
-            spawnProjectile({
+            spawnProjectile({ _skillId: 'main_luu_phong',
               x: p.x, y: p.y,
               vx: Math.cos(a) * 280,
               vy: Math.sin(a) * 280,
@@ -8038,6 +8140,7 @@ const Game = (() => {
                 setTimeout(() => {
                   if (!capturedE.dead) {
                     capturedE.takeDamage(dmg * 0.45, p, 'normal');
+                    p.trackSkillDmg('main_kim_cang', dmg * 0.45);
                     spawnRing(e.x, e.y, 22 + tick * 2, '#fff0a0');
                   }
                 }, tick * 400);
@@ -8065,6 +8168,7 @@ const Game = (() => {
               setTimeout(() => {
                 if (!capturedE.dead) {
                   capturedE.takeDamage(capturedVal * 0.85, p, 'normal');
+                  p.trackSkillDmg('main_am_sat', capturedVal * 0.85);
                   // Shadow clone flicker at enemy
                   shadowClones.push(new ShadowClone(capturedE.x, capturedE.y, '#cc44ff', '🗡️'));
                 }
@@ -8138,6 +8242,7 @@ const Game = (() => {
                 const val = baseVal * returnMult;
                 e.takeDamage(val, player, 'normal');
                 player.dmgDealt += val;
+                player.trackSkillDmg('main_tu_linh', val);
                 if (this.onHit) this.onHit(e, this);
                 this._hitSet.add(e);  // prevent re-hitting same enemy on same trip
                 if (this.pierce <= 0) { this.dead = true; break; }
@@ -9718,6 +9823,8 @@ const Game = (() => {
     running = false;
     if (raf) { cancelAnimationFrame(raf); raf = null; }
     Audio.stopBGM();
+    // Xoá hint tutorial khi kết thúc run
+    if (typeof Tutorial !== 'undefined') Tutorial.clearHints();
 
     // ── BASE GOLD: from map tier range ──────────────────────────────
     const mapData = currentMap || {};
@@ -12092,9 +12199,11 @@ const Game = (() => {
         document.getElementById('pause-title').textContent = '⏸ TẠM DỪNG';
         const pauseMenu = document.querySelector('#screen-pause .pause-menu');
         if (pauseMenu) pauseMenu.style.display = '';
-        // Ẩn nút quay lại menu (chỉ dùng khi mở từ main menu)
+        // Ẩn các nút chỉ dùng khi mở từ main menu (Cài Đặt)
         const backBtn = document.getElementById('settings-back-btn');
         if (backBtn) backBtn.style.display = 'none';
+        const resetBtn = document.getElementById('settings-reset-btn');
+        if (resetBtn) resetBtn.style.display = 'none';
       }
     },
     quitRun() {                                 // called from HTML quit / result buttons
@@ -12365,7 +12474,158 @@ window.addEventListener('DOMContentLoaded', () => {
      ✅ Particle + Ring + DmgNumber effects
      ✅ Enemy AI: chase, flank, ranged, explode, boss
    ============================================================ */
+
+// [Tutorial]  Tutorial.check() | .startGame() | .beginInGameHints() | .clearHints()
+/* ============================================================
+   TUTORIAL SYSTEM — Hướng dẫn người mới
+   - Modal 5 bước hiện trước lần chơi đầu tiên
+   - Hint bubble nổi trong game (3 lần, tự tắt)
+   ============================================================ */
+const Tutorial = (() => {
+  let _pendingChar = null;
+  let _pendingMap  = null;
+  let _hintTimers  = [];
+
+  // 3 gợi ý xuất hiện trong lúc chơi
+  const HINTS = [
+    { delay:  3000, icon: '⚔️', title: 'Tự động tấn công!',
+      text: 'Vũ khí tự nhắm và bắn. Bạn chỉ cần di chuyển để thoát quái.' },
+    { delay:  9000, icon: '🔵', title: 'Nhặt orb EXP!',
+      text: 'Lướt qua các orb xanh rơi từ quái để tích lũy kinh nghiệm và lên cấp.' },
+    { delay: 18000, icon: '💜', title: 'Kỹ năng đặc biệt!',
+      text: 'Nút tím góc phải — bấm để dùng kỹ năng chủ động. Thời gian hồi chiêu ngắn, cứ sẵn là dùng!' },
+  ];
+
+  // Kiểm tra xem có cần hiện tutorial không
+  function check(charId, mapId) {
+    const sd = Save.get();
+    if (sd.firstPlay !== false) {
+      // Lần đầu chơi → lưu lại và hiện modal
+      _pendingChar = charId;
+      _pendingMap  = mapId;
+      const overlay = document.getElementById('tutorial-overlay');
+      if (overlay) overlay.style.display = 'flex';
+    } else {
+      // Đã từng chơi → bắt đầu thẳng
+      _doStart(charId, mapId);
+    }
+  }
+
+  // Nút "Vào chiến!" trong modal
+  function startGame() {
+    const overlay = document.getElementById('tutorial-overlay');
+    if (overlay) overlay.style.display = 'none';
+    // Đánh dấu đã xem tutorial
+    const sd = Save.get();
+    sd.firstPlay = false;
+    Save.save();
+    _doStart(_pendingChar, _pendingMap);
+  }
+
+  function _doStart(charId, mapId) {
+    UI.showScreen('game');
+    Game.startRun(charId, mapId);
+    // Chỉ hiện hint cho các lần chơi đầu (totalRuns <= 3)
+    const sd = Save.get();
+    if (!sd.stats || sd.stats.totalRuns <= 3) {
+      beginInGameHints();
+    }
+  }
+
+  // Khởi động các hint nổi trong game
+  function beginInGameHints() {
+    clearHints();
+    HINTS.forEach(h => {
+      const t = setTimeout(() => _showHint(h.icon, h.title, h.text), h.delay);
+      _hintTimers.push(t);
+    });
+  }
+
+  function _showHint(icon, title, text) {
+    const el = document.getElementById('tutorial-hint');
+    if (!el) return;
+    document.getElementById('hint-icon').textContent  = icon;
+    document.getElementById('hint-title').textContent = title;
+    document.getElementById('hint-text').textContent  = text;
+    el.classList.add('tut-visible');
+    setTimeout(() => el.classList.remove('tut-visible'), 4200);
+  }
+
+  // Huỷ tất cả hint (gọi khi kết thúc run / pause)
+  function clearHints() {
+    _hintTimers.forEach(clearTimeout);
+    _hintTimers = [];
+    const el = document.getElementById('tutorial-hint');
+    if (el) el.classList.remove('tut-visible');
+  }
+
+  return { check, startGame, beginInGameHints, clearHints };
+})();
+
    </script>
+
+<!-- ============================================================
+     TUTORIAL MODAL — Hiện lần đầu chơi
+     ============================================================ -->
+<div id="tutorial-overlay" style="display:none">
+  <div id="tutorial-box">
+    <h2>🎮 HƯỚNG DẪN CƠ BẢN</h2>
+    <p class="tut-subtitle">Đọc nhanh trước lần chơi đầu tiên — chỉ hiện 1 lần thôi!</p>
+    <div class="tut-steps">
+      <div class="tut-step">
+        <div class="tut-step-icon">⚔️</div>
+        <div>
+          <div class="tut-step-title">Nhân vật tự động tấn công</div>
+          <div class="tut-step-desc">Bạn <b>chỉ cần di chuyển</b>. Vũ khí tự nhắm và bắn — không cần bấm gì để tấn công cả.</div>
+        </div>
+      </div>
+      <div class="tut-step">
+        <div class="tut-step-icon">🔵</div>
+        <div>
+          <div class="tut-step-title">Orb xanh = EXP</div>
+          <div class="tut-step-desc">Quái chết rơi <b>orb xanh</b>. Lướt qua để nhặt, thanh EXP đầy thì lên cấp và chọn kỹ năng mới.</div>
+        </div>
+      </div>
+      <div class="tut-step">
+        <div class="tut-step-icon">🕹️</div>
+        <div>
+          <div class="tut-step-title">Joystick = Di chuyển</div>
+          <div class="tut-step-desc">Góc trái màn hình. <b>Kéo để di chuyển nhân vật</b> — vũ khí sẽ tự động tấn công xung quanh.</div>
+        </div>
+      </div>
+      <div class="tut-step">
+        <div class="tut-step-icon">💜</div>
+        <div>
+          <div class="tut-step-title">Nút tím = Kỹ năng chủ động</div>
+          <div class="tut-step-desc">Kỹ năng chủ động của nhân vật. <b>Nhấn để dùng</b>, không thể sử dụng khi đang hồi chiêu.</div>
+        </div>
+      </div>
+      <div class="tut-step">
+        <div class="tut-step-icon">🌟</div>
+        <div>
+          <div class="tut-step-title">Thẻ VÀNG = Tiến hóa vũ khí</div>
+          <div class="tut-step-desc">Lên cấp thấy thẻ <b>viền vàng → luôn luôn chọn nó</b>. Đây là cú đột phá sức mạnh lớn nhất game.</div>
+        </div>
+      </div>
+      <div class="tut-step">
+        <div class="tut-step-icon">💡</div>
+        <div>
+          <div class="tut-step-title">Mẹo cho người mới</div>
+          <div class="tut-step-desc">Chọn <b>Lưu Phong</b> + <b>Map 1</b> để làm quen. Ưu tiên chọn thẻ <b>Vũ Khí Chính</b> khi lên cấp để nhanh chóng tiến hoá vũ khí.</div>
+        </div>
+      </div>
+    </div>
+    <button id="tutorial-start-btn" onclick="Tutorial.startGame()">⚔️ HIỂU RỒI — VÀO CHIẾN!</button>
+  </div>
+</div>
+
+<!-- In-game floating hint -->
+<div id="tutorial-hint">
+  <span class="hint-icon" id="hint-icon"></span>
+  <div class="hint-title" id="hint-title"></div>
+  <div class="hint-text" id="hint-text"></div>
+</div>
+
    <div id="confirm-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.88);z-index:99998;align-items:center;justify-content:center;">
   <div id="confirm-box">
     <div id="confirm-title">Xác nhận</div>
