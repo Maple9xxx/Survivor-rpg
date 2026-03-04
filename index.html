@@ -307,6 +307,32 @@ canvas{display:block;image-rendering:pixelated;}
 }
 
 /* ============================================================
+   STAT PREVIEW PANEL — CharSelect
+   ============================================================ */
+#stat-preview-panel {
+  width:100%; max-width:700px; background:rgba(0,15,35,.9);
+  border:1px solid rgba(96,160,255,.25); border-radius:8px;
+  padding:14px 16px; margin:0 auto 16px;
+}
+.sp-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; }
+.sp-title  { font-size:10px; color:#60d0ff; letter-spacing:2px; font-weight:700; text-transform:uppercase; }
+.sp-pet-tag { font-size:10px; color:#4aff88; background:rgba(74,255,136,.1); border:1px solid rgba(74,255,136,.3); border-radius:10px; padding:2px 8px; }
+.sp-pet-tag.none { color:#506070; border-color:rgba(255,255,255,.1); background:none; }
+.sp-cols { display:grid; grid-template-columns:repeat(4,1fr); gap:1px; background:rgba(255,255,255,.06); border-radius:5px; overflow:hidden; margin-bottom:2px; }
+.sp-col-head { background:rgba(0,0,0,.4); padding:4px 6px; font-size:8px; letter-spacing:1px; color:#506070; text-align:center; text-transform:uppercase; }
+.sp-col-head.c-pot { color:#60d0ff; } .sp-col-head.c-pet { color:#4aff88; } .sp-col-head.c-fin { color:#ffd700; font-weight:700; }
+.sp-row { display:contents; }
+.sp-cell { background:rgba(0,0,0,.25); padding:5px 7px; font-size:11px; text-align:center; }
+.sp-cell.c-label { text-align:left; color:#a09060; font-size:10px; display:flex; align-items:center; gap:4px; }
+.sp-cell.c-base  { color:#8090a0; }
+.sp-cell.c-pot   { color:#60d0ff; }
+.sp-cell.c-pet   { color:#4aff88; }
+.sp-cell.c-fin   { color:#ffd700; font-weight:700; }
+.sp-cell.zero    { color:#3a4050; }
+.sp-divider { grid-column:1/-1; height:1px; background:rgba(255,255,255,.05); }
+.sp-note { font-size:9px; color:#405060; margin-top:6px; text-align:center; letter-spacing:1px; }
+
+/* ============================================================
    UTILITY
    ============================================================ */
 .hidden { display: none !important; }
@@ -749,6 +775,7 @@ canvas{display:block;image-rendering:pixelated;}
     <h3 id="char-detail-name">Chọn một nhân vật</h3>
     <div id="char-detail-content"></div>
   </div>
+  <div id="stat-preview-panel"></div>
   <div class="charselect-actions">
     <button class="menu-btn" onclick="UI.showScreen('menu')">← QUAY LẠI</button>
     <button class="menu-btn primary" id="btn-go-mapselect" onclick="UI.goToMapSelect()">CHỌN MAP →</button>
@@ -2179,6 +2206,122 @@ const UI = (() => {
         <span class="skill-label">TIẾN HOÁ</span>
         <span class="skill-desc"><span class="skill-name">${c.evolvedWeapon}</span> — ${c.evolveDesc}</span>
       </div>`;
+    renderStatPanel(c.id);
+  }
+
+  function renderStatPanel(charId) {
+    const panel = document.getElementById('stat-preview-panel');
+    if (!panel) return;
+    const char = CHARS.find(c => c.id === charId);
+    if (!char) { panel.innerHTML = ''; return; }
+
+    const save  = Save.get();
+    const pot   = save.potential || { survival:[0,0,0,0], damage:[0,0,0,0], mobility:[0,0,0,0], fortune:[0,0,0,0] };
+    const petId = save.activePet;
+    const pet   = (typeof PETS !== 'undefined') ? PETS.find(p => p.id === petId) : null;
+
+    const baseHP   = char.baseHP;
+    const potHP    = (pot.survival[0]||0) * 125;
+    const petHP    = pet && pet.id === 'pet_turtle' ? Math.floor(baseHP * 0.25) : 0;
+
+    const baseDmg  = char.baseDmg;
+    const potDmgP  = (pot.damage[0]||0) * 10;
+    const finalDmg = Math.round(baseDmg * (1 + potDmgP/100));
+
+    const baseAtk  = char.baseAtk;
+    const potAtkSp = (pot.mobility[2]||0) * 0.10;
+    const petAtkSp = pet && pet.id === 'pet_tiger' ? 0.15 : 0;
+    const atkMult  = Math.min(1.0 + potAtkSp + petAtkSp, 2.5);
+    const finalAPS = (baseAtk * atkMult).toFixed(2);
+
+    const baseSpd  = char.baseSpd;
+    const potSpdP  = (pot.mobility[0]||0) * 6;
+    const finalSpd = Math.round(baseSpd * (1 + potSpdP/100));
+
+    const potCrit  = (pot.damage[1]||0) * 6;
+    const petCrit  = pet && pet.id === 'pet_dragon' ? 8 : 0;
+    const potCritD = (pot.damage[2]||0) * 30;
+    const petCritD = pet && pet.id === 'pet_dragon' ? 40 : 0;
+    const potArmor = (pot.survival[1]||0) * 5;
+    const petArmor = pet && pet.id === 'pet_turtle' ? 8 : 0;
+    const potRegen = (pot.survival[2]||0) * 4;
+    const potHPK   = (pot.survival[3]||0) * 10;
+    const petSteal = pet && pet.id === 'pet_snake' ? 5 : 0;
+    const potGold  = (pot.fortune[0]||0) * 15;
+    const petGold  = pet && pet.id === 'pet_fox'   ? 20 : 0;
+    const petAoE   = pet && pet.id === 'pet_eagle' ? 12 : 0;
+
+    const petLabel = pet ? `${pet.icon} ${pet.name}` : null;
+
+    function cell(val, cls, isZero) {
+      return `<div class="sp-cell ${cls}${isZero ? ' zero' : ''}">${val}</div>`;
+    }
+    function divider() { return `<div class="sp-divider"></div>`; }
+    function row(icon, label, base, potB, petB, unit, forceShow) {
+      if (!forceShow && potB === 0 && petB === 0 && base === 0) return '';
+      const fin = base + potB + petB;
+      return `
+        ${cell(`${icon} ${label}`, 'c-label')}
+        ${cell(base + unit, 'c-base')}
+        ${cell(potB  ? `+${potB}${unit}`  : '—', 'c-pot', !potB)}
+        ${cell(petB  ? `+${petB}${unit}`  : '—', 'c-pet', !petB)}
+        ${cell(fin + unit, 'c-fin')}`;
+    }
+
+    const atkRow = `
+      ${cell('⚡ Tốc Đánh', 'c-label')}
+      ${cell(baseAtk + '×', 'c-base')}
+      ${cell(potAtkSp > 0 ? `+${(potAtkSp*100).toFixed(0)}%` : '—', 'c-pot', potAtkSp===0)}
+      ${cell(petAtkSp > 0 ? `+${(petAtkSp*100).toFixed(0)}%` : '—', 'c-pet', petAtkSp===0)}
+      ${cell(finalAPS + '/s', 'c-fin')}`;
+
+    const dmgRow = `
+      ${cell('⚔️ Sát Thương', 'c-label')}
+      ${cell(baseDmg, 'c-base')}
+      ${cell(potDmgP > 0 ? `+${potDmgP}%` : '—', 'c-pot', potDmgP===0)}
+      ${cell('—', 'c-pet', true)}
+      ${cell(finalDmg, 'c-fin')}`;
+
+    const spdRow = `
+      ${cell('🏃 Tốc Độ', 'c-label')}
+      ${cell(baseSpd, 'c-base')}
+      ${cell(potSpdP > 0 ? `+${potSpdP}%` : '—', 'c-pot', potSpdP===0)}
+      ${cell('—', 'c-pet', true)}
+      ${cell(finalSpd, 'c-fin')}`;
+
+    const aoeRow = petAoE > 0 ? `
+      ${cell('🌐 AoE', 'c-label')}
+      ${cell('1.0×', 'c-base')}
+      ${cell('—', 'c-pot', true)}
+      ${cell('+' + petAoE + '%', 'c-pet')}
+      ${cell('×1.' + String(petAoE).padStart(2,'0'), 'c-fin')}` : '';
+
+    panel.innerHTML = `
+      <div class="sp-header">
+        <span class="sp-title">📊 CHỈ SỐ THỰC TẾ</span>
+        <span class="sp-pet-tag ${petLabel ? '' : 'none'}">${petLabel || '🐾 Không có Thú Cưng'}</span>
+      </div>
+      <div class="sp-cols">
+        <div class="sp-col-head">Chỉ Số</div>
+        <div class="sp-col-head c-base">Cơ Bản</div>
+        <div class="sp-col-head c-pot">Tiềm Năng</div>
+        <div class="sp-col-head c-pet">Thú Cưng</div>
+        ${row('❤️', 'HP Tối Đa', baseHP, potHP, petHP, '', true)}
+        ${dmgRow}
+        ${atkRow}
+        ${spdRow}
+        ${divider()}
+        ${row('🎯', 'Crit Rate',  0, potCrit,  petCrit,  '%', potCrit+petCrit>0)}
+        ${row('💢', 'Crit DMG', 150, potCritD, petCritD, '%', true)}
+        ${row('🛡️', 'Giáp',       0, potArmor, petArmor, '%', potArmor+petArmor>0)}
+        ${divider()}
+        ${row('💚', 'Hồi HP/s',   0, potRegen,  0, '/s', potRegen>0)}
+        ${row('🩸', 'HP/Kill',    0, potHPK,    0, '',   potHPK>0)}
+        ${row('🧛', 'Hút Máu',    0, 0,  petSteal, '%', petSteal>0)}
+        ${row('◈',  'Vàng Thêm',  0, potGold, petGold, '%', potGold+petGold>0)}
+        ${aoeRow}
+      </div>
+      <div class="sp-note">* Tốc đánh = Cơ bản × (1 + Tiềm Năng + Thú Cưng) | Crit/Lifesteal chỉ áp dụng cho Vũ Khí Chính</div>`;
   }
 
   function goToMapSelect() {
@@ -3373,7 +3516,7 @@ const UI = (() => {
     showConfirm, hideConfirm, showSettings,
     updateHUD, updateWeaponSlots, updateSkillBtn,
     showBossBar, hideBossBar, showWaveAnnounce, showBossAppear,
-    showResult, startRun, getSelected, goToMapSelect,
+    showResult, startRun, getSelected, goToMapSelect, renderStatPanel,
   };
 })();
 
@@ -4159,7 +4302,7 @@ class Player {
 
     // Multipliers (accumulated from skills)
     this.dmgMult   = 1.0;
-    this.atkSpeed  = 1.0;
+    this.atkSpeed  = Math.min(1.0 + (potentialBonus.mobility[2] || 0) * 0.10, 2.5); // FIX: mobility[2] now applied
     this.armor     = (potentialBonus.survival[1] || 0) * 0.05;
     this.lifesteal = 0;
     this.aoeSize   = 1.0;
@@ -4322,7 +4465,7 @@ class Player {
     // Chaos effect: reverse controls
     if (Game.chaosEffect === 'reverse') { moveX = -moveX; moveY = -moveY; }
 
-    let spd = this.speed * (1 + (this.skillLevels['stat_spd'] || 0) * 0.12);
+    let spd = this.speed; // FIX: stat_spd already applied directly to this.speed in applySkill, no double-multiply
 
     // Ice slide mechanic
     if (Game.currentMap && Game.currentMap.specialMech === 'iceSlide') {
@@ -6419,8 +6562,15 @@ class Projectile {
       for (const e of Game.enemies) {
         if (e.dead || this._hitSet.has(e)) continue;
         if (MathU.dist(this.x, this.y, e.x, e.y) < this.r + e.r) {
-          const { val, crit } = Game.player.rollCrit(this.dmg);
-          e.takeDamage(val, Game.player, crit ? 'crit' : 'normal');
+          // FIX: sub-weapons bypass crit/lifesteal/armorPen — only main weapon gets full stat chain
+          let val, hitType, src;
+          if (this._isSubWeapon) {
+            val = this.dmg; hitType = 'normal'; src = null;
+          } else {
+            const cr = Game.player.rollCrit(this.dmg);
+            val = cr.val; hitType = cr.crit ? 'crit' : 'normal'; src = Game.player;
+          }
+          e.takeDamage(val, src, hitType);
           Game.player.trackSkillDmg(this._skillId || 'main_' + (Game.player.charData ? Game.player.charData.id : 'unknown'), val);
           if (this.onHit) this.onHit(e, this);
           this._hitSet.add(e);
@@ -7838,7 +7988,7 @@ const Game = (() => {
           enemies.forEach(e => {
             if (MathU.dist(e.x, e.y, p.x, p.y) < r) {
               const dmg = (sk.baseDmg + lv * 9) * p.dmgMult;
-              e.takeDamage(dmg, p, 'normal');
+              e.takeDamage(dmg, null, 'normal'); // FIX: sub-weapon, no crit/lifesteal/armorPen
               p.trackSkillDmg('halo', dmg);
               hitAny = true;
               // Spark at each hit enemy
@@ -7862,7 +8012,7 @@ const Game = (() => {
             const target = getNearestEnemy(p.x, p.y, i * 80);
             if (!target) break;
             const dmg = (sk.baseDmg + lv * 26) * p.dmgMult;
-            target.takeDamage(dmg, p, 'normal');
+            target.takeDamage(dmg, null, 'normal'); // FIX: sub-weapon, no crit/lifesteal/armorPen
             p.trackSkillDmg('thunder', dmg);
 
             // ── Lightning bolt from sky ──
@@ -7970,6 +8120,7 @@ const Game = (() => {
 
           dirs.forEach(([dx, dy]) => {
             spawnProjectile({ _skillId: 'fireorb',
+              _isSubWeapon: true,
               x: p.x, y: p.y,
               vx: dx * sk.speed,
               vy: dy * sk.speed,
@@ -7982,7 +8133,7 @@ const Game = (() => {
               shape: 'fire_orb',
               onHit: (e, proj) => {
                 const exDmg = (sk.baseDmg + lv * 14) * p.dmgMult;
-                explosionAt(e.x, e.y, 45 * aoe, exDmg, '#ff4000', 'fireorb');
+                explosionAt(e.x, e.y, 45 * aoe, exDmg, '#ff4000', 'fireorb', null); // FIX: null = sub-weapon
                 // Explosion particle burst
                 particles.spawn(e.x, e.y, {
                   count:10, color:'#ff8020',
@@ -8046,6 +8197,7 @@ const Game = (() => {
             const dy  = nearest.y - sw._ghostY;
             const len = Math.sqrt(dx*dx+dy*dy)||1;
             spawnProjectile({ _skillId: 'shadow_clone',
+              _isSubWeapon: true,
               x: sw._ghostX,
               y: sw._ghostY,
               vx: (dx/len) * 420,
@@ -8966,7 +9118,7 @@ const Game = (() => {
     return sorted[skip] || null;
   }
 
-  function explosionAt(x, y, radius, dmg, color, _skillId) {
+  function explosionAt(x, y, radius, dmg, color, _skillId, _src) {
     particles.spawn(x, y, {
       count: Math.floor(radius / 4),
       color, speedMin: radius * 0.8, speedMax: radius * 2.5,
@@ -8974,9 +9126,11 @@ const Game = (() => {
     });
     rings.push(new RingEffect(x, y, radius, color));
     if (dmg > 0) {
+      // FIX: _src===null means sub-weapon (no lifesteal/armorPen); undefined means main weapon (use player)
+      const src = (_src === null) ? null : player;
       enemies.forEach(e => {
         if (!e.dead && MathU.dist(e.x,e.y,x,y) < radius + e.r) {
-          e.takeDamage(dmg, player, 'normal');
+          e.takeDamage(dmg, src, 'normal');
           player.trackSkillDmg(_skillId || 'explosion', dmg);
         }
       });
