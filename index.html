@@ -9898,6 +9898,1363 @@ const Game = (() => {
     ctx.fillRect(0, 0, W, H);
   }
 
+
+  /* ── MAP04: Thành Cổ Đổ Nát (ruins) ────────────────────────
+     Palette: nâu đất khô, xám đá, trời chiều tà ố vàng.
+     Layers: dusk sky → dying sun → stone walls far(×0.12)
+             → towers mid(×0.28) → rubble front(×0.55)
+             → dusty ground → dust haze overlay.              */
+  function _drawMap04Layers(camX, camY, W, H, t) {
+    // Trời hoàng hôn khắc nghiệt
+    const skyGrd = ctx.createLinearGradient(0, 0, 0, H * 0.50);
+    skyGrd.addColorStop(0,   '#1C1005');
+    skyGrd.addColorStop(0.4, '#3A2308');
+    skyGrd.addColorStop(0.8, '#5C3610');
+    skyGrd.addColorStop(1,   '#3A2005');
+    ctx.fillStyle = skyGrd; ctx.fillRect(0, 0, W, H * 0.50);
+
+    // Mặt trời sắp lặn — đỏ cam rực
+    const sunX = W * 0.28, sunY = H * 0.38;
+    const sunGrd = ctx.createRadialGradient(sunX, sunY, 0, sunX, sunY, 110);
+    sunGrd.addColorStop(0,   'rgba(255,140,30,0.28)');
+    sunGrd.addColorStop(0.4, 'rgba(200,80,10,0.14)');
+    sunGrd.addColorStop(1,   'rgba(160,40,0,0)');
+    ctx.fillStyle = sunGrd;
+    ctx.beginPath(); ctx.arc(sunX, sunY, 110, 0, Math.PI*2); ctx.fill();
+    ctx.fillStyle = 'rgba(255,180,60,0.22)';
+    ctx.beginPath(); ctx.arc(sunX, sunY, 18, 0, Math.PI*2); ctx.fill();
+
+    // Tường đá xa — parallax ×0.12
+    const w1Off = ((camX * 0.12) % W + W) % W;
+    ctx.globalAlpha = 0.70;
+    for (let pass = -1; pass <= 1; pass++) {
+      const ox = -w1Off + pass * W;
+      const baseY = H * 0.53;
+      for (let i = 0; i < W; i += 42) {
+        const wh = 50 + 30 * Math.sin(i * 0.022 + 0.8);
+        ctx.fillStyle = '#3A2F1E';
+        ctx.fillRect(ox + i, baseY - wh, 38, wh);
+        // Merlons (răng tường)
+        ctx.fillStyle = '#2E2416';
+        for (let m = 0; m < 3; m++) {
+          ctx.fillRect(ox + i + m * 14, baseY - wh - 10, 9, 10);
+        }
+        // Vết nứt
+        ctx.strokeStyle = '#1E1508'; ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(ox + i + 12, baseY - wh + 5);
+        ctx.lineTo(ox + i + 16, baseY - wh + 20);
+        ctx.lineTo(ox + i + 14, baseY - wh + 32);
+        ctx.stroke();
+      }
+    }
+    ctx.globalAlpha = 1;
+
+    // Tháp canh giữa — parallax ×0.28
+    const t2Off = ((camX * 0.28) % W + W) % W;
+    ctx.globalAlpha = 0.85;
+    for (let pass = -1; pass <= 1; pass++) {
+      const ox = -t2Off + pass * W;
+      const baseY = H * 0.62;
+      for (let i = 0; i < W; i += 90) {
+        const th = 85 + 35 * Math.sin(i * 0.018 + 1.5);
+        const tw = 28 + (i % 3) * 6;
+        ctx.fillStyle = '#2E2214';
+        ctx.fillRect(ox + i, baseY - th, tw, th);
+        // Đầu tháp hình tam giác sứt mẻ
+        ctx.fillStyle = '#241A0E';
+        ctx.beginPath();
+        ctx.moveTo(ox + i - 3,      baseY - th);
+        ctx.lineTo(ox + i + tw/2,   baseY - th - 22);
+        ctx.lineTo(ox + i + tw + 3, baseY - th);
+        ctx.closePath(); ctx.fill();
+        // Cửa sổ tối
+        ctx.fillStyle = '#0A0600';
+        ctx.fillRect(ox + i + 8, baseY - th + 20, 10, 14);
+        ctx.fillRect(ox + i + 8, baseY - th + 50, 10, 14);
+      }
+    }
+    ctx.globalAlpha = 1;
+
+    // Đống đổ nát gần — parallax ×0.55 — đá và gạch vỡ ngẫu nhiên
+    const rubOff = ((camX * 0.55) % W + W) % W;
+    ctx.globalAlpha = 0.90;
+    for (let pass = -1; pass <= 1; pass++) {
+      const ox = -rubOff + pass * W;
+      const baseY = H * 0.71;
+      for (let i = 0; i < W; i += 18) {
+        const rh = 8 + 24 * Math.abs(Math.sin(i * 0.07 + 2.2));
+        const rw = 14 + (i % 5) * 3;
+        ctx.fillStyle = i % 3 === 0 ? '#3A2E1A' : i % 3 === 1 ? '#2C2212' : '#241A0A';
+        ctx.fillRect(ox + i, baseY - rh, rw, rh);
+        // Mảnh đá nhỏ
+        if (i % 4 === 0) {
+          ctx.fillStyle = '#4A3E28';
+          ctx.fillRect(ox + i + rw + 2, baseY - 5, 6, 5);
+        }
+      }
+    }
+    ctx.globalAlpha = 1;
+
+    // Mặt đất cát bụi
+    const gGrd = ctx.createLinearGradient(0, H * 0.68, 0, H);
+    gGrd.addColorStop(0, 'rgba(60,40,16,0.92)');
+    gGrd.addColorStop(1, 'rgba(36,22,6,1)');
+    ctx.fillStyle = gGrd; ctx.fillRect(0, H * 0.68, W, H * 0.32);
+
+    // Bụi bay — haze vàng nâu nhạt
+    const hazeAlpha = 0.07 + 0.03 * Math.sin(t * 0.0008);
+    const hazeGrd = ctx.createLinearGradient(0, H * 0.45, 0, H * 0.78);
+    hazeGrd.addColorStop(0, 'rgba(120,80,20,0)');
+    hazeGrd.addColorStop(0.5, `rgba(100,60,10,${hazeAlpha})`);
+    hazeGrd.addColorStop(1, 'rgba(70,40,5,0)');
+    ctx.fillStyle = hazeGrd; ctx.fillRect(0, H * 0.45, W, H * 0.33);
+  }
+
+  /* ── MAP05: Sa Mạc Lửa (desert) ────────────────────────────
+     Palette: đỏ cam cháy, cát đỏ, trời lửa rực.
+     Layers: inferno sky → heat shimmer → dunes far(×0.1)
+             → rock arches mid(×0.3) → sand ridge front(×0.6)
+             → embers floating → heat wave overlay.           */
+  function _drawMap05Layers(camX, camY, W, H, t) {
+    // Trời lửa
+    const skyGrd = ctx.createLinearGradient(0, 0, 0, H * 0.52);
+    skyGrd.addColorStop(0,   '#3A0800');
+    skyGrd.addColorStop(0.35,'#6A1500');
+    skyGrd.addColorStop(0.7, '#8A2800');
+    skyGrd.addColorStop(1,   '#5A1200');
+    ctx.fillStyle = skyGrd; ctx.fillRect(0, 0, W, H * 0.52);
+
+    // Ánh lửa mặt trời cháy đỏ
+    const sunX = W * 0.60, sunY = H * 0.14;
+    const sunPulse = 0.22 + 0.06 * Math.sin(t * 0.0012);
+    const sunGrd = ctx.createRadialGradient(sunX, sunY, 0, sunX, sunY, 140);
+    sunGrd.addColorStop(0,   `rgba(255,180,0,${sunPulse})`);
+    sunGrd.addColorStop(0.3, `rgba(255,80,0,${sunPulse * 0.6})`);
+    sunGrd.addColorStop(1,   'rgba(180,20,0,0)');
+    ctx.fillStyle = sunGrd;
+    ctx.beginPath(); ctx.arc(sunX, sunY, 140, 0, Math.PI*2); ctx.fill();
+    ctx.fillStyle = `rgba(255,220,80,${sunPulse * 1.2})`;
+    ctx.beginPath(); ctx.arc(sunX, sunY, 22, 0, Math.PI*2); ctx.fill();
+
+    // Cồn cát xa — parallax ×0.1
+    const d1Off = ((camX * 0.1) % W + W) % W;
+    ctx.globalAlpha = 0.68;
+    for (let pass = -1; pass <= 1; pass++) {
+      const ox = -d1Off + pass * W;
+      ctx.fillStyle = '#6A2800';
+      ctx.beginPath(); ctx.moveTo(ox, H * 0.54);
+      for (let i = 0; i <= W + 20; i += 24) {
+        ctx.lineTo(ox + i, H * 0.54 - 32 - 22 * Math.sin(i * 0.014 + 0.6));
+      }
+      ctx.lineTo(ox + W + 20, H * 0.54); ctx.closePath(); ctx.fill();
+    }
+    ctx.globalAlpha = 1;
+
+    // Vòm đá và cột đá — parallax ×0.3
+    const r2Off = ((camX * 0.3) % W + W) % W;
+    ctx.globalAlpha = 0.82;
+    for (let pass = -1; pass <= 1; pass++) {
+      const ox = -r2Off + pass * W;
+      const baseY = H * 0.62;
+      for (let i = 0; i < W; i += 70) {
+        const rh = 55 + 30 * Math.sin(i * 0.021 + 1.1);
+        ctx.fillStyle = '#5A2000';
+        ctx.fillRect(ox + i, baseY - rh, 18, rh);
+        ctx.fillRect(ox + i + 42, baseY - rh + 15, 18, rh - 15);
+        // Vòm nối
+        ctx.beginPath();
+        ctx.moveTo(ox + i + 18, baseY - rh + 4);
+        ctx.quadraticCurveTo(ox + i + 30, baseY - rh - 18, ox + i + 42, baseY - rh + 15);
+        ctx.lineTo(ox + i + 42, baseY - rh + 4);
+        ctx.quadraticCurveTo(ox + i + 30, baseY - rh - 8, ox + i + 18, baseY - rh + 18);
+        ctx.closePath();
+        ctx.fillStyle = '#3A1200'; ctx.fill();
+      }
+    }
+    ctx.globalAlpha = 1;
+
+    // Gờ cát gần — parallax ×0.6 — làn sóng cát
+    const s3Off = ((camX * 0.6) % W + W) % W;
+    ctx.globalAlpha = 0.92;
+    for (let pass = -1; pass <= 1; pass++) {
+      const ox = -s3Off + pass * W;
+      const baseY = H * 0.70;
+      ctx.fillStyle = '#4A1800';
+      ctx.beginPath(); ctx.moveTo(ox, baseY);
+      for (let i = 0; i <= W + 20; i += 16) {
+        const ripple = 5 * Math.sin(i * 0.06 + t * 0.0006) + 4 * Math.sin(i * 0.12 + 1.8);
+        ctx.lineTo(ox + i, baseY - 8 - ripple);
+      }
+      ctx.lineTo(ox + W + 20, H); ctx.lineTo(ox, H); ctx.closePath(); ctx.fill();
+    }
+    ctx.globalAlpha = 1;
+
+    // Mặt đất cát đỏ
+    const gGrd = ctx.createLinearGradient(0, H * 0.67, 0, H);
+    gGrd.addColorStop(0, 'rgba(80,24,0,0.95)');
+    gGrd.addColorStop(1, 'rgba(50,10,0,1)');
+    ctx.fillStyle = gGrd; ctx.fillRect(0, H * 0.67, W, H * 0.33);
+
+    // Lửa bập bùng phía chân trời — heat shimmer
+    const heatAlpha = 0.09 + 0.05 * Math.sin(t * 0.0020);
+    ctx.fillStyle = `rgba(255,60,0,${heatAlpha})`;
+    ctx.fillRect(0, H * 0.46, W, H * 0.10);
+
+    // Tro than bay — ember flickers (di chuyển lên)
+    ctx.fillStyle = 'rgba(255,120,20,0.50)';
+    for (let i = 0; i < 18; i++) {
+      const ex = ((i * 173 + t * 0.04 - camX * 0.2) % W + W) % W;
+      const ey = H * 0.70 - ((t * 0.05 + i * 40) % (H * 0.65));
+      const es = 1.2 + (i % 3) * 0.6;
+      if (ey > 0 && ey < H) { ctx.beginPath(); ctx.arc(ex, ey, es, 0, Math.PI*2); ctx.fill(); }
+    }
+  }
+
+  /* ── MAP06: Tuyết Nguyên Băng Giá (ice) ─────────────────────
+     Palette: trắng xanh, xanh băng sâu, bầu trời cực quang.
+     Layers: aurora sky(animated) → snowfield far(×0.1)
+             → ice cliffs mid(×0.28) → snow drifts front(×0.58)
+             → frozen ground → snowfall overlay.              */
+  function _drawMap06Layers(camX, camY, W, H, t) {
+    // Bầu trời cực quang
+    const auroraShift = Math.sin(t * 0.0004) * 0.12;
+    const skyGrd = ctx.createLinearGradient(0, 0, 0, H * 0.52);
+    skyGrd.addColorStop(0,   '#020A14');
+    skyGrd.addColorStop(0.3, '#041A28');
+    skyGrd.addColorStop(0.7, '#061E22');
+    skyGrd.addColorStop(1,   '#041418');
+    ctx.fillStyle = skyGrd; ctx.fillRect(0, 0, W, H * 0.52);
+
+    // Dải cực quang — 3 làn màu xanh lá + tím
+    [
+      { y: 0.08, h: 0.14, c1: 'rgba(0,220,160,', c2: 'rgba(0,180,100,', phase: 0 },
+      { y: 0.16, h: 0.10, c1: 'rgba(80,140,255,', c2: 'rgba(40,80,200,', phase: 1.8 },
+      { y: 0.23, h: 0.08, c1: 'rgba(180,60,255,', c2: 'rgba(120,20,200,', phase: 3.6 },
+    ].forEach(a => {
+      const alpha = 0.12 + 0.07 * Math.sin(t * 0.0007 + a.phase);
+      const aGrd = ctx.createLinearGradient(0, H * a.y, 0, H * (a.y + a.h));
+      aGrd.addColorStop(0, a.c1 + '0)');
+      aGrd.addColorStop(0.4, a.c1 + alpha + ')');
+      aGrd.addColorStop(1, a.c2 + '0)');
+      ctx.fillStyle = aGrd; ctx.fillRect(0, H * a.y, W, H * a.h);
+    });
+
+    // Sao băng (sparkles nhỏ cố định)
+    ctx.fillStyle = 'rgba(200,230,255,0.55)';
+    for (let i = 0; i < 22; i++) {
+      const sx2 = ((i * 211 + 50) % W);
+      const sy2 = H * 0.04 + (i * 87 % (H * 0.38));
+      const ss = 0.8 + (i % 3) * 0.5;
+      ctx.beginPath(); ctx.arc(sx2, sy2, ss, 0, Math.PI*2); ctx.fill();
+    }
+
+    // Đồng tuyết xa — parallax ×0.1
+    const s1Off = ((camX * 0.1) % W + W) % W;
+    ctx.globalAlpha = 0.75;
+    for (let pass = -1; pass <= 1; pass++) {
+      const ox = -s1Off + pass * W;
+      ctx.fillStyle = '#B8D8F0';
+      ctx.beginPath(); ctx.moveTo(ox, H * 0.54);
+      for (let i = 0; i <= W + 20; i += 20) {
+        ctx.lineTo(ox + i, H * 0.54 - 14 - 18 * Math.sin(i * 0.016 + 0.4));
+      }
+      ctx.lineTo(ox + W + 20, H * 0.54); ctx.closePath(); ctx.fill();
+    }
+    ctx.globalAlpha = 1;
+
+    // Vách băng giữa — parallax ×0.28 — khối kết tinh nhọn
+    const c2Off = ((camX * 0.28) % W + W) % W;
+    ctx.globalAlpha = 0.80;
+    for (let pass = -1; pass <= 1; pass++) {
+      const ox = -c2Off + pass * W;
+      const baseY = H * 0.62;
+      for (let i = 0; i < W; i += 32) {
+        const ch = 50 + 38 * Math.abs(Math.sin(i * 0.025 + 2.0));
+        // Tinh thể băng nhọn
+        ctx.fillStyle = '#4A8AA8';
+        ctx.beginPath();
+        ctx.moveTo(ox + i + 0,    baseY);
+        ctx.lineTo(ox + i + 12,   baseY - ch);
+        ctx.lineTo(ox + i + 24,   baseY - ch * 0.7);
+        ctx.lineTo(ox + i + 32,   baseY);
+        ctx.closePath(); ctx.fill();
+        // Phản chiếu sáng
+        ctx.fillStyle = 'rgba(180,230,255,0.30)';
+        ctx.beginPath();
+        ctx.moveTo(ox + i + 8,  baseY - 10);
+        ctx.lineTo(ox + i + 12, baseY - ch);
+        ctx.lineTo(ox + i + 16, baseY - ch * 0.5);
+        ctx.closePath(); ctx.fill();
+      }
+    }
+    ctx.globalAlpha = 1;
+
+    // Gờ tuyết gần — parallax ×0.58 — bồng bềnh tròn
+    const d3Off = ((camX * 0.58) % W + W) % W;
+    ctx.globalAlpha = 0.92;
+    for (let pass = -1; pass <= 1; pass++) {
+      const ox = -d3Off + pass * W;
+      const baseY = H * 0.70;
+      ctx.fillStyle = '#C8E8F8';
+      ctx.beginPath(); ctx.moveTo(ox, baseY);
+      for (let i = 0; i <= W + 20; i += 22) {
+        const sy3 = baseY - 10 - 16 * Math.pow(Math.sin(i * 0.028 + 0.7), 2);
+        ctx.lineTo(ox + i, sy3);
+      }
+      ctx.lineTo(ox + W + 20, H); ctx.lineTo(ox, H); ctx.closePath(); ctx.fill();
+    }
+    ctx.globalAlpha = 1;
+
+    // Mặt đất băng tuyết
+    const gGrd = ctx.createLinearGradient(0, H * 0.68, 0, H);
+    gGrd.addColorStop(0, 'rgba(140,190,220,0.92)');
+    gGrd.addColorStop(0.5,'rgba(80,130,170,0.96)');
+    gGrd.addColorStop(1, 'rgba(40,80,120,1)');
+    ctx.fillStyle = gGrd; ctx.fillRect(0, H * 0.68, W, H * 0.32);
+
+    // Tuyết rơi
+    ctx.fillStyle = 'rgba(220,240,255,0.55)';
+    for (let i = 0; i < 30; i++) {
+      const fx = ((i * 157 + t * 0.025 * (1 + i % 3 * 0.4) - camX * 0.08) % W + W) % W;
+      const fy = (t * 0.018 * (1 + i % 4 * 0.3) + i * 90) % H;
+      const fs = 0.8 + (i % 4) * 0.4;
+      ctx.beginPath(); ctx.arc(fx, fy, fs, 0, Math.PI*2); ctx.fill();
+    }
+
+    // Tint xanh băng nhẹ
+    ctx.fillStyle = 'rgba(20,60,100,0.06)';
+    ctx.fillRect(0, 0, W, H);
+  }
+
+  /* ── MAP07: Nghĩa Địa Ma (graveyard) ────────────────────────
+     Palette: đen xám, trăng tím bạc, sương xanh tử khí.
+     Layers: dead sky → ghost moon → tombstones far(×0.12)
+             → dead trees mid(×0.30) → mist bands(×0.55)
+             → grave ground → soul wisp particles.           */
+  function _drawMap07Layers(camX, camY, W, H, t) {
+    // Trời chết chóc
+    ctx.fillStyle = '#080810'; ctx.fillRect(0, 0, W, H * 0.52);
+    const nightGrd = ctx.createLinearGradient(0, 0, 0, H * 0.52);
+    nightGrd.addColorStop(0, '#050508');
+    nightGrd.addColorStop(0.6,'#0D0A14');
+    nightGrd.addColorStop(1, '#110D1A');
+    ctx.fillStyle = nightGrd; ctx.fillRect(0, 0, W, H * 0.52);
+
+    // Trăng ma — tím bạc
+    const mFlicker = 0.18 + 0.06 * Math.sin(t * 0.0009);
+    const mX = W * 0.65, mY = H * 0.15;
+    const mGrd = ctx.createRadialGradient(mX, mY, 0, mX, mY, 70);
+    mGrd.addColorStop(0,   `rgba(200,180,255,${mFlicker * 1.3})`);
+    mGrd.addColorStop(0.5, `rgba(140,100,200,${mFlicker * 0.6})`);
+    mGrd.addColorStop(1,   'rgba(80,40,120,0)');
+    ctx.fillStyle = mGrd; ctx.beginPath(); ctx.arc(mX, mY, 70, 0, Math.PI*2); ctx.fill();
+    ctx.fillStyle = `rgba(220,210,255,${mFlicker})`;
+    ctx.beginPath(); ctx.arc(mX, mY, 20, 0, Math.PI*2); ctx.fill();
+
+    // Sao tím lờ mờ
+    ctx.fillStyle = 'rgba(160,130,200,0.40)';
+    for (let i = 0; i < 18; i++) {
+      const sx2 = (i * 193 + 30) % W;
+      const sy2 = H * 0.03 + (i * 79 % (H * 0.40));
+      ctx.beginPath(); ctx.arc(sx2, sy2, 0.9, 0, Math.PI*2); ctx.fill();
+    }
+
+    // Bia mộ xa — parallax ×0.12
+    const g1Off = ((camX * 0.12) % W + W) % W;
+    ctx.globalAlpha = 0.65;
+    for (let pass = -1; pass <= 1; pass++) {
+      const ox = -g1Off + pass * W;
+      const baseY = H * 0.56;
+      for (let i = 0; i < W; i += 30) {
+        const gh = 22 + 18 * Math.abs(Math.sin(i * 0.040 + 1.3));
+        const gw = 10 + (i % 4) * 2;
+        ctx.fillStyle = '#1C1824';
+        ctx.fillRect(ox + i, baseY - gh, gw, gh);
+        // Đầu tròn bia
+        ctx.beginPath(); ctx.arc(ox + i + gw/2, baseY - gh, gw/2, Math.PI, 0); ctx.fill();
+      }
+    }
+    ctx.globalAlpha = 1;
+
+    // Cây trơ giữa — parallax ×0.30 — nhánh khẳng khiu
+    const t2Off = ((camX * 0.30) % W + W) % W;
+    ctx.strokeStyle = '#18141E'; ctx.lineWidth = 2.5; ctx.lineCap = 'round';
+    ctx.globalAlpha = 0.80;
+    for (let pass = -1; pass <= 1; pass++) {
+      const ox = -t2Off + pass * W;
+      const baseY = H * 0.62;
+      for (let i = 0; i < W; i += 45) {
+        const th = 60 + 30 * Math.sin(i * 0.022 + 0.9);
+        ctx.beginPath(); ctx.moveTo(ox + i + 8, baseY); ctx.lineTo(ox + i + 7, baseY - th); ctx.stroke();
+        [{ f:0.5,a:-0.9,l:20 },{ f:0.65,a:0.7,l:16 },{ f:0.35,a:-0.5,l:14 }].forEach(br => {
+          const bY = baseY - th * br.f;
+          ctx.beginPath(); ctx.moveTo(ox + i + 7, bY);
+          ctx.lineTo(ox + i + 7 + Math.cos(br.a - Math.PI/2) * br.l, bY + Math.sin(br.a - Math.PI/2) * br.l);
+          ctx.stroke();
+        });
+      }
+    }
+    ctx.globalAlpha = 1; ctx.lineWidth = 1;
+
+    // Sương mộ — 3 làn ngang parallax ×0.55
+    const mOff = ((camX * 0.55) % W + W) % W;
+    [0.62, 0.67, 0.72].forEach((ry, li) => {
+      const mAlpha = (0.14 + 0.06 * Math.sin(t * 0.0006 + li * 1.2));
+      const mistGrd2 = ctx.createLinearGradient(0, H * ry - 15, 0, H * ry + 20);
+      mistGrd2.addColorStop(0,   'rgba(40,180,80,0)');
+      mistGrd2.addColorStop(0.5, `rgba(30,140,60,${mAlpha})`);
+      mistGrd2.addColorStop(1,   'rgba(20,80,40,0)');
+      ctx.fillStyle = mistGrd2;
+      const mShift = (((li * 80 - mOff * 0.3) % W) + W) % W;
+      ctx.fillRect(-mShift, H * ry - 15, W * 2, 35);
+    });
+
+    // Đất nghĩa địa
+    const gGrd = ctx.createLinearGradient(0, H * 0.69, 0, H);
+    gGrd.addColorStop(0, 'rgba(18,14,24,0.92)');
+    gGrd.addColorStop(1, 'rgba(8,6,12,1)');
+    ctx.fillStyle = gGrd; ctx.fillRect(0, H * 0.69, W, H * 0.31);
+
+    // Linh hồn trôi — wisp xanh tím
+    for (let i = 0; i < 8; i++) {
+      const wx = ((i * 179 + t * 0.022 * (i % 2 ? 1 : -0.7) - camX * 0.12) % W + W) % W;
+      const wy = H * 0.50 + H * 0.22 * Math.sin(t * 0.001 + i * 1.4) - H * 0.08;
+      const wAlpha = 0.15 + 0.10 * Math.sin(t * 0.0015 + i * 0.9);
+      ctx.fillStyle = `rgba(80,240,120,${wAlpha})`;
+      ctx.beginPath(); ctx.arc(wx, wy, 4 + i % 3, 0, Math.PI*2); ctx.fill();
+    }
+  }
+
+  /* ── MAP08: Tháp Ma Thuật (tower) ───────────────────────────
+     Palette: tím thẫm, hồng phép, ánh sao phù thủy.
+     Layers: mystic sky(stars) → arcane moon → tower walls far(×0.14)
+             → arcane pillars mid(×0.32) → rune floor front(×0.58)
+             → magic ground → arcane sparks.                 */
+  function _drawMap08Layers(camX, camY, W, H, t) {
+    // Trời phù thủy
+    const skyGrd = ctx.createLinearGradient(0, 0, 0, H * 0.52);
+    skyGrd.addColorStop(0, '#0A0318');
+    skyGrd.addColorStop(0.5,'#14063A');
+    skyGrd.addColorStop(1, '#1A0840');
+    ctx.fillStyle = skyGrd; ctx.fillRect(0, 0, W, H * 0.52);
+
+    // Hào quang phép màu trung tâm trời
+    const aX = W * 0.5, aY = H * 0.1;
+    const aGrd = ctx.createRadialGradient(aX, aY, 0, aX, aY, H * 0.35);
+    const aPulse = 0.06 + 0.03 * Math.sin(t * 0.0008);
+    aGrd.addColorStop(0, `rgba(180,80,255,${aPulse})`);
+    aGrd.addColorStop(1, 'rgba(60,0,100,0)');
+    ctx.fillStyle = aGrd; ctx.fillRect(0, 0, W, H * 0.52);
+
+    // Sao phép — nhiều màu
+    ['rgba(255,160,255,0.5)','rgba(160,100,255,0.5)','rgba(100,200,255,0.4)'].forEach((col, ci) => {
+      ctx.fillStyle = col;
+      for (let i = 0; i < 12; i++) {
+        const sx2 = ((i * 197 + ci * 123) % W);
+        const sy2 = H * 0.03 + (i * 83 % (H * 0.40));
+        const tw = (Math.sin(t * 0.002 + i * 0.8 + ci) > 0.6) ? 1.5 : 0.8;
+        ctx.beginPath(); ctx.arc(sx2, sy2, tw, 0, Math.PI*2); ctx.fill();
+      }
+    });
+
+    // Tường tháp xa — parallax ×0.14
+    const w1Off = ((camX * 0.14) % W + W) % W;
+    ctx.globalAlpha = 0.70;
+    for (let pass = -1; pass <= 1; pass++) {
+      const ox = -w1Off + pass * W;
+      const baseY = H * 0.55;
+      for (let i = 0; i < W; i += 55) {
+        const wh = 65 + 40 * Math.sin(i * 0.017 + 0.7);
+        ctx.fillStyle = '#200840';
+        ctx.fillRect(ox + i, baseY - wh, 48, wh);
+        // Cửa sổ phép sáng
+        const wColor = i % 3 === 0 ? 'rgba(200,80,255,0.40)' : i % 3 === 1 ? 'rgba(80,160,255,0.35)' : 'rgba(255,100,180,0.30)';
+        ctx.fillStyle = wColor;
+        ctx.beginPath(); ctx.arc(ox + i + 24, baseY - wh + 16, 7, 0, Math.PI*2); ctx.fill();
+        ctx.fillStyle = '#0A0320';
+        ctx.fillRect(ox + i + 18, baseY - wh + 35, 12, 16);
+      }
+    }
+    ctx.globalAlpha = 1;
+
+    // Cột phép giữa — parallax ×0.32 — tứ giác có rune glow
+    const p2Off = ((camX * 0.32) % W + W) % W;
+    ctx.globalAlpha = 0.85;
+    for (let pass = -1; pass <= 1; pass++) {
+      const ox = -p2Off + pass * W;
+      const baseY = H * 0.63;
+      for (let i = 0; i < W; i += 40) {
+        const ph = 55 + 28 * Math.abs(Math.sin(i * 0.030 + 1.8));
+        ctx.fillStyle = '#180630';
+        ctx.fillRect(ox + i + 4, baseY - ph, 18, ph);
+        // Đầu cột kim tự tháp nhỏ
+        ctx.beginPath();
+        ctx.moveTo(ox + i + 0, baseY - ph);
+        ctx.lineTo(ox + i + 13, baseY - ph - 14);
+        ctx.lineTo(ox + i + 26, baseY - ph);
+        ctx.closePath(); ctx.fill();
+        // Rune glow
+        const runeAlpha = 0.20 + 0.14 * Math.sin(t * 0.0014 + i * 0.08);
+        ctx.fillStyle = `rgba(200,80,255,${runeAlpha})`;
+        ctx.beginPath(); ctx.arc(ox + i + 13, baseY - ph * 0.55, 4, 0, Math.PI*2); ctx.fill();
+      }
+    }
+    ctx.globalAlpha = 1;
+
+    // Nền sàn rune gần — parallax ×0.58
+    const r3Off = ((camX * 0.58) % W + W) % W;
+    ctx.globalAlpha = 0.90;
+    for (let pass = -1; pass <= 1; pass++) {
+      const ox = -r3Off + pass * W;
+      const baseY = H * 0.71;
+      ctx.fillStyle = '#120425';
+      ctx.beginPath(); ctx.moveTo(ox, baseY);
+      for (let i = 0; i <= W + 20; i += 14) {
+        ctx.lineTo(ox + i, baseY - 6 - 8 * Math.abs(Math.sin(i * 0.08 + 1.1)));
+      }
+      ctx.lineTo(ox + W + 20, H); ctx.lineTo(ox, H); ctx.closePath(); ctx.fill();
+    }
+    ctx.globalAlpha = 1;
+
+    // Sàn phép
+    const gGrd = ctx.createLinearGradient(0, H * 0.69, 0, H);
+    gGrd.addColorStop(0, 'rgba(28,8,56,0.94)');
+    gGrd.addColorStop(1, 'rgba(12,2,28,1)');
+    ctx.fillStyle = gGrd; ctx.fillRect(0, H * 0.69, W, H * 0.31);
+
+    // Tia phép lơ lửng
+    for (let i = 0; i < 10; i++) {
+      const ex = ((i * 163 + t * 0.015 * (i%2?1:-0.8) - camX*0.1) % W + W) % W;
+      const ey = H * 0.45 + H * 0.25 * Math.sin(t * 0.0012 + i * 0.7) + H*0.05;
+      const eAlpha = 0.20 + 0.12 * Math.sin(t * 0.0018 + i * 1.2);
+      ctx.fillStyle = i%3===0?`rgba(200,80,255,${eAlpha})`:i%3===1?`rgba(80,160,255,${eAlpha})`:`rgba(255,80,160,${eAlpha})`;
+      ctx.beginPath(); ctx.arc(ex, ey, 2.5 + i%3, 0, Math.PI*2); ctx.fill();
+    }
+  }
+
+  /* ── MAP09: Biển Máu (blood) ────────────────────────────────
+     Palette: đỏ tươi máu, đỏ đen, crimson pulse.
+     Layers: blood sky → crimson clouds(×0.08)
+             → bone reefs far(×0.14) → blood waves animated
+             → viscera rocks mid(×0.35) → shore of skulls front(×0.60)
+             → blood floor → pulsing overlay.                */
+  function _drawMap09Layers(camX, camY, W, H, t) {
+    // Trời máu
+    const skyGrd = ctx.createLinearGradient(0, 0, 0, H * 0.50);
+    skyGrd.addColorStop(0, '#200000');
+    skyGrd.addColorStop(0.45,'#400000');
+    skyGrd.addColorStop(0.8, '#600808');
+    skyGrd.addColorStop(1, '#400000');
+    ctx.fillStyle = skyGrd; ctx.fillRect(0, 0, W, H * 0.50);
+
+    // Mặt trời máu đỏ thẫm
+    const sunX = W * 0.5, sunY = H * 0.12;
+    const sunPulse = 0.22 + 0.08 * Math.sin(t * 0.0010);
+    const sunGrd = ctx.createRadialGradient(sunX, sunY, 0, sunX, sunY, 100);
+    sunGrd.addColorStop(0,   `rgba(255,40,0,${sunPulse})`);
+    sunGrd.addColorStop(0.4, `rgba(180,0,0,${sunPulse * 0.5})`);
+    sunGrd.addColorStop(1,   'rgba(80,0,0,0)');
+    ctx.fillStyle = sunGrd; ctx.beginPath(); ctx.arc(sunX, sunY, 100, 0, Math.PI*2); ctx.fill();
+    ctx.fillStyle = `rgba(220,30,0,${sunPulse * 1.1})`;
+    ctx.beginPath(); ctx.arc(sunX, sunY, 16, 0, Math.PI*2); ctx.fill();
+
+    // Rạn xương san hô xa — parallax ×0.14
+    const b1Off = ((camX * 0.14) % W + W) % W;
+    ctx.globalAlpha = 0.62;
+    for (let pass = -1; pass <= 1; pass++) {
+      const ox = -b1Off + pass * W;
+      const baseY = H * 0.55;
+      for (let i = 0; i < W; i += 22) {
+        const bh = 18 + 22 * Math.abs(Math.sin(i * 0.035 + 1.5));
+        ctx.fillStyle = '#4A1010';
+        ctx.fillRect(ox + i + 4, baseY - bh, 8, bh);
+        // Gai xương
+        ctx.fillStyle = '#6A1818';
+        ctx.beginPath();
+        ctx.moveTo(ox + i + 4, baseY - bh);
+        ctx.lineTo(ox + i + 8, baseY - bh - 8);
+        ctx.lineTo(ox + i + 12, baseY - bh);
+        ctx.closePath(); ctx.fill();
+      }
+    }
+    ctx.globalAlpha = 1;
+
+    // Sóng máu — animated
+    const waveY   = H * 0.55;
+    const waveH   = H * 0.14;
+    const waveOff = ((camX * 0.25) % W + W) % W;
+    const wGrd = ctx.createLinearGradient(0, waveY, 0, waveY + waveH);
+    wGrd.addColorStop(0, 'rgba(180,0,0,0.88)');
+    wGrd.addColorStop(1, 'rgba(80,0,0,1)');
+    ctx.fillStyle = wGrd; ctx.fillRect(0, waveY, W, waveH);
+
+    // Gợn sóng máu (mặt sóng)
+    ctx.strokeStyle = 'rgba(255,40,0,0.45)'; ctx.lineWidth = 2;
+    ctx.beginPath();
+    for (let x = 0; x <= W; x += 3) {
+      const wx = x - waveOff + camX * 0.25;
+      const wy = waveY + 3 * Math.sin(wx * 0.035 + t * 0.002) + 2 * Math.sin(wx * 0.08 + t * 0.003);
+      x === 0 ? ctx.moveTo(x, wy) : ctx.lineTo(x, wy);
+    }
+    ctx.stroke(); ctx.lineWidth = 1;
+
+    // Ánh loang đỏ trên sóng
+    const bloodSheen = ctx.createLinearGradient(0, waveY, 0, waveY + 16);
+    bloodSheen.addColorStop(0, 'rgba(255,60,0,0.18)');
+    bloodSheen.addColorStop(1, 'rgba(200,0,0,0)');
+    ctx.fillStyle = bloodSheen; ctx.fillRect(0, waveY, W, 16);
+
+    // Đá tảng máu giữa — parallax ×0.35
+    const r2Off = ((camX * 0.35) % W + W) % W;
+    ctx.globalAlpha = 0.82;
+    for (let pass = -1; pass <= 1; pass++) {
+      const ox = -r2Off + pass * W;
+      const baseY = H * 0.67;
+      for (let i = 0; i < W; i += 50) {
+        const rh = 22 + 18 * Math.abs(Math.sin(i * 0.024 + 0.8));
+        const rw = 28 + (i % 4) * 6;
+        ctx.fillStyle = i%2===0?'#3A0808':'#2A0404';
+        ctx.fillRect(ox + i, baseY - rh, rw, rh);
+        // Vết máu chảy xuống đá
+        ctx.fillStyle = 'rgba(200,0,0,0.45)';
+        ctx.fillRect(ox + i + rw * 0.3, baseY - rh + 6, 3, rh - 6);
+      }
+    }
+    ctx.globalAlpha = 1;
+
+    // Bờ sọ đầu gần — parallax ×0.60
+    const sk3Off = ((camX * 0.60) % W + W) % W;
+    ctx.globalAlpha = 0.90;
+    for (let pass = -1; pass <= 1; pass++) {
+      const ox = -sk3Off + pass * W;
+      const baseY = H * 0.70;
+      for (let i = 0; i < W; i += 24) {
+        const sh = 8 + 12 * Math.abs(Math.sin(i * 0.05 + 2.1));
+        ctx.fillStyle = '#3A1010';
+        ctx.beginPath(); ctx.arc(ox + i + 8, baseY - sh, 8, Math.PI, 0); ctx.fill();
+        ctx.fillStyle = '#200808';
+        ctx.fillRect(ox + i, baseY - sh, 16, sh);
+        // Hốc mắt sọ
+        ctx.fillStyle = '#100404';
+        ctx.beginPath(); ctx.arc(ox + i + 4, baseY - sh + 3, 2.5, 0, Math.PI*2); ctx.fill();
+        ctx.beginPath(); ctx.arc(ox + i + 12, baseY - sh + 3, 2.5, 0, Math.PI*2); ctx.fill();
+      }
+    }
+    ctx.globalAlpha = 1;
+
+    // Sàn máu đặc
+    const gGrd = ctx.createLinearGradient(0, H * 0.68, 0, H);
+    gGrd.addColorStop(0, 'rgba(80,0,0,0.96)');
+    gGrd.addColorStop(1, 'rgba(30,0,0,1)');
+    ctx.fillStyle = gGrd; ctx.fillRect(0, H * 0.68, W, H * 0.32);
+
+    // Pulse máu — overlay nhấp nháy
+    const bloodPulse = 0.06 + 0.04 * Math.sin(t * 0.0014);
+    ctx.fillStyle = `rgba(180,0,0,${bloodPulse})`;
+    ctx.fillRect(0, 0, W, H);
+  }
+
+  /* ── MAP10: Xưởng Cơ Khí (mech) ────────────────────────────
+     Palette: xanh thép, cam nhớt, xám kim loại tối.
+     Layers: industrial sky(smoke) → factory glow → girders far(×0.12)
+             → pipes mid(×0.30) → machinery front(×0.56)
+             → metal floor → steam vents + warning lights.   */
+  function _drawMap10Layers(camX, camY, W, H, t) {
+    // Trời công nghiệp ô nhiễm
+    const skyGrd = ctx.createLinearGradient(0, 0, 0, H * 0.52);
+    skyGrd.addColorStop(0, '#080E14');
+    skyGrd.addColorStop(0.5,'#101820');
+    skyGrd.addColorStop(1, '#0C1218');
+    ctx.fillStyle = skyGrd; ctx.fillRect(0, 0, W, H * 0.52);
+
+    // Ánh cam lò nung chân trời
+    const forgeGrd = ctx.createLinearGradient(0, H * 0.35, 0, H * 0.52);
+    const forgePulse = 0.10 + 0.06 * Math.sin(t * 0.0012);
+    forgeGrd.addColorStop(0, 'rgba(200,80,0,0)');
+    forgeGrd.addColorStop(1, `rgba(200,80,0,${forgePulse})`);
+    ctx.fillStyle = forgeGrd; ctx.fillRect(0, H * 0.35, W, H * 0.17);
+
+    // Khói ống công nghiệp (static clouds)
+    ctx.globalAlpha = 0.22;
+    for (let i = 0; i < 6; i++) {
+      const sx2 = ((i * 163 - camX * 0.05) % W + W) % W;
+      const sy2 = H * 0.08 + (i % 3) * H * 0.04;
+      ctx.fillStyle = '#1C2028';
+      ctx.beginPath(); ctx.arc(sx2, sy2, 30 + i*8, 0, Math.PI*2); ctx.fill();
+    }
+    ctx.globalAlpha = 1;
+
+    // Khung sắt xa — parallax ×0.12
+    const g1Off = ((camX * 0.12) % W + W) % W;
+    ctx.globalAlpha = 0.72;
+    for (let pass = -1; pass <= 1; pass++) {
+      const ox = -g1Off + pass * W;
+      const baseY = H * 0.55;
+      for (let i = 0; i < W; i += 35) {
+        const gh = 50 + 30 * Math.sin(i * 0.020 + 0.6);
+        ctx.fillStyle = '#1A2428';
+        ctx.fillRect(ox + i + 0, baseY - gh, 5, gh);   // cột dọc
+        ctx.fillRect(ox + i + 30, baseY - gh * 0.7, 5, gh * 0.7);
+        ctx.fillRect(ox + i + 0, baseY - gh * 0.5, 35, 4); // xà ngang
+        ctx.fillRect(ox + i + 0, baseY - gh * 0.25, 35, 3);
+      }
+    }
+    ctx.globalAlpha = 1;
+
+    // Đường ống giữa — parallax ×0.30
+    const p2Off = ((camX * 0.30) % W + W) % W;
+    ctx.globalAlpha = 0.82;
+    for (let pass = -1; pass <= 1; pass++) {
+      const ox = -p2Off + pass * W;
+      const baseY = H * 0.62;
+      // Ống ngang lớn
+      ctx.fillStyle = '#1E2C34';
+      ctx.fillRect(ox - 10, baseY - 40, W + 20, 18);
+      ctx.fillRect(ox - 10, baseY - 18, W + 20, 14);
+      // Khớp ống
+      for (let i = 0; i < W; i += 60) {
+        ctx.fillStyle = '#283840';
+        ctx.fillRect(ox + i + 26, baseY - 46, 8, 30);
+        // Ốc vít
+        ctx.fillStyle = '#304048';
+        ctx.beginPath(); ctx.arc(ox + i + 30, baseY - 42, 3, 0, Math.PI*2); ctx.fill();
+        ctx.beginPath(); ctx.arc(ox + i + 30, baseY - 30, 3, 0, Math.PI*2); ctx.fill();
+      }
+    }
+    ctx.globalAlpha = 1;
+
+    // Máy móc gần — parallax ×0.56
+    const m3Off = ((camX * 0.56) % W + W) % W;
+    ctx.globalAlpha = 0.90;
+    for (let pass = -1; pass <= 1; pass++) {
+      const ox = -m3Off + pass * W;
+      const baseY = H * 0.70;
+      for (let i = 0; i < W; i += 46) {
+        const mh = 20 + 18 * Math.abs(Math.sin(i * 0.040 + 1.4));
+        ctx.fillStyle = i%2===0?'#1C2830':'#141E24';
+        ctx.fillRect(ox + i, baseY - mh, 40, mh);
+        // Đèn cảnh báo nhấp nháy
+        const litUp = Math.sin(t * 0.003 + i * 0.5) > 0.5;
+        ctx.fillStyle = litUp ? 'rgba(255,80,0,0.70)' : 'rgba(100,30,0,0.40)';
+        ctx.beginPath(); ctx.arc(ox + i + 8, baseY - mh + 6, 4, 0, Math.PI*2); ctx.fill();
+        // Bánh răng
+        ctx.strokeStyle = '#2C3C48'; ctx.lineWidth = 2;
+        ctx.beginPath(); ctx.arc(ox + i + 28, baseY - mh * 0.55, 7, 0, Math.PI*2); ctx.stroke();
+      }
+    }
+    ctx.globalAlpha = 1; ctx.lineWidth = 1;
+
+    // Sàn kim loại
+    const gGrd = ctx.createLinearGradient(0, H * 0.68, 0, H);
+    gGrd.addColorStop(0, 'rgba(20,30,36,0.95)');
+    gGrd.addColorStop(0.5,'rgba(14,22,28,0.98)');
+    gGrd.addColorStop(1, 'rgba(8,14,18,1)');
+    ctx.fillStyle = gGrd; ctx.fillRect(0, H * 0.68, W, H * 0.32);
+
+    // Khe ghi sàn thép
+    ctx.strokeStyle = 'rgba(40,60,72,0.55)'; ctx.lineWidth = 1;
+    const plOff = ((-camX * 0.8) % 40 + 40) % 40;
+    for (let x = plOff - 40; x < W + 40; x += 40) {
+      ctx.beginPath(); ctx.moveTo(x, H * 0.68); ctx.lineTo(x, H); ctx.stroke();
+    }
+    ctx.lineWidth = 1;
+
+    // Hơi nước xả — vertical wisps
+    for (let i = 0; i < 5; i++) {
+      const vx = ((i * 180 - m3Off * 0.4) % W + W) % W;
+      const steamH = 30 + 20 * Math.sin(t * 0.0015 + i * 1.3);
+      const steamAlpha = 0.12 + 0.06 * Math.sin(t * 0.0018 + i * 0.7);
+      const steamGrd2 = ctx.createLinearGradient(0, H * 0.68 - steamH, 0, H * 0.68);
+      steamGrd2.addColorStop(0, 'rgba(180,200,220,0)');
+      steamGrd2.addColorStop(1, `rgba(140,180,200,${steamAlpha})`);
+      ctx.fillStyle = steamGrd2; ctx.fillRect(vx - 6, H * 0.68 - steamH, 12, steamH);
+    }
+  }
+
+  /* ── MAP11: Vùng Hỗn Mang (chaos) ───────────────────────────
+     Palette: tím điên loạn, hồng neon, xanh lam lệch pha.
+     Layers: fractured sky → rift tears(×0.08)
+             → void shards far(×0.16) → chaos platforms mid(×0.34)
+             → distorted ground front(×0.60) → glitch scanlines. */
+  function _drawMap11Layers(camX, camY, W, H, t) {
+    // Bầu trời nứt vỡ — gradient đa màu lệch pha
+    const chaosA = Math.sin(t * 0.0008) * 0.12;
+    const skyGrd = ctx.createLinearGradient(0, 0, W, H * 0.52);
+    skyGrd.addColorStop(0,          '#180520');
+    skyGrd.addColorStop(0.25 + chaosA,'#0A1030');
+    skyGrd.addColorStop(0.55 - chaosA,'#200830');
+    skyGrd.addColorStop(0.80,        '#100A28');
+    skyGrd.addColorStop(1,           '#14061A');
+    ctx.fillStyle = skyGrd; ctx.fillRect(0, 0, W, H * 0.52);
+
+    // Vết nứt chiều không gian — rift lines sáng
+    ctx.globalAlpha = 0.35;
+    for (let i = 0; i < 5; i++) {
+      const rx = ((i * 211 - camX * 0.06) % W + W) % W;
+      const ry = H * 0.04 + (i * 67 % (H * 0.40));
+      const rAlpha = 0.25 + 0.15 * Math.sin(t * 0.0013 + i * 0.9);
+      const riftGrd = ctx.createLinearGradient(rx - 1, ry, rx + 1, ry + H * 0.18);
+      riftGrd.addColorStop(0, 'rgba(200,80,255,0)');
+      riftGrd.addColorStop(0.3,`rgba(200,80,255,${rAlpha})`);
+      riftGrd.addColorStop(0.7,`rgba(80,180,255,${rAlpha * 0.8})`);
+      riftGrd.addColorStop(1, 'rgba(80,180,255,0)');
+      ctx.fillStyle = riftGrd; ctx.fillRect(rx - 1.5, ry, 3, H * 0.18);
+    }
+    ctx.globalAlpha = 1;
+
+    // Mảnh không gian vỡ xa — parallax ×0.16
+    const sh1Off = ((camX * 0.16) % W + W) % W;
+    ctx.globalAlpha = 0.58;
+    for (let pass = -1; pass <= 1; pass++) {
+      const ox = -sh1Off + pass * W;
+      const baseY = H * 0.56;
+      for (let i = 0; i < W; i += 28) {
+        const sh = 20 + 30 * Math.abs(Math.sin(i * 0.034 + 1.6));
+        // Hình thoi không gian
+        ctx.fillStyle = i%3===0?'#2A0845':'#180430';
+        ctx.beginPath();
+        ctx.moveTo(ox + i + 8,  baseY - sh);
+        ctx.lineTo(ox + i + 16, baseY - sh * 0.5);
+        ctx.lineTo(ox + i + 8,  baseY);
+        ctx.lineTo(ox + i + 0,  baseY - sh * 0.5);
+        ctx.closePath(); ctx.fill();
+      }
+    }
+    ctx.globalAlpha = 1;
+
+    // Nền tảng hỗn mang giữa — parallax ×0.34
+    const p2Off = ((camX * 0.34) % W + W) % W;
+    ctx.globalAlpha = 0.80;
+    for (let pass = -1; pass <= 1; pass++) {
+      const ox = -p2Off + pass * W;
+      const baseY = H * 0.62;
+      for (let i = 0; i < W; i += 50) {
+        const ph = 16 + 22 * Math.abs(Math.sin(i * 0.028 + 2.2));
+        ctx.fillStyle = i%2===0?'#20063A':'#160428';
+        // Khối méo mó
+        ctx.beginPath();
+        ctx.moveTo(ox + i,      baseY - ph);
+        ctx.lineTo(ox + i + 3,  baseY - ph - 4);
+        ctx.lineTo(ox + i + 44, baseY - ph + 2);
+        ctx.lineTo(ox + i + 46, baseY);
+        ctx.lineTo(ox + i - 2,  baseY);
+        ctx.closePath(); ctx.fill();
+        // Đường neon viền
+        const neonAlpha = 0.22 + 0.14 * Math.sin(t * 0.0016 + i * 0.06);
+        ctx.strokeStyle = `rgba(180,60,255,${neonAlpha})`; ctx.lineWidth = 1;
+        ctx.stroke();
+      }
+    }
+    ctx.globalAlpha = 1; ctx.lineWidth = 1;
+
+    // Mặt đất méo — parallax ×0.60
+    const d3Off = ((camX * 0.60) % W + W) % W;
+    ctx.globalAlpha = 0.92;
+    for (let pass = -1; pass <= 1; pass++) {
+      const ox = -d3Off + pass * W;
+      const baseY = H * 0.70;
+      ctx.fillStyle = '#100220';
+      ctx.beginPath(); ctx.moveTo(ox, baseY);
+      for (let i = 0; i <= W + 20; i += 10) {
+        const distort = 8 * Math.sin(i * 0.055 + t * 0.0007) + 5 * Math.sin(i * 0.12 + 2.1);
+        ctx.lineTo(ox + i, baseY - 6 - Math.abs(distort));
+      }
+      ctx.lineTo(ox + W + 20, H); ctx.lineTo(ox, H); ctx.closePath(); ctx.fill();
+    }
+    ctx.globalAlpha = 1;
+
+    // Sàn chaos
+    const gGrd = ctx.createLinearGradient(0, H * 0.69, 0, H);
+    gGrd.addColorStop(0, 'rgba(22,4,40,0.95)');
+    gGrd.addColorStop(1, 'rgba(10,0,18,1)');
+    ctx.fillStyle = gGrd; ctx.fillRect(0, H * 0.69, W, H * 0.31);
+
+    // Scanlines glitch — ngang mờ
+    ctx.globalAlpha = 0.06;
+    ctx.fillStyle = '#8040ff';
+    for (let y = 0; y < H; y += 4) {
+      ctx.fillRect(0, y, W, 1.5);
+    }
+    ctx.globalAlpha = 1;
+  }
+
+  /* ── MAP12: Bầu Trời Sụp Đổ (storm) ────────────────────────
+     Palette: xanh xám bão, trắng chớp, tím sét.
+     Layers: storm sky(rolling) → lightning glow → storm clouds far(×0.08)
+             → rain streaks → cliff edges mid(×0.30)
+             → debris front(×0.58) → wet stone ground.       */
+  function _drawMap12Layers(camX, camY, W, H, t) {
+    // Trời bão cuồn cuộn
+    const skyGrd = ctx.createLinearGradient(0, 0, 0, H * 0.52);
+    skyGrd.addColorStop(0,   '#04080C');
+    skyGrd.addColorStop(0.4, '#0A1018');
+    skyGrd.addColorStop(0.75,'#0E1420');
+    skyGrd.addColorStop(1,   '#0A1018');
+    ctx.fillStyle = skyGrd; ctx.fillRect(0, 0, W, H * 0.52);
+
+    // Ánh chớp nền — pulse ngẫu nhiên
+    const flashAlpha = Math.max(0, Math.sin(t * 0.005) * Math.sin(t * 0.0031) * 0.18);
+    if (flashAlpha > 0.01) {
+      ctx.fillStyle = `rgba(180,200,255,${flashAlpha})`;
+      ctx.fillRect(0, 0, W, H * 0.52);
+    }
+
+    // Mây bão cuồn — parallax ×0.08
+    const c1Off = ((camX * 0.08) % W + W) % W;
+    ctx.globalAlpha = 0.78;
+    for (let pass = -1; pass <= 1; pass++) {
+      const ox = -c1Off + pass * W;
+      for (let i = 0; i < W; i += 38) {
+        const cy = H * (0.05 + 0.10 * Math.abs(Math.sin(i * 0.014 + 0.5)));
+        const cr = 28 + 18 * Math.sin(i * 0.020 + 1.2);
+        ctx.fillStyle = i%3===0?'#0C1420': i%3===1?'#101828':'#0A1018';
+        ctx.beginPath(); ctx.ellipse(ox + i + cr, cy, cr, cr * 0.55, 0, 0, Math.PI*2); ctx.fill();
+      }
+    }
+    ctx.globalAlpha = 1;
+
+    // Mưa — streaks xiên
+    const rainOff = (t * 0.18) % H;
+    ctx.strokeStyle = 'rgba(140,170,200,0.22)'; ctx.lineWidth = 1;
+    for (let i = 0; i < 40; i++) {
+      const rx = ((i * 151 - camX * 0.15) % W + W) % W;
+      const ry = (rainOff + i * 42) % H;
+      const rlen = 18 + i % 12;
+      ctx.beginPath(); ctx.moveTo(rx, ry); ctx.lineTo(rx + 4, ry + rlen); ctx.stroke();
+    }
+    ctx.lineWidth = 1;
+
+    // Vách đá bão giữa — parallax ×0.30
+    const cl2Off = ((camX * 0.30) % W + W) % W;
+    ctx.globalAlpha = 0.80;
+    for (let pass = -1; pass <= 1; pass++) {
+      const ox = -cl2Off + pass * W;
+      const baseY = H * 0.62;
+      for (let i = 0; i < W; i += 38) {
+        const ch = 45 + 35 * Math.abs(Math.sin(i * 0.022 + 1.8));
+        ctx.fillStyle = i%2===0?'#121C24':'#0E1820';
+        ctx.fillRect(ox + i, baseY - ch, 32, ch);
+        // Sườn núi lởm chởm
+        ctx.beginPath();
+        ctx.moveTo(ox + i - 2, baseY - ch);
+        ctx.lineTo(ox + i + 8, baseY - ch - 18);
+        ctx.lineTo(ox + i + 20, baseY - ch - 8);
+        ctx.lineTo(ox + i + 32, baseY - ch - 22);
+        ctx.lineTo(ox + i + 34, baseY - ch);
+        ctx.closePath(); ctx.fill();
+      }
+    }
+    ctx.globalAlpha = 1;
+
+    // Mảnh vỡ gần — parallax ×0.58
+    const d3Off = ((camX * 0.58) % W + W) % W;
+    ctx.globalAlpha = 0.88;
+    for (let pass = -1; pass <= 1; pass++) {
+      const ox = -d3Off + pass * W;
+      const baseY = H * 0.70;
+      for (let i = 0; i < W; i += 20) {
+        const dh = 8 + 18 * Math.abs(Math.sin(i * 0.055 + 2.4));
+        ctx.fillStyle = '#101820';
+        // Mảnh đá bay — nghiêng
+        ctx.save();
+        ctx.translate(ox + i + 8, baseY - dh / 2);
+        ctx.rotate(0.3 * Math.sin(i * 0.09));
+        ctx.fillRect(-6, -dh / 2, 14, dh);
+        ctx.restore();
+      }
+    }
+    ctx.globalAlpha = 1;
+
+    // Đá ướt
+    const gGrd = ctx.createLinearGradient(0, H * 0.68, 0, H);
+    gGrd.addColorStop(0, 'rgba(14,22,32,0.94)');
+    gGrd.addColorStop(1, 'rgba(6,10,16,1)');
+    ctx.fillStyle = gGrd; ctx.fillRect(0, H * 0.68, W, H * 0.32);
+
+    // Ánh ướt trên đất
+    ctx.fillStyle = 'rgba(60,100,160,0.06)';
+    ctx.fillRect(0, H * 0.68, W, H * 0.32);
+  }
+
+  /* ── MAP13: Mê Cung Gương (mirror) ──────────────────────────
+     Palette: xanh lạnh ánh bạc, trắng phản chiếu, tím sâu.
+     Layers: reflective sky → prismatic light rays
+             → mirror panels far(×0.12) → crystal columns mid(×0.32)
+             → glass floor front(×0.58) → reflection overlay. */
+  function _drawMap13Layers(camX, camY, W, H, t) {
+    // Trời gương phản chiếu
+    const skyGrd = ctx.createLinearGradient(0, 0, 0, H * 0.52);
+    skyGrd.addColorStop(0, '#0A0C18');
+    skyGrd.addColorStop(0.4,'#141A28');
+    skyGrd.addColorStop(0.8,'#181E2E');
+    skyGrd.addColorStop(1, '#101420');
+    ctx.fillStyle = skyGrd; ctx.fillRect(0, 0, W, H * 0.52);
+
+    // Tia sáng lăng kính — prismatic rays
+    for (let i = 0; i < 5; i++) {
+      const rAngle = (i / 5) * Math.PI + t * 0.0003;
+      const rX = W * 0.5 + Math.cos(rAngle) * W * 0.3;
+      const rAlpha = 0.06 + 0.04 * Math.sin(t * 0.001 + i * 1.2);
+      const cols = ['rgba(200,150,255,', 'rgba(150,200,255,', 'rgba(255,150,200,', 'rgba(150,255,200,', 'rgba(255,200,150,'];
+      const rayGrd = ctx.createLinearGradient(W * 0.5, H * 0.1, rX, H * 0.45);
+      rayGrd.addColorStop(0, cols[i] + '0)');
+      rayGrd.addColorStop(0.4, cols[i] + rAlpha + ')');
+      rayGrd.addColorStop(1, cols[i] + '0)');
+      ctx.fillStyle = rayGrd;
+      ctx.save(); ctx.globalAlpha = 0.8;
+      ctx.beginPath(); ctx.moveTo(W*0.5, H*0.1); ctx.lineTo(rX - 15, H*0.46); ctx.lineTo(rX + 15, H*0.46); ctx.closePath();
+      ctx.fill(); ctx.restore();
+    }
+
+    // Bảng gương xa — parallax ×0.12 — tấm kính phản chiếu
+    const m1Off = ((camX * 0.12) % W + W) % W;
+    ctx.globalAlpha = 0.68;
+    for (let pass = -1; pass <= 1; pass++) {
+      const ox = -m1Off + pass * W;
+      const baseY = H * 0.56;
+      for (let i = 0; i < W; i += 38) {
+        const mh = 40 + 28 * Math.abs(Math.sin(i * 0.025 + 1.3));
+        // Khung gương
+        ctx.fillStyle = '#1C2030';
+        ctx.fillRect(ox + i, baseY - mh, 28, mh);
+        // Bề mặt gương phản sáng
+        const mShine = ctx.createLinearGradient(ox + i, baseY - mh, ox + i + 28, baseY);
+        mShine.addColorStop(0, 'rgba(180,200,240,0.22)');
+        mShine.addColorStop(0.3,'rgba(220,230,255,0.30)');
+        mShine.addColorStop(1, 'rgba(100,120,180,0.10)');
+        ctx.fillStyle = mShine; ctx.fillRect(ox + i, baseY - mh, 28, mh);
+      }
+    }
+    ctx.globalAlpha = 1;
+
+    // Cột pha lê giữa — parallax ×0.32
+    const c2Off = ((camX * 0.32) % W + W) % W;
+    ctx.globalAlpha = 0.82;
+    for (let pass = -1; pass <= 1; pass++) {
+      const ox = -c2Off + pass * W;
+      const baseY = H * 0.63;
+      for (let i = 0; i < W; i += 30) {
+        const ch = 45 + 25 * Math.abs(Math.sin(i * 0.032 + 2.0));
+        ctx.fillStyle = '#181C2C';
+        ctx.fillRect(ox + i + 5, baseY - ch, 12, ch);
+        // Tinh thể nhọn trên cột
+        ctx.fillStyle = '#202840';
+        ctx.beginPath();
+        ctx.moveTo(ox + i, baseY - ch);
+        ctx.lineTo(ox + i + 11, baseY - ch - 16);
+        ctx.lineTo(ox + i + 22, baseY - ch);
+        ctx.closePath(); ctx.fill();
+        // Phản chiếu ánh sáng cột
+        const cShineAlpha = 0.18 + 0.10 * Math.sin(t * 0.0011 + i * 0.07);
+        ctx.fillStyle = `rgba(180,210,255,${cShineAlpha})`;
+        ctx.fillRect(ox + i + 7, baseY - ch + 4, 4, ch - 8);
+      }
+    }
+    ctx.globalAlpha = 1;
+
+    // Sàn kính gần — parallax ×0.58
+    const g3Off = ((camX * 0.58) % W + W) % W;
+    ctx.globalAlpha = 0.90;
+    for (let pass = -1; pass <= 1; pass++) {
+      const ox = -g3Off + pass * W;
+      const baseY = H * 0.71;
+      ctx.fillStyle = '#141828';
+      ctx.beginPath(); ctx.moveTo(ox, baseY);
+      for (let i = 0; i <= W + 20; i += 14) {
+        ctx.lineTo(ox + i, baseY - 5 - 6 * Math.sin(i * 0.07 + 1.6));
+      }
+      ctx.lineTo(ox + W + 20, H); ctx.lineTo(ox, H); ctx.closePath(); ctx.fill();
+    }
+    ctx.globalAlpha = 1;
+
+    // Sàn gương
+    const gGrd = ctx.createLinearGradient(0, H * 0.69, 0, H);
+    gGrd.addColorStop(0, 'rgba(24,28,48,0.94)');
+    gGrd.addColorStop(0.5,'rgba(18,22,36,0.97)');
+    gGrd.addColorStop(1, 'rgba(10,12,22,1)');
+    ctx.fillStyle = gGrd; ctx.fillRect(0, H * 0.69, W, H * 0.31);
+
+    // Phản chiếu sàn — mirror sheen
+    const shineAlpha = 0.07 + 0.04 * Math.sin(t * 0.0008);
+    ctx.fillStyle = `rgba(160,190,255,${shineAlpha})`;
+    ctx.fillRect(0, H * 0.69, W, H * 0.08);
+  }
+
+  /* ── MAP14: Địa Ngục (hell) ─────────────────────────────────
+     Palette: đỏ lửa địa ngục, đen khói, cam nóng chảy.
+     Layers: hellfire sky → lava sun → smoke pillars far(×0.10)
+             → lava pools animated → brimstone cliffs mid(×0.32)
+             → demon bones front(×0.58) → lava rock floor
+             → heat distortion overlay.                       */
+  function _drawMap14Layers(camX, camY, W, H, t) {
+    // Trời địa ngục
+    const skyGrd = ctx.createLinearGradient(0, 0, 0, H * 0.52);
+    skyGrd.addColorStop(0,   '#1A0000');
+    skyGrd.addColorStop(0.3, '#3A0400');
+    skyGrd.addColorStop(0.65,'#5A0800');
+    skyGrd.addColorStop(1,   '#3A0400');
+    ctx.fillStyle = skyGrd; ctx.fillRect(0, 0, W, H * 0.52);
+
+    // Biển lửa chân trời — pulsing glow
+    const lavaPulse = 0.22 + 0.10 * Math.sin(t * 0.0011);
+    const lavaGrd = ctx.createLinearGradient(0, H * 0.36, 0, H * 0.52);
+    lavaGrd.addColorStop(0, 'rgba(255,80,0,0)');
+    lavaGrd.addColorStop(1, `rgba(255,80,0,${lavaPulse})`);
+    ctx.fillStyle = lavaGrd; ctx.fillRect(0, H * 0.36, W, H * 0.16);
+
+    // Mặt trời địa ngục
+    const lsX = W * 0.5, lsY = H * 0.09;
+    const lsGrd = ctx.createRadialGradient(lsX, lsY, 0, lsX, lsY, 120);
+    lsGrd.addColorStop(0,   `rgba(255,180,0,${lavaPulse * 1.1})`);
+    lsGrd.addColorStop(0.25,`rgba(255,80,0,${lavaPulse * 0.7})`);
+    lsGrd.addColorStop(0.6, `rgba(180,20,0,${lavaPulse * 0.3})`);
+    lsGrd.addColorStop(1,   'rgba(80,0,0,0)');
+    ctx.fillStyle = lsGrd; ctx.beginPath(); ctx.arc(lsX, lsY, 120, 0, Math.PI*2); ctx.fill();
+    ctx.fillStyle = `rgba(255,220,40,${lavaPulse})`;
+    ctx.beginPath(); ctx.arc(lsX, lsY, 18, 0, Math.PI*2); ctx.fill();
+
+    // Cột khói đen xa — parallax ×0.10
+    const sm1Off = ((camX * 0.10) % W + W) % W;
+    ctx.globalAlpha = 0.55;
+    for (let pass = -1; pass <= 1; pass++) {
+      const ox = -sm1Off + pass * W;
+      for (let i = 0; i < W; i += 60) {
+        const sw = 18 + (i % 4) * 5;
+        const sh = H * 0.25 + H * 0.08 * Math.sin(i * 0.015 + 1.1);
+        const baseY = H * 0.52;
+        const smokeGrd = ctx.createLinearGradient(0, baseY - sh, 0, baseY);
+        smokeGrd.addColorStop(0, 'rgba(10,0,0,0)');
+        smokeGrd.addColorStop(0.6,'rgba(20,4,4,0.60)');
+        smokeGrd.addColorStop(1, 'rgba(30,6,6,0)');
+        ctx.fillStyle = smokeGrd;
+        ctx.fillRect(ox + i, baseY - sh, sw, sh);
+      }
+    }
+    ctx.globalAlpha = 1;
+
+    // Dòng nham thạch — animated
+    const lavaY = H * 0.56, lavaH = H * 0.12;
+    const lOff = ((camX * 0.20) % W + W) % W;
+    const lavaBGrd = ctx.createLinearGradient(0, lavaY, 0, lavaY + lavaH);
+    lavaBGrd.addColorStop(0, 'rgba(255,80,0,0.95)');
+    lavaBGrd.addColorStop(0.4,'rgba(220,40,0,0.98)');
+    lavaBGrd.addColorStop(1, 'rgba(120,0,0,1)');
+    ctx.fillStyle = lavaBGrd; ctx.fillRect(0, lavaY, W, lavaH);
+
+    // Gợn dung nham
+    ctx.strokeStyle = 'rgba(255,200,0,0.40)'; ctx.lineWidth = 2;
+    ctx.beginPath();
+    for (let x = 0; x <= W; x += 3) {
+      const lx = x - lOff + camX * 0.2;
+      const ly = lavaY + 4 * Math.sin(lx * 0.030 + t * 0.0018) + 2.5 * Math.sin(lx * 0.07 + t * 0.003);
+      x === 0 ? ctx.moveTo(x, ly) : ctx.lineTo(x, ly);
+    }
+    ctx.stroke(); ctx.lineWidth = 1;
+
+    // Vách đá diêm sinh giữa — parallax ×0.32
+    const cl2Off = ((camX * 0.32) % W + W) % W;
+    ctx.globalAlpha = 0.85;
+    for (let pass = -1; pass <= 1; pass++) {
+      const ox = -cl2Off + pass * W;
+      const baseY = H * 0.66;
+      for (let i = 0; i < W; i += 40) {
+        const rh = 30 + 25 * Math.abs(Math.sin(i * 0.026 + 1.7));
+        ctx.fillStyle = i%2===0?'#280400':'#1E0200';
+        ctx.fillRect(ox + i, baseY - rh, 34, rh);
+        // Dung nham rỉ ra
+        ctx.fillStyle = 'rgba(255,60,0,0.35)';
+        ctx.fillRect(ox + i + 12, baseY - rh * 0.6, 4, rh * 0.6);
+        // Gai nhọn
+        ctx.fillStyle = '#1A0400';
+        ctx.beginPath();
+        ctx.moveTo(ox + i + 8,  baseY - rh);
+        ctx.lineTo(ox + i + 14, baseY - rh - 12);
+        ctx.lineTo(ox + i + 20, baseY - rh);
+        ctx.closePath(); ctx.fill();
+      }
+    }
+    ctx.globalAlpha = 1;
+
+    // Xương quỷ gần — parallax ×0.58
+    const b3Off = ((camX * 0.58) % W + W) % W;
+    ctx.globalAlpha = 0.88;
+    for (let pass = -1; pass <= 1; pass++) {
+      const ox = -b3Off + pass * W;
+      const baseY = H * 0.71;
+      for (let i = 0; i < W; i += 26) {
+        const bh = 10 + 16 * Math.abs(Math.sin(i * 0.050 + 2.5));
+        ctx.fillStyle = '#3A1000';
+        ctx.fillRect(ox + i, baseY - bh, 6, bh);
+        ctx.fillRect(ox + i + 10, baseY - bh * 0.7, 6, bh * 0.7);
+        // Giao chéo xương
+        ctx.strokeStyle = '#4A1800'; ctx.lineWidth = 2;
+        ctx.beginPath(); ctx.moveTo(ox + i, baseY - bh); ctx.lineTo(ox + i + 16, baseY); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(ox + i + 16, baseY - bh * 0.7); ctx.lineTo(ox + i, baseY); ctx.stroke();
+      }
+    }
+    ctx.globalAlpha = 1; ctx.lineWidth = 1;
+
+    // Sàn đá nham thạch
+    const gGrd = ctx.createLinearGradient(0, H * 0.69, 0, H);
+    gGrd.addColorStop(0, 'rgba(60,8,0,0.96)');
+    gGrd.addColorStop(0.5,'rgba(36,4,0,0.98)');
+    gGrd.addColorStop(1, 'rgba(16,0,0,1)');
+    ctx.fillStyle = gGrd; ctx.fillRect(0, H * 0.69, W, H * 0.31);
+
+    // Vết nứt nham thạch trên sàn
+    ctx.strokeStyle = 'rgba(255,80,0,0.28)'; ctx.lineWidth = 1;
+    for (let i = 0; i < 8; i++) {
+      const cx2 = ((i * 167 - camX * 0.7) % W + W) % W;
+      ctx.beginPath();
+      ctx.moveTo(cx2, H * 0.69 + 5);
+      ctx.lineTo(cx2 + 20, H * 0.69 + 18);
+      ctx.lineTo(cx2 + 14, H * 0.69 + 32);
+      ctx.stroke();
+    }
+    ctx.lineWidth = 1;
+
+    // Nhiệt sóng overlay
+    const heatAlpha = 0.07 + 0.04 * Math.sin(t * 0.0016);
+    ctx.fillStyle = `rgba(255,40,0,${heatAlpha})`;
+    ctx.fillRect(0, 0, W, H);
+  }
+
+  /* ── MAP15: Tâm Vũ Trụ (cosmos) ─────────────────────────────
+     Palette: đen vũ trụ, xanh nebula, vàng sao, tím hố đen.
+     Layers: deep space → nebula clouds(animated) → distant stars
+             → galaxy core glow → void rift far(×0.12)
+             → asteroid belt mid(×0.28) → cosmic dust front(×0.55)
+             → void ground → starfield scroll.                */
+  function _drawMap15Layers(camX, camY, W, H, t) {
+    // Vũ trụ đen sâu
+    ctx.fillStyle = '#000008'; ctx.fillRect(0, 0, W, H);
+
+    // Thiên hà xa — nebula gradient trải dài
+    const nebX = W * 0.55, nebY = H * 0.30;
+    const nebGrd = ctx.createRadialGradient(nebX, nebY, 0, nebX, nebY, H * 0.55);
+    const nebPulse = 0.08 + 0.04 * Math.sin(t * 0.0005);
+    nebGrd.addColorStop(0,   `rgba(80,0,120,${nebPulse * 1.5})`);
+    nebGrd.addColorStop(0.3, `rgba(40,0,80,${nebPulse})`);
+    nebGrd.addColorStop(0.6, `rgba(0,20,60,${nebPulse * 0.6})`);
+    nebGrd.addColorStop(1,   'rgba(0,0,10,0)');
+    ctx.fillStyle = nebGrd; ctx.fillRect(0, 0, W, H);
+
+    // Nebula thứ hai — xanh lam
+    const neb2X = W * 0.2, neb2Y = H * 0.15;
+    const neb2Grd = ctx.createRadialGradient(neb2X, neb2Y, 0, neb2X, neb2Y, H * 0.38);
+    const neb2P = 0.06 + 0.03 * Math.sin(t * 0.0006 + 1.8);
+    neb2Grd.addColorStop(0,  `rgba(0,60,160,${neb2P * 1.4})`);
+    neb2Grd.addColorStop(0.4,`rgba(0,30,80,${neb2P})`);
+    neb2Grd.addColorStop(1,  'rgba(0,0,10,0)');
+    ctx.fillStyle = neb2Grd; ctx.fillRect(0, 0, W, H);
+
+    // Sao nhỏ — lớp xa không scroll
+    ctx.fillStyle = 'rgba(255,255,255,0.70)';
+    for (let i = 0; i < 60; i++) {
+      const sx2 = (i * 197 + 23) % W;
+      const sy2 = (i * 137 + 11) % (H * 0.75);
+      const ss  = 0.6 + (i % 5) * 0.2;
+      const sFlicker = Math.sin(t * 0.002 + i * 0.6) > 0.5 ? 0.9 : 0.5;
+      ctx.globalAlpha = sFlicker;
+      ctx.beginPath(); ctx.arc(sx2, sy2, ss, 0, Math.PI*2); ctx.fill();
+    }
+    ctx.globalAlpha = 1;
+
+    // Sao sáng — twinkle
+    ['rgba(200,220,255,','rgba(255,220,150,','rgba(180,150,255,'].forEach((col, ci) => {
+      for (let i = 0; i < 8; i++) {
+        const sx2 = ((i * 173 + ci * 101) % W);
+        const sy2 = H * 0.04 + (i * 71 % (H * 0.50));
+        const brightFlicker = 0.5 + 0.5 * Math.sin(t * 0.0025 + i * 1.4 + ci * 2.1);
+        ctx.fillStyle = col + brightFlicker + ')';
+        ctx.beginPath(); ctx.arc(sx2, sy2, 1.2 + brightFlicker * 0.6, 0, Math.PI*2); ctx.fill();
+      }
+    });
+
+    // Vùng hố đen xa — parallax ×0.12
+    const v1Off = ((camX * 0.12) % W + W) % W;
+    ctx.globalAlpha = 0.58;
+    for (let pass = -1; pass <= 1; pass++) {
+      const ox = -v1Off + pass * W;
+      const baseY = H * 0.58;
+      for (let i = 0; i < W; i += 50) {
+        const vh = 20 + 28 * Math.abs(Math.sin(i * 0.028 + 1.5));
+        // Vật chất tối hình thoi
+        ctx.fillStyle = '#0A001A';
+        ctx.beginPath();
+        ctx.moveTo(ox + i + 10, baseY - vh);
+        ctx.lineTo(ox + i + 22, baseY - vh * 0.5);
+        ctx.lineTo(ox + i + 10, baseY);
+        ctx.lineTo(ox + i - 2,  baseY - vh * 0.5);
+        ctx.closePath(); ctx.fill();
+        // Hào quang lỗ đen tím
+        const vGrdI = ctx.createRadialGradient(ox+i+10, baseY - vh*0.5, 2, ox+i+10, baseY - vh*0.5, 18);
+        vGrdI.addColorStop(0, 'rgba(120,0,200,0.28)');
+        vGrdI.addColorStop(1, 'rgba(60,0,100,0)');
+        ctx.fillStyle = vGrdI;
+        ctx.beginPath(); ctx.arc(ox+i+10, baseY - vh*0.5, 18, 0, Math.PI*2); ctx.fill();
+      }
+    }
+    ctx.globalAlpha = 1;
+
+    // Tiểu hành tinh giữa — parallax ×0.28
+    const a2Off = ((camX * 0.28) % W + W) % W;
+    ctx.globalAlpha = 0.80;
+    for (let pass = -1; pass <= 1; pass++) {
+      const ox = -a2Off + pass * W;
+      const baseY = H * 0.63;
+      for (let i = 0; i < W; i += 36) {
+        const ah = 14 + 20 * Math.abs(Math.sin(i * 0.035 + 2.1));
+        const aw = 18 + (i % 4) * 5;
+        ctx.fillStyle = i%3===0?'#0C0818':'#080610';
+        // Hình tiểu hành tinh không đều
+        ctx.save();
+        ctx.translate(ox + i + aw/2, baseY - ah/2);
+        ctx.rotate(i * 0.08);
+        ctx.beginPath();
+        for (let k = 0; k < 7; k++) {
+          const a2k = (k / 7) * Math.PI * 2;
+          const r2k = (aw/2) * (0.7 + 0.3 * Math.sin(k * 2.3 + i * 0.05));
+          if (k === 0) ctx.moveTo(Math.cos(a2k)*r2k, Math.sin(a2k)*r2k);
+          else         ctx.lineTo(Math.cos(a2k)*r2k, Math.sin(a2k)*r2k);
+        }
+        ctx.closePath(); ctx.fill();
+        ctx.restore();
+      }
+    }
+    ctx.globalAlpha = 1;
+
+    // Bụi vũ trụ gần — parallax ×0.55
+    const d3Off = ((camX * 0.55) % W + W) % W;
+    ctx.globalAlpha = 0.88;
+    for (let pass = -1; pass <= 1; pass++) {
+      const ox = -d3Off + pass * W;
+      const baseY = H * 0.70;
+      ctx.fillStyle = '#060010';
+      ctx.beginPath(); ctx.moveTo(ox, baseY);
+      for (let i = 0; i <= W + 20; i += 12) {
+        const dy = baseY - 6 - 10 * Math.abs(Math.sin(i * 0.050 + 1.9));
+        ctx.lineTo(ox + i, dy);
+      }
+      ctx.lineTo(ox + W + 20, H); ctx.lineTo(ox, H); ctx.closePath(); ctx.fill();
+    }
+    ctx.globalAlpha = 1;
+
+    // Sàn không gian
+    const gGrd = ctx.createLinearGradient(0, H * 0.69, 0, H);
+    gGrd.addColorStop(0, 'rgba(6,0,18,0.96)');
+    gGrd.addColorStop(1, 'rgba(2,0,8,1)');
+    ctx.fillStyle = gGrd; ctx.fillRect(0, H * 0.69, W, H * 0.31);
+
+    // Lõi thiên hà sáng trung tâm — pulse
+    const coreAlpha = 0.08 + 0.05 * Math.sin(t * 0.0009);
+    const coreGrd = ctx.createRadialGradient(W/2, H*0.30, 0, W/2, H*0.30, H*0.22);
+    coreGrd.addColorStop(0, `rgba(255,180,255,${coreAlpha})`);
+    coreGrd.addColorStop(1, 'rgba(100,0,150,0)');
+    ctx.fillStyle = coreGrd; ctx.fillRect(0, 0, W, H * 0.55);
+  }
+
   function drawBackground(camX, camY) {
     const W = canvas.width, H = canvas.height;
     if (!currentMap) {
@@ -9912,9 +11269,11 @@ const Game = (() => {
 
     // ── Ground texture: chỉ vẽ tile grid cho map KHÔNG có bgPattern riêng ──
     // Map01/02/03 dùng parallax layers đầy đủ → skip tile grid để tránh chèn chồng
-    const hasCustomBg = currentMap.bgPattern === 'village' ||
-                        currentMap.bgPattern === 'forest'  ||
-                        currentMap.bgPattern === 'swamp';
+    const hasCustomBg = [
+      'village','forest','swamp','ruins','desert','ice',
+      'graveyard','tower','blood','mech','chaos','storm',
+      'mirror','hell','cosmos',
+    ].includes(currentMap.bgPattern);
 
     if (!hasCustomBg) {
       const groundColor = currentMap.groundColor || '#1a1a1a';
@@ -9945,13 +11304,29 @@ const Game = (() => {
     // ── Parallax background layers — map01 / map02 / map03 ──
     // Vẽ sau tile grid để các lớp parallax phủ lên background generic.
     const _bgT = performance.now();
-    if      (currentMap.bgPattern === 'village') _drawMap01Layers(camX, camY, W, H, _bgT);
-    else if (currentMap.bgPattern === 'forest')  _drawMap02Layers(camX, camY, W, H, _bgT);
-    else if (currentMap.bgPattern === 'swamp')   _drawMap03Layers(camX, camY, W, H, _bgT);
+    const _bgPat = currentMap.bgPattern;
+    if      (_bgPat === 'village')   _drawMap01Layers(camX, camY, W, H, _bgT);
+    else if (_bgPat === 'forest')    _drawMap02Layers(camX, camY, W, H, _bgT);
+    else if (_bgPat === 'swamp')     _drawMap03Layers(camX, camY, W, H, _bgT);
+    else if (_bgPat === 'ruins')     _drawMap04Layers(camX, camY, W, H, _bgT);
+    else if (_bgPat === 'desert')    _drawMap05Layers(camX, camY, W, H, _bgT);
+    else if (_bgPat === 'ice')       _drawMap06Layers(camX, camY, W, H, _bgT);
+    else if (_bgPat === 'graveyard') _drawMap07Layers(camX, camY, W, H, _bgT);
+    else if (_bgPat === 'tower')     _drawMap08Layers(camX, camY, W, H, _bgT);
+    else if (_bgPat === 'blood')     _drawMap09Layers(camX, camY, W, H, _bgT);
+    else if (_bgPat === 'mech')      _drawMap10Layers(camX, camY, W, H, _bgT);
+    else if (_bgPat === 'chaos')     _drawMap11Layers(camX, camY, W, H, _bgT);
+    else if (_bgPat === 'storm')     _drawMap12Layers(camX, camY, W, H, _bgT);
+    else if (_bgPat === 'mirror')    _drawMap13Layers(camX, camY, W, H, _bgT);
+    else if (_bgPat === 'hell')      _drawMap14Layers(camX, camY, W, H, _bgT);
+    else if (_bgPat === 'cosmos')    _drawMap15Layers(camX, camY, W, H, _bgT);
 
     // ── Vignette: tối viền màn hình để tập trung vào trung tâm ──
     // Map01 (ban ngày) dùng alpha thấp hơn để không tối quá
-    const vigAlpha = (currentMap.bgPattern === 'village') ? 0.42 : 0.55;
+    const vigAlpha = _bgPat === 'village' ? 0.38
+                  : _bgPat === 'desert'  ? 0.42
+                  : _bgPat === 'cosmos'  ? 0.35
+                  : 0.52;
     const vig = ctx.createRadialGradient(W/2, H/2, H*0.25, W/2, H/2, H*0.85);
     vig.addColorStop(0, 'rgba(0,0,0,0)');
     vig.addColorStop(1, `rgba(0,0,0,${vigAlpha})`);
