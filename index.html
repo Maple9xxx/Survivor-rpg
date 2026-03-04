@@ -2754,14 +2754,39 @@ const UI = (() => {
     // Ẩn nút "Tiếp tục" và "Về Menu" — chỉ dùng được khi đang trong game
     const pauseMenu = document.querySelector('#screen-pause .pause-menu');
     if (pauseMenu) pauseMenu.style.display = 'none';
-    // Thêm nút quay lại Menu nếu chưa có
+
+    // Nút xoá tiến trình
+    let resetBtn = document.getElementById('settings-reset-btn');
+    if (!resetBtn) {
+      resetBtn = document.createElement('button');
+      resetBtn.id = 'settings-reset-btn';
+      resetBtn.className = 'menu-btn';
+      resetBtn.style.cssText = 'margin-top:12px;width:min(280px,80vw);background:rgba(180,30,30,.25);border-color:rgba(220,60,60,.5);color:#ff8080;';
+      resetBtn.textContent = '🗑 XOÁ TIẾN TRÌNH';
+      resetBtn.onclick = () => {
+        showConfirm(
+          '⚠ Xoá tiến trình?',
+          'Toàn bộ vàng, pet, tiềm năng và bản đồ đã mở khoá sẽ bị xoá vĩnh viễn. Không thể hoàn tác!',
+          () => {
+            Save.reset();
+            Save.load();
+            updateMenuGold();
+            showScreen('menu');
+            Toast.show('🗑 Đã xoá toàn bộ tiến trình.');
+          }
+        );
+      };
+      document.getElementById('screen-pause').appendChild(resetBtn);
+    }
+    resetBtn.style.display = '';
+
+    // Nút quay lại Menu
     let backBtn = document.getElementById('settings-back-btn');
     if (!backBtn) {
       backBtn = document.createElement('button');
       backBtn.id = 'settings-back-btn';
       backBtn.className = 'menu-btn';
-      backBtn.style.marginTop = '16px';
-      backBtn.style.width = 'min(280px,80vw)';
+      backBtn.style.cssText = 'margin-top:8px;width:min(280px,80vw);';
       backBtn.textContent = '← QUAY LẠI';
       backBtn.onclick = () => showScreen('menu');
       document.getElementById('screen-pause').appendChild(backBtn);
@@ -5493,6 +5518,23 @@ class Enemy {
     // Clamp to world
     this.x = MathU.clamp(this.x, this.r, CFG.WORLD_W - this.r);
     this.y = MathU.clamp(this.y, this.r, CFG.WORLD_H - this.r);
+
+    // Universal push-out: ngăn mọi quái/elite/boss chồng lên player
+    {
+      const minSep = this.r + player.r + 2;
+      const odx = player.x - this.x;
+      const ody = player.y - this.y;
+      const od  = Math.sqrt(odx*odx + ody*ody) || 1;
+      if (od < minSep) {
+        const push = (minSep - od) * 0.5;
+        player.x += (odx / od) * push;
+        player.y += (ody / od) * push;
+        this.x   -= (odx / od) * push;
+        this.y   -= (ody / od) * push;
+        player.x = MathU.clamp(player.x, player.r, CFG.WORLD_W - player.r);
+        player.y = MathU.clamp(player.y, player.r, CFG.WORLD_H - player.r);
+      }
+    }
 
     // Attack player
     this.atkTimer += dt;
@@ -9933,7 +9975,18 @@ window.addEventListener('DOMContentLoaded', () => {
 });
 /* ============================================================
    END OF FILE
-   Game version: 1.1.4
+   Game version: 1.2.0
+   Thay đổi từ v1.1.4 (Balance + Bug Fix Patch):
+     ✅ Boss/Elite/All AI: Universal push-out — quái không còn kẹt player
+     ✅ Lưu Phong Evolved: sword_ki ×0.4→×0.15 (nerf OP, đúng vị trí yếu nhất)
+     ✅ Lưu Phong Active: bleed() fix scale theo 30% totalDmg/s (was flat 15/s)
+     ✅ Fox pet: skill đổi trigger mỗi 50 kill (was 5 elite — không đủ elite trong 3p)
+     ✅ Snake pet: poison scale 8% totalDmg/s×3s (was flat 15 dmg — phế late game)
+     ✅ Turtle pet: Phản Giáp AoE ×0.8 mỗi khi bị đánh (identity mới: tank reflect)
+     ✅ Tử Linh Active: minion chase enemy (was orbit player), CD 12→9s
+     ✅ Tử Linh: minion kill → tạo soul (vòng lặp spam active)
+     ✅ Tử Linh: Soul Burst radius 100→160px, ×0.4→×0.6/soul, minion dmg ×0.7+crit
+     ✅ ArmorPen: armorPen riêng (was dùng chung pierce), bypass shield + bonus boss
    Thay đổi từ v1.1.2 (Huyền Nguyệt Evolved Rework):
      ✅ HN Evo 1: Mini orb 2→3 cái, dmg ×0.3→×0.45 mỗi cái
      ✅ HN Evo 2: Mini orb homing targeted vào 3 quái gần nhất (was random direction)
