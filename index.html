@@ -2711,7 +2711,7 @@ const UI = (() => {
         ['🔥','Chuỗi Thắng','Thành thạo một map trước khi leo. Thắng 3 lần liên tiếp không thua → lần thứ 4 nhận +20% vàng. Chuỗi dài = farm nhanh nhất.'],
         ['✨','Tiến Hoá Là Ưu Tiên Số 1','Nâng vũ khí chính lên cấp 4 càng sớm càng tốt. Tiến hoá cho +30% sát thương và thay đổi hoàn toàn cơ chế — mạnh hơn gộp 3 vũ khí phụ.'],
         ['⚡','Thưởng Trong Run','Đạt 100 kill trước phút 2 (+30 ◈), không bị đánh 30 giây (+15 ◈), hạ tinh anh trong 5 giây (+20 ◈). Chơi tích cực luôn có lợi hơn chỉ tồn tại.'],
-        ['🐾','Thú Cưng','Trang bị Thú Cưng để nhận buff vĩnh viễn mỗi run: Linh Hồ +20% vàng, Bạch Hổ +15% tốc đánh, Hắc Xà hút máu 5%, Thần Ưng +18% tốc, Thần Quy +25% HP, Ma Long +8% crit. Đầu tư sớm vào Linh Hồ nếu muốn farm vàng nhanh.'],
+        ['🐾','Thú Cưng','Mỗi pet có lối chơi riêng: Linh Hồ (+20% vàng, +5% mỗi 50 kill) cho econ; Bạch Hổ (+15% tốc đánh) cho damage ổn định; Hắc Xà (hút máu 5% + độc scale theo ST) cho sustain; Thần Ưng (+18% tốc, +12% AoE) cho chars AoE; Thần Quy (+25% HP, phản đòn AoE) cho tank; Ma Long (+8% crit) cho burst damage.'],
         ['⚔️','Lưu Phong — Kiếm Ý','Tích lũy kill để stack Kiếm Ý (+1.5% tốc/kill, tối đa 30 stack = +45%). Bị đánh mất 65% stack (giữ lại 35%). Dùng Tàn Phong Trảm để thoát vây — không phải để tấn công. Effective DPS ~40+ với full stack.'],
         ['🌙','Huyền Nguyệt — Mana Tích Tụ','Đứng yên 0.5 giây: sát thương +20%. Di chuyển reset ngay. Sau tiến hoá: mỗi orb trúng tách 3 mini orb (×0.45 mỗi cái, pierce 1) homing vào 3 quái riêng + độc 4 giây. Đứng yên khi evolved = ×3.54 effective — đứng góc tường để tối đa hóa.'],
         ['🏹','Thiết Tâm — Mắt Đại Bàng','Giữ khoảng cách >300 đơn vị để khai thác +25% sát thương. Chạy vòng tròn liên tục — cung xuyên thấu qua nhiều quái. Ưu tiên diệt quái bắn xa trước.'],
@@ -3607,9 +3607,9 @@ const PETS = [
     passiveName: 'Hào Quang Tài Lộc',
     passiveDesc: '+20% vàng nhận trong mỗi run.',
     skillName: 'Linh Khí Tích Lũy',
-    skillDesc: 'Mỗi 5 tinh anh tiêu diệt → thêm +3% vàng nhận trong run (tối đa +15%). Tích lũy trong suốt run.',
+    skillDesc: 'Mỗi 50 quái tiêu diệt → thêm +5% vàng nhận (tối đa +15%, 3 lần). Tích lũy trong suốt run.',
     apply: p => { p.goldBonus += 0.20; },
-    applySkill: p => { p._foxEliteKills = 0; p._foxGoldBonus = 0; },
+    applySkill: p => { p._foxKillCount = 0; p._foxGoldBonus = 0; },
     color: '#ffbb20',
   },
   {
@@ -3629,9 +3629,9 @@ const PETS = [
     passiveName: 'Hút Huyết',
     passiveDesc: 'Hút máu 5%: mỗi đòn đánh trúng hồi lại 5% sát thương gây ra thành HP.',
     skillName: 'Nọc Độc',
-    skillDesc: '20% cơ hội mỗi đòn đánh áp độc lên kẻ thù (5 ST/giây × 3 giây). Làm mới thời gian nếu trúng lại.',
+    skillDesc: '25% cơ hội mỗi đòn áp độc lên kẻ thù: 8% tổng sát thương/giây × 3 giây. Làm mới thời gian nếu trúng lại.',
     apply: p => { p.lifesteal = Math.min(0.5, (p.lifesteal || 0) + 0.05); },
-    applySkill: p => { p._snakePoisonChance = 0.20; },
+    applySkill: p => { p._snakePoisonChance = 0.25; },
     color: '#40cc60',
   },
   {
@@ -3650,10 +3650,10 @@ const PETS = [
     cost: 1600,
     passiveName: 'Mai Thần Hộ Thể',
     passiveDesc: '+25% HP tối đa + giảm 8% sát thương nhận vào.',
-    skillName: 'Phản Giáp Khẩn Cấp',
-    skillDesc: 'Khi HP < 30%: giảm thêm 20% sát thương nhận vào (tổng -28% khi kết hợp với passive). Tự động kích hoạt.',
+    skillName: 'Phản Giáp',
+    skillDesc: 'Mỗi khi nhận đòn: phản sát thương AoE 60px (×0.8 tổng sát thương) vào tất cả quái xung quanh. Khi HP<30%: giảm thêm 20% sát thương nhận vào.',
     apply: p => { const b = Math.floor(p.maxHp * 0.25); p.maxHp += b; p.hp += b; p.armor += 0.08; },
-    applySkill: p => { p._turtleSkillEnabled = true; },
+    applySkill: p => { p._turtleSkillEnabled = true; p._turtleCounterCd = 0; },
     color: '#88cc44',
   },
   {
@@ -3679,10 +3679,10 @@ const CHARS = [
     passiveName: 'Kiếm Ý',
     passiveDesc: 'Mỗi lần giết quái, tốc chém +1.5% (tối đa 30 stack = +45%). Bị trúng đòn mất 65% stack (giữ lại 35%) — tích công không bị reset hoàn toàn.',
     activeName: 'Tàn Phong Trảm',
-    activeDesc: 'Đóng băng thời gian 0.2 giây rồi lao xuyên tất cả kẻ thù trên đường đi (×2.5 sát thương + chảy máu 5 tick). Vô địch suốt quá trình dash.',
+    activeDesc: 'Đóng băng thời gian 0.2 giây rồi lao xuyên tất cả kẻ thù trên đường đi (×2.5 sát thương + chảy máu 30% ST/giây × 5 giây). Vô địch suốt quá trình dash.',
     activeIcon: '💨', activeCooldown: 8,
     evolvedWeapon: 'Thần Kiếm Vong Linh',
-    evolveDesc: 'Kiếm khí toả ra 8 hướng, mỗi nhát chém tạo thêm 2 lưỡi kiếm ảo đánh trễ 150ms và 300ms.',
+    evolveDesc: 'Kiếm khí toả ra 8 hướng (×0.15/beam, pierce 3), mỗi nhát chém tạo thêm 2 lưỡi kiếm ảo đánh trễ 150ms và 300ms (×0.5/lưỡi).',
     color: '#60d0ff',
   },
   {
@@ -4372,17 +4372,25 @@ class Player {
       finalDmg *= 0.7;  // takes less damage while in shadow mode
     }
 
-    // Thần Quy pet skill — extra 20% DR when HP < 30%
-    if (this._turtleSkillEnabled && this.hp < this.maxHp * 0.30) {
-      finalDmg *= 0.80;
-      // Visual pulse to indicate skill active
-      if (!this._turtleFlash) {
-        this._turtleFlash = 0.3;
-        Audio.playSFX('pet_skill');
-        Game.rings && Game.rings.push(new RingEffect(this.x, this.y, 28, '#88cc44'));
+    // Thần Quy pet skill — counterattack AoE on hit + extra DR when HP < 30%
+    if (this._turtleSkillEnabled) {
+      // Phản Giáp: AoE counterattack on every hit (cooldown 0.5s to avoid spam)
+      if ((this._turtleCounterCd || 0) <= 0) {
+        this._turtleCounterCd = 0.5;
+        Game.explosionAt(this.x, this.y, 60, this.totalDmg * 0.8, '#88cc44');
+        Game.rings && Game.rings.push(new RingEffect(this.x, this.y, 60, '#88cc44'));
+      }
+      // Emergency DR when HP < 30%
+      if (this.hp < this.maxHp * 0.30) {
+        finalDmg *= 0.80;
+        if (!this._turtleFlash) {
+          this._turtleFlash = 0.3;
+          Audio.playSFX('pet_skill');
+        }
       }
     }
     if (this._turtleFlash > 0) this._turtleFlash -= 0.016;
+    if ((this._turtleCounterCd || 0) > 0) this._turtleCounterCd -= 0.016;
 
     this.hp       -= finalDmg;
     this.dmgTaken += finalDmg;
@@ -4499,13 +4507,13 @@ class Player {
       Audio.playSFX('minion');
     }
 
-    // Fox pet skill — track elite kills, boost goldBonus every 5 elites
-    if (this._foxEliteKills !== undefined && (enemy.isElite || enemy.isBoss)) {
-      this._foxEliteKills++;
-      if (this._foxEliteKills % 5 === 0 && (this._foxGoldBonus || 0) < 0.15) {
-        this._foxGoldBonus = (this._foxGoldBonus || 0) + 0.03;
-        this.goldBonus += 0.03;
-        Toast.show(`🦊 Linh Khí: +3% vàng! (tổng +${Math.round((this._foxGoldBonus||0)*100)}%)`);
+    // Fox pet skill — track total kills, boost goldBonus every 50 kills
+    if (this._foxKillCount !== undefined) {
+      this._foxKillCount++;
+      if (this._foxKillCount % 50 === 0 && (this._foxGoldBonus || 0) < 0.15) {
+        this._foxGoldBonus = (this._foxGoldBonus || 0) + 0.05;
+        this.goldBonus += 0.05;
+        Toast.show(`🦊 Linh Khí: +5% vàng! (tổng +${Math.round((this._foxGoldBonus||0)*100)}%)`);
         Audio.playSFX('pet_skill');
         Game.particles.spawn(this.x, this.y, { count:10, color:'#ffbb20', speedMin:60, speedMax:160, life:0.5 });
       }
@@ -5421,9 +5429,9 @@ class Enemy {
     if (!this.isBoss) Audio.playSFX('kill');
   }
 
-  bleed(duration) {
+  bleed(duration, dmgPerSec) {
     this.bleedT   = duration;
-    this.bleedDmg = 15;
+    this.bleedDmg = dmgPerSec || 15;
   }
 
   applyPoison(duration, dmgPerTick) {
@@ -6895,7 +6903,7 @@ const Game = (() => {
             e.takeDamage(val, p, crit ? 'crit' : 'normal');
             p.trackSkillDmg('main_' + p.charData.id, val);
             // Snake pet: apply poison
-            if (p._pendingPoison) { p._pendingPoison = false; e.applyPoison(3, 25); Audio.playSFX('pet_skill'); }
+            if (p._pendingPoison) { p._pendingPoison = false; e.applyPoison(3, p.totalDmg * 0.08); Audio.playSFX('pet_skill'); }
             if (p.mainWeapon.evolved) {
               setTimeout(() => { if (!e.dead) e.takeDamage(dmg * 0.5, p, 'normal'); }, 150);
               setTimeout(() => { if (!e.dead) e.takeDamage(dmg * 0.5, p, 'normal'); }, 300);
@@ -6925,7 +6933,7 @@ const Game = (() => {
               x: p.x, y: p.y,
               vx: Math.cos(a) * 280,
               vy: Math.sin(a) * 280,
-              dmg: dmg * 0.4,
+              dmg: dmg * 0.15,
               r: 5, life: 0.55,
               color: '#c0e8ff', owner: 'player',
               pierce: 3, shape: 'sword_ki',
