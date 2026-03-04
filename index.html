@@ -27,8 +27,9 @@ canvas{display:block;image-rendering:pixelated;}
 .menu-btn.primary{background:linear-gradient(135deg,rgba(120,60,0,.95),rgba(80,30,0,.9));border-color:#ffd700;font-size:clamp(16px,4vw,22px);padding:18px 32px;box-shadow:0 0 20px rgba(200,150,12,.3);}
 #menu-gold{position:absolute;top:16px;right:20px;display:flex;align-items:center;gap:8px;color:#ffd700;font-size:18px;font-weight:700;text-shadow:0 0 10px rgba(255,215,0,.8);z-index:2;}
 #menu-gold::before{content:'◈';font-size:22px;filter:drop-shadow(0 0 6px #ffd700);}
-#screen-charselect{background:linear-gradient(160deg,#0d0500 0%,#1a0800 50%,#0d0500 100%);padding:12px 14px 20px;overflow-y:auto;justify-content:flex-start;align-items:center;}
-#charselect-header{text-align:center;margin-bottom:12px;}
+#screen-charselect{background:linear-gradient(160deg,#0d0500 0%,#1a0800 50%,#0d0500 100%);padding:12px 14px 0;overflow-y:auto;-webkit-overflow-scrolling:touch;justify-content:flex-start;align-items:center;}
+#charselect-scroll-area{width:100%;display:contents;}
+#charselect-footer{width:100%;max-width:700px;position:sticky;bottom:0;padding:10px 0 16px;background:linear-gradient(0deg,rgba(13,5,0,1) 70%,rgba(13,5,0,0));}
 #charselect-header h2{font-size:clamp(16px,4vw,26px);color:#ffd700;letter-spacing:4px;text-shadow:0 0 15px rgba(255,215,0,.6);}
 .char-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;width:100%;max-width:700px;margin:0 auto 12px;}
 .char-card{position:relative;background:linear-gradient(160deg,rgba(30,15,0,.95),rgba(15,8,0,.95));border:1px solid #4a3000;border-radius:8px;padding:10px 8px;cursor:pointer;transition:all .3s ease;text-align:center;overflow:hidden;}
@@ -50,6 +51,8 @@ canvas{display:block;image-rendering:pixelated;}
 .skill-desc{font-size:12px;color:#e0c060;line-height:1.5;}
 .skill-name{color:#ffd700;font-weight:700;}
 .charselect-actions{display:flex;gap:12px;width:100%;max-width:700px;margin:0 auto;}
+.charselect-actions .menu-btn{flex:1;}
+#charselect-header{text-align:center;margin-bottom:12px;width:100%;max-width:700px;}
 .charselect-actions .menu-btn{flex:1;}
 #screen-mapselect{background:linear-gradient(160deg,#050010 0%,#0a0020 50%,#050010 100%);padding:20px;overflow-y:auto;justify-content:flex-start;align-items:center;}
 #mapselect-header{text-align:center;margin-bottom:20px;}
@@ -170,23 +173,27 @@ canvas{display:block;image-rendering:pixelated;}
 .codex-entry{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:8px;padding:14px;margin-bottom:10px;}
 .codex-entry h4{color:#ffd700;margin-bottom:6px;}
 .codex-entry p{font-size:12px;color:#a08050;line-height:1.6;}
-#screen-potential{background:linear-gradient(160deg,#000510,#001020);padding:20px;overflow-y:auto;align-items:flex-start;justify-content:flex-start;}
-#potential-header{width:100%;text-align:center;margin-bottom:8px;}
-#potential-header h2{font-size:clamp(18px,5vw,28px);color:#60d0ff;letter-spacing:3px;}
-#potential-gold-info{text-align:center;font-size:13px;color:#ffd700;margin-bottom:20px;}
-.potential-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(160px,44vw),1fr));gap:16px;max-width:720px;margin:0 auto 20px;width:100%;}
-.potential-branch{background:rgba(255,255,255,.03);border-radius:10px;overflow:hidden;}
-.branch-header{padding:12px;text-align:center;font-size:13px;font-weight:700;letter-spacing:2px;}
-.branch-body{padding:8px;}
-.potential-node{display:flex;align-items:center;gap:8px;padding:8px;border-radius:6px;margin-bottom:4px;cursor:pointer;transition:all .2s;border:1px solid rgba(255,255,255,.08);-webkit-appearance:none;touch-action:manipulation;}
+#screen-potential{background:linear-gradient(160deg,#000510,#001020);padding:0;justify-content:flex-start;align-items:stretch;}
+#potential-scroll-area{position:absolute;top:0;left:0;right:0;bottom:76px;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;touch-action:pan-y;padding:16px 12px 12px;box-sizing:border-box;}
+#potential-footer{position:absolute;left:0;right:0;bottom:0;height:76px;padding:10px 14px 16px;box-sizing:border-box;border-top:1px solid rgba(96,160,255,.15);background:linear-gradient(0deg,rgba(0,5,16,1),rgba(0,5,16,.95));}
+#potential-header{text-align:center;margin-bottom:6px;}
+#potential-header h2{font-size:clamp(16px,4.5vw,24px);color:#60d0ff;letter-spacing:3px;}
+#potential-gold-info{text-align:center;font-size:12px;color:#ffd700;margin-bottom:14px;}
+.potential-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;max-width:720px;margin:0 auto;width:100%;}
+.potential-branch{background:rgba(255,255,255,.03);border-radius:10px;overflow:hidden;border:1px solid rgba(255,255,255,.06);}
+.branch-header{padding:8px 10px;text-align:center;font-size:11px;font-weight:700;letter-spacing:2px;}
+.branch-max-hint{font-size:9px;color:#4a6080;text-align:center;padding:3px 8px 5px;letter-spacing:.5px;}
+.branch-max-hint b{color:#60a0c0;}
+.branch-body{padding:6px;}
+.potential-node{display:grid;grid-template-columns:28px 1fr auto;align-items:center;gap:6px;padding:7px 6px;border-radius:6px;margin-bottom:4px;border:1px solid rgba(255,255,255,.08);transition:all .2s;-webkit-appearance:none;touch-action:manipulation;}
+.potential-node:last-child{margin-bottom:0;}
 .potential-node:active{transform:scale(.97);}
-.potential-node.maxed{opacity:.5;cursor:default;}
-.node-icon{font-size:20px;}
-.node-info{flex:1;}
-.node-name{font-size:11px;color:#e0c060;font-weight:700;}
-.node-desc{font-size:10px;color:#806040;margin-top:2px;}
-.node-cost{font-size:10px;color:#ffd700;white-space:nowrap;}
-.node-level{font-size:10px;color:#4aff88;text-align:right;}
+.potential-node.maxed{opacity:.6;cursor:default;}
+.node-icon{font-size:18px;text-align:center;}
+.node-info{flex:1;min-width:0;}
+.node-name{font-size:11px;color:#e8c870;font-weight:700;line-height:1.3;}
+.node-desc{font-size:9.5px;color:#a08858;margin-top:1px;line-height:1.3;}
+.node-level{font-size:10px;color:#4aff88;text-align:right;white-space:nowrap;}
 #damage-layer{position:absolute;inset:0;pointer-events:none;z-index:4;overflow:hidden;}
 #boss-hpbar-wrap{position:absolute;bottom:200px;left:50%;transform:translateX(-50%);width:min(380px,90vw);pointer-events:none;z-index:6;display:none;}
 #boss-hpbar-wrap.visible{display:block;}
@@ -344,34 +351,35 @@ canvas{display:block;image-rendering:pixelated;}
 /* ── Stat grid ── */
 .cu-stat-grid {
   display:grid;
-  grid-template-columns: minmax(100px,1.6fr) 1fr 1fr 1fr 1fr;
-  padding:6px 10px 10px;
+  grid-template-columns: minmax(90px,1.4fr) 1fr 1fr 1fr 1fr;
+  padding:4px 8px 8px;
   gap:0;
   background:rgba(0,12,30,.4);
 }
 .cu-th {
-  font-size:8px; letter-spacing:1px; text-transform:uppercase;
-  padding:5px 6px 6px; text-align:center; color:#354555;
+  font-size:7.5px; letter-spacing:.8px; text-transform:uppercase;
+  padding:4px 4px 5px; text-align:center; color:#506070;
   border-bottom:1px solid rgba(255,255,255,.06);
 }
-.cu-th:first-child { text-align:left; color:#354555; }
-.cu-th.th-pot { color:#3a6080; }
-.cu-th.th-pet { color:#2a6040; }
-.cu-th.th-fin { color:#806010; font-weight:700; }
+.cu-th:first-child { text-align:left; color:#506070; }
+.cu-th.th-pot { color:#4a80a0; }
+.cu-th.th-pet { color:#3a8060; }
+.cu-th.th-fin { color:#a07820; font-weight:700; }
 
 .cu-td {
-  padding:5px 6px; font-size:11px; text-align:center;
+  padding:3px 4px; font-size:10.5px; text-align:center;
   border-bottom:1px solid rgba(255,255,255,.04);
   vertical-align:middle;
 }
-.cu-td:first-child { text-align:left; font-size:10px; color:#907850; padding-left:4px; }
+.cu-td:first-child { text-align:left; font-size:9.5px; color:#c8a870; padding-left:4px; }
+.cu-td.v-label { text-align:left; font-size:10px; color:#d4b880; padding-left:4px; }
 .cu-td.v-base { color:#607080; }
 .cu-td.v-pot  { color:#4898c8; }
 .cu-td.v-pet  { color:#38b870; }
 .cu-td.v-fin  { color:#e8b820; font-weight:700; }
 .cu-td.v-zero { color:#2a3540; }
 .cu-td.v-sep  { padding:2px 0; border-bottom:1px solid rgba(255,255,255,.06); }
-.cu-note { font-size:8px; color:#2e4050; text-align:center; padding:4px 8px 8px; letter-spacing:.5px; background:rgba(0,12,30,.4); }
+.cu-note { font-size:8px; color:#2e4050; text-align:center; padding:3px 8px 6px; letter-spacing:.5px; background:rgba(0,12,30,.4); }
 
 /* ── Skill list ── */
 .cu-skill-list { padding:8px 12px 12px; display:flex; flex-direction:column; gap:7px; }
@@ -443,18 +451,20 @@ canvas{display:block;image-rendering:pixelated;}
    ============================================================ */
 #screen-pet {
   background: linear-gradient(160deg,#050a00,#001a08);
-  padding: 20px; overflow-y: auto; align-items: flex-start; justify-content: flex-start;
+  padding: 0; justify-content: flex-start; align-items: stretch;
 }
-.pet-header { width: 100%; text-align: center; margin-bottom: 16px; }
-.pet-header h2 { font-size: clamp(20px,5vw,28px); color: #4aff88; letter-spacing: 3px; }
-.pet-header p  { font-size: 11px; color: #2a6040; margin-top: 4px; letter-spacing: 1px; }
+#pet-sticky-header { position:absolute;top:0;left:0;right:0;z-index:2;background:linear-gradient(180deg,rgba(5,10,0,1) 80%,transparent);padding:14px 14px 10px;box-sizing:border-box; }
+#pet-sticky-header h2 { font-size:clamp(18px,5vw,26px);color:#4aff88;letter-spacing:3px;text-align:center;margin:0; }
+#pet-sticky-header p  { font-size:10px;color:#2a6040;margin:3px 0 0;letter-spacing:1px;text-align:center; }
+#pet-scroll-area { position:absolute;top:0;left:0;right:0;bottom:76px;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;touch-action:pan-y;padding:90px 14px 12px;box-sizing:border-box; }
+#pet-footer { position:absolute;left:0;right:0;bottom:0;height:76px;padding:10px 14px 16px;box-sizing:border-box;border-top:1px solid rgba(74,255,136,.1);background:linear-gradient(0deg,rgba(5,10,0,1),rgba(5,10,0,.95)); }
 .pet-active-banner {
-  width:100%; max-width:560px; margin:0 auto 16px;
+  width:100%; max-width:560px; margin:0 auto 12px;
   background:rgba(74,255,136,.08); border:1px solid rgba(74,255,136,.3);
-  border-radius:8px; padding:12px 16px; font-size:12px; color:#4aff88;
+  border-radius:8px; padding:10px 14px; font-size:12px; color:#4aff88;
   display:flex; align-items:flex-start; gap:10px; line-height:1.6;
 }
-.pet-active-icon { font-size:28px; flex-shrink:0; margin-top:2px; }
+.pet-active-icon { font-size:26px; flex-shrink:0; margin-top:2px; }
 .pet-grid { width:100%; max-width:560px; margin:0 auto 20px; display:flex; flex-direction:column; gap:10px; }
 .pet-card {
   background:rgba(255,255,255,.04); border:1px solid rgba(74,255,136,.15);
@@ -807,36 +817,44 @@ canvas{display:block;image-rendering:pixelated;}
      PET SYSTEM
      ============================================================ -->
 <div id="screen-pet" class="screen">
-  <div class="pet-header" style="width:100%;max-width:560px;margin:0 auto">
-    <button class="menu-btn" style="padding:8px 20px;font-size:14px;margin-bottom:14px"
-      onclick="UI.showScreen('menu')">← QUAY LẠI</button>
+  <div id="pet-sticky-header">
     <h2>🐾 THÚ CƯNG</h2>
     <p>Trang bị Thú Cưng để nhận buff vĩnh viễn trong mỗi run</p>
   </div>
-  <div class="pet-active-banner" id="pet-active-banner">
-    <span class="pet-active-icon" id="pet-active-icon">❌</span>
-    <span id="pet-active-text">Chưa trang bị thú cưng nào</span>
+  <div id="pet-scroll-area">
+    <div class="pet-active-banner" id="pet-active-banner" style="display:none">
+      <span class="pet-active-icon" id="pet-active-icon"></span>
+      <span id="pet-active-text"></span>
+    </div>
+    <div class="pet-grid" id="pet-grid"></div>
   </div>
-  <div class="pet-grid" id="pet-grid"></div>
+  <div id="pet-footer">
+    <button class="menu-btn" style="width:100%;max-width:700px;display:block;margin:0 auto;"
+      onclick="UI.showScreen('menu')">← QUAY LẠI</button>
+  </div>
 </div>
 
 <!-- ============================================================
      CHARACTER SELECT
      ============================================================ -->
 <div id="screen-charselect" class="screen">
-  <div id="charselect-header">
-    <h2>⚔ CHỌN NHÂN VẬT</h2>
+  <div id="charselect-scroll-area">
+    <div id="charselect-header">
+      <h2>⚔ CHỌN NHÂN VẬT</h2>
+    </div>
+    <div class="char-grid" id="char-grid"></div>
+    <div class="char-detail-panel" id="char-detail-panel" style="display:none">
+      <h3 id="char-detail-name"></h3>
+      <div id="char-detail-content"></div>
+    </div>
+    <div id="char-unified-card"></div>
+    <div id="stat-preview-panel" style="display:none"></div>
   </div>
-  <div class="char-grid" id="char-grid"></div>
-  <div class="char-detail-panel" id="char-detail-panel" style="display:none">
-    <h3 id="char-detail-name"></h3>
-    <div id="char-detail-content"></div>
-  </div>
-  <div id="char-unified-card"></div>
-  <div id="stat-preview-panel" style="display:none"></div>
-  <div class="charselect-actions">
-    <button class="menu-btn" onclick="UI.showScreen('menu')">← QUAY LẠI</button>
-    <button class="menu-btn primary" id="btn-go-mapselect" onclick="UI.goToMapSelect()">CHỌN MAP →</button>
+  <div id="charselect-footer">
+    <div class="charselect-actions">
+      <button class="menu-btn" onclick="UI.showScreen('menu')">← QUAY LẠI</button>
+      <button class="menu-btn primary" id="btn-go-mapselect" onclick="UI.goToMapSelect()">CHỌN MAP →</button>
+    </div>
   </div>
 </div>
 
@@ -1022,13 +1040,17 @@ canvas{display:block;image-rendering:pixelated;}
      POTENTIAL
      ============================================================ -->
 <div id="screen-potential" class="screen">
-  <div id="potential-header">
-    <h2>🔮 CÂY TIỀM NĂNG</h2>
+  <div id="potential-scroll-area">
+    <div id="potential-header">
+      <h2>🔮 CÂY TIỀM NĂNG</h2>
+    </div>
+    <div id="potential-gold-info">Vàng tích luỹ: <span id="pot-gold">0</span> ◈</div>
+    <div class="potential-grid" id="potential-grid"></div>
   </div>
-  <div id="potential-gold-info">Vàng tích luỹ: <span id="pot-gold">0</span> ◈</div>
-  <div class="potential-grid" id="potential-grid"></div>
-  <button class="menu-btn" style="display:block;margin:0 auto;width:min(280px,80vw)"
-    onclick="UI.showScreen('menu')">← QUAY LẠI</button>
+  <div id="potential-footer">
+    <button class="menu-btn" style="width:100%;max-width:700px;display:block;margin:0 auto;"
+      onclick="UI.showScreen('menu')">← QUAY LẠI</button>
+  </div>
 </div>
 
 <!-- ============================================================
@@ -2171,8 +2193,13 @@ const UI = (() => {
     if (el) el.classList.add('active');
     currentScreen = id;
 
+    // Allow scroll on menu screens, block on game screen
+    const scrollScreens = ['charselect','mapselect','potential','pet','codex','charguide','menu'];
+    document.documentElement.style.overflow = scrollScreens.includes(id) ? '' : 'hidden';
+    document.body.style.overflow             = scrollScreens.includes(id) ? '' : 'hidden';
+
     if (id === 'menu')      { Audio.playBGM('menu'); updateMenuGold(); }
-    if (id === 'charselect') renderCharGrid();
+    if (id === 'charselect') { renderCharGrid(); fixCharSelectLayout(); }
     if (id === 'mapselect')  renderMapGrid();
     if (id === 'potential')  renderPotential();
     if (id === 'pet')       renderPetScreen();
@@ -2196,6 +2223,14 @@ const UI = (() => {
 
 // [UI.CharSelect]  renderCharSelect()  nhan vat grid + detail panel + unlock
   /* ---------- CHAR SELECT ---------- */
+  function fixCharSelectLayout() {
+    var footer = document.getElementById('charselect-footer');
+    var scroll = document.getElementById('charselect-scroll-area');
+    if (!footer || !scroll) return;
+    var fh = footer.offsetHeight || 76;
+    scroll.style.bottom = fh + 'px';
+  }
+
   function renderCharGrid() {
     const grid = document.getElementById('char-grid');
     if (!grid) return;
@@ -2315,7 +2350,7 @@ const UI = (() => {
       const hasPot = potB !== 0 && potB !== '';
       const hasPet = petB !== 0 && petB !== '';
       return `
-        ${td(`${icon} ${label}`, '')}
+        ${td(`${icon} ${label}`, 'v-label')}
         ${td(base + unit, 'v-base')}
         ${td(hasPot ? `+${potB}${potUnit}` : '—', hasPot ? 'v-pot' : 'v-zero')}
         ${td(hasPet ? `+${petB}${petUnit}` : '—', hasPet ? 'v-pet' : 'v-zero')}
@@ -2366,16 +2401,8 @@ const UI = (() => {
         ${(petAoE > 0) ? statRow('🌐','AoE', 1,'×', 0, '', petAoE, '%', '×1.' + String(petAoE).padStart(2,'0'), '') : ''}
         ${(potArmorPen > 0) ? statRow('🗡️','Xuyên Giáp', 0,'%', potArmorPen, '%', 0, '', potArmorPen, '%') : ''}
       </div>
-      <div class="cu-note">Crit · Lifesteal · ArmorPen chỉ áp dụng cho Vũ Khí Chính và bản Tiến Hoá</div>
+      <div class="cu-note">Crit · Lifesteal · ArmorPen chỉ áp dụng cho Vũ Khí Chính và bản Tiến Hoá</div>`;
 
-      <!-- ══ KỸ NĂNG ══ -->
-      <div class="cu-section s-skill">⚔ KỸ NĂNG & VŨ KHÍ</div>
-      <div class="cu-skill-list">
-        ${skillRow('b-weapon', 'VŨ KHÍ', char.weapon, null, char.weaponDesc)}
-        ${skillRow('b-passive', 'PASSIVE', char.passiveName, null, char.passiveDesc)}
-        ${skillRow('b-active', 'ACTIVE', char.activeName, char.activeCooldown, char.activeDesc)}
-        ${skillRow('b-evolve', 'TIẾN HOÁ', char.evolvedWeapon, null, char.evolveDesc)}
-      </div>`;
   }
 
   function goToMapSelect() {
@@ -2496,37 +2523,37 @@ const UI = (() => {
       {
         key:'survival', label:'⚔ THỂ CHẤT', color:'#ff6060',
         nodes:[
-          {name:'HP Tối Đa',       icon:'❤️', desc:'+125 HP tối đa/cấp + hồi ngay 125 HP. Cấp 7: +875 HP. Chi phí: 80→160→320→480×4◈.',   maxLv:7, baseCost:80},
-          {name:'Giảm Sát Thương', icon:'🛡️', desc:'+5% Armor/cấp (tối đa +20%). Cộng với thẻ/pet → tổng tối đa 78%. Chi phí: 150→300→600→900◈.',   maxLv:4, baseCost:150},
-          {name:'Hồi HP/giây',     icon:'💚', desc:'+4 HP/s/cấp (tối đa +16 HP/s). Hồi liên tục kể cả trong combat. Chi phí: 200→400→800→1200◈.',   maxLv:4, baseCost:200},
-          {name:'Hồi HP/kill',     icon:'🩸', desc:'+10 HP/kill/cấp (tối đa +40 HP/kill). Hồi ngay khi tiêu diệt bất kỳ quái nào. Chi phí: 350→700→1400→2100◈.',         maxLv:4, baseCost:350},
+          {name:'HP Tối Đa',       icon:'❤️', shortDesc:'+125 HP/lv (max +875)', desc:'+125 HP tối đa/cấp + hồi ngay 125 HP. Cấp 7: +875 HP. Chi phí: 80→160→320→480×4◈.',   maxLv:7, baseCost:80},
+          {name:'Giảm Sát Thương', icon:'🛡️', shortDesc:'+5% Giáp/lv (max +20%)', desc:'+5% Armor/cấp (tối đa +20%). Cộng với thẻ/pet → tổng tối đa 78%. Chi phí: 150→300→600→900◈.',   maxLv:4, baseCost:150},
+          {name:'Hồi HP/giây',     icon:'💚', shortDesc:'+4 HP/s/lv (max +16/s)', desc:'+4 HP/s/cấp (tối đa +16 HP/s). Hồi liên tục kể cả trong combat. Chi phí: 200→400→800→1200◈.',   maxLv:4, baseCost:200},
+          {name:'Hồi HP/kill',     icon:'🩸', shortDesc:'+10 HP/kill/lv (max +40)', desc:'+10 HP/kill/cấp (tối đa +40 HP/kill). Hồi ngay khi tiêu diệt bất kỳ quái nào. Chi phí: 350→700→1400→2100◈.',         maxLv:4, baseCost:350},
         ]
       },
       {
         key:'damage', label:'💥 SỨC MẠNH', color:'#ff9060',
         nodes:[
-          {name:'% Sát Thương',    icon:'⚔️', desc:'+10% BaseDMG/cấp (tối đa +60%). Nhân với DMGMult. Cấp 6: baseDmg ×1.60. Chi phí: 100→200→400→600×3◈.',     maxLv:6, baseCost:100},
-          {name:'Tỉ Lệ Crit',      icon:'🎯', desc:'+6% Crit Rate/cấp (tối đa +24%). Chỉ áp dụng vũ khí chính+tiến hoá. Chi phí: 200→400→800→1200◈.',     maxLv:4, baseCost:200},
-          {name:'Crit Damage',     icon:'💢', desc:'+30% CritDMG/cấp (tối đa +90%, tổng 240%). Chỉ áp dụng vũ khí chính+tiến hoá. Chi phí: 300→600→1200◈.',     maxLv:3, baseCost:300},
-          {name:'Xuyên Giáp',      icon:'🗡️', desc:'+15% ArmorPen/cấp (tối đa 45%). Bypass 45% khiên địch + bonus ×1.36 vs Boss/Elite. Chi phí: 450→900→1800◈.',  maxLv:3, baseCost:450},
+          {name:'% Sát Thương',    icon:'⚔️', shortDesc:'+10% BaseDMG/lv (max +60%)', desc:'+10% BaseDMG/cấp (tối đa +60%). Nhân với DMGMult. Cấp 6: baseDmg ×1.60. Chi phí: 100→200→400→600×3◈.',     maxLv:6, baseCost:100},
+          {name:'Tỉ Lệ Crit',      icon:'🎯', shortDesc:'+6% Crit Rate/lv (max +24%)', desc:'+6% Crit Rate/cấp (tối đa +24%). Chỉ áp dụng vũ khí chính+tiến hoá. Chi phí: 200→400→800→1200◈.',     maxLv:4, baseCost:200},
+          {name:'Crit Damage',     icon:'💢', shortDesc:'+30% CritDMG/lv (max +90%)', desc:'+30% CritDMG/cấp (tối đa +90%, tổng 240%). Chỉ áp dụng vũ khí chính+tiến hoá. Chi phí: 300→600→1200◈.',     maxLv:3, baseCost:300},
+          {name:'Xuyên Giáp',      icon:'🗡️', shortDesc:'+15% ArmorPen/lv (max 45%)', desc:'+15% ArmorPen/cấp (tối đa 45%). Bypass 45% khiên địch + bonus ×1.36 vs Boss/Elite. Chi phí: 450→900→1800◈.',  maxLv:3, baseCost:450},
         ]
       },
       {
         key:'mobility', label:'💨 TỐC ĐỘ', color:'#60d0ff',
         nodes:[
-          {name:'Tốc Di Chuyển',   icon:'👟', desc:'+6% SPD/cấp (tối đa +30%). Chi phí: 80→160→320→480×2◈.',  maxLv:5, baseCost:80},
-          {name:'Giảm Cooldown',   icon:'⏱️', desc:'-10% CD/cấp (tối đa -40%). CD thực = CD gốc × (1-0.40). Chi phí: 150→300→600→900◈.',  maxLv:4, baseCost:150},
-          {name:'Tốc Đánh',        icon:'⚡', desc:'+10% AtkSpeedMult/cấp (tối đa +40%). Không giới hạn trên khi kết hợp thẻ/pet. Chi phí: 200→400→800→1200◈.',      maxLv:4, baseCost:200},
-          {name:'Phản Dame Move',  icon:'🌀', desc:'-10% ST nhận/cấp khi đang di chuyển (tối đa -20%). Áp dụng sau Giáp. Chi phí: 450→900◈.', maxLv:2, baseCost:450},
+          {name:'Tốc Di Chuyển',   icon:'👟', shortDesc:'+6% SPD/lv (max +30%)', desc:'+6% SPD/cấp (tối đa +30%). Chi phí: 80→160→320→480×2◈.',  maxLv:5, baseCost:80},
+          {name:'Giảm Cooldown',   icon:'⏱️', shortDesc:'-10% CD/lv (max -40%)', desc:'-10% CD/cấp (tối đa -40%). CD thực = CD gốc × (1-0.40). Chi phí: 150→300→600→900◈.',  maxLv:4, baseCost:150},
+          {name:'Tốc Đánh',        icon:'⚡', shortDesc:'+10% AtkSpd/lv (max +40%)', desc:'+10% AtkSpeedMult/cấp (tối đa +40%). Không giới hạn trên khi kết hợp thẻ/pet. Chi phí: 200→400→800→1200◈.',      maxLv:4, baseCost:200},
+          {name:'Phản Dame Move',  icon:'🌀', shortDesc:'-10% ST nhận khi di chuyển/lv', desc:'-10% ST nhận/cấp khi đang di chuyển (tối đa -20%). Áp dụng sau Giáp. Chi phí: 450→900◈.', maxLv:2, baseCost:450},
         ]
       },
       {
         key:'fortune', label:'🍀 VẬN MAY', color:'#ffd700',
         nodes:[
-          {name:'% Vàng',          icon:'◈',  desc:'+15% goldBonus/cấp (tối đa +60%). Nhân vào toàn bộ vàng nhận trong run. Chi phí: 120→240→480→720◈.',   maxLv:4, baseCost:120},
-          {name:'Thẻ Hiếm',        icon:'🃏', desc:'Hiếm +1 trọng số/cấp (mặc định 2, cấp 3 → 5 = ×2.5 lần rate). Chi phí: 250→500→1000◈.',    maxLv:3, baseCost:250},
-          {name:'Vũ Khí Đầu',      icon:'🎁', desc:'Bắt đầu run với 1 vũ khí phụ ngẫu nhiên (Hào Quang Thánh) đã trang bị sẵn. Chi phí: 800◈.', maxLv:1, baseCost:800},
-          {name:'4 Thẻ Chọn',      icon:'🎴', desc:'Mỗi lần level-up rút 4 thẻ thay vì 3 thẻ để chọn. Chi phí: 650◈.',   maxLv:1, baseCost:650},
+          {name:'% Vàng',          icon:'◈',  shortDesc:'+15% Vàng/lv (max +60%)', desc:'+15% goldBonus/cấp (tối đa +60%). Nhân vào toàn bộ vàng nhận trong run. Chi phí: 120→240→480→720◈.',   maxLv:4, baseCost:120},
+          {name:'Thẻ Hiếm',        icon:'🃏', shortDesc:'+1 trọng số Hiếm/lv', desc:'Hiếm +1 trọng số/cấp (mặc định 2, cấp 3 → 5 = ×2.5 lần rate). Chi phí: 250→500→1000◈.',    maxLv:3, baseCost:250},
+          {name:'Vũ Khí Đầu',      icon:'🎁', shortDesc:'Bắt đầu có 1 vũ khí phụ ngẫu nhiên', desc:'Bắt đầu run với 1 vũ khí phụ ngẫu nhiên (Hào Quang Thánh) đã trang bị sẵn. Chi phí: 800◈.', maxLv:1, baseCost:800},
+          {name:'4 Thẻ Chọn',      icon:'🎴', shortDesc:'Rút 4 thẻ thay vì 3 mỗi level-up', desc:'Mỗi lần level-up rút 4 thẻ thay vì 3 thẻ để chọn. Chi phí: 650◈.',   maxLv:1, baseCost:650},
         ]
       },
     ];
@@ -2575,15 +2602,12 @@ const UI = (() => {
         node.style.borderColor = maxed ? b.color + '80' : 'rgba(255,255,255,0.08)';
 
         const infoDiv = document.createElement('div');
-        infoDiv.style.display = 'flex';
-        infoDiv.style.alignItems = 'center';
-        infoDiv.style.gap = '8px';
-        infoDiv.style.flex = '1';
+        infoDiv.style.cssText = 'display:contents';
         infoDiv.innerHTML = `
           <span class="node-icon">${n.icon}</span>
           <div class="node-info">
             <div class="node-name">${n.name}</div>
-            <div class="node-desc">${n.desc}</div>
+            <div class="node-desc">${n.shortDesc || n.desc}</div>
           </div>`;
         node.appendChild(infoDiv);
 
@@ -2594,7 +2618,7 @@ const UI = (() => {
           node.appendChild(lvDiv);
         } else {
           const btn = document.createElement('button');
-          btn.style.cssText = 'background:linear-gradient(135deg,rgba(200,150,12,.9),rgba(120,80,0,.9));border:1px solid #ffd700;border-radius:6px;color:#ffd700;font-size:11px;font-weight:700;padding:6px 10px;cursor:pointer;white-space:nowrap;min-width:64px;-webkit-appearance:none;touch-action:manipulation;';
+          btn.style.cssText = 'background:linear-gradient(135deg,rgba(200,150,12,.9),rgba(120,80,0,.9));border:1px solid #ffd700;border-radius:6px;color:#ffd700;font-size:10px;font-weight:700;padding:5px 8px;cursor:pointer;white-space:nowrap;min-width:54px;text-align:center;-webkit-appearance:none;touch-action:manipulation;flex-shrink:0;';
           btn.innerHTML = `<div style="font-size:9px;opacity:.8">${lv}/${n.maxLv}</div><div>◈${cost}</div>`;
           btn.onclick = function(e) {
             e.stopPropagation();
@@ -3351,14 +3375,15 @@ const UI = (() => {
     const activePetId = sd.activePet;
     const ownedPets   = sd.ownedPets || [];
     const activePet   = PETS.find(p => p.id === activePetId);
+    const banner  = document.getElementById('pet-active-banner');
     if (activePet) {
+      banner.style.display = 'flex';
       iconEl.textContent = activePet.icon;
       textEl.innerHTML   = `<b style="color:#ffd700">${activePet.name}</b> <span style="color:#80b090;font-size:10px">(${activePet.title})</span><br>
         <span style="color:#c8960c">🔮 ${activePet.passiveName}:</span> ${activePet.passiveDesc}<br>
         <span style="color:#60d0ff">⚡ ${activePet.skillName}:</span> ${activePet.skillDesc}`;
     } else {
-      iconEl.textContent = '❌';
-      textEl.textContent = 'Chưa trang bị thú cưng nào';
+      banner.style.display = 'none';
     }
     grid.innerHTML = '';
     PETS.forEach(pet => {
