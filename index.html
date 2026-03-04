@@ -54,9 +54,11 @@ canvas{display:block;image-rendering:pixelated;}
 .charselect-actions .menu-btn{flex:1;}
 #charselect-header{text-align:center;margin-bottom:12px;width:100%;max-width:700px;}
 .charselect-actions .menu-btn{flex:1;}
-#screen-mapselect{background:linear-gradient(160deg,#050010 0%,#0a0020 50%,#050010 100%);padding:20px;overflow-y:auto;justify-content:flex-start;align-items:center;}
-#mapselect-header{text-align:center;margin-bottom:20px;}
-#mapselect-header h2{font-size:clamp(20px,5vw,32px);color:#a060ff;letter-spacing:4px;text-shadow:0 0 15px rgba(160,96,255,.6);}
+#screen-mapselect{background:linear-gradient(160deg,#050010 0%,#0a0020 50%,#050010 100%);padding:0;justify-content:flex-start;align-items:stretch;}
+#mapselect-scroll-area{position:absolute;top:0;left:0;right:0;bottom:76px;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;touch-action:pan-y;padding:0 14px 12px;box-sizing:border-box;display:flex;flex-direction:column;align-items:center;}
+#mapselect-footer{position:absolute;left:0;right:0;bottom:0;height:76px;padding:10px 14px 16px;box-sizing:border-box;border-top:1px solid rgba(160,96,255,.15);background:linear-gradient(0deg,rgba(5,0,16,1),rgba(5,0,16,.95));}
+#mapselect-header{text-align:center;padding:16px 14px 8px;}
+#mapselect-header h2{font-size:clamp(18px,5vw,26px);color:#a060ff;letter-spacing:4px;text-shadow:0 0 15px rgba(160,96,255,.6);}
 .map-grid{display:flex;flex-direction:column;gap:0;width:100%;max-width:720px;margin:0 auto;}
 .map-card{position:relative;border-radius:8px;overflow:hidden;cursor:pointer;transition:all .3s;aspect-ratio:1;border:1px solid rgba(160,96,255,.3);}
 .map-card:active{transform:scale(.96);}
@@ -66,7 +68,7 @@ canvas{display:block;image-rendering:pixelated;}
 .map-icon{font-size:28px;margin-bottom:6px;}
 .map-name{font-size:11px;color:#fff;font-weight:700;text-align:center;text-shadow:0 1px 3px rgba(0,0,0,.8);}
 .map-difficulty{position:absolute;top:6px;right:6px;font-size:9px;color:#ffcc00;}
-.mapselect-back{display:block;width:min(300px,85vw);margin:0 auto;}
+.mapselect-back{display:block;width:100%;max-width:700px;margin:0 auto;}
 #screen-game{padding:0;background:#000;}
 #game-canvas{position:absolute;inset:0;width:100%!important;height:100%!important;}
 #game-hud{position:absolute;inset:0;pointer-events:none;z-index:5;}
@@ -862,9 +864,13 @@ canvas{display:block;image-rendering:pixelated;}
      MAP SELECT
      ============================================================ -->
 <div id="screen-mapselect" class="screen">
-  <div id="mapselect-header"><h2>🗺 CHỌN BẢN ĐỒ</h2></div>
-  <div class="map-grid" id="map-grid"></div>
-  <button class="menu-btn mapselect-back" onclick="UI.showScreen('charselect')">← QUAY LẠI</button>
+  <div id="mapselect-scroll-area">
+    <div id="mapselect-header"><h2>🗺 CHỌN BẢN ĐỒ</h2></div>
+    <div class="map-grid" id="map-grid"></div>
+  </div>
+  <div id="mapselect-footer">
+    <button class="menu-btn mapselect-back" onclick="UI.showScreen('charselect')">← QUAY LẠI</button>
+  </div>
 </div>
 
 <!-- ============================================================
