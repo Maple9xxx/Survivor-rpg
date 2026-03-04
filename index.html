@@ -27,22 +27,22 @@ canvas{display:block;image-rendering:pixelated;}
 .menu-btn.primary{background:linear-gradient(135deg,rgba(120,60,0,.95),rgba(80,30,0,.9));border-color:#ffd700;font-size:clamp(16px,4vw,22px);padding:18px 32px;box-shadow:0 0 20px rgba(200,150,12,.3);}
 #menu-gold{position:absolute;top:16px;right:20px;display:flex;align-items:center;gap:8px;color:#ffd700;font-size:18px;font-weight:700;text-shadow:0 0 10px rgba(255,215,0,.8);z-index:2;}
 #menu-gold::before{content:'◈';font-size:22px;filter:drop-shadow(0 0 6px #ffd700);}
-#screen-charselect{background:linear-gradient(160deg,#0d0500 0%,#1a0800 50%,#0d0500 100%);padding:20px;overflow-y:auto;justify-content:flex-start;align-items:center;}
-#charselect-header{text-align:center;margin-bottom:24px;}
-#charselect-header h2{font-size:clamp(20px,5vw,32px);color:#ffd700;letter-spacing:4px;text-shadow:0 0 15px rgba(255,215,0,.6);}
-.char-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(160px,44vw),1fr));gap:14px;width:100%;max-width:700px;margin:0 auto 20px;}
-.char-card{position:relative;background:linear-gradient(160deg,rgba(30,15,0,.95),rgba(15,8,0,.95));border:1px solid #4a3000;border-radius:8px;padding:16px 12px;cursor:pointer;transition:all .3s ease;text-align:center;overflow:hidden;}
+#screen-charselect{background:linear-gradient(160deg,#0d0500 0%,#1a0800 50%,#0d0500 100%);padding:12px 14px 20px;overflow-y:auto;justify-content:flex-start;align-items:center;}
+#charselect-header{text-align:center;margin-bottom:12px;}
+#charselect-header h2{font-size:clamp(16px,4vw,26px);color:#ffd700;letter-spacing:4px;text-shadow:0 0 15px rgba(255,215,0,.6);}
+.char-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;width:100%;max-width:700px;margin:0 auto 12px;}
+.char-card{position:relative;background:linear-gradient(160deg,rgba(30,15,0,.95),rgba(15,8,0,.95));border:1px solid #4a3000;border-radius:8px;padding:10px 8px;cursor:pointer;transition:all .3s ease;text-align:center;overflow:hidden;}
 .char-card::after{content:'';position:absolute;inset:0;border-radius:8px;border:2px solid transparent;transition:border-color .3s;}
 .char-card.selected::after{border-color:#ffd700;}
-.char-card.selected{background:linear-gradient(160deg,rgba(80,40,0,.95),rgba(50,25,0,.95));box-shadow:0 0 20px rgba(255,215,0,.4);}
+.char-card.selected{background:linear-gradient(160deg,rgba(80,40,0,.95),rgba(50,25,0,.95));box-shadow:0 0 16px rgba(255,215,0,.4);}
 .char-card.locked{opacity:.6;cursor:not-allowed;}
-.char-avatar{width:70px;height:70px;margin:0 auto 10px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:36px;border:2px solid #6a4500;background:radial-gradient(circle,rgba(100,60,0,.4),rgba(0,0,0,.6));transition:all .3s;}
-.char-card.selected .char-avatar{border-color:#ffd700;box-shadow:0 0 15px rgba(255,215,0,.5);}
-.char-name{font-size:13px;font-weight:700;color:#ffd700;letter-spacing:1px;margin-bottom:4px;}
-.char-title{font-size:10px;color:#c8960c;margin-bottom:8px;opacity:.8;}
-.char-cost{font-size:11px;color:#ff9900;display:flex;align-items:center;justify-content:center;gap:4px;}
+.char-avatar{width:52px;height:52px;margin:0 auto 6px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:28px;border:2px solid #6a4500;background:radial-gradient(circle,rgba(100,60,0,.4),rgba(0,0,0,.6));transition:all .3s;}
+.char-card.selected .char-avatar{border-color:#ffd700;box-shadow:0 0 12px rgba(255,215,0,.5);}
+.char-name{font-size:11px;font-weight:700;color:#ffd700;letter-spacing:.5px;margin-bottom:2px;line-height:1.3;}
+.char-title{font-size:9px;color:#c8960c;margin-bottom:5px;opacity:.8;}
+.char-cost{font-size:10px;color:#ff9900;display:flex;align-items:center;justify-content:center;gap:3px;}
 .char-cost.free{color:#4aff88;}
-.char-lock-icon{position:absolute;top:8px;right:8px;font-size:16px;opacity:.7;}
+.char-lock-icon{position:absolute;top:6px;right:6px;font-size:13px;opacity:.7;}
 .char-detail-panel{width:100%;max-width:700px;background:rgba(30,15,0,.9);border:1px solid #4a3000;border-radius:8px;padding:16px;margin:0 auto 20px;}
 .char-detail-panel h3{color:#ffd700;font-size:16px;margin-bottom:10px;letter-spacing:2px;}
 .char-skill-row{display:flex;align-items:flex-start;gap:10px;margin-bottom:8px;}
@@ -103,6 +103,16 @@ canvas{display:block;image-rendering:pixelated;}
 #skill-btn.on-cooldown #skill-icon{opacity:.4;}
 #skill-cd-ring{position:absolute;inset:-3px;border-radius:50%;pointer-events:none;}
 #pause-btn{position:absolute;top:8px;left:12px;width:36px;height:36px;background:rgba(0,0,0,.5);border:1px solid rgba(255,255,255,.2);border-radius:6px;color:#fff;font-size:16px;display:flex;align-items:center;justify-content:center;cursor:pointer;pointer-events:all;z-index:10;-webkit-appearance:none;}
+#stat-toggle-btn{position:absolute;top:52px;left:12px;width:36px;height:36px;background:rgba(0,0,0,.6);border:1px solid rgba(100,180,255,.35);border-radius:6px;color:#fff;font-size:16px;display:flex;align-items:center;justify-content:center;cursor:pointer;pointer-events:all;z-index:10;-webkit-appearance:none;transition:border-color .2s;}
+#stat-toggle-btn.active{border-color:#60d0ff;box-shadow:0 0 8px rgba(96,208,255,.4);}
+#ingame-stat-panel{position:absolute;top:96px;left:8px;width:180px;background:rgba(5,10,20,.88);border:1px solid rgba(96,208,255,.3);border-radius:8px;padding:8px 10px;pointer-events:all;z-index:10;backdrop-filter:blur(4px);}
+.isp-title{font-size:9px;color:#60d0ff;letter-spacing:2px;font-weight:700;margin-bottom:6px;text-align:center;}
+.isp-row{display:flex;justify-content:space-between;align-items:center;padding:2px 0;border-bottom:1px solid rgba(255,255,255,.05);}
+.isp-row:last-child{border-bottom:none;}
+.isp-lbl{font-size:10px;color:#aaa;}
+.isp-val{font-size:10px;color:#fff;font-weight:700;}
+.isp-val.up{color:#60ff90;}
+.isp-val.warn{color:#ffaa40;}
 #screen-levelup{background:rgba(0,0,0,.88);z-index:20;}
 #levelup-title{font-size:clamp(22px,6vw,36px);color:#ffd700;letter-spacing:6px;text-shadow:0 0 30px rgba(255,215,0,.8);margin-bottom:8px;animation:levelTitleAnim .5s ease-out;}
 @keyframes levelTitleAnim{from{transform:scale(.5);opacity:0;}to{transform:scale(1);opacity:1;}}
@@ -291,8 +301,7 @@ canvas{display:block;image-rendering:pixelated;}
   .menu-btn { padding: 12px 24px; }
 }
 @media (min-width: 768px) {
-  .char-grid { grid-template-columns: repeat(3, 1fr); }
-  .map-grid  { grid-template-columns: repeat(5, 1fr); }
+  .char-grid { grid-template-columns: repeat(6, 1fr); }
   #levelup-cards { flex-wrap: nowrap; }
 }
 
@@ -307,30 +316,78 @@ canvas{display:block;image-rendering:pixelated;}
 }
 
 /* ============================================================
-   STAT PREVIEW PANEL — CharSelect
+   CHARSELECT — UNIFIED DETAIL CARD (Stats on top, Skills below)
    ============================================================ */
-#stat-preview-panel {
-  width:100%; max-width:700px; background:rgba(0,15,35,.9);
-  border:1px solid rgba(96,160,255,.25); border-radius:8px;
-  padding:14px 16px; margin:0 auto 16px;
+#char-detail-panel { display:none; } /* hidden — replaced by unified card */
+
+#char-unified-card {
+  width:100%; max-width:700px; margin:0 auto 16px;
+  border-radius:10px; overflow:hidden;
+  border:1px solid rgba(200,150,12,.2);
+  background:linear-gradient(160deg,rgba(12,8,0,.97),rgba(6,4,0,.97));
 }
-.sp-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; }
-.sp-title  { font-size:10px; color:#60d0ff; letter-spacing:2px; font-weight:700; text-transform:uppercase; }
-.sp-pet-tag { font-size:10px; color:#4aff88; background:rgba(74,255,136,.1); border:1px solid rgba(74,255,136,.3); border-radius:10px; padding:2px 8px; }
-.sp-pet-tag.none { color:#506070; border-color:rgba(255,255,255,.1); background:none; }
-.sp-cols { display:grid; grid-template-columns:repeat(4,1fr); gap:1px; background:rgba(255,255,255,.06); border-radius:5px; overflow:hidden; margin-bottom:2px; }
-.sp-col-head { background:rgba(0,0,0,.4); padding:4px 6px; font-size:8px; letter-spacing:1px; color:#506070; text-align:center; text-transform:uppercase; }
-.sp-col-head.c-pot { color:#60d0ff; } .sp-col-head.c-pet { color:#4aff88; } .sp-col-head.c-fin { color:#ffd700; font-weight:700; }
-.sp-row { display:contents; }
-.sp-cell { background:rgba(0,0,0,.25); padding:5px 7px; font-size:11px; text-align:center; }
-.sp-cell.c-label { text-align:left; color:#a09060; font-size:10px; display:flex; align-items:center; gap:4px; }
-.sp-cell.c-base  { color:#8090a0; }
-.sp-cell.c-pot   { color:#60d0ff; }
-.sp-cell.c-pet   { color:#4aff88; }
-.sp-cell.c-fin   { color:#ffd700; font-weight:700; }
-.sp-cell.zero    { color:#3a4050; }
-.sp-divider { grid-column:1/-1; height:1px; background:rgba(255,255,255,.05); }
-.sp-note { font-size:9px; color:#405060; margin-top:6px; text-align:center; letter-spacing:1px; }
+
+/* ── Section header bar ── */
+.cu-section {
+  display:flex; align-items:center; gap:8px;
+  padding:8px 14px;
+  font-size:9px; font-weight:700; letter-spacing:2px; text-transform:uppercase;
+}
+.cu-section.s-stat { background:rgba(0,20,50,.7); color:#60d0ff; border-bottom:1px solid rgba(96,160,255,.15); }
+.cu-section.s-skill{ background:rgba(30,15,0,.8); color:#c8960c; border-top:1px solid rgba(200,150,12,.15); border-bottom:1px solid rgba(200,150,12,.1); }
+.cu-section .cu-pet-tag {
+  margin-left:auto; font-size:9px; padding:2px 8px; border-radius:10px;
+  color:#4aff88; background:rgba(74,255,136,.08); border:1px solid rgba(74,255,136,.25);
+}
+.cu-section .cu-pet-tag.none { color:#40505a; background:none; border-color:rgba(255,255,255,.08); }
+
+/* ── Stat grid ── */
+.cu-stat-grid {
+  display:grid;
+  grid-template-columns: minmax(100px,1.6fr) 1fr 1fr 1fr 1fr;
+  padding:6px 10px 10px;
+  gap:0;
+  background:rgba(0,12,30,.4);
+}
+.cu-th {
+  font-size:8px; letter-spacing:1px; text-transform:uppercase;
+  padding:5px 6px 6px; text-align:center; color:#354555;
+  border-bottom:1px solid rgba(255,255,255,.06);
+}
+.cu-th:first-child { text-align:left; color:#354555; }
+.cu-th.th-pot { color:#3a6080; }
+.cu-th.th-pet { color:#2a6040; }
+.cu-th.th-fin { color:#806010; font-weight:700; }
+
+.cu-td {
+  padding:5px 6px; font-size:11px; text-align:center;
+  border-bottom:1px solid rgba(255,255,255,.04);
+  vertical-align:middle;
+}
+.cu-td:first-child { text-align:left; font-size:10px; color:#907850; padding-left:4px; }
+.cu-td.v-base { color:#607080; }
+.cu-td.v-pot  { color:#4898c8; }
+.cu-td.v-pet  { color:#38b870; }
+.cu-td.v-fin  { color:#e8b820; font-weight:700; }
+.cu-td.v-zero { color:#2a3540; }
+.cu-td.v-sep  { padding:2px 0; border-bottom:1px solid rgba(255,255,255,.06); }
+.cu-note { font-size:8px; color:#2e4050; text-align:center; padding:4px 8px 8px; letter-spacing:.5px; background:rgba(0,12,30,.4); }
+
+/* ── Skill list ── */
+.cu-skill-list { padding:8px 12px 12px; display:flex; flex-direction:column; gap:7px; }
+.cu-skill-row  { display:flex; align-items:flex-start; gap:10px; }
+.cu-sk-badge {
+  flex-shrink:0; min-width:62px; padding:2px 6px; border-radius:3px;
+  font-size:8px; font-weight:700; letter-spacing:1px; text-align:center; margin-top:2px;
+}
+.cu-sk-badge.b-weapon { background:rgba(200,150,12,.15); color:#c8960c; border:1px solid rgba(200,150,12,.3); }
+.cu-sk-badge.b-passive{ background:rgba(96,200,96,.1);  color:#60c860; border:1px solid rgba(96,200,96,.25); }
+.cu-sk-badge.b-active { background:rgba(160,96,255,.15); color:#b080ff; border:1px solid rgba(160,96,255,.3); }
+.cu-sk-badge.b-evolve { background:rgba(255,215,0,.12);  color:#ffd700; border:1px solid rgba(255,215,0,.35); }
+.cu-sk-body { flex:1; }
+.cu-sk-name { font-size:12px; font-weight:700; color:#ffd700; margin-bottom:2px; }
+.cu-sk-cd   { display:inline-block; font-size:9px; color:#a060ff; background:rgba(160,96,255,.1); border:1px solid rgba(160,96,255,.25); border-radius:8px; padding:1px 6px; margin-left:6px; vertical-align:middle; }
+.cu-sk-desc { font-size:11px; color:#c0a060; line-height:1.55; }
 
 /* ============================================================
    UTILITY
@@ -771,11 +828,12 @@ canvas{display:block;image-rendering:pixelated;}
     <h2>⚔ CHỌN NHÂN VẬT</h2>
   </div>
   <div class="char-grid" id="char-grid"></div>
-  <div class="char-detail-panel" id="char-detail-panel">
-    <h3 id="char-detail-name">Chọn một nhân vật</h3>
+  <div class="char-detail-panel" id="char-detail-panel" style="display:none">
+    <h3 id="char-detail-name"></h3>
     <div id="char-detail-content"></div>
   </div>
-  <div id="stat-preview-panel"></div>
+  <div id="char-unified-card"></div>
+  <div id="stat-preview-panel" style="display:none"></div>
   <div class="charselect-actions">
     <button class="menu-btn" onclick="UI.showScreen('menu')">← QUAY LẠI</button>
     <button class="menu-btn primary" id="btn-go-mapselect" onclick="UI.goToMapSelect()">CHỌN MAP →</button>
@@ -858,6 +916,13 @@ canvas{display:block;image-rendering:pixelated;}
 
     <!-- Pause -->
     <button id="pause-btn" onclick="Game.togglePause()">⏸</button>
+
+    <!-- In-game Stat Panel -->
+    <button id="stat-toggle-btn" onclick="UI.toggleStatPanel()" title="Xem chỉ số nhân vật">📊</button>
+    <div id="ingame-stat-panel" style="display:none">
+      <div class="isp-title">📊 CHỈ SỐ HIỆN TẠI</div>
+      <div id="isp-body"></div>
+    </div>
   </div>
 
   <!-- Overlays -->
@@ -933,6 +998,7 @@ canvas{display:block;image-rendering:pixelated;}
     <button class="codex-tab" onclick="UI.switchCodexTab('weapons',this)">⚔️ Vũ Khí</button>
     <button class="codex-tab" onclick="UI.switchCodexTab('maps',this)">🗺️ Bản Đồ</button>
     <button class="codex-tab" onclick="UI.switchCodexTab('enemies',this)">👾 Quái Vật</button>
+    <button class="codex-tab" onclick="UI.switchCodexTab('mechanics',this)">⚙️ Cơ Chế</button>
     <button class="codex-tab" onclick="UI.switchCodexTab('tips',this)">💡 Mẹo</button>
   </div>
   <div id="codex-content"></div>
@@ -2145,7 +2211,7 @@ const UI = (() => {
       div.innerHTML = `
         ${!unlocked ? '<span class="char-lock-icon">🔒</span>' : ''}
         <div class="char-avatar" style="background:transparent;border:none;padding:0;">
-          <canvas id="portrait-${c.id}" width="70" height="70" style="border-radius:50%;border:2px solid ${c.id === selectedChar ? '#ffd700' : '#6a4500'};background:radial-gradient(circle,rgba(100,60,0,.4),rgba(0,0,0,.6));display:block;"></canvas>
+          <canvas id="portrait-${c.id}" width="52" height="52" style="border-radius:50%;border:2px solid ${c.id === selectedChar ? '#ffd700' : '#6a4500'};background:radial-gradient(circle,rgba(100,60,0,.4),rgba(0,0,0,.6));display:block;"></canvas>
         </div>
         <div class="char-name">${c.name}</div>
         <div class="char-title">${c.title}</div>
@@ -2173,6 +2239,9 @@ const UI = (() => {
         selectedChar = c.id;
         renderCharGrid();
         showCharDetail(c);
+        // Auto-scroll so unified card is visible
+        const ucard = document.getElementById('char-unified-card');
+        if (ucard) setTimeout(() => ucard.scrollIntoView({ behavior:'smooth', block:'nearest' }), 80);
       });
       grid.appendChild(div);
     });
@@ -2188,55 +2257,41 @@ const UI = (() => {
   }
 
   function showCharDetail(c) {
-    document.getElementById('char-detail-name').textContent = `${c.icon} ${c.name} — "${c.title}"`;
-    document.getElementById('char-detail-content').innerHTML = `
-      <div class="char-skill-row">
-        <span class="skill-label">VŨ KHÍ</span>
-        <span class="skill-desc"><span class="skill-name">${c.weapon}</span> — ${c.weaponDesc}</span>
-      </div>
-      <div class="char-skill-row">
-        <span class="skill-label">PASSIVE</span>
-        <span class="skill-desc"><span class="skill-name">${c.passiveName}</span> — ${c.passiveDesc}</span>
-      </div>
-      <div class="char-skill-row">
-        <span class="skill-label">ACTIVE</span>
-        <span class="skill-desc"><span class="skill-name">${c.activeName}</span> — ${c.activeDesc}</span>
-      </div>
-      <div class="char-skill-row">
-        <span class="skill-label">TIẾN HOÁ</span>
-        <span class="skill-desc"><span class="skill-name">${c.evolvedWeapon}</span> — ${c.evolveDesc}</span>
-      </div>`;
-    renderStatPanel(c.id);
+    renderUnifiedCard(c.id);
   }
 
-  function renderStatPanel(charId) {
-    const panel = document.getElementById('stat-preview-panel');
-    if (!panel) return;
+  function renderStatPanel(charId) { renderUnifiedCard(charId); } // compat alias
+
+  function renderUnifiedCard(charId) {
+    const card = document.getElementById('char-unified-card');
+    if (!card) return;
     const char = CHARS.find(c => c.id === charId);
-    if (!char) { panel.innerHTML = ''; return; }
+    if (!char) { card.innerHTML = ''; return; }
 
-    const save  = Save.get();
-    const pot   = save.potential || { survival:[0,0,0,0], damage:[0,0,0,0], mobility:[0,0,0,0], fortune:[0,0,0,0] };
-    const petId = save.activePet;
-    const pet   = (typeof PETS !== 'undefined') ? PETS.find(p => p.id === petId) : null;
+    const save = Save.get();
+    const pot  = save.potential || { survival:[0,0,0,0], damage:[0,0,0,0], mobility:[0,0,0,0], fortune:[0,0,0,0] };
+    const petId= save.activePet;
+    const pet  = (typeof PETS !== 'undefined') ? PETS.find(p => p.id === petId) : null;
+    const petLabel = pet ? `${pet.icon} ${pet.name}` : null;
 
+    // ── Compute stats ─────────────────────────────────────────
     const baseHP   = char.baseHP;
     const potHP    = (pot.survival[0]||0) * 125;
     const petHP    = pet && pet.id === 'pet_turtle' ? Math.floor(baseHP * 0.25) : 0;
 
     const baseDmg  = char.baseDmg;
     const potDmgP  = (pot.damage[0]||0) * 10;
-    const finalDmg = Math.round(baseDmg * (1 + potDmgP/100));
+    const finalDmg = Math.round(baseDmg * (1 + potDmgP / 100));
 
     const baseAtk  = char.baseAtk;
     const potAtkSp = (pot.mobility[2]||0) * 0.10;
     const petAtkSp = pet && pet.id === 'pet_tiger' ? 0.15 : 0;
-    const atkMult  = Math.min(1.0 + potAtkSp + petAtkSp, 2.5);
+    const atkMult  = 1.0 + potAtkSp + petAtkSp;
     const finalAPS = (baseAtk * atkMult).toFixed(2);
 
     const baseSpd  = char.baseSpd;
     const potSpdP  = (pot.mobility[0]||0) * 6;
-    const finalSpd = Math.round(baseSpd * (1 + potSpdP/100));
+    const finalSpd = Math.round(baseSpd * (1 + potSpdP / 100));
 
     const potCrit  = (pot.damage[1]||0) * 6;
     const petCrit  = pet && pet.id === 'pet_dragon' ? 8 : 0;
@@ -2250,78 +2305,77 @@ const UI = (() => {
     const potGold  = (pot.fortune[0]||0) * 15;
     const petGold  = pet && pet.id === 'pet_fox'   ? 20 : 0;
     const petAoE   = pet && pet.id === 'pet_eagle' ? 12 : 0;
+    const potArmorPen = (pot.damage[3]||0) * 15; // 15%/lv, displayed as %
 
-    const petLabel = pet ? `${pet.icon} ${pet.name}` : null;
-
-    function cell(val, cls, isZero) {
-      return `<div class="sp-cell ${cls}${isZero ? ' zero' : ''}">${val}</div>`;
+    // ── Row builder ──────────────────────────────────────────
+    function td(val, cls) {
+      return `<div class="cu-td ${cls}">${val}</div>`;
     }
-    function divider() { return `<div class="sp-divider"></div>`; }
-    function row(icon, label, base, potB, petB, unit, forceShow) {
-      if (!forceShow && potB === 0 && petB === 0 && base === 0) return '';
-      const fin = base + potB + petB;
+    function statRow(icon, label, base, unit, potB, potUnit, petB, petUnit, fin, finUnit) {
+      const hasPot = potB !== 0 && potB !== '';
+      const hasPet = petB !== 0 && petB !== '';
       return `
-        ${cell(`${icon} ${label}`, 'c-label')}
-        ${cell(base + unit, 'c-base')}
-        ${cell(potB  ? `+${potB}${unit}`  : '—', 'c-pot', !potB)}
-        ${cell(petB  ? `+${petB}${unit}`  : '—', 'c-pet', !petB)}
-        ${cell(fin + unit, 'c-fin')}`;
+        ${td(`${icon} ${label}`, '')}
+        ${td(base + unit, 'v-base')}
+        ${td(hasPot ? `+${potB}${potUnit}` : '—', hasPot ? 'v-pot' : 'v-zero')}
+        ${td(hasPet ? `+${petB}${petUnit}` : '—', hasPet ? 'v-pet' : 'v-zero')}
+        ${td(fin + finUnit, 'v-fin')}`;
+    }
+    function sep() {
+      return `<div class="cu-td v-sep" style="grid-column:1/-1"></div>`;
     }
 
-    const atkRow = `
-      ${cell('⚡ Tốc Đánh', 'c-label')}
-      ${cell(baseAtk + '×', 'c-base')}
-      ${cell(potAtkSp > 0 ? `+${(potAtkSp*100).toFixed(0)}%` : '—', 'c-pot', potAtkSp===0)}
-      ${cell(petAtkSp > 0 ? `+${(petAtkSp*100).toFixed(0)}%` : '—', 'c-pet', petAtkSp===0)}
-      ${cell(finalAPS + '/s', 'c-fin')}`;
+    // ── Skill row builder ─────────────────────────────────────
+    function skillRow(badgeClass, badgeText, name, cd, desc) {
+      const cdTag = cd ? `<span class="cu-sk-cd">CD ${cd}s</span>` : '';
+      return `
+        <div class="cu-skill-row">
+          <span class="cu-sk-badge ${badgeClass}">${badgeText}</span>
+          <div class="cu-sk-body">
+            <div class="cu-sk-name">${name}${cdTag}</div>
+            <div class="cu-sk-desc">${desc}</div>
+          </div>
+        </div>`;
+    }
 
-    const dmgRow = `
-      ${cell('⚔️ Sát Thương', 'c-label')}
-      ${cell(baseDmg, 'c-base')}
-      ${cell(potDmgP > 0 ? `+${potDmgP}%` : '—', 'c-pot', potDmgP===0)}
-      ${cell('—', 'c-pet', true)}
-      ${cell(finalDmg, 'c-fin')}`;
-
-    const spdRow = `
-      ${cell('🏃 Tốc Độ', 'c-label')}
-      ${cell(baseSpd, 'c-base')}
-      ${cell(potSpdP > 0 ? `+${potSpdP}%` : '—', 'c-pot', potSpdP===0)}
-      ${cell('—', 'c-pet', true)}
-      ${cell(finalSpd, 'c-fin')}`;
-
-    const aoeRow = petAoE > 0 ? `
-      ${cell('🌐 AoE', 'c-label')}
-      ${cell('1.0×', 'c-base')}
-      ${cell('—', 'c-pot', true)}
-      ${cell('+' + petAoE + '%', 'c-pet')}
-      ${cell('×1.' + String(petAoE).padStart(2,'0'), 'c-fin')}` : '';
-
-    panel.innerHTML = `
-      <div class="sp-header">
-        <span class="sp-title">📊 CHỈ SỐ THỰC TẾ</span>
-        <span class="sp-pet-tag ${petLabel ? '' : 'none'}">${petLabel || '🐾 Không có Thú Cưng'}</span>
+    card.innerHTML = `
+      <!-- ══ THUỘC TÍNH ══ -->
+      <div class="cu-section s-stat">
+        📊 THUỘC TÍNH THỰC TẾ
+        <span class="cu-pet-tag ${petLabel ? '' : 'none'}">${petLabel || '🐾 Chưa có Thú Cưng'}</span>
       </div>
-      <div class="sp-cols">
-        <div class="sp-col-head">Chỉ Số</div>
-        <div class="sp-col-head c-base">Cơ Bản</div>
-        <div class="sp-col-head c-pot">Tiềm Năng</div>
-        <div class="sp-col-head c-pet">Thú Cưng</div>
-        ${row('❤️', 'HP Tối Đa', baseHP, potHP, petHP, '', true)}
-        ${dmgRow}
-        ${atkRow}
-        ${spdRow}
-        ${divider()}
-        ${row('🎯', 'Crit Rate',  0, potCrit,  petCrit,  '%', potCrit+petCrit>0)}
-        ${row('💢', 'Crit DMG', 150, potCritD, petCritD, '%', true)}
-        ${row('🛡️', 'Giáp',       0, potArmor, petArmor, '%', potArmor+petArmor>0)}
-        ${divider()}
-        ${row('💚', 'Hồi HP/s',   0, potRegen,  0, '/s', potRegen>0)}
-        ${row('🩸', 'HP/Kill',    0, potHPK,    0, '',   potHPK>0)}
-        ${row('🧛', 'Hút Máu',    0, 0,  petSteal, '%', petSteal>0)}
-        ${row('◈',  'Vàng Thêm',  0, potGold, petGold, '%', potGold+petGold>0)}
-        ${aoeRow}
+      <div class="cu-stat-grid">
+        <div class="cu-th">Chỉ Số</div>
+        <div class="cu-th">Cơ Bản</div>
+        <div class="cu-th th-pot">Tiềm Năng</div>
+        <div class="cu-th th-pet">Thú Cưng</div>
+        <div class="cu-th th-fin">Tổng</div>
+
+        ${statRow('❤️','HP', baseHP, '', potHP, '', petHP, '', baseHP+potHP+petHP, '')}
+        ${statRow('⚔️','Sát Thương', baseDmg, '', potDmgP > 0 ? potDmgP : 0, potDmgP > 0 ? '%→' + finalDmg : '', 0, '', finalDmg, '')}
+        ${statRow('⚡','Tốc Đánh', baseAtk+'×', '', potAtkSp > 0 ? Math.round(potAtkSp*100) : 0, '%', petAtkSp > 0 ? Math.round(petAtkSp*100) : 0, '%', finalAPS, '/s')}
+        ${statRow('🏃','Tốc Độ', baseSpd, '', potSpdP > 0 ? potSpdP : 0, '%', 0, '', finalSpd, '')}
+        ${sep()}
+        ${(potCrit+petCrit > 0) ? statRow('🎯','Crit Rate', 0,'%', potCrit, '%', petCrit, '%', potCrit+petCrit, '%') : ''}
+        ${statRow('💢','Crit DMG', 150,'%', potCritD, '%', petCritD, '%', 150+potCritD+petCritD, '%')}
+        ${(potArmor+petArmor > 0) ? statRow('🛡️','Giáp', 0,'%', potArmor, '%', petArmor, '%', potArmor+petArmor, '%') : ''}
+        ${(potRegen > 0) ? statRow('💚','Hồi HP/s', 0,'', potRegen, '/s', 0, '', potRegen, '/s') : ''}
+        ${(potHPK > 0) ? statRow('🩸','HP/Kill', 0,'', potHPK, '', 0, '', potHPK, '') : ''}
+        ${(petSteal > 0) ? statRow('🧛','Hút Máu', 0,'%', 0, '', petSteal, '%', petSteal, '%') : ''}
+        ${(potGold+petGold > 0) ? statRow('◈','Vàng Thêm', 0,'%', potGold, '%', petGold, '%', potGold+petGold, '%') : ''}
+        ${(petAoE > 0) ? statRow('🌐','AoE', 1,'×', 0, '', petAoE, '%', '×1.' + String(petAoE).padStart(2,'0'), '') : ''}
+        ${(potArmorPen > 0) ? statRow('🗡️','Xuyên Giáp', 0,'%', potArmorPen, '%', 0, '', potArmorPen, '%') : ''}
       </div>
-      <div class="sp-note">* Tốc đánh = Cơ bản × (1 + Tiềm Năng + Thú Cưng) | Crit/Lifesteal chỉ áp dụng cho Vũ Khí Chính</div>`;
+      <div class="cu-note">Crit · Lifesteal · ArmorPen chỉ áp dụng cho Vũ Khí Chính và bản Tiến Hoá</div>
+
+      <!-- ══ KỸ NĂNG ══ -->
+      <div class="cu-section s-skill">⚔ KỸ NĂNG & VŨ KHÍ</div>
+      <div class="cu-skill-list">
+        ${skillRow('b-weapon', 'VŨ KHÍ', char.weapon, null, char.weaponDesc)}
+        ${skillRow('b-passive', 'PASSIVE', char.passiveName, null, char.passiveDesc)}
+        ${skillRow('b-active', 'ACTIVE', char.activeName, char.activeCooldown, char.activeDesc)}
+        ${skillRow('b-evolve', 'TIẾN HOÁ', char.evolvedWeapon, null, char.evolveDesc)}
+      </div>`;
   }
 
   function goToMapSelect() {
@@ -2442,37 +2496,37 @@ const UI = (() => {
       {
         key:'survival', label:'⚔ THỂ CHẤT', color:'#ff6060',
         nodes:[
-          {name:'HP Tối Đa',       icon:'❤️', desc:'+125 HP tối đa mỗi cấp (hồi ngay)',   maxLv:7, baseCost:80},
-          {name:'Giảm Sát Thương', icon:'🛡️', desc:'-5% ST nhận mỗi cấp (tối đa -20%)',   maxLv:4, baseCost:150},
-          {name:'Hồi HP/giây',     icon:'💚', desc:'+4 HP/s mỗi cấp (tối đa +16 HP/s)',   maxLv:4, baseCost:200},
-          {name:'Hồi HP/kill',     icon:'🩸', desc:'+10 HP khi giết quái mỗi cấp',         maxLv:4, baseCost:350},
+          {name:'HP Tối Đa',       icon:'❤️', desc:'+125 HP tối đa/cấp + hồi ngay 125 HP. Cấp 7: +875 HP. Chi phí: 80→160→320→480×4◈.',   maxLv:7, baseCost:80},
+          {name:'Giảm Sát Thương', icon:'🛡️', desc:'+5% Armor/cấp (tối đa +20%). Cộng với thẻ/pet → tổng tối đa 78%. Chi phí: 150→300→600→900◈.',   maxLv:4, baseCost:150},
+          {name:'Hồi HP/giây',     icon:'💚', desc:'+4 HP/s/cấp (tối đa +16 HP/s). Hồi liên tục kể cả trong combat. Chi phí: 200→400→800→1200◈.',   maxLv:4, baseCost:200},
+          {name:'Hồi HP/kill',     icon:'🩸', desc:'+10 HP/kill/cấp (tối đa +40 HP/kill). Hồi ngay khi tiêu diệt bất kỳ quái nào. Chi phí: 350→700→1400→2100◈.',         maxLv:4, baseCost:350},
         ]
       },
       {
         key:'damage', label:'💥 SỨC MẠNH', color:'#ff9060',
         nodes:[
-          {name:'% Sát Thương',    icon:'⚔️', desc:'+10% mỗi cấp',     maxLv:6, baseCost:100},
-          {name:'Tỉ Lệ Crit',      icon:'🎯', desc:'+6% crit rate',     maxLv:4, baseCost:200},
-          {name:'Crit Damage',     icon:'💢', desc:'+30% crit dmg',     maxLv:3, baseCost:300},
-          {name:'Xuyên Giáp',      icon:'🗡️', desc:'+15% xuyên giáp/cấp: bypass khiên địch + bonus dmg với Boss/Elite',  maxLv:3, baseCost:450},
+          {name:'% Sát Thương',    icon:'⚔️', desc:'+10% BaseDMG/cấp (tối đa +60%). Nhân với DMGMult. Cấp 6: baseDmg ×1.60. Chi phí: 100→200→400→600×3◈.',     maxLv:6, baseCost:100},
+          {name:'Tỉ Lệ Crit',      icon:'🎯', desc:'+6% Crit Rate/cấp (tối đa +24%). Chỉ áp dụng vũ khí chính+tiến hoá. Chi phí: 200→400→800→1200◈.',     maxLv:4, baseCost:200},
+          {name:'Crit Damage',     icon:'💢', desc:'+30% CritDMG/cấp (tối đa +90%, tổng 240%). Chỉ áp dụng vũ khí chính+tiến hoá. Chi phí: 300→600→1200◈.',     maxLv:3, baseCost:300},
+          {name:'Xuyên Giáp',      icon:'🗡️', desc:'+15% ArmorPen/cấp (tối đa 45%). Bypass 45% khiên địch + bonus ×1.36 vs Boss/Elite. Chi phí: 450→900→1800◈.',  maxLv:3, baseCost:450},
         ]
       },
       {
         key:'mobility', label:'💨 TỐC ĐỘ', color:'#60d0ff',
         nodes:[
-          {name:'Tốc Di Chuyển',   icon:'👟', desc:'+6% SPD mỗi cấp',  maxLv:5, baseCost:80},
-          {name:'Giảm Cooldown',   icon:'⏱️', desc:'-10% CD mỗi cấp',  maxLv:4, baseCost:150},
-          {name:'Tốc Đánh',        icon:'⚡', desc:'+10% ATK SPD',      maxLv:4, baseCost:200},
-          {name:'Phản Dame Move',  icon:'🌀', desc:'-10% ST nhận khi đang di chuyển', maxLv:2, baseCost:450},
+          {name:'Tốc Di Chuyển',   icon:'👟', desc:'+6% SPD/cấp (tối đa +30%). Chi phí: 80→160→320→480×2◈.',  maxLv:5, baseCost:80},
+          {name:'Giảm Cooldown',   icon:'⏱️', desc:'-10% CD/cấp (tối đa -40%). CD thực = CD gốc × (1-0.40). Chi phí: 150→300→600→900◈.',  maxLv:4, baseCost:150},
+          {name:'Tốc Đánh',        icon:'⚡', desc:'+10% AtkSpeedMult/cấp (tối đa +40%). Không giới hạn trên khi kết hợp thẻ/pet. Chi phí: 200→400→800→1200◈.',      maxLv:4, baseCost:200},
+          {name:'Phản Dame Move',  icon:'🌀', desc:'-10% ST nhận/cấp khi đang di chuyển (tối đa -20%). Áp dụng sau Giáp. Chi phí: 450→900◈.', maxLv:2, baseCost:450},
         ]
       },
       {
         key:'fortune', label:'🍀 VẬN MAY', color:'#ffd700',
         nodes:[
-          {name:'% Vàng',          icon:'◈',  desc:'+15% vàng nhận',   maxLv:4, baseCost:120},
-          {name:'Thẻ Hiếm',        icon:'🃏', desc:'+1 trọng số thẻ Hiếm/lv (lv3: ×2.5 lần rate)',    maxLv:3, baseCost:250},
-          {name:'Vũ Khí Đầu',      icon:'🎁', desc:'Bắt đầu +1 vũ khí phụ', maxLv:1, baseCost:800},
-          {name:'4 Thẻ Chọn',      icon:'🎴', desc:'Chọn từ 4 thẻ',   maxLv:1, baseCost:650},
+          {name:'% Vàng',          icon:'◈',  desc:'+15% goldBonus/cấp (tối đa +60%). Nhân vào toàn bộ vàng nhận trong run. Chi phí: 120→240→480→720◈.',   maxLv:4, baseCost:120},
+          {name:'Thẻ Hiếm',        icon:'🃏', desc:'Hiếm +1 trọng số/cấp (mặc định 2, cấp 3 → 5 = ×2.5 lần rate). Chi phí: 250→500→1000◈.',    maxLv:3, baseCost:250},
+          {name:'Vũ Khí Đầu',      icon:'🎁', desc:'Bắt đầu run với 1 vũ khí phụ ngẫu nhiên (Hào Quang Thánh) đã trang bị sẵn. Chi phí: 800◈.', maxLv:1, baseCost:800},
+          {name:'4 Thẻ Chọn',      icon:'🎴', desc:'Mỗi lần level-up rút 4 thẻ thay vì 3 thẻ để chọn. Chi phí: 650◈.',   maxLv:1, baseCost:650},
         ]
       },
     ];
@@ -2622,57 +2676,63 @@ const UI = (() => {
       const charGuides = [
         {
           c: CHARS.find(c=>c.id==='luu_phong'),
-          dps: '25.2 (raw) → ~40+ với max Kiếm Ý',
+          dps: 'Base 70 × 1.8/s = 126/s · Full stack ×1.45 = ~183/s',
           difficulty: '⭐⭐ Trung Bình',
-          playstyle: 'Aggressive — không nhận đòn',
-          guide: `<b>Chiến thuật:</b> Tích lũy stack liên tục, tận dụng dash <b>Tàn Phong Trảm</b> để thoát khi bị vây và bảo toàn stack còn lại. Stack tối thiểu sau khi bị đánh = floor(stack × 0.50) — bền vững hơn trước.<br><br>
-<b>Tiến hoá:</b> Thần Kiếm Vong Linh — kiếm khí 8 hướng + 2 lưỡi ảo. Kết hợp với tốc đánh cao = sát thương AoE cực lớn.<br><br>
-<b>Lưu ý:</b> Nhân vật FREE — effective DPS cao nhất khi giữ stack cao. Tầm chém 80 đơn vị, ưu tiên giữ stack và kite thay vì đứng yên nhận đòn.`,
+          playstyle: 'Aggressive — tích stack, kite',
+          guide: `<b>Passive — Kiếm Ý:</b> Mỗi kill +1 stack (tối đa 30 stack = +45% tốc đánh). Bị đánh mất 50% stack hiện có. Tốc đánh thực = 1.8 × (1 + stack×0.015)/s.<br><br>
+<b>Active — Tàn Phong Trảm (CD 7s):</b> Freeze 0.2s → dash 250đv xuyên quái ×2.5 DMG + chảy máu 30%×5 tick×0.6s. Vô địch suốt dash. Dùng để thoát vây, không phải tấn công.<br><br>
+<b>Tiến hoá → Thần Kiếm Vong Linh:</b> Mỗi nhát chém bắn 8 tia kiếm khí (×0.15/tia, pierce 3) + 2 lưỡi ảo đánh trễ 150ms/300ms (×0.5/lưỡi). Tốc đánh cao = AoE liên tục.<br><br>
+<b>Lưu ý:</b> Nhân vật miễn phí, tầm chém ngắn (~80đv). Ưu tiên giữ stack — kite thay vì đứng yên nhận đòn.`,
         },
         {
           c: CHARS.find(c=>c.id==='huyen_nguyet'),
-          dps: '33.3 (raw) → ~40.0 khi đứng yên | Evolved: ×2.95~3.54/target',
+          dps: 'Base 175×0.95/s = 166/s · +20% đứng yên = 199/s · Evolved per target: ×2.95~3.54',
           difficulty: '⭐ Dễ',
-          playstyle: 'Stationary — đứng yên farm',
-          guide: `<b>Chiến thuật:</b> Chọn vị trí an toàn ở giữa màn, dùng Tinh Linh Cầu (tự truy đuổi) và để quái kéo đến. Kết hợp với vũ khí phụ AoE để khóa đám đông trong khi đứng yên 0.4 giây để kích passive.<br><br>
-<b>Tiến hoá — Hắc Nhật Ma Cầu:</b> Mỗi orb trúng địch tách <b>3 mini orb</b> (×0.55 mỗi cái, pierce 1) tự homing vào <b>3 quái gần nhất</b> riêng biệt + áp độc 0.15×/s trong 4 giây. Effective ×2.95 per target — <b>×3.54 khi đứng yên</b>. Đứng góc tường để không bị đẩy.<br><br>
-<b>Active Hắc Động Lôi:</b> Dùng khi bị vây để mở đường thoát — giúp đứng yên lại sớm hơn.`,
+          playstyle: 'Stationary — đứng yên 0.4s để kích passive',
+          guide: `<b>Passive — Mana Tích Tụ:</b> Đứng yên ≥0.4 giây → +20% sát thương. Di chuyển reset ngay. Công thức: totalDmg × 1.2.<br><br>
+<b>Active — Hắc Động Lôi (CD 9s):</b> Triệu 8 tia sét AoE bán kính 200đv trong 3 giây, mỗi tia ×0.8 totalDmg + AoE 70đv. (+1 tia/cấp stat AoE).<br><br>
+<b>Tiến hoá → Hắc Nhật Ma Cầu:</b> Mỗi orb trúng tách 3 mini orb (×0.55/orb, pierce 1) tự homing + áp độc 0.15×/s×4s. Hiệu quả = 1×main + 3×0.55 = ×2.65/đòn. Khi đứng yên: ×2.65×1.2 = <b>×3.18</b> mỗi target hit.<br><br>
+<b>Lưu ý:</b> Đứng góc tường để không bị đẩy. Ưu tiên Hồi HP/s hoặc Giáp để đứng yên an toàn hơn.`,
         },
         {
           c: CHARS.find(c=>c.id==='thiet_tam'),
-          dps: '38.75 (raw) → ~48.4 với passive khoảng cách',
+          dps: 'Base 155×1.25/s = 194/s · +25% quái xa >250đv = 242/s',
           difficulty: '⭐⭐ Trung Bình',
-          playstyle: 'Kiter — luôn giữ khoảng cách',
-          guide: `<b>Chiến thuật:</b> Dùng joystick chạy hình vòng tròn — cung xuyên thấu nên kéo dài đường bắn qua nhiều quái. Tầm bắn 900 đơn vị + passive Eagle Eye: quái >250 đơn vị nhận thêm 35%. Ưu tiên diệt quái bắn xa trước khi chúng thu hẹp khoảng cách.<br><br>
-<b>Tiến hoá:</b> Tử Thần Chi Tên — áp độc khi trúng + xuyên địch đầu phân thành 3 tên nhỏ. Cực mạnh với đám đông dày đặc.<br><br>
-<b>Active Vũ Bão Tiễn:</b> 8 mũi tên 180° — lý tưởng khi bị vây từ phía trước.`,
+          playstyle: 'Kiter — luôn giữ khoảng cách >250đv',
+          guide: `<b>Passive — Mắt Đại Bàng:</b> Quái ở xa >250 đơn vị nhận thêm +25% sát thương. Công thức: totalDmg × 1.25.<br><br>
+<b>Active — Vũ Bão Tiễn (CD 6s):</b> 8 mũi tên 180° phía trước, mỗi tên ×1.0 totalDmg, pierce theo chỉ số pierce hiện tại. Nhắm về quái gần nhất.<br><br>
+<b>Tiến hoá → Tử Thần Chi Tên:</b> Mỗi mũi tên áp độc khi trúng + xuyên qua địch đầu phân thành 3 tên nhỏ (×0.55/tên).<br><br>
+<b>Lưu ý:</b> Tầm bắn 900đv. Chạy vòng tròn liên tục — cung xuyên thấu nên kéo dài qua nhiều quái. Ưu tiên diệt quái bắn xa trước.`,
         },
         {
           c: CHARS.find(c=>c.id==='kim_cang'),
-          dps: '26.6 (raw) · AoE 85u · Block 20% hồi 5% HP',
+          dps: 'Base 140×0.95/s = 133/s · Block 20% — hồi 5% HP/block + stack tốc đánh +7%/block',
           difficulty: '⭐ Dễ',
-          playstyle: 'Tank — chịu đòn counter',
-          guide: `<b>Chiến thuật:</b> Đứng giữa đám quái và để chúng tấn công — mỗi đòn chặn hồi 5% HP tối đa + stack tốc đánh. Thiền Trượng AoE bán kính 85 đơn vị phát huy tốt nhất khi bị vây. HP cao nhất game = độ an toàn cao nhất.<br><br>
-<b>Tiến hoá:</b> Hộ Pháp Thần Trượng — mỗi điểm trúng tạo cột sáng thiêng liêng tồn tại 2 giây. Chống đám đông tốt.<br><br>
-<b>Active Phật Nộ Giáng Thiên:</b> AoE khổng lồ + knockback toàn màn — dùng khi bị vây quá nhiều hoặc trước boss.`,
+          playstyle: 'Tank — đứng giữa đám quái, chịu đòn counter',
+          guide: `<b>Passive — Kim Cang Thể:</b> 20% xác suất chặn hoàn toàn mọi đòn (dmg=0) + hồi 5% HP tối đa + AtkSpeedMult +0.07 tạm thời 3 giây (stack được). HP tối đa: 1050 (cao nhất game).<br><br>
+<b>Active — Phật Nộ Giáng Thiên (CD 8s):</b> Nổ AoE bán kính (120+stat_aoe×20)×aoeSize với ×6.0 totalDmg + knockback tất cả quái trong 1.4× bán kính.<br><br>
+<b>Tiến hoá → Hộ Pháp Thần Trượng:</b> Mỗi điểm trúng địch tạo cột thánh sáng tồn tại 2 giây, tiếp tục gây sát thương liên tục.<br><br>
+<b>Lưu ý:</b> Đứng giữa đám quái để tối đa cơ hội Block. Ưu tiên Xuyên Giáp để counter quái elite có khiên.`,
         },
         {
           c: CHARS.find(c=>c.id==='am_sat'),
-          dps: '~46.1 (raw) → ~57.6 khi HP <40%',
+          dps: 'Base 80×2.4/s×1.2 = 230/s · HP<40%: ×1.5 = 288/s',
           difficulty: '⭐⭐⭐ Khó',
-          playstyle: 'Glass cannon — burst khi nguy hiểm',
-          guide: `<b>Chiến thuật:</b> Nhân vật "reverse risk" — nền sát thương tốt ngay từ đầu, càng nguy hiểm càng mạnh. Có thể chủ động nhận 1-2 đòn để kích Bóng Tối trong boss fight. Trong 5 giây vô hình, tập trung burst toàn lực. Tầm chém 72 đơn vị — phải tiếp cận sát địch.<br><br>
-<b>Tiến hoá:</b> Hư Vô Đoản Kiếm — mỗi đòn tạo phân thân lặp lại sau 0.3 giây (hiệu quả đánh 2 lần). Với tốc độ tấn công 2.4/s → cực kỳ nguy hiểm.<br><br>
-<b>Active Ám Sát Liên Hoàn:</b> Teleport đến 3 mục tiêu, ×4.0 DMG mỗi đích + iframe 0.8s. Lý tưởng để xóa elite hoặc burst boss.`,
+          playstyle: 'Reverse risk — càng nguy hiểm càng mạnh',
+          guide: `<b>Passive — Bóng Tối:</b> Luôn +20% ATK. HP<40%: thêm +50% ATK (×1.5 thay ×1.2), +40% SPD, -30% ST nhận. Công thức: totalDmg = baseDmg×dmgMult × (HP<40% ? 1.5 : 1.2).<br><br>
+<b>Active — Ám Sát Liên Hoàn (CD 10s):</b> Teleport đến 3 mục tiêu gần nhất, mỗi mục tiêu chịu ×4.0 totalDmg. iframe 0.8 giây.<br><br>
+<b>Tiến hoá → Hư Vô Đoản Kiếm:</b> Mỗi đòn tạo phân thân lặp lại sau 0.3 giây (×1.0 dmg). Hiệu quả đánh 2 lần — với 2.4/s tốc đánh = thực tế ~4.8 nhát/s.<br><br>
+<b>Lưu ý:</b> Có thể chủ động nhận 1-2 đòn để kích passive khi boss fight. Tầm chém 72đv — cần tiếp cận sát địch.`,
         },
         {
           c: CHARS.find(c=>c.id==='tu_linh'),
-          dps: '32.4 (raw) → ~55.1 với 20 Linh Hồn',
+          dps: 'Base 120×1.35/s = 162/s · 20 Linh Hồn: ×1.7 = 275/s',
           difficulty: '⭐⭐ Trung Bình',
-          playstyle: 'Snowball — càng farm lâu càng mạnh',
-          guide: `<b>Chiến thuật:</b> Mục tiêu là tích đủ 20 Linh Hồn trước khi boss xuất hiện. Liềm boomerang tầm 240 đơn vị — đánh cả 2 chiều. Farm liên tục, không để HP rơi xuống 20% vì sẽ mất toàn bộ stack. Quân Đoàn Bất Tử hỗ trợ farm wave.<br><br>
-<b>Tiến hoá:</b> Vong Hồn Đại Liềm — liềm lớn gấp 1.8×, hút quái vào khi bay, xuyên tất cả địch khi về. Hợp sức với stack Linh Hồn = sát thương khủng khiếp.<br><br>
-<b>Active Quân Đoàn Bất Tử:</b> 3 bộ xương chiến đấu 12 giây — giữ bộ xương alive để farm Linh Hồn thụ động.`,
+          playstyle: 'Snowball — tích 20 Linh Hồn trước boss',
+          guide: `<b>Passive — Thu Hoạch Linh Hồn:</b> Mỗi kill tạo 1 Linh Hồn (tối đa 20), mỗi linh hồn +3.5% ST. Công thức: totalDmg = baseDmg×dmgMult × (1 + soulCount×0.035). HP<20%: tiêu thụ tất cả → hồi 25 HP/linh hồn.<br><br>
+<b>Active — Quân Đoàn Bất Tử (CD 9s):</b> Tiêu thụ Linh Hồn → Soul Burst AoE 160đv (soulCount × ×0.6 totalDmg) + triệu 3 xương (HP 80+lv×5, DMG ×0.7, 12s, tối đa 9 xương). Xương giết quái → tạo Linh Hồn.<br><br>
+<b>Tiến hoá → Vong Hồn Đại Liềm:</b> Liềm to ×1.8, hút quái khi bay ra, xuyên tất cả địch khi về.<br><br>
+<b>Lưu ý:</b> Đừng dùng active sớm — tích đủ linh hồn trước boss để Soul Burst tối đa. Không để HP<20% sẽ mất toàn bộ stack.`,
         },
       ];
 
@@ -2717,10 +2777,28 @@ const UI = (() => {
           '🗡️ <b>Ám Sát</b> → Hư Vô Đoản Kiếm: mỗi đòn đánh tạo phân thân ảo lặp lại đòn đó sau 0.3 giây.<br>' +
           '💀 <b>Tử Linh</b> → Vong Hồn Đại Liềm: liềm to gấp 1.8 lần, hút quái vào khi bay, xuyên tất cả địch khi về.'));
       entry('🗡️','Vũ Khí Phụ (Sub Weapons)',
-        p('Nhận qua level-up, tối đa 6 loại cùng lúc. Mỗi loại có thể nâng tối đa cấp 5.'));
+        p('Nhận qua level-up, tối đa <b>6 vũ khí phụ</b> cùng lúc. Mỗi loại nâng tối đa cấp 5.<br>' +
+          '⚠️ Vũ khí phụ <b>không</b> nhận crit/hút máu/xuyên giáp — chỉ nhân DMGMult của người chơi.'));
       SKILL_POOL.filter(s => s.type === 'weapon').forEach(w => {
         entry(w.icon, w.name, p(w.desc));
       });
+      entry('📊','Thẻ Chỉ Số (Stat Cards)',
+        p('Thẻ stat tích lũy trong mỗi run, tối đa cấp 5 mỗi thẻ:<br><br>' +
+          '💨 <b>Tốc Độ Di Chuyển:</b> +8% SPD/cấp (cấp 5: +40%).<br>' +
+          '⚔️ <b>Tốc Độ Tấn Công:</b> +15% AtkSpeedMult/cấp (cấp 5: +75%). Không giới hạn trên.<br>' +
+          '💥 <b>Sát Thương:</b> +8% DMGMult/cấp (cấp 5: +40%). Ảnh hưởng toàn bộ vũ khí phụ.<br>' +
+          '🧛 <b>Hút Máu:</b> +4% lifesteal/cấp (cấp 5: +20%). Tổng tối đa 50%.<br>' +
+          '🛡️ <b>Giáp:</b> +6% armor/cấp (cấp 5: +30%). Tổng tối đa 78%.<br>' +
+          '🌐 <b>Diện Tích AoE:</b> +10% aoeSize/cấp (cấp 5: ×1.5 AoE).<br>' +
+          '⏱️ <b>Hồi Chiêu Nhanh:</b> −8% CD/cấp (cấp 5: −40%). Cộng với Tiềm Năng Cơ Động[1].<br>' +
+          '❤️ <b>Tăng HP Tối Đa:</b> +125 HP/cấp (cấp 5: +625 HP) + hồi ngay.'));
+      entry('🌑','Thẻ Đặc Biệt (Special Cards)',
+        p('Thẻ epic/rare xuất hiện ngẫu nhiên, mỗi thẻ chỉ 1 cấp (trừ Nam Châm):<br><br>' +
+          '🪙 <b>Xu Bất Tử (Epic):</b> Hồi sinh 1 lần với 40% HP khi chết trong run.<br>' +
+          '🕐 <b>Đồng Hồ Tốc Độ (Epic):</b> +20% AtkSpeedMult nhưng HP tối đa ×0.85 (−15%). HP hiện tại cũng giảm nếu vượt ngưỡng mới.<br>' +
+          '🔮 <b>Rune Vòng Cổ (Epic):</b> Mỗi đạn bắn ra tạo thêm 1 đạn phụ hướng ngẫu nhiên.<br>' +
+          '🧲 <b>Nam Châm Vàng (Rare):</b> Tăng phạm vi hút exp gem +50%/cấp; cấp 3: tự động hút toàn màn.<br>' +
+          '🌑 <b>Nguyền Diệt Vong (Epic):</b> Khi hạ quái: kích nổ AoE 60đv (×0.3 totalDmg) tại vị trí của chúng.'));
 
     } else if (tab === 'maps') {
       const tierNames = ['','Cung 1 — Nhập Môn','Cung 2 — Thử Thách','Cung 3 — Áp Lực','Cung 4 — Đỉnh Cao','Cung 5 — Tận Cùng'];
@@ -2887,7 +2965,77 @@ const UI = (() => {
         entry(md.icon, md.map, html);
       });
 
-    } else if (tab === 'tips') {
+    } else if (tab === 'mechanics') {
+      entry('⚔️','Sát Thương (Damage)',
+        p('Công thức: <b>BaseDMG × DMGMult × CritMult</b>.<br><br>' +
+          '• <b>BaseDMG:</b> chỉ số gốc của nhân vật, tăng qua Tiềm Năng Sát Thương[0] (+10%/cấp) và nâng cấp vũ khí chính (+10%/lv).<br>' +
+          '• <b>DMGMult:</b> nhân từ thẻ kỹ năng (Sức Mạnh, Hủy Diệt...) và Tiến Hoá (+35%).<br>' +
+          '• <b>CritMult:</b> khi kích crit, nhân thêm CritDMG (mặc định 150%).<br><br>' +
+          '⚠️ Crit · Hút Máu · Xuyên Giáp <b>chỉ áp dụng cho vũ khí chính và bản Tiến Hoá</b>, không áp dụng vũ khí phụ.'));
+      entry('🎯','Crit Rate & Crit DMG',
+        p('• <b>Crit Rate:</b> xác suất kích crit. Mặc định 0%. Tiềm Năng Sát Thương[1] +6%/cấp (max +24%). Ma Long +8%.<br>' +
+          '• <b>Crit DMG:</b> hệ số nhân khi crit. Mặc định 150%. Tiềm Năng Sát Thương[2] +30%/cấp (max cộng thêm +270% = tổng 420%). Ma Long +40%.<br><br>' +
+          'Ví dụ: 24% Crit Rate + 420% Crit DMG → DPS kỳ vọng tăng <b>+76.8%</b> so với không crit.'));
+      entry('⚡','Tốc Độ Tấn Công',
+        p('Tốc đánh thực = <b>BaseATK × AtkSpeedMult</b>.<br><br>' +
+          '• Tiềm Năng Cơ Động[2]: +10%/cấp (max +40%).<br>' +
+          '• Thú Cưng Bạch Hổ: +15% khi HP >70%.<br>' +
+          '• Kim Cang Block Stack: +7%/lần chặn (tồn tại 3 giây).<br>' +
+          '• Tiến Hoá: +20%. Thẻ tốc đánh trong run cộng dồn.<br>' +
+          '• <b>Không giới hạn trên</b> — có thể vượt 3×+ với đủ stack.'));
+      entry('🛡️','Giảm Sát Thương Nhận',
+        p('Tất cả nguồn giảm ST nhận <b>áp dụng theo thứ tự</b> trước khi trừ HP:<br><br>' +
+          '1. <b>Giáp (Armor):</b> Tiềm Năng Sinh Tồn[1] +5%/cấp (max +20%) + Thần Quy +8% + thẻ Giáp trong run +8%/cấp. Tổng tối đa <b>78%</b>. Áp dụng mọi nguồn sát thương.<br>' +
+          '2. <b>Kim Cang — Chặn Đòn:</b> 20% xác suất chặn hoàn toàn (finalDmg = 0) + hồi 5% HP tối đa + stack tốc đánh tạm thời.<br>' +
+          '3. <b>Ám Sát — Bóng Tối:</b> Khi HP &lt; 40% → giảm thêm <b>30%</b> sát thương nhận (×0.7).<br>' +
+          '4. <b>Thần Quy Pet — Khẩn Cấp:</b> Khi HP &lt; 30% → giảm thêm <b>20%</b> sát thương nhận (×0.8).<br><br>' +
+          'Ví dụ: nhận đòn 100 dmg, Giáp 20% + Ám Sát active → còn <b>56 dmg</b>.'));
+      entry('🏃','Giảm Sát Thương Khi Di Chuyển',
+        p('Tiềm Năng Cơ Động[3] — <b>giảm -10% ST nhận/cấp khi đang di chuyển</b>, tối đa -40%.<br><br>' +
+          '• Chỉ kích hoạt khi nhân vật đang di chuyển thực sự (velocity > 10 đơn vị).<br>' +
+          '• Áp dụng <b>sau</b> giảm Giáp, trước passive nhân vật.<br>' +
+          '• Kết hợp tốt nhất với nhân vật cơ động: Thiết Tâm, Ám Sát, Thần Ưng.<br>' +
+          '• Ví dụ: nhận 100 dmg khi chạy, Giáp 20% + Di Chuyển -40% → còn <b>48 dmg</b>.'));
+      entry('🔄','Hồi Chiêu (CD Reduce)',
+        p('Giảm thời gian chờ của kỹ năng Active.<br><br>' +
+          '• Tiềm Năng Cơ Động[1]: -10%/cấp, tối đa <b>-40% CD</b>.<br>' +
+          '• Công thức: <b>CD thực = CD gốc × (1 − cdReduce)</b>.<br><br>' +
+          'CD thực tế ở -40%:<br>' +
+          '— Lưu Phong (Tàn Phong Trảm) 7s → <b>4.2s</b><br>' +
+          '— Huyền Nguyệt (Nguyệt Ảnh) 5s → <b>3s</b><br>' +
+          '— Thiết Tâm (Bão Tên) 8s → <b>4.8s</b><br>' +
+          '— Kim Cang (Phật Nộ) 12s → <b>7.2s</b><br>' +
+          '— Ám Sát (Bóng Tối) 15s → <b>9s</b><br>' +
+          '— Tử Linh (Hồn Bùng Phát) 10s → <b>6s</b>'));
+      entry('🧛','Hút Máu (Lifesteal)',
+        p('Hồi HP mỗi đòn = <b>sát thương gây ra × % hút máu</b>.<br><br>' +
+          '• <b>Chỉ</b> áp dụng cho vũ khí chính và bản Tiến Hoá — vũ khí phụ không hút máu.<br>' +
+          '• Nguồn hút máu:<br>' +
+          '&nbsp;&nbsp;— Thú Cưng Hắc Xà: +5% hút máu cơ bản.<br>' +
+          '&nbsp;&nbsp;— Thẻ Hút Máu trong run: tích lũy theo cấp, tối đa 50%.<br><br>' +
+          'Ví dụ: gây 200 damage với 20% lifesteal → hồi <b>40 HP</b>/đòn.'));
+      entry('🩸','Hồi HP (Regen & On-Kill)',
+        p('Hai cơ chế hồi HP thụ động:<br><br>' +
+          '• <b>Hồi HP/s:</b> Tiềm Năng Sinh Tồn[2] +4 HP/s/cấp (max +16/s). Hồi liên tục kể cả trong combat.<br>' +
+          '• <b>HP/Kill:</b> Tiềm Năng Sinh Tồn[3] +10 HP/kill (max +40). Hồi ngay khi tiêu diệt bất kỳ quái nào.<br>' +
+          '• <b>Kim Cang Block:</b> hồi thêm 5% HP tối đa mỗi lần chặn thành công.'));
+      entry('🗡️','Xuyên Giáp (Armor Pen)',
+        p('Tiềm Năng Sát Thương[3] — +15%/cấp, tối đa <b>45%</b>.<br><br>' +
+          '• Bypass trực tiếp khiên HP của địch: 45% ArmorPen → chỉ 55% sát thương bị khiên hấp thụ.<br>' +
+          '• Tăng bonus sát thương vs Boss/Elite: tối đa <b>+36%</b> ở cấp 3.<br>' +
+          '• Chỉ áp dụng cho vũ khí chính và bản Tiến Hoá.'));
+      entry('🏃','Tốc Độ Di Chuyển',
+        p('• Mặc định theo nhân vật. Tiềm Năng Cơ Động[0] +6%/cấp (max +24%). Thần Ưng +18%.<br>' +
+          '• Thẻ Tốc Độ trong run cộng dồn.<br>' +
+          '• Tốc độ cao giúp kích hoạt Giảm ST Di Chuyển thường xuyên hơn.'));
+      entry('🃏','Trọng Số Thẻ & May Mắn',
+        p('Khi level-up, thẻ được rút theo trọng số rarity:<br><br>' +
+          '• Thường (Common): trọng số <b>4</b> &nbsp;|&nbsp; Hiếm (Rare): <b>2</b> &nbsp;|&nbsp; Epic: <b>1</b><br><br>' +
+          '• Tiềm Năng May Mắn[1] — Thẻ Hiếm: +1 trọng số/cấp cho Hiếm. Cấp 3 → Hiếm = <b>5</b> (×2.5).<br>' +
+          '• Tiềm Năng May Mắn[2]: thêm <b>1 vũ khí phụ</b> miễn phí khi bắt đầu run.<br>' +
+          '• Tiềm Năng May Mắn[3]: rút <b>4 thẻ</b> thay vì 3 khi level-up.'));
+    
+        } else if (tab === 'tips') {
       const tips = [
         ['🔄','Vòng Lặp Farm','Bị chặn ở cung cao? Quay về Cung 1–2 farm đủ vàng nâng Tiềm Năng rồi thử lại. Đừng cố đấu map vượt quá sức — mỗi run thua vẫn có vàng consolation.'],
         ['🔥','Chuỗi Thắng','Thành thạo một map trước khi leo. Thắng 4 lần liên tiếp trên cùng một map → nhận +20% vàng. Chuỗi dài = farm nhanh nhất.'],
@@ -3120,8 +3268,8 @@ const UI = (() => {
         <span class="stat-value">${Math.floor(stats.dmgTaken)}</span></div>
       <div class="stat-row"><span class="stat-label">✨ Level đạt được</span>
         <span class="stat-value">${stats.level}</span></div>
-      <div class="stat-row"><span class="stat-label">⚔ Tiến hoá vũ khí</span>
-        <span class="stat-value ${stats.evolved ? 'good' : ''}">${stats.evolved ? 'CÓ ✓' : 'KHÔNG'}</span></div>`;
+      <div class="stat-row"><span class="stat-label">✨ Tiến Hoá</span>
+        <span class="stat-value ${stats.evolved ? 'good' : ''}">${stats.evolved ? stats.evolvedName || 'CÓ ✓' : 'Chưa tiến hoá'}</span></div>`;
 
 
     // ── SKILL DAMAGE BREAKDOWN ──────────────────────────────────
@@ -3508,6 +3656,66 @@ const UI = (() => {
 
   window.renderCharGuide = renderCharGuide;
 
+  // ── IN-GAME STAT PANEL ───────────────────────────────────────────
+  let _statPanelOpen = false;
+
+  function toggleStatPanel() {
+    _statPanelOpen = !_statPanelOpen;
+    const panel = document.getElementById('ingame-stat-panel');
+    const btn   = document.getElementById('stat-toggle-btn');
+    if (panel) panel.style.display = _statPanelOpen ? 'block' : 'none';
+    if (btn)   btn.classList.toggle('active', _statPanelOpen);
+  }
+
+  function updateStatPanel(player) {
+    if (!_statPanelOpen) return;
+    const body = document.getElementById('isp-body');
+    if (!body || !player) return;
+
+    const aps       = (player.atkSpd * player.atkSpeed).toFixed(2);
+    const critRate  = Math.round((player.critRate || 0) * 100);
+    const critDmg   = Math.round((player.critDmg  || 1.5) * 100);
+    const armor     = Math.round((player.armor     || 0) * 100);
+    const lifesteal = Math.round((player.lifesteal || 0) * 100);
+    const armorPen  = Math.round((player.armorPen  || 0) * 100);
+    const cdReduce  = Math.round((player.cdReduce  || 0) * 100);
+    const regen     = player.hpRegenRate || 0;
+    const hpOnKill  = player.hpOnKill   || 0;
+    const dmg       = Math.round(player.baseDmg * (player.dmgMult || 1));
+
+    function row(icon, label, val, cls) {
+      cls = cls || '';
+      return '<div class="isp-row"><span class="isp-lbl">' + icon + ' ' + label + '</span><span class="isp-val ' + cls + '">' + val + '</span></div>';
+    }
+
+    let html = '';
+    html += row('❤️','HP',         Math.ceil(player.hp) + '/' + player.maxHp);
+    html += row('⚔️','Sát thương', dmg);
+    html += row('⚡','Tốc đánh',  aps + '/s', player.atkSpeed > 1.5 ? 'up' : '');
+    html += row('🏃','Tốc độ',    Math.round(player.speed));
+    html += row('🎯','Crit Rate',  critRate + '%', critRate > 0 ? 'up' : '');
+    html += row('💢','Crit DMG',  critDmg + '%', critDmg > 150 ? 'up' : '');
+    if (armor > 0)     html += row('🛡️','Giáp',       armor + '%', 'up');
+    if (lifesteal > 0) html += row('🧛','Hút Máu',    lifesteal + '%', 'up');
+    html += row('🗡️','Xuyên Giáp', armorPen + '%', armorPen > 0 ? 'up' : '');
+    if (cdReduce > 0)  html += row('🔄','Hồi Chiêu',  '-' + cdReduce + '%', 'up');
+    if (regen > 0)     html += row('💚','Hồi HP/s',   '+' + regen.toFixed(1), 'up');
+    if (hpOnKill > 0)  html += row('🩸','HP/Kill',    '+' + hpOnKill, 'up');
+
+    body.innerHTML = html;
+  }
+
+  function resetStatPanel() {
+    _statPanelOpen = false;
+    const panel = document.getElementById('ingame-stat-panel');
+    const btn   = document.getElementById('stat-toggle-btn');
+    if (panel) { panel.style.display = 'none'; }
+    if (btn)   btn.classList.remove('active');
+    const body = document.getElementById('isp-body');
+    if (body)  body.innerHTML = '';
+  }
+  // ── END IN-GAME STAT PANEL ────────────────────────────────────────
+
   return {
     init,
     showScreen, updateMenuGold, renderCharGrid, renderMapGrid,
@@ -3517,6 +3725,7 @@ const UI = (() => {
     updateHUD, updateWeaponSlots, updateSkillBtn,
     showBossBar, hideBossBar, showWaveAnnounce, showBossAppear,
     showResult, startRun, getSelected, goToMapSelect, renderStatPanel,
+    toggleStatPanel, updateStatPanel, resetStatPanel,
   };
 })();
 
@@ -4167,42 +4376,42 @@ const SKILL_POOL = [
     id:'halo', type:'weapon', name:'Hào Quang Thánh',
     icon:'✨', rarity:'rare', maxLevel:5,
     tickRate:0.4, radius:80, baseDmg:22,
-    desc:'Vùng hào quang xung quanh gây sát thương liên tục cho kẻ địch gần đó.',
+    desc:'Vùng hào quang bán kính 80đv quanh người, gây <b>(22 + cấp×9) × DMGMult</b> mỗi 0.4 giây. Cấp 5: 67 × DMGMult / tick. Tổng DPS ≈ 167 × DMGMult/s. Không crit/hút máu.',
   },
   {
     id:'thunder', type:'weapon', name:'Sét Đánh Trúng Đích',
     icon:'⚡', rarity:'rare', maxLevel:5,
     cooldown:4, baseDmg:95,
-    desc:'Kêu sét đánh vào 1 kẻ địch gần nhất, gây choáng ngắn.',
+    desc:'Đánh sét vào quái gần nhất: <b>(95 + cấp×26) × DMGMult</b> + choáng <b>(0.35 + cấp×0.05)s</b>. CD: <b>4 × (1 − cấp×0.08)s</b> (cấp 5: CD 2.4s). Cấp 5: 225 × DMGMult/đòn. Không crit.',
   },
   {
     id:'icetrail', type:'weapon', name:'Vệt Băng',
     icon:'❄️', rarity:'common', maxLevel:5,
     trailDuration:3, slowFactor:0.45,
-    desc:'Để lại vùng băng khi di chuyển, làm chậm kẻ địch đi qua.',
+    desc:'Để lại vùng băng bán kính 32đv khi di chuyển (mỗi 0.3s), tồn tại 3 giây. Tốc chậm: <b>0.45 × (1 + cấp×0.08)</b> — cấp 5: chậm 81%. Không gây sát thương, chỉ giảm tốc.',
   },
   {
     id:'poisoncloud', type:'weapon', name:'Đám Mây Độc',
     icon:'☠️', rarity:'rare', maxLevel:5,
     cooldown:5, radius:60, baseDmg:20,
-    desc:'Phun đám mây độc định kỳ, gây sát thương độc theo thời gian.',
+    desc:'Phun mây độc bán kính <b>60×AoE×(1+cấp×0.1)đv</b>, gây <b>(20 + cấp×50) × DMGMult</b> mỗi 0.5s trong 3 giây. CD: <b>(5 − cấp×0.5)s</b> (cấp 5: CD 2.5s). Cấp 5: 270 × DMGMult tổng/đám mây. Không crit.',
   },
   {
     id:'fireorb', type:'weapon', name:'Cầu Lửa',
     icon:'🔥', rarity:'rare', maxLevel:5,
     cooldown:4.5, speed:300, baseDmg:50,
-    desc:'Bắn 4 cầu lửa theo 4 hướng, gây nổ khi trúng kẻ địch.',
+    desc:'Bắn 4 cầu lửa 4 hướng, pierce <b>(cấp−1)</b>. Trúng địch: <b>(50 + cấp×5) × DMGMult</b> va chạm + nổ AoE <b>(50 + cấp×14) × DMGMult</b>. CD: <b>(4.5 − cấp×0.3)s</b> (cấp 5: CD 3s). Không crit.',
   },
   {
     id:'shadow_clone', type:'weapon', name:'Bóng Phân Thân',
     icon:'👥', rarity:'epic', maxLevel:5,
     dmgRatio:0.42,
-    desc:'Tạo bóng phân thân sao chép một phần sát thương vũ khí chính của bạn.',
+    desc:'Bóng phân thân quay quanh nhân vật, bắn đạn mỗi 0.55s vào quái gần nhất: <b>(0.42 + (cấp−1)×0.05) × totalDmg</b>. Cấp 5: 0.62× totalDmg/phát. Không crit/hút máu.',
   },
   {
     id:'bloodthorn', type:'weapon', name:'Gai Máu',
     icon:'🩸', rarity:'common', maxLevel:5,
-    desc:'Phản chiếu 38–70% sát thương nhận vào lại kẻ tấn công bạn.',
+    desc:'Phản <b>(30 + cấp×8)%</b> sát thương nhận vào lại kẻ tấn công. Cấp 1: 38%, Cấp 5: 70%. Chỉ phản khi bị đánh trực tiếp (không phản sát thương vùng). Không crit.',
   },
 
   // ─── STATS ───────────────────────────────────────────────────
@@ -4216,25 +4425,25 @@ const SKILL_POOL = [
     id:'stat_atkspd', type:'stat', name:'Tốc Độ Tấn Công',
     icon:'⚔️', rarity:'common', maxLevel:5,
     statKey:'atkSpeed', statVal:0.15,
-    desc:'+15% tốc độ tấn công mỗi cấp.',
+    desc:'+15% tốc đánh/cấp (cộng vào AtkSpeedMult). Cấp 5: +75%. Không giới hạn trên.',
   },
   {
     id:'stat_dmg', type:'stat', name:'Sát Thương',
     icon:'💥', rarity:'common', maxLevel:5,
     statKey:'dmgMult', statVal:0.08,
-    desc:'+8% tổng sát thương mỗi cấp.',
+    desc:'+8% DMGMult/cấp (nhân vào baseDmg). Cấp 5: +40% (×1.40 tổng). Ảnh hưởng toàn bộ vũ khí phụ và chủ động.',
   },
   {
     id:'stat_lifesteal', type:'stat', name:'Hút Máu',
     icon:'🧛', rarity:'rare', maxLevel:5,
     statKey:'lifesteal', statVal:0.04,
-    desc:'Hồi +4% sát thương gây ra thành HP mỗi cấp.',
+    desc:'Hút máu +4%/cấp (cộng dồn). Cấp 5: +20%. Tối đa 50% (tổng từ mọi nguồn). Chỉ áp dụng vũ khí chính và Tiến Hoá.',
   },
   {
     id:'stat_armor', type:'stat', name:'Giáp Phòng Thủ',
     icon:'🛡️', rarity:'common', maxLevel:5,
     statKey:'armor', statVal:0.06,
-    desc:'+6% giảm sát thương nhận vào mỗi cấp (tối đa 75%).',
+    desc:'+6% Giáp/cấp (cộng dồn). Cấp 5: +30%. Tổng tối đa tất cả nguồn: <b>78%</b> (bao gồm Tiềm Năng + thẻ + pet).',
   },
   {
     id:'stat_aoe', type:'stat', name:'Diện Tích AoE',
@@ -4246,13 +4455,13 @@ const SKILL_POOL = [
     id:'stat_cd', type:'stat', name:'Hồi Chiêu Nhanh',
     icon:'⏱️', rarity:'rare', maxLevel:5,
     statKey:'cdReduce', statVal:0.08,
-    desc:'-8% thời gian hồi chiêu kỹ năng chủ động.',
+    desc:'-8% CD/cấp. Cấp 5: -40% (giống tối đa Tiềm Năng Cơ Động[1]). Công thức: CD thực = CD gốc × (1 − tổng cdReduce).',
   },
   {
     id:'stat_maxhp', type:'stat', name:'Tăng HP Tối Đa',
     icon:'❤️', rarity:'common', maxLevel:5,
     statKey:'maxHp', statVal:125,
-    desc:'+125 HP tối đa và hồi ngay lập tức.',
+    desc:'+125 HP tối đa và hồi ngay 125 HP. Cấp 5: +625 HP. Cộng với Tiềm Năng Sinh Tồn[0] tối đa +500 HP.',
   },
 
   // ─── SPECIALS ────────────────────────────────────────────────
@@ -4264,7 +4473,7 @@ const SKILL_POOL = [
   {
     id:'special_clock', type:'special', name:'Đồng Hồ Tốc Độ',
     icon:'🕐', rarity:'epic', maxLevel:1,
-    desc:'+20% tốc độ tấn công nhưng HP tối đa giảm 15% — rủi ro cao, lợi nhuận cao.',
+    desc:'+20% AtkSpeedMult nhưng HP tối đa ×0.85 (−15%). HP hiện tại cũng bị giảm nếu vượt ngưỡng mới. Cân nhắc khi đã có nhiều nguồn hồi HP.',
   },
   {
     id:'special_rune', type:'special', name:'Rune Vòng Cổ',
@@ -4302,7 +4511,7 @@ class Player {
 
     // Multipliers (accumulated from skills)
     this.dmgMult   = 1.0;
-    this.atkSpeed  = Math.min(1.0 + (potentialBonus.mobility[2] || 0) * 0.10, 2.5); // FIX: mobility[2] now applied
+    this.atkSpeed  = 1.0 + (potentialBonus.mobility[2] || 0) * 0.10; // FIX: cap removed
     this.armor     = (potentialBonus.survival[1] || 0) * 0.05;
     this.lifesteal = 0;
     this.aoeSize   = 1.0;
@@ -7345,6 +7554,7 @@ const Game = (() => {
 
     // Reset UI elements that persist across runs
     UI.hideBossBar();
+    UI.resetStatPanel();
 
     currentMap = mapData;
     player     = new Player(charData, pot);
@@ -7553,6 +7763,7 @@ const Game = (() => {
       player, elapsedTime, wave,
       player.gold, totalKills,
     );
+    UI.updateStatPanel(player);
     UI.updateWeaponSlots([player.mainWeapon, ...player.subWeapons]);
 
     // Level-up popup
@@ -9266,6 +9477,7 @@ const Game = (() => {
         } else {
           applySkill(skill, player);
         }
+        UI.updateStatPanel(player); // refresh stat panel immediately after pick
         UI.showScreen('game');
         pendingCards = [];
         paused = false;
@@ -9378,7 +9590,7 @@ const Game = (() => {
     } else if (skill.type === 'stat') {
       switch (skill.statKey) {
         case 'speed':    p.speed   *= (1 + skill.statVal); break;
-        case 'atkSpeed': p.atkSpeed = Math.min(p.atkSpeed + skill.statVal, 2.5); break;
+        case 'atkSpeed': p.atkSpeed += skill.statVal; break;
         case 'dmgMult':  p.dmgMult  *= (1 + skill.statVal); break;
         case 'lifesteal':p.lifesteal = Math.min(p.lifesteal + skill.statVal, 0.5); break;
         case 'armor':    p.armor     = Math.min(p.armor + skill.statVal, 0.78); break;
@@ -9428,7 +9640,7 @@ const Game = (() => {
     // Stat bonuses on evolution
     p.dmgMult  *= 1.35;
     p.aoeSize  *= 1.15;
-    p.atkSpeed  = Math.min(p.atkSpeed + 0.2, 2.5);
+    p.atkSpeed += 0.2;
 
     // Visual feedback
     particles.spawn(p.x, p.y, {
@@ -9535,6 +9747,7 @@ const Game = (() => {
       gold:        totalGold,
       level:       player ? player.level        : 1,
       evolved:     weaponEvolved,
+      evolvedName: weaponEvolved && player ? player.charData.evolvedWeapon : null,
       skillDmg:    player ? {...player.skillDmg} : {},
       baseGold,
       streakBonus,
