@@ -168,9 +168,7 @@ canvas{display:block;image-rendering:pixelated;}
 #skill-btn.theme-bang_vuong #skill-cd-text{color:#ccf8ff;}
 @keyframes skb-bv{0%,100%{box-shadow:0 0 20px rgba(136,238,255,.5);}50%{box-shadow:0 0 38px rgba(200,250,255,.9);}}
 #skill-btn.theme-bang_vuong:not(.on-cooldown){animation:skb-bv 2.5s ease-in-out infinite;}
-#skill-aim-indicator{position:fixed;pointer-events:none;z-index:99;display:none;height:4px;background:linear-gradient(90deg,transparent,rgba(160,96,255,.5) 30%,rgba(210,170,255,.95));border-radius:2px;transform-origin:0 50%;}
-#skill-aim-indicator::after{content:'';position:absolute;right:-8px;top:-6px;border-left:14px solid rgba(210,170,255,.95);border-top:7px solid transparent;border-bottom:7px solid transparent;}
-#skill-aim-indicator.visible{display:block;}
+#skill-aim-indicator{display:none!important;}
 #pause-btn{position:absolute;top:8px;left:12px;width:36px;height:36px;background:rgba(0,0,0,.5);border:1px solid rgba(255,255,255,.2);border-radius:6px;color:#fff;font-size:16px;display:flex;align-items:center;justify-content:center;cursor:pointer;pointer-events:all;z-index:10;-webkit-appearance:none;}
 #stat-toggle-btn{position:absolute;top:52px;left:12px;width:36px;height:36px;background:rgba(0,0,0,.6);border:1px solid rgba(100,180,255,.35);border-radius:6px;color:#fff;font-size:16px;display:flex;align-items:center;justify-content:center;cursor:pointer;pointer-events:all;z-index:10;-webkit-appearance:none;transition:border-color .2s;}
 #stat-toggle-btn.active{border-color:#60d0ff;box-shadow:0 0 8px rgba(96,208,255,.4);}
@@ -2388,38 +2386,27 @@ const Input = (() => {
 
   function onSkillAimStart(e) {
     e.preventDefault(); e.stopPropagation();
-    const t     = e.changedTouches[0];
+    const t = e.changedTouches[0];
     _aimTouchId = t.identifier;
-    const r     = skillBtn.getBoundingClientRect();
+    const r = skillBtn.getBoundingClientRect();
     _aimCenterX = r.left + r.width  / 2;
     _aimCenterY = r.top  + r.height / 2;
-    _aimDir     = null;
-    if (_aimIndicator) {
-      _aimIndicator.style.left = _aimCenterX + 'px';
-      _aimIndicator.style.top  = (_aimCenterY - 2) + 'px';
-    }
+    _aimDir = null;
+    const charId = Game && Game.player ? Game.player.charData.id : null;
+    const cfg = charId ? AIM_CONFIG[charId] : null;
+    if (Game && cfg) Game.setAimState({ active:true, cfg, dir:null });
   }
   function onSkillAimMove(e) {
     if (_aimTouchId === null) return;
     for (const t of e.changedTouches) {
       if (t.identifier !== _aimTouchId) continue;
-      const dx   = t.clientX - _aimCenterX;
-      const dy   = t.clientY - _aimCenterY;
-      const dist = Math.sqrt(dx * dx + dy * dy);
-      if (dist < AIM_DRAG_THRESHOLD) {
-        _aimDir = null;
-        if (_aimIndicator) _aimIndicator.classList.remove('visible');
-        return;
-      }
+      const dx = t.clientX - _aimCenterX;
+      const dy = t.clientY - _aimCenterY;
+      const dist = Math.sqrt(dx*dx + dy*dy);
+      if (dist < AIM_DRAG_THRESHOLD) { _aimDir = null; return; }
       const len = dist || 1;
-      _aimDir   = { x: dx / len, y: dy / len };
-      const deg = Math.atan2(dy, dx) * 180 / Math.PI;
-      const wPx = Math.min(dist, 110);
-      if (_aimIndicator) {
-        _aimIndicator.classList.add('visible');
-        _aimIndicator.style.width     = wPx + 'px';
-        _aimIndicator.style.transform = 'rotate(' + deg + 'deg)';
-      }
+      _aimDir = { x: dx/len, y: dy/len };
+      if (Game) Game.setAimState(s => s ? {...s, dir:_aimDir} : null);
     }
   }
   function onSkillAimEnd(e) {
@@ -2427,7 +2414,7 @@ const Input = (() => {
     for (const t of e.changedTouches) {
       if (t.identifier !== _aimTouchId) continue;
       _aimTouchId = null;
-      if (_aimIndicator) _aimIndicator.classList.remove('visible');
+      if (Game) Game.setAimState(null);
       if (onSkill) onSkill(_aimDir);
       _aimDir = null;
     }
@@ -5141,6 +5128,24 @@ const CHARS = [
 ];
 
 /* ============================================================
+   AIM CONFIG — MOBA-style per-character aim indicator
+   direction : arrow + dash range (Lưu Phong, Thiết Tâm)
+   aoe       : pulsing circle around player (Huyền Nguyệt, Kim Cang, Hỏa Long, Băng Vương, Tử Linh)
+   target    : lock rings on nearest enemies (Ám Sát, Lôi Thần)
+   ============================================================ */
+const AIM_CONFIG = {
+  luu_phong:    { type:'direction', range:260, color:'#60d0ff', label:'Tàn Phong Trảm'   },
+  thiet_tam:    { type:'direction', range:450, color:'#ff9060', label:'Tàn Sát Tầm Xa'   },
+  huyen_nguyet: { type:'aoe',       range:200, color:'#a060ff', label:'Điện Bão'          },
+  kim_cang:     { type:'aoe',       range:90,  color:'#ffd700', label:'Trấn Áp Bất Động'  },
+  am_sat:       { type:'target',    range:450, color:'#cc44ff', maxT:3, label:'Ẩn Kích'   },
+  tu_linh:      { type:'aoe',       range:185, color:'#ff4060', label:'Lĩnh Vực Tử Thần' },
+  loi_than:     { type:'target',    range:300, color:'#00eeff', maxT:5, label:'Thiên Lôi' },
+  hoa_long:     { type:'aoe',       range:200, color:'#ff5500', label:'Rồng Lửa'          },
+  bang_vuong:   { type:'aoe',       range:355, color:'#88eeff', label:'Bão Tuyết'         },
+};
+
+/* ============================================================
    DATA — MAPS
    ============================================================ */
 const MAPS = [
@@ -6793,7 +6798,7 @@ class Player {
     for (let bi = 0; bi < 5; bi++) {
       setTimeout(() => {
         if (!p || p.hp <= 0) return;
-        const tgt = enemies.reduce((best, e) => {
+        const tgt = Game.enemies.reduce((best, e) => {
           if (e.dead) return best;
           const d = MathU.dist(p.x, p.y, e.x, e.y);
           return (!best || d < MathU.dist(p.x, p.y, best.x, best.y)) ? e : best;
@@ -6801,7 +6806,7 @@ class Player {
         if (!tgt) return;
         const chainCountAct = p.mainWeapon.evolved ? 6 : 4;
         let cur = tgt;
-        let bd = p.totalDmg * 2.5; // totalDmg đã có buff Lôi Tích
+        let bd = p.totalDmg * 2.5;
         const bHit = new Set([cur]);
         for (let ci = 0; ci < chainCountAct; ci++) {
           if (!cur) break;
@@ -6815,7 +6820,7 @@ class Player {
             const dtiA = setInterval(() => { if (dtTgt.dead || dtN >= 2) { clearInterval(dtiA); return; } dtTgt.takeDamage(dtV, p, 'normal'); dtN++; }, 1000);
           }
           let nxt = null; let nxtD = 999;
-          enemies.forEach(e => {
+          Game.enemies.forEach(e => {
             if (e.dead || bHit.has(e)) return;
             const d3 = MathU.dist(cur.x, cur.y, e.x, e.y);
             if (d3 < 220 && d3 < nxtD) { nxtD = d3; nxt = e; }
@@ -6867,7 +6872,7 @@ class Player {
       Game.particles.spawn(castRef2.x, castRef2.y, {count:6, color:'#ff6600', speedMin:60, speedMax:180, life:0.3});
       if (p.mainWeapon.evolved) {
         // Triệu 2 cầu lửa homing hướng về 2 quái gần nhất
-        const sorted = enemies.filter(e=>!e.dead).sort((a,b)=>MathU.dist(castRef2.x,castRef2.y,a.x,a.y)-MathU.dist(castRef2.x,castRef2.y,b.x,b.y));
+        const sorted = Game.enemies.filter(e=>!e.dead).sort((a,b)=>MathU.dist(castRef2.x,castRef2.y,a.x,a.y)-MathU.dist(castRef2.x,castRef2.y,b.x,b.y));
         sorted.slice(0,2).forEach(te => {
           const da = MathU.angle(castRef2.x,castRef2.y,te.x,te.y);
           Game.spawnProjectile && Game.spawnProjectile({x:castRef2.x,y:castRef2.y,vx:Math.cos(da)*280,vy:Math.sin(da)*280,
@@ -6906,9 +6911,7 @@ class Player {
       if (!castRef3 || castRef3.hp <= 0) { clearInterval(dti5); castRef3._blizzardActive = false; return; }
       blizzElapsed += 0.3;
       if (blizzElapsed >= 6) { clearInterval(dti5); return; }
-      enemies.forEach(e => {
-        if (e.dead) return;
-        if (MathU.dist(castRef3.x, castRef3.y, e.x, e.y) > blizzardR + e.r) { blizzardEntry.delete(e); return; }
+      Game.enemies.forEach(e => {
         e.slowFactor = 0.4; e.slowTimer = 600;
         e.takeDamage(castRef3.totalDmg * 1.2 * 0.3, castRef3, 'normal');
         const entry = blizzardEntry.get(e) || 0;
@@ -7488,23 +7491,6 @@ class Enemy {
     this.hitT = 0.1;
 
     DmgNumbers.show(this.x, this.y, Math.ceil(dmg), type === 'crit' ? 'crit' : 'normal');
-
-    // Crit impact FX — particle starburst + ring
-    if (type === 'crit') {
-      if (Game.particles) {
-        Game.particles.spawn(this.x, this.y, {
-          count: 10, color: '#ffffff',
-          speedMin: 80, speedMax: 220,
-          life: 0.35, sizeMin: 2, sizeMax: 4,
-        });
-        Game.particles.spawn(this.x, this.y, {
-          count: 6, color: '#ffd700',
-          speedMin: 40, speedMax: 120,
-          life: 0.45, sizeMin: 2, sizeMax: 3,
-        });
-      }
-      if (Game.rings) Game.rings.push(new RingEffect(this.x, this.y, 28, '#ffe060'));
-    }
 
     // Lifesteal (đảo ngược trong spiritDrain)
     if (source && source.lifesteal) {
@@ -9343,6 +9329,7 @@ const Game = (() => {
   // --- State ---
   let canvas, ctx;
   let running = false, paused = false;
+  let _aimState = null;
   let lastTime = 0;
   let raf = null;
 
@@ -12057,6 +12044,125 @@ const Game = (() => {
   }
 
   // ----- RENDER -----
+  // ----  MOBA-style aim indicator  ----
+  function _drawAimIndicator(camX, camY) {
+    const s = _aimState;
+    if (!s || !s.active || !player) return;
+    const cfg  = s.cfg;
+    const px   = player.x - camX;
+    const py   = player.y - camY;
+    const T    = performance.now() / 1000;
+    const pulse = 0.55 + 0.45 * Math.sin(T * 5);
+    ctx.save();
+
+    if (cfg.type === 'aoe') {
+      // Filled tinted ring — just tap, no drag needed
+      ctx.globalAlpha = 0.08 * pulse;
+      ctx.fillStyle = cfg.color;
+      ctx.beginPath(); ctx.arc(px, py, cfg.range, 0, Math.PI*2); ctx.fill();
+      // Dashed rotating border
+      ctx.globalAlpha = 0.6 * pulse;
+      ctx.strokeStyle = cfg.color;
+      ctx.lineWidth = 2.5;
+      ctx.setLineDash([12, 7]);
+      ctx.lineDashOffset = -(T * 45) % 19;
+      ctx.beginPath(); ctx.arc(px, py, cfg.range, 0, Math.PI*2); ctx.stroke();
+      ctx.setLineDash([]);
+      // Label
+      ctx.globalAlpha = 0.85;
+      ctx.font = 'bold 12px Arial'; ctx.fillStyle = cfg.color;
+      ctx.textAlign = 'center';
+      ctx.strokeStyle = 'rgba(0,0,0,0.7)'; ctx.lineWidth = 3;
+      ctx.strokeText(cfg.label, px, py - cfg.range - 8);
+      ctx.fillText(cfg.label, px, py - cfg.range - 8);
+      // Center dot
+      ctx.globalAlpha = 0.8;
+      ctx.fillStyle = cfg.color;
+      ctx.beginPath(); ctx.arc(px, py, 5, 0, Math.PI*2); ctx.fill();
+
+    } else if (cfg.type === 'direction') {
+      // Arrow — follows drag direction, fallback facing
+      const dir = s.dir || { x: (player.facing >= 0 ? 1 : -1), y: 0 };
+      const ex  = px + dir.x * cfg.range;
+      const ey  = py + dir.y * cfg.range;
+      const ang = Math.atan2(dir.y, dir.x);
+      // Animated dashed line
+      ctx.globalAlpha = 0.75 * pulse;
+      ctx.strokeStyle = cfg.color;
+      ctx.lineWidth = 5;
+      ctx.setLineDash([16, 8]);
+      ctx.lineDashOffset = -(T * 70) % 24;
+      ctx.beginPath(); ctx.moveTo(px, py); ctx.lineTo(ex, ey); ctx.stroke();
+      ctx.setLineDash([]);
+      // Arrowhead
+      ctx.globalAlpha = 0.95;
+      ctx.fillStyle = cfg.color;
+      const aS = 16;
+      ctx.beginPath();
+      ctx.moveTo(ex, ey);
+      ctx.lineTo(ex - Math.cos(ang-0.38)*aS, ey - Math.sin(ang-0.38)*aS);
+      ctx.lineTo(ex - Math.cos(ang+0.38)*aS, ey - Math.sin(ang+0.38)*aS);
+      ctx.closePath(); ctx.fill();
+      // Origin circle
+      ctx.globalAlpha = 0.7;
+      ctx.strokeStyle = cfg.color; ctx.lineWidth = 2;
+      ctx.beginPath(); ctx.arc(px, py, 16, 0, Math.PI*2); ctx.stroke();
+      // Label near arrow tip
+      ctx.globalAlpha = 0.9;
+      ctx.font = 'bold 12px Arial'; ctx.fillStyle = cfg.color; ctx.textAlign = 'center';
+      ctx.strokeStyle = 'rgba(0,0,0,0.7)'; ctx.lineWidth = 3;
+      const lx = px + dir.x * (cfg.range * 0.55), ly = py + dir.y * (cfg.range * 0.55) - 14;
+      ctx.strokeText(cfg.label, lx, ly); ctx.fillText(cfg.label, lx, ly);
+
+    } else if (cfg.type === 'target') {
+      // Range dashed circle
+      ctx.globalAlpha = 0.25 * pulse;
+      ctx.strokeStyle = cfg.color; ctx.lineWidth = 1.5;
+      ctx.setLineDash([6, 9]); ctx.lineDashOffset = -(T * 28) % 15;
+      ctx.beginPath(); ctx.arc(px, py, cfg.range, 0, Math.PI*2); ctx.stroke();
+      ctx.setLineDash([]);
+      // Lock onto nearest enemies
+      const targets = Game.enemies
+        .filter(e => !e.dead && MathU.dist(player.x, player.y, e.x, e.y) < cfg.range)
+        .sort((a,b) => MathU.dist2(player.x,player.y,a.x,a.y) - MathU.dist2(player.x,player.y,b.x,b.y))
+        .slice(0, cfg.maxT || 3);
+      targets.forEach((e, i) => {
+        const ex = e.x - camX, ey = e.y - camY;
+        const lp = 0.65 + 0.35 * Math.sin(T * 6 + i * 1.3);
+        // Line player → target
+        ctx.globalAlpha = 0.25 * lp;
+        ctx.strokeStyle = cfg.color; ctx.lineWidth = 1.5;
+        ctx.setLineDash([5,5]);
+        ctx.beginPath(); ctx.moveTo(px,py); ctx.lineTo(ex,ey); ctx.stroke();
+        ctx.setLineDash([]);
+        // Rotating arc lock
+        const rr = e.r + 12;
+        ctx.globalAlpha = 0.9 * lp;
+        ctx.strokeStyle = cfg.color; ctx.lineWidth = 2.5;
+        ctx.save(); ctx.translate(ex, ey); ctx.rotate(T*2.5 + i*1.1);
+        ctx.beginPath(); ctx.arc(0,0, rr, 0, Math.PI*1.5); ctx.stroke();
+        ctx.rotate(Math.PI);
+        ctx.beginPath(); ctx.arc(0,0, rr, 0, Math.PI*1.5); ctx.stroke();
+        ctx.restore();
+        // Corner brackets
+        ctx.globalAlpha = 0.95;
+        ctx.fillStyle = cfg.color;
+        const b = rr+5, bl = 7;
+        [[b,b],[b,-b],[-b,b],[-b,-b]].forEach(([bx,by]) => {
+          ctx.fillRect(ex+bx-bl/2, ey+by-1, bl, 2);
+          ctx.fillRect(ex+bx-1, ey+by-bl/2, 2, bl);
+        });
+      });
+      // Label
+      ctx.globalAlpha = 0.85;
+      ctx.font = 'bold 12px Arial'; ctx.fillStyle = cfg.color; ctx.textAlign = 'center';
+      ctx.strokeStyle = 'rgba(0,0,0,0.7)'; ctx.lineWidth = 3;
+      ctx.strokeText(`${cfg.label} [${targets.length}/${cfg.maxT}]`, px, py - cfg.range - 8);
+      ctx.fillText(`${cfg.label} [${targets.length}/${cfg.maxT}]`, px, py - cfg.range - 8);
+    }
+    ctx.restore();
+  }
+
   function render() {
     const W = canvas.width, H = canvas.height;
     ctx.clearRect(0, 0, W, H);
@@ -12204,6 +12310,9 @@ const Game = (() => {
     particles.draw(ctx, camX, camY);
 
     ctx.restore();
+
+    // ---- Aim indicator ----
+    if (_aimState && player) _drawAimIndicator(camX, camY);
 
     // ---- Damage numbers ----
     DmgNumbers.draw(ctx, camX, camY);
@@ -14462,6 +14571,10 @@ const Game = (() => {
     get bossKilled()  { return bossKilled; },
     pause() { paused = true; },
     resume(){ paused = false; lastTime = performance.now(); },
+    isRunning() { return running; },
+    setAimState(stateOrFn) {
+      _aimState = typeof stateOrFn === 'function' ? stateOrFn(_aimState) : stateOrFn;
+    },
     togglePause() {                             // called from HTML pause-btn and screen-pause btn
       if (!running) return;
       if (paused) {
