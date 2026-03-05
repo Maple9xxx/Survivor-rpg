@@ -7489,6 +7489,23 @@ class Enemy {
 
     DmgNumbers.show(this.x, this.y, Math.ceil(dmg), type === 'crit' ? 'crit' : 'normal');
 
+    // Crit impact FX — particle starburst + ring
+    if (type === 'crit') {
+      if (Game.particles) {
+        Game.particles.spawn(this.x, this.y, {
+          count: 10, color: '#ffffff',
+          speedMin: 80, speedMax: 220,
+          life: 0.35, sizeMin: 2, sizeMax: 4,
+        });
+        Game.particles.spawn(this.x, this.y, {
+          count: 6, color: '#ffd700',
+          speedMin: 40, speedMax: 120,
+          life: 0.45, sizeMin: 2, sizeMax: 3,
+        });
+      }
+      if (Game.rings) Game.rings.push(new RingEffect(this.x, this.y, 28, '#ffe060'));
+    }
+
     // Lifesteal (đảo ngược trong spiritDrain)
     if (source && source.lifesteal) {
       const heal = dmg * source.lifesteal;
