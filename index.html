@@ -2448,61 +2448,105 @@ const Input = (() => {
    PARTICLE SYSTEM
    ============================================================ */
 class ParticleSystem {
-  constructor() { this.particles = []; }
+  constructor() {
+    // Object pool — tái sử dụng, không cấp phát mới mỗi lần
+    this._pool   = [];
+    this._active = [];
+    this._MAX    = 350; // hard cap
+  }
+
+  _alloc() {
+    return this._pool.length ? this._pool.pop()
+      : { x:0,y:0,vx:0,vy:0,life:0,maxLife:1,size:3,color:'#fff',gravity:80,alpha:1,fade:true,shape:'circle' };
+  }
 
   spawn(x, y, opts = {}) {
     const count = opts.count || 1;
-    for (let i = 0; i < count; i++) {
-      const angle = opts.angle !== undefined ? opts.angle : Math.random() * Math.PI * 2;
-      const spread = opts.spread !== undefined ? opts.spread : Math.PI * 2;
-      const a = angle + (Math.random() - 0.5) * spread;
-      const spd = MathU.rand(opts.speedMin || 40, opts.speedMax || 150);
-      this.particles.push({
-        x, y,
-        vx: Math.cos(a) * spd,
-        vy: Math.sin(a) * spd,
-        life: opts.life || 0.6,
-        maxLife: opts.life || 0.6,
-        size: MathU.rand(opts.sizeMin || 2, opts.sizeMax || 6),
-        color: opts.color || '#ffd700',
-        gravity: opts.gravity || 80,
-        alpha: 1,
-        fade: opts.fade !== false,
-        shape: opts.shape || 'circle',
-      });
+    const avail = this._MAX - this._active.length;
+    if (avail <= 0) return;
+    const n = Math.min(count, avail);
+    const angle  = opts.angle  !== undefined ? opts.angle  : -999;
+    const spread = opts.spread !== undefined ? opts.spread : Math.PI * 2;
+    const life   = opts.life   || 0.6;
+    for (let i = 0; i < n; i++) {
+      const p = this._alloc();
+      const a = (angle === -999 ? Math.random() * Math.PI * 2 : angle) + (Math.random() - 0.5) * spread;
+      const spd = opts.speedMin + Math.random() * (opts.speedMax - opts.speedMin || 0) || 80;
+      p.x = x; p.y = y;
+      p.vx = Math.cos(a) * spd;
+      p.vy = Math.sin(a) * spd;
+      p.life = life; p.maxLife = life;
+      p.size  = opts.sizeMin ? opts.sizeMin + Math.random() * ((opts.sizeMax||6) - opts.sizeMin) : 2 + Math.random() * 4;
+      p.color = opts.color || '#ffd700';
+      p.gravity= opts.gravity !== undefined ? opts.gravity : 80;
+      p.alpha = 1;
+      p.fade  = opts.fade !== false;
+      p.shape = opts.shape || 'circle';
+      this._active.push(p);
     }
   }
 
   update(dt) {
-    for (let i = this.particles.length - 1; i >= 0; i--) {
-      const p = this.particles[i];
+    const a = this._active;
+    for (let i = a.length - 1; i >= 0; i--) {
+      const p = a[i];
       p.x  += p.vx * dt;
       p.y  += p.vy * dt;
       p.vy += p.gravity * dt;
       p.vx *= 0.96;
       p.life -= dt;
-      if (p.fade) p.alpha = Math.max(0, p.life / p.maxLife);
-      if (p.life <= 0) this.particles.splice(i, 1);
+      if (p.life <= 0) {
+        this._pool.push(p);
+        a[i] = a[a.length - 1]; a.pop(); // swap-remove O(1)
+      } else if (p.fade) {
+        p.alpha = p.life / p.maxLife;
+      }
     }
   }
 
-  draw(ctx, camX, camY) {
-    ctx.save();
-    for (const p of this.particles) {
-      ctx.globalAlpha = p.alpha;
-      ctx.fillStyle = p.color;
-      const sx = p.x - camX;
-      const sy = p.y - camY;
-      ctx.beginPath();
-      if (p.shape === 'square') {
-        ctx.fillRect(sx - p.size/2, sy - p.size/2, p.size, p.size);
-      } else {
-        ctx.arc(sx, sy, p.size, 0, Math.PI * 2);
-        ctx.fill();
-      }
-    }
+  draw(ctx, camX, camY, screenW, screenH) {
+    const a = this._active;
+    if (!a.length) return;
+    const sw = screenW || 800, sh = screenH || 600;
+
+    // Nhóm theo màu để giảm fillStyle state-changes
+    // Dùng single-pass: sort không cần thiết — chỉ batch theo currentColor
+    let lastColor = null, lastAlpha = -1, lastShape = null;
     ctx.globalAlpha = 1;
-    ctx.restore();
+
+    // Vẽ tất cả circles trước, rồi squares — 2 passes, giảm beginPath resets
+    // Pass 1: circles
+    let firstCircle = true;
+    for (let i = 0; i < a.length; i++) {
+      const p = a[i];
+      if (p.shape === 'square') continue;
+      const sx = p.x - camX, sy = p.y - camY;
+      // Cull offscreen
+      if (sx < -p.size || sx > sw + p.size || sy < -p.size || sy > sh + p.size) continue;
+      if (p.alpha !== lastAlpha) { ctx.globalAlpha = p.alpha; lastAlpha = p.alpha; }
+      if (p.color !== lastColor) {
+        if (!firstCircle) ctx.fill(); // flush batch
+        ctx.beginPath();
+        ctx.fillStyle = p.color; lastColor = p.color; firstCircle = false;
+      }
+      ctx.moveTo(sx + p.size, sy);
+      ctx.arc(sx, sy, p.size, 0, 6.2832);
+    }
+    if (!firstCircle) ctx.fill();
+
+    // Pass 2: squares
+    lastColor = null; lastAlpha = -1;
+    for (let i = 0; i < a.length; i++) {
+      const p = a[i];
+      if (p.shape !== 'square') continue;
+      const sx = p.x - camX, sy = p.y - camY;
+      if (sx < -p.size || sx > sw + p.size || sy < -p.size || sy > sh + p.size) continue;
+      if (p.alpha !== lastAlpha) { ctx.globalAlpha = p.alpha; lastAlpha = p.alpha; }
+      if (p.color !== lastColor) { ctx.fillStyle = p.color; lastColor = p.color; }
+      ctx.fillRect(sx - p.size/2, sy - p.size/2, p.size, p.size);
+    }
+
+    ctx.globalAlpha = 1;
   }
 }
 
@@ -3594,7 +3638,7 @@ const UI = (() => {
           {i:'⚡',n:'Executor',      hp:800, d:235,s:95, ai:'Vòng cánh',  t:'DMG 235 kết hợp tiếp cận từ hông. Từ stack 3 Siêu Việt Thể trở đi DMG đạt ~340 — nguy hiểm cao nhất.'},
           {i:'🔷',n:'Obliterator',   hp:550, d:255,s:60, ai:'Tấn công xa',t:'DMG 255 cao nhất map, bắn từ xa. Mục tiêu ưu tiên số 1 — không để tích stack Siêu Việt Thể.'},
           {i:'💠',n:'Annihilator Tinh Anh ⭐',hp:8250,d:537,s:138,ai:'Vòng cánh',elite:true,t:'Xuất hiện thêm từ stack 3 Siêu Việt Thể. HP và DMG tăng theo mỗi stack — nguy hiểm hơn bất kỳ boss nào Tier 1-4.'},
-          {i:'💠',n:'Thượng Đế Hủy Diệt',hp:500000,d:398,s:90,ai:'BOSS',boss:true,t:'BẤT TỬ cho đến khi giết hết quái trên sân (mỗi kill -2% bất tử). Giai đoạn 2: 8 tia xuyên suốt + Siêu Việt Thể. Giai đoạn 3: 3 Lõi Bất Tử phụ phải phá đồng thời. DPS cao nhất game mới sống sót.'},
+          {i:'💠',n:'Thượng Đế Hủy Diệt',hp:500000,d:398,s:90,ai:'BOSS',boss:true,t:'Tích Siêu Việt Thể mỗi lần dùng skill (tối đa 20 stack): +6% SPD và +5% DMG/stack — boss mạnh dần không ngừng. Giai đoạn 2: 8–12 tia xoáy. Giai đoạn 3: 3 Lõi Siêu Việt xuất hiện, mỗi lõi còn sống cộng thêm stack/skill. Hạ boss càng nhanh càng nhẹ.'},
         ]},
       ];
       const _tc=['','#88cc44','#ffcc00','#ff9040','#ff5050','#cc40ff','#00ffcc'];
@@ -5384,7 +5428,7 @@ const MAPS = [
     groundColor:'#02000a', wallColor:'#0a0020',
     mechDesc:'Siêu Việt Thể: mỗi 30 giây toàn bộ quái tăng 20% ST và HP. Tích lũy không giới hạn. Sau 3 lần (90 giây) bắt đầu spawn thêm 1 quái elite bổ sung mỗi lần.',
     bossName:'Thượng Đế Hủy Diệt', bossIcon:'💠',
-    bossDesc:'Boss cuối game — bất tử cho đến khi tất cả quái trên sân bị tiêu diệt (mỗi kill trừ 2% bất tử). Giai đoạn 2: bắn 8 tia năng lượng xuyên suốt màn hình. Giai đoạn 3: kích hoạt Siêu Việt Thể × vĩnh viễn + 3 lõi bất tử phụ phải phá đồng thời. Cần DPS cao nhất có thể.',
+    bossDesc:'Siêu Việt Thể tích lũy mỗi lần dùng skill (max 20 stack): +6% SPD và +5% DMG/stack. Giai đoạn 1: 4 trục tia cố định, 2→4 đạn/trục tùy stack. Giai đoạn 2: 8–12 tia xoáy tốc độ cao. Giai đoạn 3: 3 Lõi Siêu Việt xuất hiện — mỗi lõi còn sống cộng thêm stack khi boss dùng skill. Không bất tử — áp lực đến từ DPS race: hạ boss trước khi stack 20.',
     difficulty:6, enemyTypes:['annihilator','executor','obliterator'],
     specialMech:'ascensionMode', bgPattern:'apex',
     tier:6, goldMin:1000, goldMax:1200,
@@ -5784,7 +5828,7 @@ class Player {
           count: 14, color: '#a060ff', speedMin: 40, speedMax: 120, life: 0.6,
           angle: -Math.PI/2, spread: Math.PI * 0.7, gravity: -30,
         });
-        Game.rings && Game.rings.push(new RingEffect(this.x, this.y, 38, '#c090ff'));
+        Game.rings && Game.rings.length<28 && Game.rings.push(new RingEffect(this.x, this.y, 38, '#c090ff'));
       } else if (wasBuffed && !nowBuffed) {
         Audio.playSFX('hit');      // buff OFF — subtle break
       }
@@ -5847,7 +5891,7 @@ class Player {
         Toast.show('🐉 CUỒNG LONG! ATK +50% SPD +25%!');
         Audio.playSFX('evolve');
         Game.particles.spawn(this.x, this.y, {count:20, color:'#ff4400', speedMin:100, speedMax:250, life:0.7});
-        Game.rings && Game.rings.push(new RingEffect(this.x, this.y, 70, '#ff6600'));
+        Game.rings && Game.rings.length<28 && Game.rings.push(new RingEffect(this.x, this.y, 70, '#ff6600'));
       } else if (!isCuongLong && this._cuongLongActive) {
         // Hồi máu qua 30% — hoàn tác
         this._cuongLongActive = false;
@@ -5902,7 +5946,7 @@ class Player {
       this._bvShieldHP = 400;
       Toast.show('❄️ Băng Hộ Thể kích hoạt! Hấp thụ 300 ST!');
       Audio.playSFX('passive');
-      Game.rings && Game.rings.push(new RingEffect(this.x, this.y, 60, '#88eeff'));
+      Game.rings && Game.rings.length<28 && Game.rings.push(new RingEffect(this.x, this.y, 60, '#88eeff'));
       Game.particles.spawn(this.x, this.y, {count:15, color:'#ccf8ff', speedMin:60, speedMax:160, life:0.6});
     }
     if (this._bvShieldActive && this._bvShieldHP > 0) {
@@ -5916,7 +5960,7 @@ class Player {
       if (this._bvShieldHP <= 0) {
         this._bvShieldActive = false;
         Toast.show('❄️ Băng Hộ vỡ!');
-        Game.rings && Game.rings.push(new RingEffect(this.x, this.y, 55, '#00eeff'));
+        Game.rings && Game.rings.length<28 && Game.rings.push(new RingEffect(this.x, this.y, 55, '#00eeff'));
       }
       if (finalDmg <= 0) {
         DmgNumbers.show(this.x, this.y, '🧊', 'normal');
@@ -5930,7 +5974,7 @@ class Player {
       if ((this._turtleCounterCd || 0) <= 0) {
         this._turtleCounterCd = 0.5;
         Game.explosionAt(this.x, this.y, 60, this.totalDmg * 0.8, '#88cc44');
-        Game.rings && Game.rings.push(new RingEffect(this.x, this.y, 60, '#88cc44'));
+        Game.rings && Game.rings.length<28 && Game.rings.push(new RingEffect(this.x, this.y, 60, '#88cc44'));
       }
       // Emergency DR when HP < 30%
       if (this.hp < this.maxHp * 0.30) {
@@ -5986,7 +6030,7 @@ class Player {
             angle: a, spread: 0 }
         );
       }
-      Game.rings && Game.rings.push(new RingEffect(this.x, this.y, 28, '#ff2040'));
+      Game.rings && Game.rings.length<28 && Game.rings.push(new RingEffect(this.x, this.y, 28, '#ff2040'));
       Audio.playSFX('crit'); // sharp metallic thorn sound
       Game.particles.spawn(source.x, source.y, {
         count:5, color:'#ff2040', speedMin:50, speedMax:100, life:0.3,
@@ -6061,7 +6105,7 @@ class Player {
       // Milestone ring at 10 / 20 / 30 stacks
       if (this.passiveStacks % 10 === 0 && Game.rings) {
         const ringCol = this.passiveStacks >= 30 ? '#ffd700' : '#60d0ff';
-        Game.rings.push(new RingEffect(this.x, this.y, 40, ringCol));
+        Game.rings && Game.rings.length<28 && Game.rings.push(new RingEffect(this.x, this.y, 40, ringCol));
       }
     }
 
@@ -6114,7 +6158,7 @@ class Player {
           Toast.show(`🔥 Long Vảy Linh x${newStacks}! ATK +35% vĩnh viễn (${newStacks}/3 stack)`);
           Audio.playSFX('passive');
           Game.particles.spawn(this.x, this.y, {count:15, color:'#ff6600', speedMin:80, speedMax:200, life:0.6});
-          Game.rings && Game.rings.push(new RingEffect(this.x, this.y, 55, '#ff6600'));
+          Game.rings && Game.rings.length<28 && Game.rings.push(new RingEffect(this.x, this.y, 55, '#ff6600'));
         } else if (curStacks >= 3 && this._hlKillCount % 25 === 0) {
           // Đã max stack: mỗi 25 kill thêm cho 1 burst sét nhỏ
           Game.explosionAt(this.x, this.y, 100, this.totalDmg * 0.5, '#ff4400', 'main_hoa_long');
@@ -6302,7 +6346,7 @@ class Player {
             Game.particles.spawn(bestX, bestY, {
               count: 20, color: '#ffffff', speedMin: 100, speedMax: 300, life: 0.5, sizeMin: 2, sizeMax: 5,
             });
-            Game.rings.push(new RingEffect(bestX, bestY, 140 * castRef.aoeSize, '#ffffff'));
+            Game.rings && Game.rings.length<28 && Game.rings.push(new RingEffect(bestX, bestY, 140 * castRef.aoeSize, '#ffffff'));
             Game.camera.addShake(16);
             Toast.show('⚡⚡ SIÊU LÔI — ×5.0!');
           } else {
@@ -6411,7 +6455,7 @@ class Player {
                     nearby.applyPoison(2, playerRef.totalDmg * 0.08);
                   }
                 });
-                Game.rings && Game.rings.push(new RingEffect(e.x, e.y, 80, '#ff5020'));
+                Game.rings && Game.rings.length<28 && Game.rings.push(new RingEffect(e.x, e.y, 80, '#ff5020'));
               }
               Game.particles.spawn(e.x, e.y, { count:5, color:'#ff6020', speedMin:30, speedMax:80, life:0.4 });
             },
@@ -6441,7 +6485,7 @@ class Player {
     const totalDmgMult = 6.0 + dmgBonus;
 
     // Pre-impact warning ring
-    Game.rings.push(new RingEffect(this.x, this.y, radius * 0.6, '#ffffa0'));
+    Game.rings && Game.rings.length<28 && Game.rings.push(new RingEffect(this.x, this.y, radius * 0.6, '#ffffa0'));
 
     Game.explosionAt(this.x, this.y, radius, this.totalDmg * totalDmgMult, '#ffd700', 'active_kim_cang');
 
@@ -6466,7 +6510,7 @@ class Player {
     // Shockwave visual — inward pull rings thay vì radial crack
     for (let r = 3; r >= 1; r--) {
       setTimeout(() => {
-        Game.rings.push(new RingEffect(this.x, this.y, radius * (0.3 * r), '#ffd700'));
+        Game.rings && Game.rings.length<28 && Game.rings.push(new RingEffect(this.x, this.y, radius * (0.3 * r), '#ffd700'));
       }, (4 - r) * 60);
     }
     // Pillar of light at impact center
@@ -6585,8 +6629,8 @@ class Player {
     //    — totalDmg đã bao gồm ×(1 + soulCount×0.035), max ×1.7 tại 20 souls
 
     // Ritual circle visual
-    Game.rings.push(new RingEffect(this.x, this.y, 80, '#ff4060'));
-    Game.rings.push(new RingEffect(this.x, this.y, 55, '#cc2040'));
+    Game.rings && Game.rings.length<28 && Game.rings.push(new RingEffect(this.x, this.y, 80, '#ff4060'));
+    Game.rings && Game.rings.length<28 && Game.rings.push(new RingEffect(this.x, this.y, 55, '#cc2040'));
     Game.particles.spawn(this.x, this.y, {
       count: 20, color: '#ff4060', speedMin: 40, speedMax: 120, life: 0.6,
     });
@@ -6616,7 +6660,7 @@ class Player {
         // Dùng totalDmg tại thời điểm pulse (nếu souls thay đổi trong 4s, vẫn đúng)
         Audio.playSFX('death_pulse'); // per-pulse audio feedback
         Game.explosionAt(castRef.x, castRef.y, domainRadius, castRef.totalDmg * 0.4, '#ff4060', 'active_tu_linh');
-        Game.rings.push(new RingEffect(castRef.x, castRef.y, domainRadius * 0.55, '#aa1030'));
+        Game.rings && Game.rings.length<28 && Game.rings.push(new RingEffect(castRef.x, castRef.y, domainRadius * 0.55, '#aa1030'));
         // Skull particles mỗi 2 pulse
         if (i % 2 === 0) {
           for (let k = 0; k < 3; k++) {
@@ -6845,9 +6889,9 @@ class Player {
     const p = this;
     // ── KHÔNG tiêu stack — active khuếch đại trên nền buff Lôi Tích hiện tại ──
     Audio.playSFX('active_loi_than');
-    Game.rings.push(new RingEffect(p.x, p.y, 110, '#00ccff'));
-    Game.rings.push(new RingEffect(p.x, p.y, 70, '#00aaff'));
-    Game.rings.push(new RingEffect(p.x, p.y, 40, '#ffffff'));
+    Game.rings && Game.rings.length<28 && Game.rings.push(new RingEffect(p.x, p.y, 110, '#00ccff'));
+    Game.rings && Game.rings.length<28 && Game.rings.push(new RingEffect(p.x, p.y, 70, '#00aaff'));
+    Game.rings && Game.rings.length<28 && Game.rings.push(new RingEffect(p.x, p.y, 40, '#ffffff'));
     Game.particles.spawn(p.x, p.y, {count:30, color:'#00eeff', speedMin:100, speedMax:300, life:0.6});
     // 5 tia Thiên Lôi — damage = totalDmg (đã nhân stack +4%/stack) × 2.5
     for (let bi = 0; bi < 5; bi++) {
@@ -6870,7 +6914,7 @@ class Player {
           cur.takeDamage(bVal, p, 'normal');
           p.trackSkillDmg('active_loi_than', bVal);
           Game.particles.spawn(cur.x, cur.y, {count:8, color:'#00eeff', speedMin:60, speedMax:160, life:0.35});
-          Game.rings && Game.rings.push(new RingEffect(cur.x, cur.y, 32, '#00ccff'));
+          Game.rings && Game.rings.length<28 && Game.rings.push(new RingEffect(cur.x, cur.y, 32, '#00ccff'));
           if (p.mainWeapon.evolved) {
             const dtTgt = cur; const dtV = bd * 0.20; let dtN = 0;
             const dtiA = setInterval(() => { if (dtTgt.dead || dtN >= 2) { clearInterval(dtiA); return; } dtTgt.takeDamage(dtV, p, 'normal'); dtN++; }, 1000);
@@ -6915,7 +6959,7 @@ class Player {
     const spdBoostHL = p.speed * 0.20;
     p.speed += spdBoostHL;
     const dragonR = 200;
-    Game.rings.push(new RingEffect(p.x, p.y, 80, '#ff6600'));
+    Game.rings && Game.rings.length<28 && Game.rings.push(new RingEffect(p.x, p.y, 80, '#ff6600'));
     Game.particles.spawn(p.x, p.y, {count:25, color:'#ff5500', speedMin:100, speedMax:280, life:0.6});
     // Continuous AoE for 5 seconds
     let elapsed = 0;
@@ -6943,7 +6987,7 @@ class Player {
       castRef2._dragonActive = false;
       castRef2.speed -= spdBoostHL; // hoàn trả SPD boost
       Game.explosionAt(castRef2.x, castRef2.y, dragonR + 60, castRef2.totalDmg * 7.0, '#ff2200', 'active_hoa_long');
-      Game.rings.push(new RingEffect(castRef2.x, castRef2.y, dragonR + 60, '#ff4400'));
+      Game.rings && Game.rings.length<28 && Game.rings.push(new RingEffect(castRef2.x, castRef2.y, dragonR + 60, '#ff4400'));
       Game.particles.spawn(castRef2.x, castRef2.y, {count:40, color:'#ff4400', speedMin:120, speedMax:350, life:0.7});
     }, 5200);
   }
@@ -6956,8 +7000,8 @@ class Player {
     Audio.playSFX('active_bang_vuong');
     const blizzardR = 200;
     p._blizzardActive = true;
-    Game.rings.push(new RingEffect(p.x, p.y, blizzardR, '#88eeff'));
-    Game.rings.push(new RingEffect(p.x, p.y, blizzardR * 0.6, '#ccf8ff'));
+    Game.rings && Game.rings.length<28 && Game.rings.push(new RingEffect(p.x, p.y, blizzardR, '#88eeff'));
+    Game.rings && Game.rings.length<28 && Game.rings.push(new RingEffect(p.x, p.y, blizzardR * 0.6, '#ccf8ff'));
     Game.particles.spawn(p.x, p.y, {count:30, color:'#ccf8ff', speedMin:60, speedMax:200, life:0.8});
     const castRef3 = p;
     // Track per-enemy time-in-blizzard
@@ -6991,7 +7035,7 @@ class Player {
       if (!castRef3 || castRef3.hp <= 0) return;
       castRef3._blizzardActive = false;
       Game.explosionAt(castRef3.x, castRef3.y, blizzardR + 50, castRef3.totalDmg * 5.5, '#88eeff', 'active_bang_vuong');
-      Game.rings.push(new RingEffect(castRef3.x, castRef3.y, blizzardR + 50, '#00eeff'));
+      Game.rings && Game.rings.length<28 && Game.rings.push(new RingEffect(castRef3.x, castRef3.y, blizzardR + 50, '#00eeff'));
       Game.particles.spawn(castRef3.x, castRef3.y, {count:50, color:'#ccf8ff', speedMin:80, speedMax:300, life:0.8});
     }, 6200);
   }
@@ -7499,11 +7543,6 @@ class Enemy {
 
   takeDamage(dmg, source, type) {
     if (this.dead) return;
-    // Map18 Boss bất tử — chặn toàn bộ sát thương cho đến khi giết đủ quái
-    if (this.isBoss && (this._immortalPct || 0) > 0) {
-      Game.particles.spawn(this.x, this.y, { count: 4, color: '#00d4ff', speedMin: 40, speedMax: 120, life: 0.25 });
-      return;
-    }
 
     // Armor penetration: bypass shield proportionally + bonus dmg vs boss/elite
     const armorPen = (source && source.armorPen) ? source.armorPen : 0;
@@ -7814,7 +7853,7 @@ class Enemy {
   }
 
   _bossAI(dt, player, spd, dist, dx, dy) {
-    // Phase transitions
+    // ── Phase transitions ──────────────────────────────────────────────
     const hpPct = this.hp / this.maxHp;
     const newPhase = hpPct > 0.66 ? 1 : hpPct > 0.33 ? 2 : 3;
     if (newPhase !== this.phase) {
@@ -7823,60 +7862,139 @@ class Enemy {
       Game.camera.addShake(20);
       Toast.show(`☠ ${this.name || 'BOSS'} — GIAI ĐOẠN ${newPhase}!`);
       UI.showBossBar(this.name || 'BOSS', hpPct, newPhase);
+      this._bossState = 'orbit';
+      this._bossStateTimer = 1.5;
+      this._bossCharging = 0;
+      this._bossChargeDir = null;
     }
 
-    const moveSpd = spd * (1 + (this.phase - 1) * 0.25);
+    const moveSpd = spd * (1 + (this.phase - 1) * 0.18);
 
-    // Chase + occasional charge
-    if (!this._bossChargeTimer) this._bossChargeTimer = 3;
-    this._bossChargeTimer -= dt;
-
-    if (this._bossChargeTimer <= 0) {
-      this._bossChargeTimer = 3 - this.phase * 0.5;
-      this._bossCharging = 0.5 + this.phase * 0.1;
+    // ── State machine: orbit → approach → telegraph → charge → retreat ─
+    if (!this._bossState) {
+      this._bossState      = 'orbit';
+      this._bossStateTimer = MathU.rand(2.2, 3.2);
+      this._bossOrbitDir   = Math.random() > 0.5 ? 1 : -1;
+      this._bossOrbitAngle = Math.atan2(this.y - player.y, this.x - player.x);
     }
+    this._bossStateTimer -= dt;
 
-    if (this._bossCharging > 0) {
-      this._bossCharging -= dt;
-      // Cap charge movement so boss stops at player's edge, not through them
-      const chargeSpd = moveSpd * 3;
-      const stepDist = chargeSpd * dt;
-      const stopDist = this.r + player.r + 6;
-      if (dist > stopDist + stepDist) {
-        this.x += (dx / dist) * stepDist;
-        this.y += (dy / dist) * stepDist;
-      } else if (dist > stopDist) {
-        this.x += (dx / dist) * (dist - stopDist);
-        this.y += (dy / dist) * (dist - stopDist);
+    // Phase cao → boss muốn đứng gần hơn
+    const IDEAL_DIST  = 165 - this.phase * 18;  // P1:129  P2:111  P3:93
+    const CHARGE_DIST = 260;
+
+    switch (this._bossState) {
+
+      // Orbit: xoáy vòng quanh player, giữ khoảng cách tự nhiên
+      case 'orbit': {
+        this._bossOrbitAngle += this._bossOrbitDir * dt * (0.7 + this.phase * 0.12);
+        const tx = player.x + Math.cos(this._bossOrbitAngle) * IDEAL_DIST;
+        const ty = player.y + Math.sin(this._bossOrbitAngle) * IDEAL_DIST;
+        const ox = tx - this.x, oy = ty - this.y;
+        const od = Math.sqrt(ox*ox + oy*oy) || 1;
+        this.x += (ox/od) * Math.min(moveSpd * 0.9 * dt, od);
+        this.y += (oy/od) * Math.min(moveSpd * 0.9 * dt, od);
+        if (this._bossStateTimer <= 0) {
+          if (dist < CHARGE_DIST && this.phase >= 2) {
+            this._bossState = 'telegraph';
+            this._bossStateTimer = 0.52;
+            Game.particles.spawn(this.x, this.y, { count:14, color:this.color||'#ff4040', speedMin:25, speedMax:90, life:0.5 });
+          } else {
+            this._bossState = 'approach';
+            this._bossStateTimer = MathU.rand(0.9, 1.6);
+          }
+        }
+        break;
       }
-    } else {
-      const stopDist = this.r + player.r + 6;
-      if (dist > stopDist) {
-        this.x += (dx / dist) * moveSpd * dt;
-        this.y += (dy / dist) * moveSpd * dt;
+
+      // Approach: tiến lại gần để vào tầm charge
+      case 'approach': {
+        if (dist > this.r + player.r + 20) {
+          this.x += (dx/dist) * moveSpd * 1.05 * dt;
+          this.y += (dy/dist) * moveSpd * 1.05 * dt;
+        }
+        if (this._bossStateTimer <= 0 || dist <= IDEAL_DIST) {
+          if (dist < CHARGE_DIST) {
+            this._bossState = 'telegraph';
+            this._bossStateTimer = 0.52;
+            Game.particles.spawn(this.x, this.y, { count:14, color:this.color||'#ff4040', speedMin:25, speedMax:90, life:0.5 });
+          } else {
+            this._bossState = 'orbit';
+            this._bossStateTimer = MathU.rand(1.3, 2.2);
+            this._bossOrbitDir   = Math.random() > 0.5 ? 1 : -1;
+            this._bossOrbitAngle = Math.atan2(this.y - player.y, this.x - player.x);
+          }
+        }
+        break;
+      }
+
+      // Telegraph: rung tại chỗ ~0.5s — cảnh báo trước khi lao
+      case 'telegraph': {
+        this.x += (Math.random() - 0.5) * 2.5;
+        this.y += (Math.random() - 0.5) * 2.5;
+        if (!this._bossChargeDir) {
+          const cdx = player.x - this.x, cdy = player.y - this.y;
+          const cl  = Math.sqrt(cdx*cdx + cdy*cdy) || 1;
+          this._bossChargeDir = { x: cdx/cl, y: cdy/cl };
+        }
+        if (this._bossStateTimer <= 0) {
+          this._bossState   = 'charge';
+          this._bossCharging = 0.40 + this.phase * 0.07;
+        }
+        break;
+      }
+
+      // Charge: lao nhanh theo hướng đã khoá — không bám theo player
+      case 'charge': {
+        if (this._bossCharging > 0) {
+          this._bossCharging -= dt;
+          const cd   = this._bossChargeDir || { x: dx/dist, y: dy/dist };
+          const step = moveSpd * 3.2 * dt;
+          const stop = this.r + player.r + 6;
+          if (dist > stop + step) { this.x += cd.x * step; this.y += cd.y * step; }
+          else if (dist > stop)   { this.x += cd.x * (dist - stop); this.y += cd.y * (dist - stop); }
+        } else {
+          this._bossChargeDir = null;
+          this._bossState     = 'retreat';
+          this._bossStateTimer = MathU.rand(0.6, 1.1);
+        }
+        break;
+      }
+
+      // Retreat: lùi ra xa trước khi orbit lại
+      case 'retreat': {
+        if (dist < IDEAL_DIST * 1.4) {
+          this.x -= (dx/dist) * moveSpd * 0.75 * dt;
+          this.y -= (dy/dist) * moveSpd * 0.75 * dt;
+        }
+        if (this._bossStateTimer <= 0) {
+          this._bossState      = 'orbit';
+          this._bossStateTimer = MathU.rand(1.5 - this.phase * 0.25, 2.5 - this.phase * 0.25);
+          this._bossOrbitDir   = Math.random() > 0.5 ? 1 : -1;
+          this._bossOrbitAngle = Math.atan2(this.y - player.y, this.x - player.x);
+        }
+        break;
       }
     }
 
-    // Phase-specific attacks
+    // ── Skill timer ────────────────────────────────────────────────────
     if (!this._bossSkillTimer) this._bossSkillTimer = 4;
     this._bossSkillTimer -= dt;
     if (this._bossSkillTimer <= 0) {
-      this._bossSkillTimer = 5 - this.phase;
+      this._bossSkillTimer = Math.max(1.5, 5 - this.phase * 0.8);
       this._useBossSkill(player);
     }
 
-    // Push player out if boss overlaps — prevents player getting stuck inside boss
+    // ── Đẩy player ra nếu dính ────────────────────────────────────────
     const minSep = this.r + player.r + 4;
-    const overlapDx = player.x - this.x;
-    const overlapDy = player.y - this.y;
-    const overlapDist = Math.sqrt(overlapDx * overlapDx + overlapDy * overlapDy) || 1;
-    if (overlapDist < minSep) {
-      const pushForce = (minSep - overlapDist);
-      player.x = MathU.clamp(player.x + (overlapDx / overlapDist) * pushForce, player.r, CFG.WORLD_W - player.r);
-      player.y = MathU.clamp(player.y + (overlapDy / overlapDist) * pushForce, player.r, CFG.WORLD_H - player.r);
+    const ox2 = player.x - this.x, oy2 = player.y - this.y;
+    const od2 = Math.sqrt(ox2*ox2 + oy2*oy2) || 1;
+    if (od2 < minSep) {
+      const push = minSep - od2;
+      player.x = MathU.clamp(player.x + (ox2/od2)*push, player.r, CFG.WORLD_W - player.r);
+      player.y = MathU.clamp(player.y + (oy2/od2)*push, player.r, CFG.WORLD_H - player.r);
     }
 
-    // Update boss HP bar
     UI.showBossBar(this.name || 'BOSS', hpPct, this.phase);
   }
 
@@ -8366,56 +8484,86 @@ class Enemy {
     }
   }
 
-  // ── MAP18 — Thượng Đế Hủy Diệt: bất tử → tia xuyên suốt → lõi phụ ────────
+  // ── MAP18 — Thượng Đế Hủy Diệt: Siêu Việt Thể tích lũy (DPS race) ──────────
+  // Cơ chế mới: không bất tử. Mỗi lần dùng skill → +1 stack Siêu Việt Thể (max 20).
+  // Mỗi stack: boss nhanh hơn +6% SPD, mạnh hơn +5% DMG, bắn nhiều hơn.
+  // Giai đoạn 3: 3 Lõi Siêu Việt xuất hiện — mỗi lõi còn sống cộng thêm stack/skill.
+  // Áp lực tự nhiên: player phải hạ boss TRƯỚC KHI boss thăng 20 stack.
   _bossAnnihilator(player) {
     const c = '#00d4ff';
-    // Bất tử: mất 2% mỗi kill — tracked bên ngoài
-    if (!this._immortalPct) this._immortalPct = 1.0;
-    const isImmortal = this._immortalPct > 0;
+
+    // Khởi tạo lần đầu — lưu base SPD/DMG để tính mult chính xác
+    if (this._ascStack === undefined) {
+      this._ascStack    = 0;
+      this._baseSpdAnn  = this.spd;
+      this._baseDmgAnn  = this.dmg;
+    }
+
+    // Tích 1 stack mỗi lần dùng skill (phase 3: +1 thêm/lõi còn sống)
+    const liveCoreCnt = this._coresSpawned
+      ? enemies.filter(e => !e.dead && e.name === 'Lõi Siêu Việt').length
+      : 0;
+    const stackGain = 1 + liveCoreCnt;
+    this._ascStack = Math.min(20, this._ascStack + stackGain);
+
+    // Áp dụng buff tích lũy lên đối tượng boss
+    const spdMult = 1 + this._ascStack * 0.06;
+    const dmgMult = 1 + this._ascStack * 0.05;
+    this.spd = this._baseSpdAnn * spdMult;
+    this.dmg = this._baseDmgAnn * dmgMult;
+
+    // Thông báo & hiệu ứng ở mốc 5/10/15/20
+    if (this._ascStack % 5 === 0) {
+      const col = this._ascStack >= 15 ? '#ffffff' : this._ascStack >= 10 ? '#ffaa00' : '#00d4ff';
+      Game.particles.spawn(this.x, this.y, { count: 18, color: col, speedMin: 70, speedMax: 220, life: 0.5 });
+      if(Game.rings && Game.rings.length<28) Game.rings.push(new RingEffect(this.x, this.y, 100, col));
+      Toast.show(`💠 Siêu Việt Thể ×${this._ascStack} — SPD +${Math.round(this._ascStack*6)}% · DMG +${Math.round(this._ascStack*5)}%!`);
+      Game.camera.addShake(8 + this._ascStack * 0.6);
+    }
+
+    const sr = this._ascStack / 20; // 0→1 — dùng để scale số đạn và SPD
 
     if (this.phase === 1) {
-      // Beam xuyên suốt theo 4 hướng cố định
-      const dirs = [0, Math.PI/2, Math.PI, Math.PI*1.5];
-      dirs.forEach(a => {
-        for (let k = 0; k < 3; k++) {
-          const spd = 380 + k * 60;
-          Game.spawnProjectile({ x: this.x, y: this.y, vx: Math.cos(a)*spd, vy: Math.sin(a)*spd, dmg: this.dmg * 1.1, r: 12, life: 2.5, color: c, owner: 'enemy' });
+      // 4 trục tia cố định, mỗi trục 2→4 đạn tùy stack
+      const beams = 2 + Math.floor(sr * 2);
+      [0, Math.PI/2, Math.PI, Math.PI*1.5].forEach(a => {
+        for (let k = 0; k < beams; k++) {
+          const spd2 = 330 + k * 55 + sr * 80;
+          Game.spawnProjectile({ x:this.x, y:this.y, vx:Math.cos(a)*spd2, vy:Math.sin(a)*spd2, dmg:this.dmg*1.0, r:11, life:2.2, color:c, owner:'enemy' });
         }
       });
-      if (isImmortal) {
-        // Flash bất tử
-        Game.particles.spawn(this.x, this.y, { count: 8, color: '#ffffff', speedMin: 50, speedMax: 150, life: 0.3 });
-      }
     } else if (this.phase === 2) {
-      // 8 tia năng lượng xuyên màn hình
-      for (let i = 0; i < 8; i++) {
-        const a = (i / 8) * Math.PI * 2 + this.animT * 0.3;
-        const spd = 400 + Math.random() * 100;
-        Game.spawnProjectile({ x: this.x, y: this.y, vx: Math.cos(a)*spd, vy: Math.sin(a)*spd, dmg: this.dmg * 1.0, r: 11, life: 3, color: c, owner: 'enemy' });
+      // 8→12 tia xoáy
+      const cnt = 8 + Math.floor(sr * 4);
+      for (let i = 0; i < cnt; i++) {
+        const a   = (i/cnt)*Math.PI*2 + this.animT * 0.4;
+        const spd2 = 370 + Math.random()*100 + sr*70;
+        Game.spawnProjectile({ x:this.x, y:this.y, vx:Math.cos(a)*spd2, vy:Math.sin(a)*spd2, dmg:this.dmg*0.95, r:11, life:2.8, color:c, owner:'enemy' });
       }
-      // Ascension stack tăng thêm
-      window._ascensionStacks = Math.min((window._ascensionStacks||0) + 1, 10);
-      Toast.show(`💠 Thượng Đế Thăng Cấp ×${window._ascensionStacks}!`);
     } else {
-      // 3 lõi bất tử phụ + siêu tia
+      // 8 tia trắng tất cả hướng
       for (let i = 0; i < 8; i++) {
-        const a = (i / 8) * Math.PI * 2;
-        Game.spawnProjectile({ x: this.x, y: this.y, vx: Math.cos(a)*450, vy: Math.sin(a)*450, dmg: this.dmg * 1.15, r: 13, life: 3, color: '#ffffff', owner: 'enemy' });
+        const a = (i/8)*Math.PI*2;
+        Game.spawnProjectile({ x:this.x, y:this.y, vx:Math.cos(a)*430, vy:Math.sin(a)*430, dmg:this.dmg*1.08, r:13, life:3, color:'#ffffff', owner:'enemy' });
       }
-      // Spawn lõi phụ như mini-enemy nếu chưa có
+      // Spawn 3 Lõi Siêu Việt một lần — không bất tử, chỉ bền + bắn xa
       if (!this._coresSpawned) {
         this._coresSpawned = true;
         for (let k = 0; k < 3; k++) {
-          const ca = (k / 3) * Math.PI * 2;
-          const cx2 = this.x + Math.cos(ca) * 150;
-          const cy2 = this.y + Math.sin(ca) * 150;
-          const core = new Enemy(cx2, cy2, { hp: 50000, dmg: this.dmg * 0.6, spd: 0, r: 18, exp: 30, gold: 0, icon: '💠', color: '#00aaff', isBoss: false, isElite: true, ai: 'ranged' });
-          core.name = 'Lõi Bất Tử';
+          const ca = (k/3)*Math.PI*2;
+          const core = new Enemy(
+            this.x + Math.cos(ca)*160,
+            this.y + Math.sin(ca)*160,
+            { hp: 30000 + this._ascStack*1500, dmg: this._baseDmgAnn*0.6,
+              spd: 0, r: 18, exp: 40, gold: 0,
+              icon:'💠', color:'#00aaff', isBoss:false, isElite:true, ai:'ranged' }
+          );
+          core.name = 'Lõi Siêu Việt';
           enemies.push(core);
         }
-        Toast.show('💠 3 LÕI BẤT TỬ xuất hiện — Phá đồng thời!', 4000);
+        Toast.show('💠 3 LÕI SIÊU VIỆT xuất hiện — Phá để chặn stack!', 4000);
       }
-      Game.camera.addShake(35);
+      Game.camera.addShake(22 + sr * 14);
     }
   }
 
@@ -8984,18 +9132,17 @@ class RingEffect {
   }
   draw(ctx, camX, camY) {
     if (this.dead) return;
-    const sx = this.x - camX;
-    const sy = this.y - camY;
-    const alpha = this.life / this.maxLife;
-    ctx.save();
-    ctx.globalAlpha = alpha * 0.7;
-    ctx.strokeStyle = this.color;
-    ctx.lineWidth   = 3;
+    const sx = this.x - camX, sy = this.y - camY;
+    // cull offscreen rings
+    if (sx + this.maxR < 0 || sy + this.maxR < 0) return;
+    const prevAlpha = ctx.globalAlpha;
+    ctx.globalAlpha = (this.life / this.maxLife) * 0.7;
+    ctx.strokeStyle  = this.color;
+    ctx.lineWidth    = 2.5;
     ctx.beginPath();
-    ctx.arc(sx, sy, this.r, 0, Math.PI * 2);
+    ctx.arc(sx, sy, Math.max(1, this.r), 0, 6.2832);
     ctx.stroke();
-    ctx.globalAlpha = 1;
-    ctx.restore();
+    ctx.globalAlpha  = prevAlpha;
   }
 }
 
@@ -9677,7 +9824,7 @@ const Game = (() => {
           setTimeout(() => Audio.playBGM('game'), 1200);   // restore BGM sau fanfare
           // Boss death rings — 3 expanding pulses
           [80, 160, 260].forEach((r, i) => setTimeout(() => {
-            if (rings) rings.push(new RingEffect(e.x, e.y, r, '#ffd700'));
+            if (rings) if(rings.length<28)rings.push(new RingEffect(e.x, e.y, r, '#ffd700'));
           }, i * 180));
           UI.showWaveAnnounce('🏆 BOSS ĐÃ BỊ TIÊU DIỆT!');
         }
@@ -9693,41 +9840,41 @@ const Game = (() => {
           deadElitePool.push(e);
           if (deadElitePool.length > 6) deadElitePool.shift(); // cap pool
         }
-        enemies.splice(i, 1);
+        enemies[i] = enemies[enemies.length-1]; enemies.pop();
       }
     }
 
-    // Update projectiles
+    // Update projectiles  (swap-remove O(1))
     for (let i = projectiles.length - 1; i >= 0; i--) {
       projectiles[i].update(dt);
-      if (projectiles[i].dead) projectiles.splice(i, 1);
+      if (projectiles[i].dead) { projectiles[i] = projectiles[projectiles.length-1]; projectiles.pop(); }
     }
 
-    // Update exp gems
+    // Update exp gems  (swap-remove O(1))
     for (let i = expGems.length - 1; i >= 0; i--) {
       expGems[i].update(dt, player);
-      if (expGems[i].dead) expGems.splice(i, 1);
+      if (expGems[i].dead) { expGems[i] = expGems[expGems.length-1]; expGems.pop(); }
     }
 
-    // Update minions
+    // Update minions  (swap-remove O(1))
     for (let i = minions.length - 1; i >= 0; i--) {
       minions[i].update(dt, player);
-      if (minions[i].dead) minions.splice(i, 1);
+      if (minions[i].dead) { minions[i] = minions[minions.length-1]; minions.pop(); }
     }
 
-    // Update rings
+    // Update rings  (swap-remove O(1))
     for (let i = rings.length - 1; i >= 0; i--) {
       rings[i].update(dt);
-      if (rings[i].dead) rings.splice(i, 1);
+      if (rings[i].dead) { rings[i] = rings[rings.length-1]; rings.pop(); }
     }
 
-    // Update character visual FX
-    for (let i = slashArcs.length-1; i>=0; i--) { slashArcs[i].update(dt); if(slashArcs[i].dead) slashArcs.splice(i,1); }
-    for (let i = lightningBolts.length-1; i>=0; i--) { lightningBolts[i].update(dt); if(lightningBolts[i].dead) lightningBolts.splice(i,1); }
-    for (let i = holyPillars.length-1; i>=0; i--) { holyPillars[i].update(dt); if(holyPillars[i].dead) holyPillars.splice(i,1); }
-    for (let i = shadowClones.length-1; i>=0; i--) { shadowClones[i].update(dt); if(shadowClones[i].dead) shadowClones.splice(i,1); }
-    for (let i = fireConeEffects.length-1; i>=0; i--) { fireConeEffects[i].update(dt); if(fireConeEffects[i].dead) fireConeEffects.splice(i,1); }
-    for (let i = iceShardBursts.length-1; i>=0; i--) { iceShardBursts[i].update(dt); if(iceShardBursts[i].dead) iceShardBursts.splice(i,1); }
+    // Update character visual FX  (swap-remove O(1) — tránh splice)
+    for (let i = slashArcs.length-1;      i>=0; i--) { slashArcs[i].update(dt);      if(slashArcs[i].dead)      { slashArcs[i]=slashArcs[slashArcs.length-1];           slashArcs.pop(); } }
+    for (let i = lightningBolts.length-1; i>=0; i--) { lightningBolts[i].update(dt); if(lightningBolts[i].dead) { lightningBolts[i]=lightningBolts[lightningBolts.length-1]; lightningBolts.pop(); } }
+    for (let i = holyPillars.length-1;    i>=0; i--) { holyPillars[i].update(dt);    if(holyPillars[i].dead)    { holyPillars[i]=holyPillars[holyPillars.length-1];       holyPillars.pop(); } }
+    for (let i = shadowClones.length-1;   i>=0; i--) { shadowClones[i].update(dt);   if(shadowClones[i].dead)   { shadowClones[i]=shadowClones[shadowClones.length-1];     shadowClones.pop(); } }
+    for (let i = fireConeEffects.length-1;i>=0; i--) { fireConeEffects[i].update(dt);if(fireConeEffects[i].dead){ fireConeEffects[i]=fireConeEffects[fireConeEffects.length-1]; fireConeEffects.pop(); } }
+    for (let i = iceShardBursts.length-1; i>=0; i--) { iceShardBursts[i].update(dt); if(iceShardBursts[i].dead) { iceShardBursts[i]=iceShardBursts[iceShardBursts.length-1]; iceShardBursts.pop(); } }
 
     // Particles
     particles.update(dt);
@@ -9914,12 +10061,12 @@ const Game = (() => {
             // Độc cường hóa: 4s × 0.15× mỗi giây
             e.applyPoison(4, dmg * 0.15);
             particles.spawn(e.x, e.y, { count: 10, color: '#60ff88', speedMin: 60, speedMax: 150, life: 0.5 });
-            rings.push(new RingEffect(e.x, e.y, 28 * aoe, '#40ff80'));
+            if(rings.length<28)rings.push(new RingEffect(e.x, e.y, 28 * aoe, '#40ff80'));
           } : null,
         });
         // Mana aura pulse when buff active
         if (manaBuff > 1) {
-          rings.push(new RingEffect(p.x, p.y, 30 * aoe, '#a060ff'));
+          if(rings.length<28)rings.push(new RingEffect(p.x, p.y, 30 * aoe, '#a060ff'));
         }
         break;
       }
@@ -9972,7 +10119,7 @@ const Game = (() => {
                   }
                 });
                 particles.spawn(e.x, e.y, { count:8, color:'#ff4040', speedMin:50, speedMax:140, life:0.4 });
-                Game.rings && Game.rings.push(new RingEffect(e.x, e.y, 70 * aoe, '#ff4040'));
+                Game.rings && Game.rings.length<28 && Game.rings.push(new RingEffect(e.x, e.y, 70 * aoe, '#ff4040'));
               }
             },
           });
@@ -10185,7 +10332,7 @@ const Game = (() => {
             }
             Game.explosionAt(p.x, p.y, 130, p.totalDmg * 0.8, '#00ccff', 'main_loi_than');
             particles.spawn(p.x, p.y, {count:12, color:'#00eeff', speedMin:60, speedMax:160, life:0.35});
-            Game.rings && Game.rings.push(new RingEffect(p.x, p.y, 50, '#00aaff'));
+            Game.rings && Game.rings.length<28 && Game.rings.push(new RingEffect(p.x, p.y, 50, '#00aaff'));
           }, 3000);
         }
         // Chain lightning
@@ -10204,7 +10351,7 @@ const Game = (() => {
           const by1 = ltPrev === p ? p.y : ltPrev.y;
           lightningBolts.push(new LightningBolt(bx1, by1, ltTarget.x, ltTarget.y, '#00eeff'));
           lightningBolts.push(new LightningBolt(bx1, by1, ltTarget.x, ltTarget.y, '#ffffff'));
-          rings.push(new RingEffect(ltTarget.x, ltTarget.y, 28, '#00aaff'));
+          if(rings.length<28)rings.push(new RingEffect(ltTarget.x, ltTarget.y, 28, '#00aaff'));
           particles.spawn(ltTarget.x, ltTarget.y, {count:8, color:'#00ccff', speedMin:40, speedMax:140, life:0.3});
           if (p.mainWeapon.evolved) {
             const dtTgt = ltTarget; const dtVal2 = ltDmg2 * 0.15; let dtN2 = 0;
@@ -10231,7 +10378,7 @@ const Game = (() => {
         const hlAngle = hlNearest ? Math.atan2(hlNearest.y - p.y, hlNearest.x - p.x) : p._facing === -1 ? Math.PI : 0;
         fireConeEffects.push(new FireConeEffect(p.x, p.y, hlAngle, coneR2, p.mainWeapon.evolved));
         Game.explosionAt(p.x, p.y, coneR2, hlDmg2, '#ff5500', 'main_hoa_long');
-        rings.push(new RingEffect(p.x, p.y, coneR2, '#ff3300'));
+        if(rings.length<28)rings.push(new RingEffect(p.x, p.y, coneR2, '#ff3300'));
         enemies.forEach(e => {
           if (e.dead || MathU.dist(p.x, p.y, e.x, e.y) > coneR2 + e.r) return;
           const bTgt2 = e; let bN2 = 0;
@@ -10279,7 +10426,7 @@ const Game = (() => {
                   iceShardBursts.push(new IceShardBurst(e.x, e.y, 55, player.mainWeapon.evolved));
                   if (player.mainWeapon.evolved && e.dead) {
                     Game.explosionAt(e.x, e.y, 120, iceVal * 0.6, '#88eeff', 'main_bang_vuong');
-                    rings.push(new RingEffect(e.x, e.y, 80, '#ccf8ff'));
+                    if(rings.length<28)rings.push(new RingEffect(e.x, e.y, 80, '#ccf8ff'));
                     iceShardBursts.push(new IceShardBurst(e.x, e.y, 100, true));
                   }
                   this._hitSet.add(e);
@@ -10329,7 +10476,7 @@ const Game = (() => {
         sw._pulseTimer += dt;
         if (sw._pulseTimer >= 0.6) {
           sw._pulseTimer = 0;
-          rings.push(new RingEffect(p.x, p.y, r, '#ffe060'));
+          if(rings.length<28)rings.push(new RingEffect(p.x, p.y, r, '#ffe060'));
           // Golden particles orbit outward
           for (let i = 0; i < 6; i++) {
             const a = (i / 6) * Math.PI * 2;
@@ -10390,7 +10537,7 @@ const Game = (() => {
               ));
             }
             // Stun ring flash at impact
-            rings.push(new RingEffect(target.x, target.y, 50 * aoe, '#ffff80'));
+            if(rings.length<28)rings.push(new RingEffect(target.x, target.y, 50 * aoe, '#ffff80'));
             particles.spawn(target.x, target.y, {
               count:10, color:'#ffe060', speedMin:80, speedMax:220, life:0.3,
             });
@@ -10450,7 +10597,7 @@ const Game = (() => {
             slow: 1,
           });
           // Toxic burst particles on spawn
-          rings.push(new RingEffect(cx2, cy2, zr2 * 0.9, '#40c840'));
+          if(rings.length<28)rings.push(new RingEffect(cx2, cy2, zr2 * 0.9, '#40c840'));
           for (let i = 0; i < 12; i++) {
             const a = (i / 12) * Math.PI * 2;
             particles.spawn(
@@ -10475,7 +10622,7 @@ const Game = (() => {
           const dirs = [[1,0],[-1,0],[0,1],[0,-1]];
 
           // Burst ring at player position
-          rings.push(new RingEffect(p.x, p.y, 40 * aoe, '#ff6020'));
+          if(rings.length<28)rings.push(new RingEffect(p.x, p.y, 40 * aoe, '#ff6020'));
           particles.spawn(p.x, p.y, {
             count:12, color:'#ff8040', speedMin:60, speedMax:180, life:0.3,
           });
@@ -10501,7 +10648,7 @@ const Game = (() => {
                   count:10, color:'#ff8020',
                   speedMin:80, speedMax:220, life:0.4,
                 });
-                rings.push(new RingEffect(e.x, e.y, 45 * aoe, '#ff6020'));
+                if(rings.length<28)rings.push(new RingEffect(e.x, e.y, 45 * aoe, '#ff6020'));
                 Audio.playSFX('explode');
               },
             });
@@ -11289,7 +11436,7 @@ const Game = (() => {
         const tx = player.x + MathU.rand(-300, 300);
         const ty = player.y + MathU.rand(-300, 300);
         // Warning indicator
-        rings.push(new RingEffect(tx, ty, 50, '#ff4000'));
+        if(rings.length<28)rings.push(new RingEffect(tx, ty, 50, '#ff4000'));
         setTimeout(() => {
           explosionAt(tx, ty, 55, 35 + wave * 3, '#ff6020');
           // Also hurt enemies
@@ -11332,7 +11479,7 @@ const Game = (() => {
     Toast.show('🧙 Bẫy Ma Thuật kích hoạt!');
     const trapX = player.x + MathU.rand(-150, 150);
     const trapY = player.y + MathU.rand(-150, 150);
-    rings.push(new RingEffect(trapX, trapY, 80, '#a060ff'));
+    if(rings.length<28)rings.push(new RingEffect(trapX, trapY, 80, '#a060ff'));
     setTimeout(() => {
       if (MathU.dist(player.x, player.y, trapX, trapY) < 80) {
         player.takeDamage(100, null);
@@ -11391,7 +11538,7 @@ const Game = (() => {
         count: 14, color: '#8a6a4a',
         speedMin: 80, speedMax: 200, life: 0.5, sizeMin: 2, sizeMax: 5,
       });
-      rings.push(new RingEffect(x, y, 40, '#ff8040'));
+      if(rings.length<28)rings.push(new RingEffect(x, y, 40, '#ff8040'));
 
       enemies.push(e);
     }
@@ -11449,7 +11596,7 @@ const Game = (() => {
             speedMin: 100, speedMax: 300, life: 0.6,
             sizeMin: 3, sizeMax: 7,
           });
-          rings.push(new RingEffect(d.riseX, d.riseY, 60, '#cc1010'));
+          if(rings.length<28)rings.push(new RingEffect(d.riseX, d.riseY, 60, '#cc1010'));
           Audio.playSFX('explode');
           camera.addShake(6);
 
@@ -11508,7 +11655,7 @@ const Game = (() => {
       if (t.shootTimer >= t.shootInterval) {
         t.shootTimer = 0;
         // Warning ring ngay trước khi bắn
-        rings.push(new RingEffect(t.x, t.y, 25, '#ff8000'));
+        if(rings.length<28)rings.push(new RingEffect(t.x, t.y, 25, '#ff8000'));
         Audio.playSFX('arrow');
         // Bắn đạn về phía player
         const bulletCount = wave >= 8 ? 3 : wave >= 4 ? 2 : 1;
@@ -11630,7 +11777,7 @@ const Game = (() => {
             count: 15, color: '#c0e0ff',
             speedMin: 80, speedMax: 220, life: 0.5, shape: 'square',
           });
-          rings.push(new RingEffect(c.x, c.y, 30, '#80c0ff'));
+          if(rings.length<28)rings.push(new RingEffect(c.x, c.y, 30, '#80c0ff'));
           DmgNumbers.show(c.x, c.y, 'CLONE!', 'normal');
           p.dead = true;
           c.dead = true;
@@ -11643,10 +11790,20 @@ const Game = (() => {
 
   // ----- HELPERS -----
   function getNearestEnemy(x, y, skip = 0, maxRange = Infinity) {
-    let sorted = enemies
-      .filter(e => !e.dead && (maxRange === Infinity || MathU.dist(x, y, e.x, e.y) < maxRange))
-      .sort((a, b) => MathU.dist2(x,y,a.x,a.y) - MathU.dist2(x,y,b.x,b.y));
-    return sorted[skip] || null;
+    // Linear scan O(n) — tránh filter+sort tạo array mới mỗi frame
+    const maxR2 = maxRange === Infinity ? Infinity : maxRange * maxRange;
+    let best1Dist2 = Infinity, best1 = null;
+    let best2Dist2 = Infinity, best2 = null;
+    for (let i = 0; i < enemies.length; i++) {
+      const e = enemies[i];
+      if (e.dead) continue;
+      const dx = e.x - x, dy = e.y - y;
+      const d2 = dx*dx + dy*dy;
+      if (d2 > maxR2) continue;
+      if (d2 < best1Dist2) { best2 = best1; best2Dist2 = best1Dist2; best1 = e; best1Dist2 = d2; }
+      else if (d2 < best2Dist2) { best2 = e; best2Dist2 = d2; }
+    }
+    return skip === 0 ? best1 : (skip === 1 ? best2 : null);
   }
 
   function explosionAt(x, y, radius, dmg, color, _skillId, _src) {
@@ -11655,7 +11812,7 @@ const Game = (() => {
       color, speedMin: radius * 0.8, speedMax: radius * 2.5,
       life: 0.5, sizeMin: 2, sizeMax: 5,
     });
-    rings.push(new RingEffect(x, y, radius, color));
+    if(rings.length<28)rings.push(new RingEffect(x, y, radius, color));
     if (dmg > 0) {
       // FIX: _src===null means sub-weapon (no lifesteal/armorPen); undefined means main weapon (use player)
       const src = (_src === null) ? null : player;
@@ -11688,7 +11845,8 @@ const Game = (() => {
   }
 
   function spawnRing(x, y, r, color) {
-    rings.push(new RingEffect(x, y, r, color));
+    if (rings.length >= 28) rings.shift(); // cap — xóa ring cũ nhất
+    if(rings.length<28)if(rings.length<28)rings.push(new RingEffect(x, y, r, color));
   }
 
   function dropExp(x, y, amount) {
@@ -12299,6 +12457,7 @@ const Game = (() => {
     player.draw(ctx, camX, camY);
 
     // ── SUB-WEAPON PERSISTENT VISUALS ──
+    const _swT = performance.now() / 1000; // cache time cho toàn bộ sub-weapon draw
     if (player && player.subWeapons) {
       player.subWeapons.forEach(sw => {
         // Halo — always-visible golden aura ring around player
@@ -12307,52 +12466,34 @@ const Game = (() => {
           if (!sk) return;
           const r = sk.radius * player.aoeSize * (1 + (sw.level||1) * 0.1);
           const px = player.x - camX, py = player.y - camY;
-          const pT = performance.now() / 1000;
-          const pulse = 0.9 + 0.1 * Math.sin(pT * 2.5);
-          ctx.save();
+          const pulse = 0.9 + 0.1 * Math.sin(_swT * 2.5);
           ctx.globalAlpha = 0.18 * pulse;
           ctx.fillStyle = '#ffe060';
-          ctx.beginPath(); ctx.arc(px, py, r * pulse, 0, Math.PI*2); ctx.fill();
+          ctx.beginPath(); ctx.arc(px, py, r * pulse, 0, 6.2832); ctx.fill();
           ctx.globalAlpha = 0.5 * pulse;
           ctx.strokeStyle = '#ffd700';
           ctx.lineWidth = 2;
           ctx.setLineDash([6, 8]);
-          ctx.beginPath(); ctx.arc(px, py, r * pulse, 0, Math.PI*2); ctx.stroke();
+          ctx.beginPath(); ctx.arc(px, py, r * pulse, 0, 6.2832); ctx.stroke();
           ctx.setLineDash([]);
-          ctx.shadowBlur = 0;
           ctx.globalAlpha = 1;
-          ctx.restore();
         }
 
         // Shadow Clone — ghost figure orbiting player
         if (sw.id === 'shadow_clone' && sw._ghostX !== undefined) {
           const gx = sw._ghostX - camX, gy = sw._ghostY - camY;
-          const pT = performance.now() / 1000;
-          const pulse = 0.7 + 0.3 * Math.sin(pT * 4);
-          ctx.save();
-          ctx.globalAlpha = 0.55 * pulse;
-          // Ghost body
-          const gGrd = ctx.createRadialGradient(gx, gy, 0, gx, gy, 16);
-          gGrd.addColorStop(0, '#c080ff');
-          gGrd.addColorStop(0.5, '#6020cc');
-          gGrd.addColorStop(1, 'transparent');
-          ctx.fillStyle = gGrd;
-          ctx.beginPath(); ctx.arc(gx, gy, 16, 0, Math.PI*2); ctx.fill();
-          // Ghost outline
-          ctx.globalAlpha = 0.7 * pulse;
+          const pulse = 0.7 + 0.3 * Math.sin(_swT * 4);
+          ctx.globalAlpha = 0.50 * pulse;
+          ctx.fillStyle = '#8040cc';
+          ctx.beginPath(); ctx.arc(gx, gy, 16, 0, 6.2832); ctx.fill();
           ctx.strokeStyle = '#cc44ff';
           ctx.lineWidth = 1.5;
-          ctx.shadowColor = '#cc44ff';
-          ctx.shadowBlur = 12;
-          ctx.beginPath(); ctx.arc(gx, gy, 14, 0, Math.PI*2); ctx.stroke();
-          // Ghost mini-figure
-          ctx.globalAlpha = 0.6 * pulse;
+          ctx.beginPath(); ctx.arc(gx, gy, 14, 0, 6.2832); ctx.stroke();
+          ctx.globalAlpha = 0.55 * pulse;
           ctx.fillStyle = '#e080ff';
-          ctx.beginPath(); ctx.arc(gx, gy - 5, 4.5, 0, Math.PI*2); ctx.fill(); // head
-          ctx.fillRect(gx - 4, gy, 8, 6); // body
-          ctx.shadowBlur = 0;
+          ctx.beginPath(); ctx.arc(gx, gy - 5, 4.5, 0, 6.2832); ctx.fill();
+          ctx.fillRect(gx - 4, gy, 8, 6);
           ctx.globalAlpha = 1;
-          ctx.restore();
         }
       });
     }
@@ -12366,7 +12507,7 @@ const Game = (() => {
     iceShardBursts.forEach(i => i.draw(ctx, camX, camY));
 
     // Particles
-    particles.draw(ctx, camX, camY);
+    particles.draw(ctx, camX, camY, W, H);
 
     ctx.restore();
 
@@ -14690,58 +14831,50 @@ UI.showEvoToast = function(text) {
    ============================================================ */
 const DmgNumbers = (() => {
   const pool = [];
+  const _MAX = 60;
 
   function show(x, y, text, type) {
+    if (pool.length >= _MAX) pool.shift();
     pool.push({
       x, y: y - 10,
       vy: -(40 + Math.random() * 30),
       text: typeof text === 'number' ? Math.ceil(text) : text,
       type,
       life: 1.0,
-      maxLife: 1.0,
       dead: false,
     });
-    if (pool.length > 80) pool.splice(0, pool.length - 80);
   }
 
   function draw(ctx, camX, camY) {
+    const DT = 0.016;
+    // Thiết lập chung một lần
+    ctx.textAlign  = 'center';
+    ctx.lineWidth  = 2.5;
+    ctx.strokeStyle = 'rgba(0,0,0,0.55)';
+
     for (let i = pool.length - 1; i >= 0; i--) {
       const d = pool[i];
-      d.life -= 0.016;
-      d.y    += d.vy * 0.016;
+      d.life -= DT;
+      d.y    += d.vy * DT;
       d.vy   *= 0.92;
       if (d.life <= 0) { pool.splice(i, 1); continue; }
 
       const alpha = Math.min(1, d.life / 0.3);
-      const scale = d.type === 'crit' ? 1.4 : 1;
-      ctx.save();
+      const isCrit = d.type === 'crit';
       ctx.globalAlpha = alpha;
+      ctx.font = isCrit ? 'bold 20px Arial' : 'bold 14px Arial';
+      ctx.fillStyle = isCrit          ? '#ff0'
+                    : d.type==='damage'? '#ff4040'
+                    : d.type==='heal'  ? '#40ff80'
+                    : '#ffffff';
 
-      const color = d.type === 'crit'   ? '#ff0'
-                  : d.type === 'damage' ? '#ff4040'
-                  : d.type === 'heal'   ? '#40ff80'
-                  : '#ffffff';
-
-      ctx.font      = `bold ${Math.round(14 * scale)}px "Arial"`;
-      ctx.fillStyle = color;
-      ctx.strokeStyle = 'rgba(0,0,0,0.6)';
-      ctx.lineWidth   = 3;
-      ctx.textAlign   = 'center';
-
-      const sx = d.x - camX;
-      const sy = d.y - camY;
-
-      if (d.type === 'crit') {
-        ctx.translate(sx, sy);
-        ctx.scale(scale, scale);
-        ctx.strokeText('CRIT! ' + d.text, 0, 0);
-        ctx.fillText  ('CRIT! ' + d.text, 0, 0);
-      } else {
-        ctx.strokeText(String(d.text), sx, sy);
-        ctx.fillText  (String(d.text), sx, sy);
-      }
-      ctx.restore();
+      const sx = d.x - camX, sy = d.y - camY;
+      const label = isCrit ? 'CRIT! ' + d.text : String(d.text);
+      ctx.strokeText(label, sx, sy);
+      ctx.fillText  (label, sx, sy);
     }
+    ctx.globalAlpha = 1;
+    ctx.textAlign   = 'left';
   }
 
   return { show, draw };
