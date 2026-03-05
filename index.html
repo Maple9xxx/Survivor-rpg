@@ -4184,47 +4184,47 @@ const UI = (() => {
     },
     {
       extra: {
-        statHP: 95, statSPD: 155, statDMG: 14, statATK: 2.4,
-        weapon:  { icon:'🗡️', tag:'VŨ KHÍ CHÍNH', name:'Song Tà Đao', desc:'Chém AoE bán kính 50 đ cực nhanh. Tốc độ tấn công cao nhất (2.2×), DMG/đòn thấp nhất — bù bằng tần suất cao.' },
-        passive: { icon:'🌑', tag:'PASSIVE', name:'Bóng Tối', desc:'ATK +20%. HP <40%: ATK +50%, SPD +40%, giảm 30% sát thương nhận vào. Vô hình 5 giây (CD 15s): quái xa hơn ~320đv không truy đuổi (Boss không bị ảnh hưởng).' },
-        active:  { icon:'🌀', tag:'ACTIVE', name:'Ẩn Kích Liên Hoàn', desc:'Teleport đến 3 mục tiêu gần nhất trong tầm 450đv. Khi đang vô hình (HP<40%): ×6.0 + chảy máu liên tục 3 giây (40% tổng ST/giây), sau đó tái kích vô hình ngay nếu HP vẫn <40%. Khi không vô hình: ×4.0. Vô địch 0.8 giây.', cd:12 },
-        evolve:  { icon:'👥', tag:'TIẾN HÓA', name:'Hư Vô Đoản Kiếm', desc:'Mỗi đòn đánh tạo phân thân ảo lặp lại 300ms sau với 85% DMG — về thực chất mỗi hit đánh 2 lần.' },
+        statHP: 95, statSPD: 155, statDMG: 27, statATK: 1.1,
+        weapon:  { icon:'🗡️', tag:'VŨ KHÍ CHÍNH', name:'Song Quỷ Đao', desc:'Đánh đơn mục tiêu trong tầm 150đv — ưu tiên boss, sau đó thấp HP nhất. Mỗi đòn tích 1 Sát Khí (max 5). Đủ 5 stack → Đột Sát ×3.5 + chảy máu. Tàng hình: tích 2 Sát Khí/đòn.' },
+        passive: { icon:'🌑', tag:'PASSIVE', name:'Sát Thủ Thiên Bẩm', desc:'Đủ 5 Sát Khí → Đột Sát: ×3.5 + chảy máu 50% ST/s × 3s + hồi 8% HP. HP<20%: tàng hình khẩn cấp 4s, SPD +60%, CD 20s. Tàng hình: quái xa >320đv không đuổi.' },
+        active:  { icon:'🌑', tag:'ACTIVE', name:'Ẩn Hiện Nhất Kiếm', desc:'Tức thì tàng hình 3s: SPD +60%, quái xa >320đv không đuổi. Sát Khí tích gấp đôi (2/đòn). Đòn đầu ra khỏi tàng hình: Đột Sát ×5.0 + chảy máu cực mạnh (×1.0 ST/s × 5s), sau đó thoát tàng hình.', cd:11 },
+        evolve:  { icon:'👥', tag:'TIẾN HÓA', name:'Hư Vô Quỷ Đao', desc:'Mỗi Đột Sát tạo phân thân ảo lặp lại đòn đó sau 0.3s (×1.0 DMG). Chảy máu từ Đột Sát áp thêm Làm Chậm 30% trong 2 giây.' },
       }
     },
     {
       extra: {
         statHP: 105, statSPD: 115, statDMG: 20, statATK: 1.35,
         weapon:  { icon:'☠️', tag:'VŨ KHÍ CHÍNH', name:'Lưỡi Liềm Tử Thần', desc:'Boomerang: bay ra rồi tự quay lại, pierce 5 kẻ thù mỗi chiều. Cả đường đi lẫn đường về đều gây sát thương.' },
-        passive: { icon:'💀', tag:'PASSIVE', name:'Thu Hoạch Linh Hồn', desc:'Giết quái tạo Linh Hồn (tối đa 20), mỗi cái +2.5% sát thương (+50% tối đa). Bộ xương triệu hồi cũng tạo Linh Hồn khi giết quái. HP<20%: tiêu thụ tất cả để hồi 25 HP/linh hồn.' },
-        active:  { icon:'💀', tag:'ACTIVE', name:'Quân Đoàn Bất Tử', desc:'Triệu 3 bộ xương (tối đa 9) + Lĩnh Vực Tử Thần: AoE 180px pulse 5 lần trong 4 giây (×0.4 totalDmg/pulse, hưởng đầy đủ buff Linh Hồn). KHÔNG tiêu thụ Linh Hồn.', cd:14 },
+        passive: { icon:'💀', tag:'PASSIVE', name:'Thu Hoạch Linh Hồn', desc:'Giết quái tạo Linh Hồn (tối đa 20). Linh Hồn không tăng ST trực tiếp — tăng sức mạnh của Active khi tiêu: 0 hồn → ×1.5 tổng, 20 hồn → ×4.0 tổng. HP<20%: tiêu thụ tất cả để hồi 25 HP/linh hồn.' },
+        active:  { icon:'💀', tag:'ACTIVE', name:'Quân Đoàn Bất Tử', desc:'Tiêu thụ toàn bộ Linh Hồn đang có → triệu 3 bộ xương (tối đa 9) + Lĩnh Vực Tử Thần: AoE 180px pulse 5 lần trong 4 giây. Pulse/đòn = ×(0.3 + hồn×0.025), tối đa ×0.8. Tích nhiều hồn trước khi cast để tối đa sát thương.', cd:14 },
         evolve:  { icon:'🌀', tag:'TIẾN HÓA', name:'Vong Hồn Đại Liềm', desc:'Liềm to ×1.8, hút quái vào khi bay đi (knockback ngược). Đường về: xuyên tất cả kẻ thù còn lại, không giới hạn.' },
       }
     },
     {
       extra: {
         statHP: 116, statSPD: 130, statDMG: 32, statATK: 1.1,
-        weapon:  { icon:'⚡', tag:'VŨ KHÍ CHÍNH', name:'Thiên Lôi Cổ', desc:'Gọi sét xuống quái gần nhất, dây chuyền sang 2 quái bên (×0.6/chuỗi). Mỗi cú đánh tích 1 Lôi Tích (tối đa 20). Sát thương tăng +4%/stack.' },
-        passive: { icon:'⚡', tag:'PASSIVE', name:'Tĩnh Điện Tích Tụ', desc:'Mỗi Lôi Tích +4% sát thương (tối đa +80%). Đủ 20 stack: tự phóng AoE sét mỗi 3 giây. Stack reset về 0 khi dùng Active.' },
-        active:  { icon:'🌩️', tag:'ACTIVE', name:'Thiên Lôi Giáng Thế', desc:'Tiêu thụ toàn bộ Lôi Tích — phóng 5 tia sét (×1.8 × bonus stack, dây chuyền 4 mục tiêu). Sau skill: ATK Speed +30% trong 4 giây.', cd:16 },
-        evolve:  { icon:'⚡', tag:'TIẾN HÓA', name:'Thần Lôi Vô Song', desc:'Sét dây chuyền lên 5 mục tiêu/chuỗi. Mỗi dây chuyền để lại vết sét gây 15% ST/giây trong 2 giây.' },
+        weapon:  { icon:'⚡', tag:'VŨ KHÍ CHÍNH', name:'Thiên Lôi Cổ', desc:'Gọi sét xuống quái gần nhất trong tầm 200đv, dây chuyền sang 3 quái bên (×0.6/chuỗi). Mỗi cú đánh tích 1 Lôi Tích (tối đa 20). Sát thương tăng +4%/stack.' },
+        passive: { icon:'⚡', tag:'PASSIVE', name:'Tĩnh Điện Tích Tụ', desc:'Mỗi Lôi Tích +4% sát thương (tối đa +80%). Đủ 20 stack: tự phóng AoE sét mỗi 3 giây. Dùng Active KHÔNG tiêu stack — sát thương Active đã nhân đầy đủ buff Lôi Tích.' },
+        active:  { icon:'🌩️', tag:'ACTIVE', name:'Thiên Lôi Giáng Thế', desc:'Phóng 5 tia Thiên Lôi cộng hưởng — mỗi tia = Tổng ST × 2.5 (KHÔNG tiêu stack, dây chuyền 4 mục tiêu). Sau cast: ATK Speed +50% trong 5 giây + tích 2 Lôi Tích/đòn.', cd:16 },
+        evolve:  { icon:'⚡', tag:'TIẾN HÓA', name:'Thần Lôi Vô Song', desc:'Sét dây chuyền lên 6 mục tiêu/chuỗi. Mỗi dây chuyền để lại vết sét gây 20% ST/giây trong 2 giây. Active chain thêm 2 mục tiêu (tổng 6).' },
       }
     },
     {
       extra: {
         statHP: 144, statSPD: 105, statDMG: 29, statATK: 1.05,
         weapon:  { icon:'🔥', tag:'VŨ KHÍ CHÍNH', name:'Long Hỏa Quyền', desc:'Đấm lửa rồng tạo hình nón lửa rộng 120° quanh người. Quái cháy nhận 15% ST/giây thêm 2 giây sau khi trúng.' },
-        passive: { icon:'🐉', tag:'PASSIVE', name:'Long Vảy Linh', desc:'Giảm 20% mọi ST nhận. Mỗi 50 quái tiêu diệt: ATK +35% trong 6 giây (stack 3 lần). HP<30%: kích Cuồng Long — ATK +50%, SPD +25%.' },
-        active:  { icon:'🐉', tag:'ACTIVE', name:'Rồng Lửa Thiêu Thân', desc:'Hóa thân Rồng Lửa 5 giây: AoE 200px liên tục (×2.0/giây) + SPD +20%, miễn knockback. Kết thúc: nổ lửa cuối ×5.0 AoE khổng lồ.', cd:17 },
-        evolve:  { icon:'🔥', tag:'TIẾN HÓA', name:'Thiên Long Hỏa Hải', desc:'Mỗi cú đấm để lại đám lửa 3 giây (20% ST/giây). Khi biến thân: mỗi va chạm triệu thêm cầu lửa nhỏ ×2.' },
+        passive: { icon:'🐉', tag:'PASSIVE', name:'Long Vảy Linh', desc:'Giảm 20% mọi ST nhận. Mỗi 25 quái tiêu diệt: ATK +35% vĩnh viễn trong run (stack 3 lần = +105%). HP<40%: kích Cuồng Long — ATK +50%, SPD +25%.' },
+        active:  { icon:'🐉', tag:'ACTIVE', name:'Rồng Lửa Thiêu Thân', desc:'Hóa thân Rồng Lửa 5 giây: AoE 200px liên tục (×1.5/giây) + vũ khí Long Hỏa Quyền tiếp tục bắn bình thường với full buff + SPD +20%, miễn knockback. Kết thúc: Thiên Long Nổ ×7.0.', cd:17 },
+        evolve:  { icon:'🔥', tag:'TIẾN HÓA', name:'Thiên Long Hỏa Hải', desc:'Mỗi cú đấm để lại đám lửa 3 giây (25% ST/giây trong 90px). Khi biến thân: mỗi tick AoE triệu thêm 2 cầu lửa homing truy đuổi quái gần nhất.' },
       }
     },
     {
       extra: {
         statHP: 100, statSPD: 125, statDMG: 37, statATK: 0.85,
-        weapon:  { icon:'🧊', tag:'VŨ KHÍ CHÍNH', name:'Băng Linh Nhẫn', desc:'Phóng 4 vòng băng xoay tròn quanh người, va chạm làm chậm địch 30% trong 1.5 giây. Địch đang chậm nhận thêm 35% sát thương.' },
-        passive: { icon:'❄️', tag:'PASSIVE', name:'Tuyệt Đối Không Độ', desc:'Địch đang chậm/đóng băng nhận thêm 35% ST. Giết địch đóng băng: hồi 8 HP. HP<25%: bọc băng bảo hộ — hấp thụ 300 ST và phản chiếu 50%.' },
-        active:  { icon:'🌨️', tag:'ACTIVE', name:'Bão Tuyết Tận Thế', desc:'Bão tuyết bán kính 200px trong 6 giây: địch chậm 60% + ST ×1.2/giây. Đứng trong bão 3 giây liên tiếp bị đóng băng 2 giây. Kết thúc: Băng Nổ ×4.0 toàn vùng.', cd:18 },
-        evolve:  { icon:'❄️', tag:'TIẾN HÓA', name:'Vong Linh Băng Trận', desc:'Băng Nhẫn trúng địch phân nhánh 2 mảnh băng homing (×0.5/mảnh). Địch đóng băng chết nổ AoE băng thêm 100px.' },
+        weapon:  { icon:'🧊', tag:'VŨ KHÍ CHÍNH', name:'Băng Linh Nhẫn', desc:'Phóng 4 vòng băng trong vòng cung 180° hướng về quái gần nhất, va chạm làm chậm địch 40% trong 2 giây. Địch đang chậm/đóng băng nhận thêm 45% ST từ mọi nguồn.' },
+        passive: { icon:'❄️', tag:'PASSIVE', name:'Tuyệt Đối Không Độ', desc:'Địch đang chậm/đóng băng nhận thêm 45% ST từ mọi nguồn. Giết địch đóng băng: hồi 8 HP. HP<25%: Băng Hộ Thể — hấp thụ 400 ST và phản chiếu 60% về nguồn tấn công.' },
+        active:  { icon:'🌨️', tag:'ACTIVE', name:'Bão Tuyết Tận Thế', desc:'Bão tuyết 200px trong 6 giây: địch chậm 60% + ×1.2/giây (hưởng +45%). Đứng trong bão ≥3 giây liên tiếp → đóng băng 2 giây. Kết thúc: Băng Nổ ×5.5 toàn vùng.', cd:18 },
+        evolve:  { icon:'❄️', tag:'TIẾN HÓA', name:'Vong Linh Băng Trận', desc:'Băng Nhẫn trúng địch phân nhánh 2 mảnh băng homing (×0.6/mảnh). Địch đóng băng chết: nổ AoE băng 120px + đóng băng địch xung quanh trong 1 giây.' },
       }
     },
   ];
@@ -4417,18 +4417,10 @@ const UI = (() => {
     const bar   = document.getElementById('isp-timer-bar');
     if (panel) panel.classList.add('isp-visible');
     if (btn)   btn.classList.add('active');
-    // Thanh đếm ngược
-    if (bar) {
-      bar.style.transition = 'none'; bar.style.width = '100%';
-      requestAnimationFrame(() => {
-        requestAnimationFrame(() => {
-          bar.style.transition = 'width ' + (_STAT_AUTO_CLOSE_MS / 1000) + 's linear';
-          bar.style.width = '0%';
-        });
-      });
-    }
+    // Ẩn thanh đếm ngược — panel chỉ đóng khi user bấm nút
+    if (bar) { bar.style.transition = 'none'; bar.style.width = '0%'; }
     _clearStatTimer();
-    _statAutoCloseTimer = setTimeout(_closeStatPanel, _STAT_AUTO_CLOSE_MS);
+    // Không tự động đóng — người dùng bấm lại nút để đóng
   }
 
   function updateStatPanel(player) {
@@ -5154,7 +5146,7 @@ const CHARS = [
     id: 'am_sat', icon: '🗡️', name: 'Ám Sát', title: 'Sát Thủ Bóng Đêm',
     cost: 1500,
     baseHP: 510, baseSpd: 155, baseDmg: 150, baseAtk: 1.1,
-    weapon: 'Song Quỷ Đao', weaponDesc: 'Đánh đơn mục tiêu gần nhất trong tầm 150đv, mỗi đòn tích 1 Sát Khí. Đủ 5 Sát Khí → đòn tiếp theo kích Đột Sát: ×3.5 + chảy máu 3 giây. Khi tàng hình mỗi đòn tích 2 Sát Khí.',
+    weapon: 'Song Quỷ Đao', weaponDesc: 'Đánh đơn mục tiêu trong tầm 150đv — ưu tiên boss, sau đó mục tiêu thấp HP nhất. Mỗi đòn tích 1 Sát Khí. Đủ 5 Sát Khí → đòn tiếp theo kích Đột Sát: ×3.5 + chảy máu 3 giây. Khi tàng hình mỗi đòn tích 2 Sát Khí.',
     weaponIcon: '🗡️',
     passiveName: 'Sát Thủ Thiên Bẩm',
     passiveDesc: 'Mỗi đòn tích 1 Sát Khí (max 5, hết hạn 3s không đánh). Đủ 5 → Đột Sát: ×3.5 + chảy máu (50% ST/giây × 3s) + hồi 8% HP. HP<20%: khẩn cấp tàng hình 4s + SPD +60% (CD 20s), quái xa hơn ~320đv không đuổi.',
@@ -5992,7 +5984,7 @@ class Player {
     if (this.charData.id === 'bang_vuong' && this.hp < this.maxHp * 0.25 && !this._bvShieldActive) {
       this._bvShieldActive = true;
       this._bvShieldHP = 400;
-      Toast.show('❄️ Băng Hộ Thể kích hoạt! Hấp thụ 300 ST!');
+      Toast.show('❄️ Băng Hộ Thể kích hoạt! Hấp thụ 400 ST!');
       Audio.playSFX('passive');
       Game.rings && Game.rings.length<28 && Game.rings.push(new RingEffect(this.x, this.y, 60, '#88eeff'));
       Game.particles.spawn(this.x, this.y, {count:15, color:'#ccf8ff', speedMin:60, speedMax:160, life:0.6});
@@ -8829,14 +8821,17 @@ class Projectile {
       ctx.lineTo(-this.r * 1.2, this.r * 0.7);
       ctx.closePath();
       ctx.fill();
-      // White tip flash
-      ctx.fillStyle = shape === 'arrow_evolved' ? '#ff4040' : '#ffffff';
-      ctx.shadowColor = this.color;
-      ctx.shadowBlur  = 10;
+      // White tip flash — fake glow: draw wider semi-transparent circle first
+      ctx.fillStyle   = this.color;
+      ctx.globalAlpha = alpha * 0.35;
+      ctx.beginPath();
+      ctx.arc(len * 0.7, 0, this.r * 1.2, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle   = shape === 'arrow_evolved' ? '#ff4040' : '#ffffff';
+      ctx.globalAlpha = alpha;
       ctx.beginPath();
       ctx.arc(len * 0.7, 0, this.r * 0.45, 0, Math.PI * 2);
       ctx.fill();
-      ctx.shadowBlur = 0;
 
     } else if (shape === 'sword_ki') {
       // Lưu Phong evolved 8-directional sword beams
@@ -8852,8 +8847,17 @@ class Projectile {
       grd.addColorStop(0.8, '#c0e8ff');
       grd.addColorStop(1, '#ffffff');
       ctx.fillStyle = grd;
-      ctx.shadowColor = '#c0e8ff';
-      ctx.shadowBlur  = 14;
+      // Glow pass: slightly wider, very transparent shape
+      ctx.globalAlpha = alpha * 0.30;
+      ctx.beginPath();
+      ctx.moveTo(blen * 1.1, 0);
+      ctx.lineTo(-blen * 0.18, -this.r * 0.85);
+      ctx.lineTo(-blen * 0.05, 0);
+      ctx.lineTo(-blen * 0.18, this.r * 0.85);
+      ctx.closePath();
+      ctx.fill();
+      ctx.globalAlpha = alpha;
+      ctx.fillStyle = grd;
       ctx.beginPath();
       ctx.moveTo(blen, 0);
       ctx.lineTo(-blen * 0.15, -this.r * 0.55);
@@ -8861,7 +8865,6 @@ class Projectile {
       ctx.lineTo(-blen * 0.15, this.r * 0.55);
       ctx.closePath();
       ctx.fill();
-      ctx.shadowBlur = 0;
 
     } else if (shape === 'orb' || shape === 'orb_evolved' || shape === 'orb_mini') {
       // Huyền Nguyệt pulsing magic orb
@@ -8882,9 +8885,7 @@ class Projectile {
       ctx.beginPath();
       ctx.arc(sx, sy, baseR * 2.5, 0, Math.PI * 2);
       ctx.fill();
-      // Core sphere
-      ctx.shadowColor = coreColor;
-      ctx.shadowBlur  = 16;
+      // Core sphere — outer glow is already handled by the radial gradient above
       const coreGrd = ctx.createRadialGradient(sx - baseR*0.3, sy - baseR*0.3, 0, sx, sy, baseR);
       coreGrd.addColorStop(0, '#ffffff');
       coreGrd.addColorStop(0.4, coreColor);
@@ -8893,8 +8894,6 @@ class Projectile {
       ctx.beginPath();
       ctx.arc(sx, sy, baseR, 0, Math.PI * 2);
       ctx.fill();
-      // Inner spiral ring
-      ctx.shadowBlur  = 0;
       ctx.strokeStyle = `rgba(255,255,255,${0.4 * alpha * pulse})`;
       ctx.lineWidth   = 1.5;
       ctx.beginPath();
@@ -8914,16 +8913,13 @@ class Projectile {
       fGrd.addColorStop(1, 'transparent');
       ctx.fillStyle = fGrd;
       ctx.beginPath(); ctx.arc(sx, sy, fR * 3, 0, Math.PI*2); ctx.fill();
-      // Bright core
-      ctx.shadowColor = '#ff8020'; ctx.shadowBlur = 18;
+      // Bright core — outer glow handled by radial gradient above
       const cGrd = ctx.createRadialGradient(sx - fR*0.3, sy - fR*0.3, 0, sx, sy, fR);
       cGrd.addColorStop(0, '#ffffcc');
       cGrd.addColorStop(0.4, '#ff9040');
       cGrd.addColorStop(1, '#cc3000');
       ctx.fillStyle = cGrd;
       ctx.beginPath(); ctx.arc(sx, sy, fR, 0, Math.PI*2); ctx.fill();
-      // Flame tongues
-      ctx.shadowBlur = 0;
       for (let fi = 0; fi < 4; fi++) {
         const fa = (fi / 4) * Math.PI*2 + pT * 5;
         const fx = sx + Math.cos(fa) * fR * 1.2;
@@ -8954,10 +8950,13 @@ class Projectile {
       ctx.lineTo(-this.r * 0.4, 0);
       ctx.lineTo(-this.r, this.r * 0.6);
       ctx.closePath(); ctx.fill();
-      ctx.shadowColor = '#cc44ff'; ctx.shadowBlur = 14;
-      ctx.fillStyle = '#e080ff';
+      // Bright core tip — fake glow: larger transparent circle behind it
+      ctx.fillStyle   = this.color;
+      ctx.globalAlpha = alpha * 0.40;
+      ctx.beginPath(); ctx.arc(sLen * 0.2, 0, this.r * 1.1, 0, Math.PI*2); ctx.fill();
+      ctx.globalAlpha = alpha * 0.85;
+      ctx.fillStyle   = '#e080ff';
       ctx.beginPath(); ctx.arc(sLen * 0.2, 0, this.r * 0.4, 0, Math.PI*2); ctx.fill();
-      ctx.shadowBlur = 0;
 
     } else {
       const grd = ctx.createRadialGradient(sx, sy, 0, sx, sy, this.r * 2.5);
@@ -8989,12 +8988,14 @@ class ExpGem {
     this.x = x + MathU.rand(-20, 20);
     this.y = y + MathU.rand(-20, 20);
     this.value = value;
-    this.r = value >= 10 ? 8 : 5;
-    this.color = value >= 10 ? '#ffd700' : '#60ff88';
-    this.life  = 12;   // despawn timer
-    this.floatT = 0;
+    this.r     = value >= 10 ? 8 : 5;
+    this.color = value >= 10 ? '#ffd700' : '#30ff88';
+    this.glowColor = value >= 10 ? '#ff8800' : '#00bb55';
+    this.life  = 12;
+    this.floatT = Math.random() * Math.PI * 2;
     this.dead   = false;
     this.collected = false;
+    this._spin  = Math.random() * Math.PI * 2;  // initial spin offset
   }
 
   update(dt, player) {
@@ -9003,7 +9004,6 @@ class ExpGem {
     this.floatT += dt;
     if (this.life <= 0) { this.dead = true; return; }
 
-    // Attract when close or HP low
     const dist = MathU.dist(this.x, this.y, player.x, player.y);
     const attractRange = dist < 80 || player.hp < player.maxHp * 0.3 ? 180 : 80;
 
@@ -9025,19 +9025,50 @@ class ExpGem {
   draw(ctx, camX, camY) {
     if (this.dead) return;
     const sx = this.x - camX;
-    const sy = this.y - camY + Math.sin(this.floatT * 3) * 2;
+    const sy = this.y - camY + Math.sin(this.floatT * 2.5) * 2.5;
     const alpha = this.life < 2 ? this.life / 2 : 1;
+    const r     = this.r;
+    const spin  = this.floatT * 1.2 + this._spin;
 
     ctx.save();
     ctx.globalAlpha = alpha;
-    ctx.fillStyle   = this.color;
+    ctx.translate(sx, sy);
+    ctx.rotate(spin);
+
+    // Outer glow halo
+    ctx.globalAlpha = alpha * 0.28;
+    ctx.fillStyle   = this.glowColor;
     ctx.beginPath();
-    ctx.arc(sx, sy, this.r, 0, Math.PI * 2);
+    ctx.arc(0, 0, r * 2.5, 0, Math.PI*2);
     ctx.fill();
 
-    ctx.fillStyle = 'rgba(255,255,255,0.6)';
+    // Diamond gem body
+    ctx.globalAlpha = alpha * 0.92;
+    ctx.fillStyle   = this.color;
     ctx.beginPath();
-    ctx.arc(sx - this.r * 0.3, sy - this.r * 0.3, this.r * 0.35, 0, Math.PI * 2);
+    ctx.moveTo(0,          -r);          // top
+    ctx.lineTo(r * 0.65,   0);           // right
+    ctx.lineTo(0,           r);          // bottom
+    ctx.lineTo(-r * 0.65,  0);           // left
+    ctx.closePath();
+    ctx.fill();
+
+    // Top facet highlight
+    ctx.globalAlpha = alpha * 0.65;
+    ctx.fillStyle   = '#ffffff';
+    ctx.beginPath();
+    ctx.moveTo(0,         -r * 0.75);
+    ctx.lineTo(r * 0.38,  -r * 0.08);
+    ctx.lineTo(0,          r * 0.22);
+    ctx.lineTo(-r * 0.38, -r * 0.08);
+    ctx.closePath();
+    ctx.fill();
+
+    // Tiny sparkle dot at top vertex
+    ctx.globalAlpha = alpha * Math.abs(Math.sin(this.floatT * 4)) * 0.9;
+    ctx.fillStyle   = '#ffffff';
+    ctx.beginPath();
+    ctx.arc(0, -r, 1.4, 0, Math.PI*2);
     ctx.fill();
 
     ctx.globalAlpha = 1;
@@ -9169,7 +9200,7 @@ class RingEffect {
     this.x = x; this.y = y;
     this.r = 0; this.maxR = maxR;
     this.color = color;
-    this.life = 0.4; this.maxLife = 0.4;
+    this.life = 0.5; this.maxLife = 0.5;
     this.dead = false;
   }
   update(dt) {
@@ -9180,16 +9211,30 @@ class RingEffect {
   draw(ctx, camX, camY) {
     if (this.dead) return;
     const sx = this.x - camX, sy = this.y - camY;
-    // cull offscreen rings
-    if (sx + this.maxR < 0 || sy + this.maxR < 0) return;
+    if (sx + this.maxR < -20 || sx - this.maxR > (canvas ? canvas.width : 900) + 20) return;
+    const alpha = this.life / this.maxLife;
+    const r = Math.max(1, this.r);
     const prevAlpha = ctx.globalAlpha;
-    ctx.globalAlpha = (this.life / this.maxLife) * 0.7;
-    ctx.strokeStyle  = this.color;
-    ctx.lineWidth    = 2.5;
-    ctx.beginPath();
-    ctx.arc(sx, sy, Math.max(1, this.r), 0, 6.2832);
-    ctx.stroke();
-    ctx.globalAlpha  = prevAlpha;
+
+    // Outer glow ring (thick, semi-transparent)
+    ctx.globalAlpha = alpha * 0.28;
+    ctx.strokeStyle = this.color;
+    ctx.lineWidth   = 8;
+    ctx.beginPath(); ctx.arc(sx, sy, r, 0, 6.2832); ctx.stroke();
+
+    // Main ring
+    ctx.globalAlpha = alpha * 0.8;
+    ctx.strokeStyle = this.color;
+    ctx.lineWidth   = 2.5;
+    ctx.beginPath(); ctx.arc(sx, sy, r, 0, 6.2832); ctx.stroke();
+
+    // Bright inner core ring
+    ctx.globalAlpha = alpha * 0.55;
+    ctx.strokeStyle = '#ffffff';
+    ctx.lineWidth   = 1.2;
+    ctx.beginPath(); ctx.arc(sx, sy, r * 0.84, 0, 6.2832); ctx.stroke();
+
+    ctx.globalAlpha = prevAlpha;
   }
 }
 
@@ -9205,8 +9250,8 @@ class SlashArc {
     this.radius = radius;
     this.color  = color;
     this.spread = spread || Math.PI * 0.45;
-    this.life   = 0.2;
-    this.maxLife= 0.2;
+    this.life   = 0.22;
+    this.maxLife= 0.22;
     this.dead   = false;
   }
   update(dt) { this.life -= dt; if (this.life <= 0) this.dead = true; }
@@ -9215,26 +9260,56 @@ class SlashArc {
     const sx = this.x - camX, sy = this.y - camY;
     const alpha = this.life / this.maxLife;
     const prog  = 1 - alpha;
-    const r = this.radius * (0.65 + prog * 0.5);
+    const r = this.radius * (0.60 + prog * 0.55);
+
     ctx.save();
-    ctx.globalAlpha = alpha * 0.9;
-    ctx.shadowColor = this.color;
-    ctx.shadowBlur  = 18 * alpha;
+    ctx.lineCap = 'round';
+
+    // Outer glow (wide, very transparent)
+    ctx.globalAlpha = alpha * 0.22;
     ctx.strokeStyle = this.color;
-    ctx.lineWidth   = 5 * alpha + 1;
-    ctx.lineCap     = 'round';
+    ctx.lineWidth   = 18 * alpha;
     ctx.beginPath();
     ctx.arc(sx, sy, r, this.angle - this.spread, this.angle + this.spread);
     ctx.stroke();
-    // Inner white gleam
-    ctx.globalAlpha = alpha * 0.55;
-    ctx.strokeStyle = '#ffffff';
-    ctx.lineWidth   = 2.5 * alpha;
-    ctx.shadowBlur  = 6;
+
+    // Mid glow
+    ctx.globalAlpha = alpha * 0.50;
+    ctx.strokeStyle = this.color;
+    ctx.lineWidth   = 8 * alpha;
     ctx.beginPath();
-    ctx.arc(sx, sy, r * 0.82, this.angle - this.spread * 0.55, this.angle + this.spread * 0.55);
+    ctx.arc(sx, sy, r, this.angle - this.spread, this.angle + this.spread);
     ctx.stroke();
-    ctx.shadowBlur  = 0;
+
+    // Main arc
+    ctx.globalAlpha = alpha * 0.92;
+    ctx.strokeStyle = this.color;
+    ctx.lineWidth   = 3.5 * alpha + 0.5;
+    ctx.beginPath();
+    ctx.arc(sx, sy, r, this.angle - this.spread, this.angle + this.spread);
+    ctx.stroke();
+
+    // Inner white gleam
+    ctx.globalAlpha = alpha * 0.65;
+    ctx.strokeStyle = '#ffffff';
+    ctx.lineWidth   = 1.8 * alpha;
+    ctx.beginPath();
+    ctx.arc(sx, sy, r * 0.80, this.angle - this.spread * 0.48, this.angle + this.spread * 0.48);
+    ctx.stroke();
+
+    // Tip sparks at arc ends (only early phase)
+    if (alpha > 0.45) {
+      const tipA = (alpha - 0.45) / 0.55;
+      ctx.globalAlpha = tipA * 0.9;
+      ctx.fillStyle = '#ffffff';
+      const tips = [this.angle - this.spread, this.angle + this.spread];
+      for (const ta of tips) {
+        ctx.beginPath();
+        ctx.arc(sx + Math.cos(ta)*r, sy + Math.sin(ta)*r, Math.max(0.1, 2.8 * tipA), 0, Math.PI*2);
+        ctx.fill();
+      }
+    }
+
     ctx.globalAlpha = 1;
     ctx.restore();
   }
@@ -9250,58 +9325,107 @@ class LightningBolt {
     this.x1 = x1; this.y1 = y1;
     this.x2 = x2; this.y2 = y2;
     this.color = color || '#a060ff';
-    this.life   = 0.25;
-    this.maxLife= 0.25;
+    this.life   = 0.28;
+    this.maxLife= 0.28;
     this.dead   = false;
-    this._path  = this._gen();
+    this._path   = this._gen();
+    this._branch = this._genBranch();
+    this._flickerT = 0;
   }
   _gen() {
     const pts = [{x:this.x1,y:this.y1}];
-    const segs = 7;
+    const segs = 6;
     const perp = Math.atan2(this.y2-this.y1, this.x2-this.x1) + Math.PI/2;
     for (let i=1; i<segs; i++) {
       const t  = i/segs;
       const bx = this.x1 + (this.x2-this.x1)*t;
       const by = this.y1 + (this.y2-this.y1)*t;
-      const off= (Math.random()-0.5)*40;
+      const off= (Math.random()-0.5)*38;
       pts.push({x: bx+Math.cos(perp)*off, y: by+Math.sin(perp)*off});
     }
     pts.push({x:this.x2,y:this.y2});
     return pts;
   }
+  _genBranch() {
+    // Nhánh phụ từ ~40% dọc tia chính
+    const src = this._path[Math.floor(this._path.length * 0.4)];
+    if (!src) return null;
+    const ang  = Math.atan2(this.y2-this.y1, this.x2-this.x1) + (Math.random()-0.5)*1.0 + 0.5;
+    const len  = 18 + Math.random()*28;
+    const mid  = { x: src.x + Math.cos(ang)*len*0.5 + (Math.random()-0.5)*6,
+                   y: src.y + Math.sin(ang)*len*0.5 + (Math.random()-0.5)*6 };
+    const end  = { x: src.x + Math.cos(ang)*len, y: src.y + Math.sin(ang)*len };
+    return [src, mid, end];
+  }
   update(dt) {
     this.life -= dt;
     if (this.life <= 0) { this.dead = true; return; }
-    if (Math.random() < 0.4) this._path = this._gen(); // flicker
+    this._flickerT += dt;
+    if (this._flickerT >= 0.055) {     // flicker ~18fps — smooth enough, not wasteful
+      this._flickerT = 0;
+      if (Math.random() < 0.55) {
+        this._path   = this._gen();
+        this._branch = this._genBranch();
+      }
+    }
   }
   draw(ctx, camX, camY) {
     if (this.dead) return;
     const alpha = this.life / this.maxLife;
+
     ctx.save();
-    ctx.globalAlpha = alpha;
-    ctx.lineWidth   = 3.5;
-    ctx.lineCap     = 'round';
-    ctx.lineJoin    = 'round';
-    ctx.shadowColor = this.color;
-    ctx.shadowBlur  = 20;
+    ctx.lineCap  = 'round';
+    ctx.lineJoin = 'round';
+
+    const _drawPath = (pts) => {
+      ctx.beginPath();
+      pts.forEach((p,i) => i===0
+        ? ctx.moveTo(p.x-camX, p.y-camY)
+        : ctx.lineTo(p.x-camX, p.y-camY));
+      ctx.stroke();
+    };
+
+    // Outer glow pass — wide, very transparent
+    ctx.globalAlpha = alpha * 0.20;
     ctx.strokeStyle = this.color;
-    ctx.beginPath();
-    this._path.forEach((p,i) => {
-      if (i===0) ctx.moveTo(p.x-camX, p.y-camY);
-      else       ctx.lineTo(p.x-camX, p.y-camY);
-    });
-    ctx.stroke();
-    // White core
+    ctx.lineWidth   = 14;
+    _drawPath(this._path);
+
+    // Mid glow pass
+    ctx.globalAlpha = alpha * 0.45;
+    ctx.strokeStyle = this.color;
+    ctx.lineWidth   = 5;
+    _drawPath(this._path);
+
+    // Core — bright, thin
+    ctx.globalAlpha = alpha * 0.95;
     ctx.strokeStyle = '#e8d0ff';
-    ctx.lineWidth   = 1.8;
-    ctx.shadowBlur  = 8;
-    ctx.beginPath();
-    this._path.forEach((p,i) => {
-      if (i===0) ctx.moveTo(p.x-camX, p.y-camY);
-      else       ctx.lineTo(p.x-camX, p.y-camY);
-    });
-    ctx.stroke();
-    ctx.shadowBlur  = 0;
+    ctx.lineWidth   = 1.6;
+    _drawPath(this._path);
+
+    // Branch (dimmer)
+    if (this._branch) {
+      ctx.globalAlpha = alpha * 0.30;
+      ctx.strokeStyle = this.color;
+      ctx.lineWidth   = 4;
+      _drawPath(this._branch);
+
+      ctx.globalAlpha = alpha * 0.60;
+      ctx.strokeStyle = '#e8d0ff';
+      ctx.lineWidth   = 1.0;
+      _drawPath(this._branch);
+    }
+
+    // Impact flash at target point (only at start)
+    if (alpha > 0.65) {
+      const flashA = (alpha - 0.65) / 0.35;
+      ctx.globalAlpha = flashA * 0.55;
+      ctx.fillStyle = '#ffffff';
+      ctx.beginPath();
+      ctx.arc(this.x2-camX, this.y2-camY, Math.max(0.1, 5 * flashA), 0, Math.PI*2);
+      ctx.fill();
+    }
+
     ctx.globalAlpha = 1;
     ctx.restore();
   }
@@ -9329,27 +9453,55 @@ class HolyPillar {
   draw(ctx, camX, camY) {
     if (this.dead) return;
     const sx = this.x - camX, sy = this.y - camY;
-    const alpha = Math.min(1, this.life / (this.maxLife * 0.2)) * Math.min(1, this.life / 0.2);
-    const pulse = 0.7 + 0.3 * Math.sin(this.animT * 8);
-    const w = 28 * pulse;
+    const fadeIn  = Math.min(1, (this.maxLife - this.life) / (this.maxLife * 0.12));
+    const fadeOut = Math.min(1, this.life / 0.25);
+    const alpha   = fadeIn * fadeOut;
+    const pulse   = 0.72 + 0.28 * Math.sin(this.animT * 9);
+    const h       = this.height;
+    const w       = 28 * pulse;
+
     ctx.save();
-    // Outer glow column
-    const grd = ctx.createLinearGradient(sx, sy, sx, sy - this.height);
-    grd.addColorStop(0,   `rgba(255,240,100,${alpha * 0.9})`);
-    grd.addColorStop(0.4, `rgba(255,220,60,${alpha * 0.6})`);
-    grd.addColorStop(1,   `rgba(255,255,200,0)`);
-    ctx.fillStyle   = grd;
-    ctx.shadowColor = '#ffd700';
-    ctx.shadowBlur  = 30 * alpha;
-    ctx.fillRect(sx - w/2, sy - this.height, w, this.height);
-    // Bright core
-    const grd2 = ctx.createLinearGradient(sx, sy, sx, sy - this.height);
-    grd2.addColorStop(0,   `rgba(255,255,255,${alpha * 0.7})`);
-    grd2.addColorStop(0.5, `rgba(255,240,120,${alpha * 0.4})`);
-    grd2.addColorStop(1,   `rgba(255,255,255,0)`);
-    ctx.fillStyle = grd2;
-    ctx.fillRect(sx - w*0.25, sy - this.height, w*0.5, this.height);
-    ctx.shadowBlur  = 0;
+
+    // Base halo glow (cheap radial)
+    ctx.globalAlpha = alpha * 0.38;
+    const halo = ctx.createRadialGradient(sx, sy, 0, sx, sy, 45);
+    halo.addColorStop(0, 'rgba(255,220,60,0.9)');
+    halo.addColorStop(1, 'transparent');
+    ctx.fillStyle = halo;
+    ctx.beginPath(); ctx.arc(sx, sy, 45, 0, Math.PI*2); ctx.fill();
+
+    // Outer column — 3 nested rects of decreasing alpha (no gradient creation needed)
+    const outerWidths = [w*3.5, w*2.0, w*1.2];
+    const outerAlphas = [0.04,  0.10,  0.22 ];
+    for (let ci = 0; ci < 3; ci++) {
+      ctx.globalAlpha = alpha * outerAlphas[ci];
+      ctx.fillStyle   = '#ffd040';
+      ctx.fillRect(sx - outerWidths[ci]/2, sy - h, outerWidths[ci], h);
+    }
+
+    // Main bright column
+    ctx.globalAlpha = alpha * 0.72;
+    ctx.fillStyle   = 'rgba(255,220,60,0.85)';
+    ctx.fillRect(sx - w/2, sy - h, w, h);
+
+    // White hot core strip
+    ctx.globalAlpha = alpha * 0.85;
+    ctx.fillStyle   = 'rgba(255,255,200,0.95)';
+    ctx.fillRect(sx - w*0.18, sy - h, w*0.36, h);
+
+    // Shimmer particles along column top
+    const topY = sy - h;
+    ctx.globalAlpha = alpha * pulse * 0.9;
+    ctx.fillStyle = '#ffffff';
+    for (let si = 0; si < 6; si++) {
+      const sa  = this.animT * 3.5 + si * Math.PI / 3;
+      const spR = 8 + si * 2.5;
+      ctx.beginPath();
+      ctx.arc(sx + Math.cos(sa)*spR, topY + Math.sin(sa*0.6)*5, 1.6, 0, Math.PI*2);
+      ctx.fill();
+    }
+
+    ctx.globalAlpha = 1;
     ctx.restore();
   }
 }
@@ -9394,69 +9546,104 @@ class FireConeEffect {
     const sp = this.spread;
     ctx.save();
 
-    // ── Outer glow cone ──
-    const grd = ctx.createConicalGradient
-      ? null
-      : (() => {
-          const g = ctx.createRadialGradient(sx, sy, 0, sx, sy, r);
-          g.addColorStop(0,   `rgba(255,180,30,${alpha * 0.5})`);
-          g.addColorStop(0.5, `rgba(255,80,0,${alpha * 0.35})`);
-          g.addColorStop(1,   'rgba(200,20,0,0)');
-          return g;
-        })();
+    // ── Outer glow cone (wide, very transparent) ──
+    ctx.globalAlpha = alpha * 0.15;
+    ctx.fillStyle   = '#ff2200';
+    ctx.beginPath();
+    ctx.moveTo(sx, sy);
+    ctx.arc(sx, sy, r * (0.4 + progress * 0.6) * 1.4, ang - sp, ang + sp);
+    ctx.closePath();
+    ctx.fill();
+
+    // ── Main cone ──
+    ctx.globalAlpha = alpha * 0.32;
+    ctx.fillStyle   = '#ff5500';
     ctx.beginPath();
     ctx.moveTo(sx, sy);
     ctx.arc(sx, sy, r * (0.4 + progress * 0.6), ang - sp, ang + sp);
     ctx.closePath();
-    ctx.fillStyle = `rgba(255,80,0,${alpha * 0.22})`;
-    ctx.shadowColor = '#ff4400';
-    ctx.shadowBlur = 30 * alpha;
     ctx.fill();
 
     // ── Bright core cone ──
+    ctx.globalAlpha = alpha * 0.52;
+    ctx.fillStyle   = '#ffcc40';
     ctx.beginPath();
     ctx.moveTo(sx, sy);
-    ctx.arc(sx, sy, r * 0.45 * (0.4 + progress * 0.6), ang - sp * 0.5, ang + sp * 0.5);
+    ctx.arc(sx, sy, r * 0.42 * (0.4 + progress * 0.6), ang - sp * 0.42, ang + sp * 0.42);
     ctx.closePath();
-    ctx.fillStyle = `rgba(255,200,50,${alpha * 0.45})`;
-    ctx.shadowBlur = 20;
     ctx.fill();
 
-    // ── Flame nodes along cone ──
-    ctx.shadowColor = '#ff5500';
+    // ── Flame nodes: 3 batched groups by temperature ──
+    // Precompute per node
     const t = this.animT;
-    this._nodes.forEach(n => {
-      const dist = r * n.t * (0.5 + progress * 0.5);
-      const wobble = Math.sin(t * 14 + n.phase) * 0.12;
-      const nodeAng = ang + n.spreadOff * (0.5 + n.t * 0.5) + wobble;
+    const distScale  = 0.5 + progress * 0.5;
+    const sizeScale  = alpha;
+
+    // Group 1: hot core (yellow, t < 0.38)
+    ctx.globalAlpha = alpha * 0.88;
+    ctx.fillStyle   = '#ffe050';
+    ctx.beginPath();
+    for (const n of this._nodes) {
+      if (n.t >= 0.38) continue;
+      const dist    = r * n.t * distScale;
+      const nodeAng = ang + n.spreadOff * (0.5 + n.t * 0.5) + Math.sin(t * 13 + n.phase) * 0.11;
       const nx = sx + Math.cos(nodeAng) * dist;
       const ny = sy + Math.sin(nodeAng) * dist;
-      const nSize = (8 + n.t * 14) * alpha * (0.7 + 0.3 * Math.sin(t * 10 + n.phase));
-      const hot = n.t < 0.4;
-      ctx.globalAlpha = alpha * (hot ? 0.9 : 0.55);
-      ctx.fillStyle = hot ? '#ffe060' : (n.t < 0.7 ? '#ff6600' : '#cc2200');
-      ctx.shadowBlur = hot ? 18 : 8;
-      ctx.beginPath();
-      ctx.arc(nx, ny, nSize * 0.5, 0, Math.PI * 2);
-      ctx.fill();
-    });
+      const ns = (4 + n.t * 9) * sizeScale * (0.78 + 0.22 * Math.sin(t * 10 + n.phase));
+      ctx.moveTo(nx + ns, ny);
+      ctx.arc(nx, ny, ns, 0, Math.PI*2);
+    }
+    ctx.fill();
 
-    // ── Evolved: 2nd ring of larger embers ──
+    // Group 2: mid (orange, 0.38-0.68)
+    ctx.globalAlpha = alpha * 0.58;
+    ctx.fillStyle   = '#ff6600';
+    ctx.beginPath();
+    for (const n of this._nodes) {
+      if (n.t < 0.38 || n.t >= 0.68) continue;
+      const dist    = r * n.t * distScale;
+      const nodeAng = ang + n.spreadOff * (0.5 + n.t * 0.5) + Math.sin(t * 13 + n.phase) * 0.11;
+      const nx = sx + Math.cos(nodeAng) * dist;
+      const ny = sy + Math.sin(nodeAng) * dist;
+      const ns = (4 + n.t * 9) * sizeScale * (0.78 + 0.22 * Math.sin(t * 10 + n.phase));
+      ctx.moveTo(nx + ns, ny);
+      ctx.arc(nx, ny, ns, 0, Math.PI*2);
+    }
+    ctx.fill();
+
+    // Group 3: cool (dark red, >= 0.68)
+    ctx.globalAlpha = alpha * 0.38;
+    ctx.fillStyle   = '#cc2200';
+    ctx.beginPath();
+    for (const n of this._nodes) {
+      if (n.t < 0.68) continue;
+      const dist    = r * n.t * distScale;
+      const nodeAng = ang + n.spreadOff * (0.5 + n.t * 0.5) + Math.sin(t * 13 + n.phase) * 0.11;
+      const nx = sx + Math.cos(nodeAng) * dist;
+      const ny = sy + Math.sin(nodeAng) * dist;
+      const ns = (4 + n.t * 9) * sizeScale * (0.78 + 0.22 * Math.sin(t * 10 + n.phase));
+      ctx.moveTo(nx + ns, ny);
+      ctx.arc(nx, ny, ns, 0, Math.PI*2);
+    }
+    ctx.fill();
+
+    // ── Evolved: extra ember batch (random per frame = intentional flicker) ──
     if (this.evolved) {
-      ctx.shadowColor = '#ff8800';
+      ctx.globalAlpha = alpha * 0.50;
+      ctx.fillStyle   = '#ffaa00';
+      ctx.beginPath();
       for (let ei = 0; ei < 8; ei++) {
-        const eAng = ang + (Math.random() - 0.5) * sp * 2;
-        const eDist = r * (0.5 + Math.random() * 0.5) * (0.3 + progress * 0.7);
-        const ex = sx + Math.cos(eAng) * eDist;
-        const ey = sy + Math.sin(eAng) * eDist;
-        ctx.globalAlpha = alpha * 0.7;
-        ctx.fillStyle = '#ffaa00';
-        ctx.shadowBlur = 20;
-        ctx.beginPath(); ctx.arc(ex, ey, 5 + Math.random() * 5, 0, Math.PI * 2); ctx.fill();
+        const eAng  = ang + (Math.random()-0.5)*sp*2;
+        const eDist = r * (0.5 + Math.random()*0.5) * (0.3 + progress*0.7);
+        const ex    = sx + Math.cos(eAng)*eDist;
+        const ey    = sy + Math.sin(eAng)*eDist;
+        const es    = 2.5 + Math.random()*4;
+        ctx.moveTo(ex + es, ey);
+        ctx.arc(ex, ey, es, 0, Math.PI*2);
       }
+      ctx.fill();
     }
 
-    ctx.shadowBlur = 0;
     ctx.globalAlpha = 1;
     ctx.restore();
   }
@@ -9471,17 +9658,16 @@ class IceShardBurst {
     this.x = x; this.y = y;
     this.radius  = radius;
     this.evolved = evolved;
-    this.life    = 0.55;
-    this.maxLife = 0.55;
+    this.life    = 0.60;
+    this.maxLife = 0.60;
     this.dead    = false;
-    // Evolved: 14 shards, normal: 9 — đủ visual mà không quá nhiều draw call
     const count = evolved ? 14 : 9;
     this._shards = [];
     for (let i = 0; i < count; i++) {
       const a   = (i / count) * Math.PI * 2 + (Math.random() - 0.5) * 0.4;
-      const spd = (0.5 + Math.random() * 0.5) * radius * 1.8;
-      const len = 8 + Math.random() * 12;
-      this._shards.push({ a, spd, len, w: 1.0 + Math.random() * 1.5 });
+      const spd = (0.55 + Math.random() * 0.45) * radius * 1.8;
+      const len = 10 + Math.random() * 14;
+      this._shards.push({ a, spd, len, w: 1.2 + Math.random() * 1.5 });
     }
   }
   update(dt) {
@@ -9491,22 +9677,47 @@ class IceShardBurst {
   draw(ctx, camX, camY) {
     if (this.dead) return;
     const sx = this.x - camX, sy = this.y - camY;
-    // Offscreen cull
-    if (sx < -this.radius * 2 || sy < -this.radius * 2) return;
+    if (sx < -this.radius * 3 || sx > (canvas ? canvas.width : 900) + this.radius * 3) return;
     const alpha    = this.life / this.maxLife;
     const progress = 1 - alpha;
     const prevAlpha = ctx.globalAlpha;
 
-    // ── Freeze ring (không dùng save/restore) ──
-    ctx.globalAlpha = alpha * 0.65;
+    // ── Central impact flash (only very start) ──
+    if (alpha > 0.72) {
+      const fA = (alpha - 0.72) / 0.28;
+      ctx.globalAlpha = fA * 0.85;
+      ctx.fillStyle   = '#dff8ff';
+      ctx.beginPath();
+      ctx.arc(sx, sy, Math.max(0.1, this.radius * 0.40 * fA), 0, 6.2832);
+      ctx.fill();
+    }
+
+    // ── Outer glow ring ──
+    ctx.globalAlpha = alpha * 0.22;
+    ctx.strokeStyle = '#55ccff';
+    ctx.lineWidth   = 7;
+    ctx.beginPath();
+    ctx.arc(sx, sy, this.radius * (0.35 + progress * 0.95), 0, 6.2832);
+    ctx.stroke();
+
+    // ── Main freeze ring ──
+    ctx.globalAlpha = alpha * 0.75;
     ctx.strokeStyle = '#ccf8ff';
-    ctx.lineWidth   = 2;
+    ctx.lineWidth   = 2.2;
     ctx.beginPath();
     ctx.arc(sx, sy, this.radius * (0.4 + progress * 0.8), 0, 6.2832);
     ctx.stroke();
 
+    // ── Inner bright ring ──
+    ctx.globalAlpha = alpha * 0.45;
+    ctx.strokeStyle = '#ffffff';
+    ctx.lineWidth   = 1.2;
+    ctx.beginPath();
+    ctx.arc(sx, sy, this.radius * (0.35 + progress * 0.7) * 0.88, 0, 6.2832);
+    ctx.stroke();
+
     if (this.evolved) {
-      ctx.globalAlpha = alpha * 0.35;
+      ctx.globalAlpha = alpha * 0.38;
       ctx.strokeStyle = '#88eeff';
       ctx.lineWidth   = 1.5;
       ctx.beginPath();
@@ -9514,10 +9725,11 @@ class IceShardBurst {
       ctx.stroke();
     }
 
-    // ── Shards: batch toàn bộ vào 1 beginPath — 1 stroke duy nhất ──
-    ctx.globalAlpha = alpha * 0.88;
+    // ── Shards: all batched → single stroke call ──
+    ctx.globalAlpha = alpha * 0.92;
     ctx.strokeStyle = '#e8f8ff';
-    ctx.lineWidth   = 1.5;
+    ctx.lineWidth   = 1.8;
+    ctx.lineCap     = 'round';
     ctx.beginPath();
     for (let i = 0; i < this._shards.length; i++) {
       const s    = this._shards[i];
@@ -9542,29 +9754,56 @@ class ShadowClone {
     this.x = x; this.y = y;
     this.color = color;
     this.icon  = icon || '🗡️';
-    this.life   = 0.3;
-    this.maxLife= 0.3;
+    this.life   = 0.35;
+    this.maxLife= 0.35;
     this.dead   = false;
   }
   update(dt) { this.life -= dt; if (this.life <= 0) this.dead = true; }
   draw(ctx, camX, camY) {
     if (this.dead) return;
     const sx = this.x - camX, sy = this.y - camY;
-    const alpha = (this.life / this.maxLife) * 0.55;
+    const alpha = this.life / this.maxLife;
+    const rise  = (1 - alpha) * 6;     // drifts upward as it fades
+
     ctx.save();
-    ctx.globalAlpha = alpha;
-    ctx.fillStyle   = this.color;
+    ctx.globalAlpha = alpha * 0.60;
+
+    // Outer aura halo
+    ctx.fillStyle = this.color + '33';
     ctx.beginPath();
-    ctx.arc(sx, sy, 14, 0, Math.PI*2);
+    ctx.arc(sx, sy - rise - 4, 22, 0, Math.PI*2);
     ctx.fill();
-    ctx.shadowColor = this.color;
-    ctx.shadowBlur  = 12;
-    ctx.strokeStyle = '#cc44ff';
-    ctx.lineWidth   = 2;
+
+    // Body silhouette (trapezoid torso + circle head)
+    ctx.fillStyle = this.color;
+    // Torso
     ctx.beginPath();
-    ctx.arc(sx, sy, 16, 0, Math.PI*2);
+    ctx.moveTo(sx - 8, sy - rise + 12);
+    ctx.lineTo(sx + 8, sy - rise + 12);
+    ctx.lineTo(sx + 6, sy - rise - 4);
+    ctx.lineTo(sx - 6, sy - rise - 4);
+    ctx.closePath();
+    ctx.fill();
+    // Head
+    ctx.beginPath();
+    ctx.arc(sx, sy - rise - 11, 6, 0, Math.PI*2);
+    ctx.fill();
+
+    // Edge rim (brighter outline)
+    ctx.globalAlpha = alpha * 0.45;
+    ctx.strokeStyle = '#cc44ff';
+    ctx.lineWidth   = 1.5;
+    ctx.beginPath();
+    ctx.moveTo(sx - 8, sy - rise + 12);
+    ctx.lineTo(sx + 8, sy - rise + 12);
+    ctx.lineTo(sx + 6, sy - rise - 4);
+    ctx.lineTo(sx - 6, sy - rise - 4);
+    ctx.closePath();
     ctx.stroke();
-    ctx.shadowBlur  = 0;
+    ctx.beginPath();
+    ctx.arc(sx, sy - rise - 11, 6, 0, Math.PI*2);
+    ctx.stroke();
+
     ctx.globalAlpha = 1;
     ctx.restore();
   }
@@ -9790,8 +10029,8 @@ const Game = (() => {
     lastTime = now;
 
     if (!paused) {
-      update(dt);
-      render();
+      try { update(dt); } catch(e) { console.error('[update error]', e); }
+      try { render(); }  catch(e) { console.error('[render error]', e); Toast && Toast.show('\u26a0\ufe0f Render: ' + String(e.message).substring(0,50)); }
     }
 
     // Đăng ký frame tiếp theo SAU update/render
@@ -10227,11 +10466,23 @@ const Game = (() => {
         let amTarget = null;
         let lowestHpRatio = Infinity;
         if (Game.enemies) {
+          // Ưu tiên boss nếu trong tầm — sát thủ luôn nhắm mục tiêu lớn nhất trước
           for (const e of Game.enemies) {
-            if (e.dead) continue;
-            if (Math.hypot(e.x - p.x, e.y - p.y) > AM_SAT_RANGE) continue;
-            const hpRatio = e.hp / (e.maxHp || e.hp || 1);
-            if (hpRatio < lowestHpRatio) { lowestHpRatio = hpRatio; amTarget = e; }
+            if (e.dead || !e.isBoss) continue;
+            if (Math.hypot(e.x - p.x, e.y - p.y) <= AM_SAT_RANGE) {
+              amTarget = e;
+              lowestHpRatio = e.hp / (e.maxHp || e.hp || 1); // cho execute check
+              break;
+            }
+          }
+          // Không có boss trong tầm → ưu tiên quái thấp HP nhất (hành vi cũ)
+          if (!amTarget) {
+            for (const e of Game.enemies) {
+              if (e.dead || e.isBoss) continue;
+              if (Math.hypot(e.x - p.x, e.y - p.y) > AM_SAT_RANGE) continue;
+              const hpRatio = e.hp / (e.maxHp || e.hp || 1);
+              if (hpRatio < lowestHpRatio) { lowestHpRatio = hpRatio; amTarget = e; }
+            }
           }
         }
         if (!amTarget) {
@@ -14364,7 +14615,7 @@ const Game = (() => {
     const floorGrd=ctx.createLinearGradient(0,H*0.64,0,H);floorGrd.addColorStop(0,'rgba(16,0,28,0.97)');floorGrd.addColorStop(1,'rgba(8,0,14,1)');ctx.fillStyle=floorGrd;ctx.fillRect(0,H*0.64,W,H*0.36);
     // Kẽ rune nứt parallax ×0.70
     const crackOff=((camX*0.70)%W+W)%W; ctx.globalAlpha=0.65;
-    for(let pass=-1;pass<=1;pass++){const ox=-crackOff+pass*W;ctx.strokeStyle=`rgba(180,80,255,${0.30+0.15*Math.sin(t*0.0008)})`;ctx.lineWidth=1.5;ctx.shadowColor='#cc00ff';ctx.shadowBlur=6;for(let i=0;i<W;i+=55){ctx.beginPath();ctx.moveTo(ox+i,H*0.66);ctx.lineTo(ox+i+20,H*0.67);ctx.lineTo(ox+i+10,H*0.70);ctx.stroke();}ctx.shadowBlur=0;}
+    for(let pass=-1;pass<=1;pass++){const ox=-crackOff+pass*W;const crA=0.30+0.15*Math.sin(t*0.0008);ctx.lineWidth=3.5;ctx.strokeStyle=`rgba(180,80,255,${crA*0.25})`;for(let i=0;i<W;i+=55){ctx.beginPath();ctx.moveTo(ox+i,H*0.66);ctx.lineTo(ox+i+20,H*0.67);ctx.lineTo(ox+i+10,H*0.70);ctx.stroke();}ctx.lineWidth=1.5;ctx.strokeStyle=`rgba(200,100,255,${crA})`;for(let i=0;i<W;i+=55){ctx.beginPath();ctx.moveTo(ox+i,H*0.66);ctx.lineTo(ox+i+20,H*0.67);ctx.lineTo(ox+i+10,H*0.70);ctx.stroke();}}
     ctx.globalAlpha=1;
     // Lõi linh hồn
     const coreAlpha=0.06+0.04*Math.sin(t*0.0011);const coreGrd=ctx.createRadialGradient(W*0.5,H*0.32,0,W*0.5,H*0.32,H*0.20);coreGrd.addColorStop(0,`rgba(200,100,255,${coreAlpha})`);coreGrd.addColorStop(1,'rgba(60,0,100,0)');ctx.fillStyle=coreGrd;ctx.fillRect(0,0,W,H*0.55);
@@ -14375,7 +14626,7 @@ const Game = (() => {
     ctx.fillStyle='#000000'; ctx.fillRect(0,0,W,H);
     // Rạn nứt chiều không gian xa parallax ×0.08
     const riftFarOff=((camX*0.08)%W+W)%W; ctx.globalAlpha=0.50;
-    for(let pass=-1;pass<=1;pass++){const ox=-riftFarOff+pass*W;for(let i=0;i<5;i++){const rfx=ox+(i*277+60)%W,rfy=H*0.05+(i*113)%(H*0.60),rfP=0.5+0.4*Math.sin(t*0.0008+i*1.7);ctx.strokeStyle=`rgba(180,0,255,${rfP*0.55})`;ctx.lineWidth=2+rfP;ctx.shadowColor='#8800ff';ctx.shadowBlur=10;ctx.beginPath();ctx.moveTo(rfx,rfy-40);for(let k=0;k<6;k++)ctx.lineTo(rfx+(k%2===0?8:-8),rfy-40+k*14);ctx.stroke();ctx.shadowBlur=0;const rfGrd=ctx.createRadialGradient(rfx,rfy,0,rfx,rfy,30);rfGrd.addColorStop(0,`rgba(120,0,200,${rfP*0.4})`);rfGrd.addColorStop(1,'rgba(40,0,80,0)');ctx.fillStyle=rfGrd;ctx.beginPath();ctx.arc(rfx,rfy,30,0,Math.PI*2);ctx.fill();}}
+    for(let pass=-1;pass<=1;pass++){const ox=-riftFarOff+pass*W;for(let i=0;i<5;i++){const rfx=ox+(i*277+60)%W,rfy=H*0.05+(i*113)%(H*0.60),rfP=0.5+0.4*Math.sin(t*0.0008+i*1.7);ctx.lineWidth=5+rfP*2;ctx.strokeStyle=`rgba(180,0,255,${rfP*0.18})`;ctx.beginPath();ctx.moveTo(rfx,rfy-40);for(let k=0;k<6;k++)ctx.lineTo(rfx+(k%2===0?8:-8),rfy-40+k*14);ctx.stroke();ctx.lineWidth=1.5+rfP*0.5;ctx.strokeStyle=`rgba(200,60,255,${rfP*0.55})`;ctx.beginPath();ctx.moveTo(rfx,rfy-40);for(let k=0;k<6;k++)ctx.lineTo(rfx+(k%2===0?8:-8),rfy-40+k*14);ctx.stroke();const rfGrd=ctx.createRadialGradient(rfx,rfy,0,rfx,rfy,30);rfGrd.addColorStop(0,`rgba(120,0,200,${rfP*0.4})`);rfGrd.addColorStop(1,'rgba(40,0,80,0)');ctx.fillStyle=rfGrd;ctx.beginPath();ctx.arc(rfx,rfy,30,0,Math.PI*2);ctx.fill();}}
     ctx.globalAlpha=1;
     // Mảnh vỡ không gian parallax ×0.22
     const fragOff=((camX*0.22)%W+W)%W; ctx.globalAlpha=0.65;
@@ -14951,48 +15202,68 @@ UI.showEvoToast = function(text) {
    ============================================================ */
 const DmgNumbers = (() => {
   const pool = [];
-  const _MAX = 60;
+  const _MAX = 80;
 
   function show(x, y, text, type) {
     if (pool.length >= _MAX) pool.shift();
     pool.push({
       x, y: y - 10,
-      vy: -(40 + Math.random() * 30),
+      vy: -(52 + Math.random() * 38),
       text: typeof text === 'number' ? Math.ceil(text) : text,
       type,
-      life: 1.0,
-      dead: false,
+      life:    1.1,
+      maxLife: 1.1,
+      dead:    false,
+      scale:   type === 'crit' ? 1.85 : 1.0,  // crits start large, shrink
     });
   }
 
   function draw(ctx, camX, camY) {
     const DT = 0.016;
-    // Thiết lập chung một lần
-    ctx.textAlign  = 'center';
-    ctx.lineWidth  = 2.5;
-    ctx.strokeStyle = 'rgba(0,0,0,0.55)';
+    ctx.textAlign = 'center';
+    ctx.lineWidth = 2.8;
 
     for (let i = pool.length - 1; i >= 0; i--) {
       const d = pool[i];
       d.life -= DT;
       d.y    += d.vy * DT;
-      d.vy   *= 0.92;
-      if (d.life <= 0) { pool.splice(i, 1); continue; }
+      d.vy   *= 0.91;
+      if (d.type === 'crit' && d.scale > 1.0) {
+        d.scale = Math.max(1.0, d.scale - DT * 7);
+      }
+      if (d.life <= 0) {
+        // swap-remove O(1)
+        pool[i] = pool[pool.length - 1]; pool.pop();
+        continue;
+      }
 
-      const alpha = Math.min(1, d.life / 0.3);
+      const alpha  = Math.min(1, d.life / 0.28);
       const isCrit = d.type === 'crit';
-      ctx.globalAlpha = alpha;
-      ctx.font = isCrit ? 'bold 20px Arial' : 'bold 14px Arial';
-      ctx.fillStyle = isCrit          ? '#ff0'
-                    : d.type==='damage'? '#ff4040'
-                    : d.type==='heal'  ? '#40ff80'
-                    : '#ffffff';
-
       const sx = d.x - camX, sy = d.y - camY;
-      const label = isCrit ? 'CRIT! ' + d.text : String(d.text);
+      const label  = isCrit ? '⚡' + d.text : String(d.text);
+
+      ctx.save();
+      if (d.scale !== 1.0) {
+        ctx.translate(sx, sy);
+        ctx.scale(d.scale, d.scale);
+        ctx.translate(-sx, -sy);
+      }
+      ctx.globalAlpha  = alpha;
+      ctx.font         = isCrit
+        ? 'bold 21px Arial'
+        : (d.type === 'heal' ? 'bold 13px Arial' : 'bold 15px Arial');
+
+      ctx.strokeStyle  = 'rgba(0,0,0,0.70)';
       ctx.strokeText(label, sx, sy);
-      ctx.fillText  (label, sx, sy);
+
+      ctx.fillStyle = isCrit          ? '#ffe000'
+                    : d.type==='damage'? '#ff5555'
+                    : d.type==='heal'  ? '#55ff99'
+                    : '#ffffff';
+      ctx.fillText(label, sx, sy);
+      ctx.restore();
     }
+
     ctx.globalAlpha = 1;
     ctx.textAlign   = 'left';
   }
