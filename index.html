@@ -3339,7 +3339,7 @@ const UI = (() => {
           dps: 'Base 170×1.35/s = 230/s · 20 stack: ×1.8 → 414/s · Active: totalDmg×2.5 KHÔNG tiêu stack',
           difficulty: '⭐⭐ Trung Bình',
           playstyle: 'Stack builder — tích Lôi Tích rồi active để khuếch đại, không mất buff',
-          guide: `<b>Passive — Tĩnh Điện Tích Tụ:</b> Mỗi cú đánh tích 1 Lôi Tích (tối đa 20 stack, tích 2/đòn khi active đang buff). Mỗi stack +4% ST tổng — đạt +80% tại 20 stack. Đủ 20 stack: tự phóng AoE sét bán kính 130đv mỗi 3 giây liên tục.<br><br>\n<b>Active — Thiên Lôi Giáng Thế (CD 9s):</b> Phóng 5 tia Thiên Lôi trong <b>tầm 400đv</b> — mỗi tia = <b>Tổng ST × 2.5 (KHÔNG tiêu stack)</b>, dây chuyền 4 mục tiêu (evolved: 6). Sau cast: ATK Speed +50% trong 5 giây + tích 2 Lôi Tích/đòn — vừa burst vừa đẩy stack nhanh hơn. Vũ khí tiếp tục khai thác đầy đủ buff stack trong suốt thời gian.<br><br>\n<b>Tiến hoá → Thần Lôi Vô Song:</b> Dây chuyền lên 6 mục tiêu. Mỗi link để lại vết sét gây 20% ST/giây × 2 giây. Active chain thêm 2 mục tiêu.<br><br>\n<b>Lưu ý:</b> Vũ khí chính và active đều nhắm trong <b>tầm 400đv</b> — di chuyển lại gần địch nếu không thấy sét khai hỏa. Tích đủ 20 stack → dùng Active để burst 5×2.5=×12.5 totalDmg <b>trong khi giữ nguyên +80% buff</b>. Sau Active: ATK Speed +50% đẩy stack về 20 rất nhanh → vòng lặp siêu hiệu quả. Ưu tiên Dragon pet (crit) + AtkSpd để tối đa DPS liên tục.`,
+          guide: `<b>Passive — Tĩnh Điện Tích Tụ:</b> Mỗi cú đánh tích 1 Lôi Tích (tối đa 20 stack, tích 2/đòn khi active đang buff). Mỗi stack +4% ST tổng — đạt +80% tại 20 stack. Đủ 20 stack: tự phóng AoE sét bán kính 130đv mỗi 3 giây liên tục.<br><br>\n<b>Active — Thiên Lôi Giáng Thế (CD 9s):</b> Phóng 5 tia Thiên Lôi trong <b>tầm 200đv</b> — mỗi tia = <b>Tổng ST × 2.5 (KHÔNG tiêu stack)</b>, dây chuyền 4 mục tiêu (evolved: 6). Sau cast: ATK Speed +50% trong 5 giây + tích 2 Lôi Tích/đòn — vừa burst vừa đẩy stack nhanh hơn. Vũ khí tiếp tục khai thác đầy đủ buff stack trong suốt thời gian.<br><br>\n<b>Tiến hoá → Thần Lôi Vô Song:</b> Dây chuyền lên 6 mục tiêu. Mỗi link để lại vết sét gây 20% ST/giây × 2 giây. Active chain thêm 2 mục tiêu.<br><br>\n<b>Lưu ý:</b> Vũ khí chính và active đều nhắm trong <b>tầm 200đv</b> — luôn di chuyển áp sát đám quái để sét khai hỏa. Tích đủ 20 stack → dùng Active để burst 5×2.5=×12.5 totalDmg <b>trong khi giữ nguyên +80% buff</b>. Sau Active: ATK Speed +50% đẩy stack về 20 rất nhanh → vòng lặp siêu hiệu quả. Ưu tiên Dragon pet (crit) + AtkSpd để tối đa DPS liên tục.`,
         },
         {
           c: CHARS.find(c=>c.id==='hoa_long'),
@@ -3693,7 +3693,7 @@ const UI = (() => {
         ['🥋','Kim Cang — Trấn Áp Bất Động','Để quái tấn công để kích Kim Cang Thể: 20% chặn + hồi 5% HP + stack tốc đánh. Active giờ KÉO quái vào gần 80đv rồi stun 1.5s — không đẩy ra xa, giữ quái trong tầm Thiền Trượng. Mỗi block stack tích lũy khi cast: +×0.15 ST và +0.1s stun (tối đa ×6.45, stun 1.8s).'],
         ['🗡️','Ám Sát — Ẩn Kích Liên Hoàn','ATK +20% luôn có. HP<40%: ATK +50%, SPD +40%, -30% ST nhận + vô hình 5s (CD 15s). Khi vô hình, active Ẩn Kích Liên Hoàn: ×6.0 + chảy máu liên tục 3 giây (40% tổng ST/giây) mỗi mục tiêu, sau đó tái kích vô hình ngay nếu HP vẫn <40%. Vòng lặp: nhận đòn → vô hình → combo → tái vô hình → thoát.'],
         ['💀','Tử Linh — Lĩnh Vực Tử Thần','Mỗi kill = +2.5% ST, tối đa 20 linh hồn = +50%. Active KHÔNG tiêu soul — triệu 3 bộ xương (tối đa 9) + Lĩnh Vực Tử Thần: AoE 180px pulse 5 lần/4 giây, mỗi pulse hưởng đầy đủ buff +50% souls. Tích đủ 20 souls trước boss để tối đa hóa — damage buff không bị mất sau active.'],
-        ['⚡','Lôi Thần — Tầm 400px','Vũ khí sét và active đều hoạt động trong tầm 400 đơn vị — luôn di chuyển vào gần đám quái. Tích đủ 20 Lôi Tích (+80% ST) trước khi dùng active để tối đa burst ×12.5. Sau active nhận ATK Speed +50% trong 5 giây — đẩy stack về 20 rất nhanh cho lần tiếp theo.'],
+        ['⚡','Lôi Thần — Tầm 200px','Vũ khí sét hoạt động trong tầm 200 đơn vị — luôn di chuyển vào gần đám quái. Tích đủ 20 Lôi Tích (+80% ST) trước khi dùng active để tối đa burst ×12.5. Sau active nhận ATK Speed +50% trong 5 giây — đẩy stack về 20 rất nhanh cho lần tiếp theo.'],
       ];
       tips.forEach(([icon, title, text]) => { entry(icon, title, p(text)); });
     }
@@ -5085,12 +5085,12 @@ const CHARS = [
     id: 'loi_than', icon: '⚡', name: 'Lôi Thần', title: 'Thần Lôi Vương',
     cost: 250000,
     baseHP: 580, baseSpd: 130, baseDmg: 170, baseAtk: 1.35,
-    weapon: 'Thiên Lôi Cổ', weaponDesc: 'Gọi sét xuống quái gần nhất trong tầm 400đv, dây chuyền sang 3 quái bên (×0.6/chuỗi). Mỗi cú tích 1 Lôi Tích (tối đa 20). ST tổng đã bao gồm +4%/stack.',
+    weapon: 'Thiên Lôi Cổ', weaponDesc: 'Gọi sét xuống quái gần nhất trong tầm 200đv, dây chuyền sang 3 quái bên (×0.6/chuỗi). Mỗi cú tích 1 Lôi Tích (tối đa 20). ST tổng đã bao gồm +4%/stack.',
     weaponIcon: '⚡',
     passiveName: 'Tĩnh Điện Tích Tụ',
     passiveDesc: 'Mỗi cú đánh tích 1 Lôi Tích (tối đa 20), mỗi stack +4% ST (tối đa +80%). Đủ 20 stack: tự phóng AoE sét mỗi 3 giây liên tục. Dùng Active KHÔNG tiêu stack.',
     activeName: 'Thiên Lôi Giáng Thế',
-    activeDesc: 'Phóng 5 tia Thiên Lôi cộng hưởng trong tầm 400đv — mỗi tia = Tổng ST hiện tại × 2.5 (đã nhân buff Lôi Tích, KHÔNG tiêu stack). Dây chuyền 4 mục tiêu. Sau cast: ATK Speed +50% trong 5 giây + tích 2 Lôi Tích/đòn.',
+    activeDesc: 'Phóng 5 tia Thiên Lôi cộng hưởng trong tầm 200đv — mỗi tia = Tổng ST hiện tại × 2.5 (đã nhân buff Lôi Tích, KHÔNG tiêu stack). Dây chuyền 4 mục tiêu. Sau cast: ATK Speed +50% trong 5 giây + tích 2 Lôi Tích/đòn.',
     activeIcon: '🌩️', activeCooldown: 9,
     evolvedWeapon: 'Thần Lôi Vô Song',
     evolveDesc: 'Sét dây chuyền lên 6 mục tiêu/chuỗi. Mỗi dây chuyền để lại vết sét gây 20% ST/giây trong 2 giây. Active chain thêm 2 mục tiêu (tổng 6).',
@@ -5141,7 +5141,7 @@ const AIM_CONFIG = {
   kim_cang:     { type:'aoe',       range:90,  color:'#ffd700', label:'Trấn Áp Bất Động'  },
   am_sat:       { type:'target',    range:450, color:'#cc44ff', maxT:3, label:'Ẩn Kích'   },
   tu_linh:      { type:'aoe',       range:185, color:'#ff4060', label:'Lĩnh Vực Tử Thần' },
-  loi_than:     { type:'target',    range:400, color:'#00eeff', maxT:5, label:'Thiên Lôi' },
+  loi_than:     { type:'target',    range:200, color:'#00eeff', maxT:5, label:'Thiên Lôi' },
   hoa_long:     { type:'aoe',       range:200, color:'#ff5500', label:'Rồng Lửa'          },
   bang_vuong:   { type:'aoe',       range:355, color:'#88eeff', label:'Bão Tuyết'         },
 };
@@ -6802,7 +6802,7 @@ class Player {
         const tgt = Game.enemies.reduce((best, e) => {
           if (e.dead) return best;
           const d = MathU.dist(p.x, p.y, e.x, e.y);
-          if (d > 400) return best;
+          if (d > 200) return best;
           return (!best || d < MathU.dist(p.x, p.y, best.x, best.y)) ? e : best;
         }, null);
         if (!tgt) return;
@@ -9748,7 +9748,7 @@ const Game = (() => {
     const aoe = p.aoeSize;
 
     // Find nearest enemy — Lôi Thần capped at 400px to stay on-screen
-    const nearest = getNearestEnemy(p.x, p.y, 0, id === 'loi_than' ? 400 : Infinity);
+    const nearest = getNearestEnemy(p.x, p.y, 0, id === 'loi_than' ? 200 : Infinity);
     // am_sat, luu_phong, huyen_nguyet use AoE/random/homing — don't need a specific target
     if (!nearest && id !== 'kim_cang' && id !== 'am_sat' && id !== 'luu_phong' && id !== 'huyen_nguyet') return;
 
