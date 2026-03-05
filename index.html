@@ -2054,59 +2054,59 @@ const Audio = (() => {
 
   function _sfxActiveLoiThan(t) {
     // Electric crack + thunder roll
-    const g1 = t.createGain(); g1.gain.setValueAtTime(0.001, t.currentTime);
-    g1.gain.exponentialRampToValueAtTime(0.5, t.currentTime + 0.01);
-    g1.gain.exponentialRampToValueAtTime(0.001, t.currentTime + 0.2);
-    const osc1 = t.createOscillator(); osc1.type = 'sawtooth';
-    osc1.frequency.setValueAtTime(800, t.currentTime);
-    osc1.frequency.exponentialRampToValueAtTime(80, t.currentTime + 0.15);
-    osc1.connect(g1); g1.connect(t.destination); osc1.start(t.currentTime); osc1.stop(t.currentTime + 0.25);
+    const g1 = ctx.createGain(); g1.gain.setValueAtTime(0.001, t);
+    g1.gain.exponentialRampToValueAtTime(0.5, t + 0.01);
+    g1.gain.exponentialRampToValueAtTime(0.001, t + 0.2);
+    const osc1 = ctx.createOscillator(); osc1.type = 'sawtooth';
+    osc1.frequency.setValueAtTime(800, t);
+    osc1.frequency.exponentialRampToValueAtTime(80, t + 0.15);
+    osc1.connect(g1); g1.connect(ctx.destination); osc1.start(t); osc1.stop(t + 0.25);
     // Rumble
-    const g2 = t.createGain(); g2.gain.setValueAtTime(0.3, t.currentTime + 0.1);
-    g2.gain.exponentialRampToValueAtTime(0.001, t.currentTime + 0.8);
-    const buf = t.createBuffer(1, t.sampleRate * 0.7, t.sampleRate);
+    const g2 = ctx.createGain(); g2.gain.setValueAtTime(0.3, t + 0.1);
+    g2.gain.exponentialRampToValueAtTime(0.001, t + 0.8);
+    const buf = ctx.createBuffer(1, ctx.sampleRate * 0.7, ctx.sampleRate);
     const d = buf.getChannelData(0);
-    for (let i = 0; i < d.length; i++) d[i] = (Math.random()*2-1) * Math.exp(-i/(t.sampleRate*0.15));
-    const src = t.createBufferSource(); src.buffer = buf;
-    src.connect(g2); g2.connect(t.destination); src.start(t.currentTime + 0.1);
+    for (let i = 0; i < d.length; i++) d[i] = (Math.random()*2-1) * Math.exp(-i/(ctx.sampleRate*0.15));
+    const src = ctx.createBufferSource(); src.buffer = buf;
+    src.connect(g2); g2.connect(ctx.destination); src.start(t + 0.1);
   }
 
   function _sfxActiveHoaLong(t) {
     // Dragon roar + fire crackle
-    const g1 = t.createGain(); g1.gain.setValueAtTime(0.001, t.currentTime);
-    g1.gain.exponentialRampToValueAtTime(0.6, t.currentTime + 0.05);
-    g1.gain.exponentialRampToValueAtTime(0.001, t.currentTime + 0.6);
-    const osc1 = t.createOscillator(); osc1.type = 'sawtooth';
-    osc1.frequency.setValueAtTime(120, t.currentTime);
-    osc1.frequency.exponentialRampToValueAtTime(40, t.currentTime + 0.5);
-    osc1.connect(g1); g1.connect(t.destination); osc1.start(t.currentTime); osc1.stop(t.currentTime + 0.6);
+    const g1 = ctx.createGain(); g1.gain.setValueAtTime(0.001, t);
+    g1.gain.exponentialRampToValueAtTime(0.6, t + 0.05);
+    g1.gain.exponentialRampToValueAtTime(0.001, t + 0.6);
+    const osc1 = ctx.createOscillator(); osc1.type = 'sawtooth';
+    osc1.frequency.setValueAtTime(120, t);
+    osc1.frequency.exponentialRampToValueAtTime(40, t + 0.5);
+    osc1.connect(g1); g1.connect(ctx.destination); osc1.start(t); osc1.stop(t + 0.6);
     // Crackle
-    const g2 = t.createGain(); g2.gain.setValueAtTime(0.2, t.currentTime);
-    g2.gain.exponentialRampToValueAtTime(0.001, t.currentTime + 0.4);
-    const buf2 = t.createBuffer(1, t.sampleRate * 0.4, t.sampleRate);
+    const g2 = ctx.createGain(); g2.gain.setValueAtTime(0.2, t);
+    g2.gain.exponentialRampToValueAtTime(0.001, t + 0.4);
+    const buf2 = ctx.createBuffer(1, ctx.sampleRate * 0.4, ctx.sampleRate);
     const d2 = buf2.getChannelData(0);
     for (let i = 0; i < d2.length; i++) d2[i] = (Math.random()*2-1) * 0.8;
-    const src2 = t.createBufferSource(); src2.buffer = buf2;
-    src2.connect(g2); g2.connect(t.destination); src2.start(t.currentTime);
+    const src2 = ctx.createBufferSource(); src2.buffer = buf2;
+    src2.connect(g2); g2.connect(ctx.destination); src2.start(t);
   }
 
   function _sfxActiveBangVuong(t) {
     // Ice shatter + blizzard howl
-    const g1 = t.createGain(); g1.gain.setValueAtTime(0.001, t.currentTime);
-    g1.gain.exponentialRampToValueAtTime(0.4, t.currentTime + 0.02);
-    g1.gain.exponentialRampToValueAtTime(0.001, t.currentTime + 0.3);
-    const osc1 = t.createOscillator(); osc1.type = 'square';
-    osc1.frequency.setValueAtTime(1200, t.currentTime);
-    osc1.frequency.exponentialRampToValueAtTime(200, t.currentTime + 0.25);
-    osc1.connect(g1); g1.connect(t.destination); osc1.start(t.currentTime); osc1.stop(t.currentTime + 0.3);
+    const g1 = ctx.createGain(); g1.gain.setValueAtTime(0.001, t);
+    g1.gain.exponentialRampToValueAtTime(0.4, t + 0.02);
+    g1.gain.exponentialRampToValueAtTime(0.001, t + 0.3);
+    const osc1 = ctx.createOscillator(); osc1.type = 'square';
+    osc1.frequency.setValueAtTime(1200, t);
+    osc1.frequency.exponentialRampToValueAtTime(200, t + 0.25);
+    osc1.connect(g1); g1.connect(ctx.destination); osc1.start(t); osc1.stop(t + 0.3);
     // Howl
-    const g2 = t.createGain(); g2.gain.setValueAtTime(0.001, t.currentTime + 0.05);
-    g2.gain.exponentialRampToValueAtTime(0.3, t.currentTime + 0.2);
-    g2.gain.exponentialRampToValueAtTime(0.001, t.currentTime + 1.0);
-    const osc2 = t.createOscillator(); osc2.type = 'sine';
-    osc2.frequency.setValueAtTime(300, t.currentTime + 0.05);
-    osc2.frequency.exponentialRampToValueAtTime(80, t.currentTime + 0.9);
-    osc2.connect(g2); g2.connect(t.destination); osc2.start(t.currentTime + 0.05); osc2.stop(t.currentTime + 1.0);
+    const g2 = ctx.createGain(); g2.gain.setValueAtTime(0.001, t + 0.05);
+    g2.gain.exponentialRampToValueAtTime(0.3, t + 0.2);
+    g2.gain.exponentialRampToValueAtTime(0.001, t + 1.0);
+    const osc2 = ctx.createOscillator(); osc2.type = 'sine';
+    osc2.frequency.setValueAtTime(300, t + 0.05);
+    osc2.frequency.exponentialRampToValueAtTime(80, t + 0.9);
+    osc2.connect(g2); g2.connect(ctx.destination); osc2.start(t + 0.05); osc2.stop(t + 1.0);
   }
 
   /* ── Event SFX ── */
@@ -9101,6 +9101,187 @@ class HolyPillar {
 }
 
 
+// [FX.FireCone]  new FireConeEffect(x,y,angle,radius,evolved)  Hỏa Long fire breath cone
+/* ============================================================
+   FIRE CONE — Hỏa Long main weapon visual
+   ============================================================ */
+class FireConeEffect {
+  constructor(x, y, angle, radius, evolved) {
+    this.x = x; this.y = y;
+    this.angle = angle;
+    this.radius = radius;
+    this.evolved = evolved;
+    this.spread = evolved ? 1.1 : 0.85; // radian half-angle
+    this.life   = 0.45;
+    this.maxLife= 0.45;
+    this.dead   = false;
+    this.animT  = 0;
+    // Pre-generate flickering flame nodes
+    this._nodes = [];
+    const count = evolved ? 28 : 18;
+    for (let i = 0; i < count; i++) {
+      const t = Math.random();
+      const spreadOff = (Math.random() - 0.5) * this.spread * 2;
+      this._nodes.push({ t, spreadOff, phase: Math.random() * Math.PI * 2 });
+    }
+  }
+  update(dt) {
+    this.life  -= dt;
+    this.animT += dt;
+    if (this.life <= 0) this.dead = true;
+  }
+  draw(ctx, camX, camY) {
+    if (this.dead) return;
+    const sx = this.x - camX, sy = this.y - camY;
+    const progress = 1 - this.life / this.maxLife;
+    const alpha = this.life / this.maxLife;
+    const ang = this.angle;
+    const r = this.radius;
+    const sp = this.spread;
+    ctx.save();
+
+    // ── Outer glow cone ──
+    const grd = ctx.createConicalGradient
+      ? null
+      : (() => {
+          const g = ctx.createRadialGradient(sx, sy, 0, sx, sy, r);
+          g.addColorStop(0,   `rgba(255,180,30,${alpha * 0.5})`);
+          g.addColorStop(0.5, `rgba(255,80,0,${alpha * 0.35})`);
+          g.addColorStop(1,   'rgba(200,20,0,0)');
+          return g;
+        })();
+    ctx.beginPath();
+    ctx.moveTo(sx, sy);
+    ctx.arc(sx, sy, r * (0.4 + progress * 0.6), ang - sp, ang + sp);
+    ctx.closePath();
+    ctx.fillStyle = `rgba(255,80,0,${alpha * 0.22})`;
+    ctx.shadowColor = '#ff4400';
+    ctx.shadowBlur = 30 * alpha;
+    ctx.fill();
+
+    // ── Bright core cone ──
+    ctx.beginPath();
+    ctx.moveTo(sx, sy);
+    ctx.arc(sx, sy, r * 0.45 * (0.4 + progress * 0.6), ang - sp * 0.5, ang + sp * 0.5);
+    ctx.closePath();
+    ctx.fillStyle = `rgba(255,200,50,${alpha * 0.45})`;
+    ctx.shadowBlur = 20;
+    ctx.fill();
+
+    // ── Flame nodes along cone ──
+    ctx.shadowColor = '#ff5500';
+    const t = this.animT;
+    this._nodes.forEach(n => {
+      const dist = r * n.t * (0.5 + progress * 0.5);
+      const wobble = Math.sin(t * 14 + n.phase) * 0.12;
+      const nodeAng = ang + n.spreadOff * (0.5 + n.t * 0.5) + wobble;
+      const nx = sx + Math.cos(nodeAng) * dist;
+      const ny = sy + Math.sin(nodeAng) * dist;
+      const nSize = (8 + n.t * 14) * alpha * (0.7 + 0.3 * Math.sin(t * 10 + n.phase));
+      const hot = n.t < 0.4;
+      ctx.globalAlpha = alpha * (hot ? 0.9 : 0.55);
+      ctx.fillStyle = hot ? '#ffe060' : (n.t < 0.7 ? '#ff6600' : '#cc2200');
+      ctx.shadowBlur = hot ? 18 : 8;
+      ctx.beginPath();
+      ctx.arc(nx, ny, nSize * 0.5, 0, Math.PI * 2);
+      ctx.fill();
+    });
+
+    // ── Evolved: 2nd ring of larger embers ──
+    if (this.evolved) {
+      ctx.shadowColor = '#ff8800';
+      for (let ei = 0; ei < 8; ei++) {
+        const eAng = ang + (Math.random() - 0.5) * sp * 2;
+        const eDist = r * (0.5 + Math.random() * 0.5) * (0.3 + progress * 0.7);
+        const ex = sx + Math.cos(eAng) * eDist;
+        const ey = sy + Math.sin(eAng) * eDist;
+        ctx.globalAlpha = alpha * 0.7;
+        ctx.fillStyle = '#ffaa00';
+        ctx.shadowBlur = 20;
+        ctx.beginPath(); ctx.arc(ex, ey, 5 + Math.random() * 5, 0, Math.PI * 2); ctx.fill();
+      }
+    }
+
+    ctx.shadowBlur = 0;
+    ctx.globalAlpha = 1;
+    ctx.restore();
+  }
+}
+
+// [FX.IceShardBurst]  new IceShardBurst(x,y,count,radius,evolved)  Băng Vương freeze shatter
+/* ============================================================
+   ICE SHARD BURST — Băng Vương kill / impact visual
+   ============================================================ */
+class IceShardBurst {
+  constructor(x, y, radius, evolved) {
+    this.x = x; this.y = y;
+    this.radius = radius;
+    this.evolved = evolved;
+    this.life   = 0.55;
+    this.maxLife= 0.55;
+    this.dead   = false;
+    const count = evolved ? 20 : 12;
+    this._shards = [];
+    for (let i = 0; i < count; i++) {
+      const a = (i / count) * Math.PI * 2 + (Math.random() - 0.5) * 0.4;
+      const spd = (0.5 + Math.random() * 0.5) * radius * 1.8;
+      const len = 8 + Math.random() * 12;
+      this._shards.push({ a, spd, len, size: 3 + Math.random() * 4 });
+    }
+  }
+  update(dt) {
+    this.life -= dt;
+    if (this.life <= 0) this.dead = true;
+  }
+  draw(ctx, camX, camY) {
+    if (this.dead) return;
+    const sx = this.x - camX, sy = this.y - camY;
+    const alpha = this.life / this.maxLife;
+    const progress = 1 - alpha;
+    ctx.save();
+    ctx.shadowColor = '#88eeff';
+    ctx.shadowBlur = 15 * alpha;
+
+    // ── Freeze ring ──
+    ctx.globalAlpha = alpha * 0.7;
+    ctx.strokeStyle = '#ccf8ff';
+    ctx.lineWidth = 2.5;
+    ctx.beginPath();
+    ctx.arc(sx, sy, this.radius * (0.4 + progress * 0.8), 0, Math.PI * 2);
+    ctx.stroke();
+
+    if (this.evolved) {
+      ctx.globalAlpha = alpha * 0.4;
+      ctx.strokeStyle = '#88eeff';
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.arc(sx, sy, this.radius * (0.6 + progress * 1.1), 0, Math.PI * 2);
+      ctx.stroke();
+    }
+
+    // ── Shards flying outward ──
+    this._shards.forEach(s => {
+      const dist = s.spd * progress;
+      const x2 = sx + Math.cos(s.a) * dist;
+      const y2 = sy + Math.sin(s.a) * dist;
+      const x1 = sx + Math.cos(s.a) * Math.max(0, dist - s.len);
+      const y1 = sy + Math.sin(s.a) * Math.max(0, dist - s.len);
+      ctx.globalAlpha = alpha * 0.9;
+      ctx.strokeStyle = '#e8f8ff';
+      ctx.lineWidth = s.size * 0.5 * alpha;
+      ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2); ctx.stroke();
+      // Shard tip glow
+      ctx.globalAlpha = alpha * 0.7;
+      ctx.fillStyle = '#88eeff';
+      ctx.beginPath(); ctx.arc(x2, y2, s.size * alpha * 0.6, 0, Math.PI * 2); ctx.fill();
+    });
+
+    ctx.shadowBlur = 0;
+    ctx.globalAlpha = 1;
+    ctx.restore();
+  }
+}
+
 // [FX.Shadow]  new ShadowClone(x,y,charId,facing)  Am Sat echo trail
 /* ============================================================
    SHADOW CLONE — Ám Sát afterimage
@@ -9163,6 +9344,8 @@ const Game = (() => {
   let lightningBolts = [];
   let holyPillars    = [];
   let shadowClones   = [];
+  let fireConeEffects = [];
+  let iceShardBursts  = [];
 
   // Run state
   let currentMap    = null;
@@ -9261,6 +9444,8 @@ const Game = (() => {
     lightningBolts = [];
     holyPillars    = [];
     shadowClones   = [];
+    fireConeEffects = [];
+    iceShardBursts  = [];
     poisonZones = [];
     deadElitePool = [];
     elapsedTime = 0;
@@ -9480,6 +9665,8 @@ const Game = (() => {
     for (let i = lightningBolts.length-1; i>=0; i--) { lightningBolts[i].update(dt); if(lightningBolts[i].dead) lightningBolts.splice(i,1); }
     for (let i = holyPillars.length-1; i>=0; i--) { holyPillars[i].update(dt); if(holyPillars[i].dead) holyPillars.splice(i,1); }
     for (let i = shadowClones.length-1; i>=0; i--) { shadowClones[i].update(dt); if(shadowClones[i].dead) shadowClones.splice(i,1); }
+    for (let i = fireConeEffects.length-1; i>=0; i--) { fireConeEffects[i].update(dt); if(fireConeEffects[i].dead) fireConeEffects.splice(i,1); }
+    for (let i = iceShardBursts.length-1; i>=0; i--) { iceShardBursts[i].update(dt); if(iceShardBursts[i].dead) iceShardBursts.splice(i,1); }
 
     // Particles
     particles.update(dt);
@@ -9944,13 +10131,19 @@ const Game = (() => {
         let ltDmg2 = ltBase;
         const ltHit = new Set([ltTarget]);
         const chainCount = p.mainWeapon.evolved ? 5 : 3;
+        let ltPrev = p; // track previous target for lightning bolt draw
         for (let ci = 0; ci < chainCount; ci++) {
           if (!ltTarget) break;
           const {val: ltVal} = p.rollCrit(ltDmg2);
           ltTarget.takeDamage(ltVal, p, 'normal');
           p.trackSkillDmg('main_loi_than', ltVal);
+          // ── Lightning bolt visual from prev to current target ──
+          const bx1 = ltPrev === p ? p.x : ltPrev.x;
+          const by1 = ltPrev === p ? p.y : ltPrev.y;
+          lightningBolts.push(new LightningBolt(bx1, by1, ltTarget.x, ltTarget.y, '#00eeff'));
+          lightningBolts.push(new LightningBolt(bx1, by1, ltTarget.x, ltTarget.y, '#ffffff'));
           rings.push(new RingEffect(ltTarget.x, ltTarget.y, 28, '#00aaff'));
-          particles.spawn(ltTarget.x, ltTarget.y, {count:5, color:'#00ccff', speedMin:40, speedMax:120, life:0.3});
+          particles.spawn(ltTarget.x, ltTarget.y, {count:8, color:'#00ccff', speedMin:40, speedMax:140, life:0.3});
           if (p.mainWeapon.evolved) {
             const dtTgt = ltTarget; const dtVal2 = ltDmg2 * 0.15; let dtN2 = 0;
             const dti2 = setInterval(() => { if (dtTgt.dead || dtN2 >= 2) { clearInterval(dti2); return; } dtTgt.takeDamage(dtVal2, p, 'normal'); dtN2++; }, 1000);
@@ -9961,7 +10154,7 @@ const Game = (() => {
             const d2 = MathU.dist(ltTarget.x, ltTarget.y, e.x, e.y);
             if (d2 < 180 && d2 < nxtD) { nxtD = d2; nxt = e; }
           });
-          ltDmg2 *= 0.6; ltTarget = nxt; if (nxt) ltHit.add(nxt);
+          ltDmg2 *= 0.6; ltPrev = ltTarget; ltTarget = nxt; if (nxt) ltHit.add(nxt);
         }
         break;
       }
@@ -9971,6 +10164,9 @@ const Game = (() => {
         Audio.playSFX('slam');
         const hlDmg2 = dmg;
         const coneR2 = 110 * aoe;
+        // ── Fire cone visual toward nearest enemy ──
+        const hlAngle = nearest ? Math.atan2(nearest.y - p.y, nearest.x - p.x) : p._facing === -1 ? Math.PI : 0;
+        fireConeEffects.push(new FireConeEffect(p.x, p.y, hlAngle, coneR2, p.mainWeapon.evolved));
         Game.explosionAt(p.x, p.y, coneR2, hlDmg2, '#ff5500', 'main_hoa_long');
         rings.push(new RingEffect(p.x, p.y, coneR2, '#ff3300'));
         enemies.forEach(e => {
@@ -9984,10 +10180,10 @@ const Game = (() => {
           const fpi = setInterval(() => {
             if (--fpLife <= 0) { clearInterval(fpi); return; }
             Game.explosionAt(fpx, fpy, 90, p.totalDmg * 0.25, '#ff4400', 'main_hoa_long');
-            particles.spawn(fpx, fpy, {count:3, color:'#ff6600', speedMin:20, speedMax:60, life:0.3});
+            particles.spawn(fpx, fpy, {count:5, color:'#ff6600', speedMin:30, speedMax:90, life:0.4});
           }, 500);
         }
-        particles.spawn(p.x, p.y, {count:14, color:'#ff5500', speedMin:80, speedMax:200, life:0.4});
+        particles.spawn(p.x, p.y, {count:18, color:'#ff5500', speedMin:90, speedMax:220, life:0.45});
         break;
       }
 
@@ -10017,9 +10213,11 @@ const Game = (() => {
                   e.takeDamage(iceVal, player, 'normal');
                   if (!e.slowFactor || e.slowFactor > 0.6) { e.slowFactor = 0.6; e.slowTimer = 2000; }
                   player.trackSkillDmg('main_bang_vuong', iceVal);
+                  iceShardBursts.push(new IceShardBurst(e.x, e.y, 55, player.mainWeapon.evolved));
                   if (player.mainWeapon.evolved && e.dead) {
                     Game.explosionAt(e.x, e.y, 120, iceVal * 0.6, '#88eeff', 'main_bang_vuong');
                     rings.push(new RingEffect(e.x, e.y, 80, '#ccf8ff'));
+                    iceShardBursts.push(new IceShardBurst(e.x, e.y, 100, true));
                   }
                   this._hitSet.add(e);
                   if (--this.pierce <= 0) { this.dead = true; break; }
@@ -11982,6 +12180,8 @@ const Game = (() => {
     lightningBolts.forEach(b => b.draw(ctx, camX, camY));
     holyPillars.forEach(h => h.draw(ctx, camX, camY));
     shadowClones.forEach(s => s.draw(ctx, camX, camY));
+    fireConeEffects.forEach(f => f.draw(ctx, camX, camY));
+    iceShardBursts.forEach(i => i.draw(ctx, camX, camY));
 
     // Particles
     particles.draw(ctx, camX, camY);
@@ -14226,10 +14426,12 @@ const Game = (() => {
     get camera()     { return camera; },
     get particles()  { return particles; },
     get rings()      { return rings; },
-    get slashArcs()      { return slashArcs; },
-    get lightningBolts() { return lightningBolts; },
-    get holyPillars()    { return holyPillars; },
-    get shadowClones()   { return shadowClones; },
+    get slashArcs()       { return slashArcs; },
+    get lightningBolts()  { return lightningBolts; },
+    get holyPillars()     { return holyPillars; },
+    get shadowClones()    { return shadowClones; },
+    get fireConeEffects() { return fireConeEffects; },
+    get iceShardBursts()  { return iceShardBursts; },
     get elapsedTime(){ return elapsedTime; },
     get wave()       { return wave; },
     get currentMap() { return currentMap; },   // used by Player.update
