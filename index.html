@@ -7608,7 +7608,7 @@ class Enemy {
 
     // Drop loot — boss drops gold but NOT exp (per design)
     if (!this.isBoss) {
-      Game.dropExp(this.x, this.y, this.exp * (this.isElite ? 4 : 1));
+      Game.dropExp(this.x, this.y, this.exp);  // elite exp đã ×4 khi spawn — không nhân thêm
     }
     // Loot: boss gold đã được set trực tiếp đúng range (50–100) trong spawnBoss
     const goldAmt = this.gold * (this.isElite ? 5 : 1);
