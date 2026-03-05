@@ -3337,13 +3337,13 @@ const UI = (() => {
       const charGuides = [
         {
           c: CHARS.find(c=>c.id==='luu_phong'),
-          dps: 'Base 70 × 1.8/s = 126/s · Full stack ×1.45 = ~183/s',
+          dps: 'Base 85 × 1.8/s = 153/s · Full Chiến Tốc ×1.45 = ~222/s',
           difficulty: '⭐⭐ Trung Bình',
-          playstyle: 'Aggressive — tích stack, kite',
-          guide: `<b>Passive — Kiếm Ý:</b> Mỗi kill +1 stack (tối đa 30 stack = +45% tốc đánh). Bị đánh mất 50% stack hiện có. Tốc đánh thực = 1.8 × (1 + stack×0.015)/s.<br><br>
-<b>Active — Tàn Phong Trảm (CD 11s):</b> Freeze 0.2s → dash 250đv xuyên quái với sát thương scale theo Kiếm Ý: <b>×(2.5 + stack×0.05)</b>, tối đa <b>×4.0</b> tại 30 stack. Mỗi quái bị xuyên qua <b>cộng +1 stack</b> (không tiêu thụ stack). Kết hợp <b>chảy máu liên tục 5 giây (30% tổng ST/giây)</b> + vô địch 0.3 giây sau dash. <b>Giữ và kéo nút skill để chọn hướng</b>.<br><br>
-<b>Tiến hoá → Thần Kiếm Vong Linh:</b> Mỗi nhát chém bắn 8 tia kiếm khí (×0.15/tia, pierce 3) + 2 lưỡi ảo đánh trễ 150ms/300ms (×0.5/lưỡi). Tốc đánh cao = AoE liên tục.<br><br>
-<b>Lưu ý:</b> Vòng lặp cốt lõi: kill → stack tăng → active mạnh hơn → dash xuyên thêm quái → thêm stack. Full 30 stack: ×4.0 thay vì ×2.5 — chênh lệch 60%. Tầm chém ngắn (~80đv) — kite liên tục để tích stack bền vững.`,
+          playstyle: 'Liên Công — đánh liên tục không nghỉ để tích tốc chém',
+          guide: `<b>Passive — Kiếm Ý (Chiến Tốc):</b> Mỗi đòn đánh TRÚNG tích 1 Chiến Tốc stack (tối đa 30 = +45% tốc chém). Không đánh trong 1.5 giây → stack tan dần. Bị trúng đòn mất 50% Chiến Tốc. Kill quái tích Kill Ý riêng biệt (dùng cho Active).<br><br>
+<b>Active — Tàn Phong Trảm (CD 11s):</b> Freeze 0.2s → dash 250đv xuyên quái với sát thương scale theo <b>Kill Ý</b> (giết quái): <b>×(2.5 + killStack×0.05)</b>, tối đa <b>×4.0</b> tại 30 kill. Mỗi quái bị xuyên qua <b>cộng +1 Kill Ý</b>. Kết hợp chảy máu 5 giây (30% ST/giây) + vô địch 0.3s. Giữ và kéo nút skill để chọn hướng.<br><br>
+<b>Tiến hoá → Thiên Phong Kiếm Ý:</b> Mỗi nhát chém bắn 8 tia kiếm khí (×0.15/tia, pierce 3) + 2 lưỡi ảo đánh trễ 150ms/300ms (×0.5/lưỡi). Tốc đánh cao = AoE liên tục.<br><br>
+<b>Lưu ý:</b> Đánh liên tục không nghỉ là chìa khóa — Chiến Tốc max (+45%) sau khoảng 30 đòn. Kill quái song song để tích Kill Ý cho Active. Full 30 Kill: Active ×4.0 thay vì ×2.5 — chênh lệch 60%. HUD hiển thị ⚡Chiến Tốc và ⚔Kill Ý riêng biệt.`,
         },
         {
           c: CHARS.find(c=>c.id==='huyen_nguyet'),
@@ -3374,23 +3374,23 @@ const UI = (() => {
         },
         {
           c: CHARS.find(c=>c.id==='am_sat'),
-          dps: 'Base 80×2.4/s×1.2 = 230/s · HP<40%: ×1.5 = 288/s',
+          dps: 'Base 150×1.1/s = 165/s · Đột Sát ×3.5 mỗi 5 đòn · Stealth ×5.0 đòn đầu',
           difficulty: '⭐⭐⭐ Khó',
-          playstyle: 'Reverse risk — càng nguy hiểm càng mạnh',
-          guide: `<b>Passive — Bóng Tối:</b> Luôn +20% ATK. HP<40%: thêm +50% ATK (×1.5 thay ×1.2), +40% SPD, -30% ST nhận. Công thức: totalDmg = baseDmg×dmgMult × (HP<40% ? 1.5 : 1.2).<br><br>
-<b>Active — Ẩn Kích Liên Hoàn (CD 12s):</b> Teleport đến 3 mục tiêu gần nhất trong tầm 450đv. <b>Khi đang vô hình (HP<40%):</b> mỗi đòn ×6.0 + <b>chảy máu liên tục 3 giây (40% tổng ST/giây)</b>, sau chuỗi <b>tái kích hoạt vô hình ngay lập tức</b> nếu HP vẫn <40% — bypass CD 15 giây bình thường. Khi không vô hình: ×4.0 thường. iframe 0.8 giây.<br><br>
-<b>Tiến hoá → Hư Vô Đoản Kiếm:</b> Mỗi đòn tạo phân thân lặp lại sau 0.3 giây (×1.0 dmg). Với 2.4/s tốc đánh = thực tế ~4.8 nhát/s.<br><br>
-<b>Lưu ý:</b> Vòng lặp glass-cannon: nhận đòn về HP<40% → vô hình → bứt vào Ẩn Kích ×6.0 + chảy máu → tái vô hình → thoát ra. Rủi ro cao, phần thưởng tương xứng. Có thể chủ động nhận 1-2 đòn đầu boss để kích sớm.`,
+          playstyle: 'Combo Burst — tích 5 Sát Khí → Đột Sát, Active để cực hóa đòn tiếp theo',
+          guide: `<b>Passive — Sát Thủ Thiên Bẩm:</b> Mỗi đòn tích 1 Sát Khí (max 5, hết hạn 3s không đánh). Đủ 5 → "Đột Sát" tự động: ×3.5 + chảy máu (50% ST/giây × 3s) + hồi 8% HP. HP<20%: khẩn cấp tàng hình 4s + SPD +60% (CD 20s riêng).<br><br>
+<b>Active — Ẩn Hiện Nhất Kiếm (CD 11s):</b> Tức thì tàng hình 3s: <b>SPD +60%</b>, quái xa hơn ~320đv không đuổi. Khi tàng hình: Sát Khí tích <b>gấp đôi (2/đòn)</b> → đạt 5 stack chỉ sau 3 đòn. Đòn đầu ra khỏi tàng hình là guaranteed <b>Tối Thượng Đột Sát ×5.0</b> + chảy máu cực mạnh (×1.0 ST/giây × 5s).<br><br>
+<b>Tiến hoá → Hư Vô Quỷ Đao:</b> Mỗi Đột Sát tạo phân thân lặp lại đòn đó 0.3 giây sau (×1.0 DMG). Chảy máu áp thêm Làm Chậm 30% trong 2 giây.<br><br>
+<b>Lưu ý:</b> Vòng lặp tối ưu: dùng Active → vào shadow → đánh 3 đòn (6 stack) → Đột Sát + guaranteed ×5.0 thoát shadow. Liên tục đánh không nghỉ để Sát Khí không hết hạn. HP<20%: tự tàng hình khẩn cấp — không lãng phí cơ hội này.`,
         },
         {
           c: CHARS.find(c=>c.id==='tu_linh'),
-          dps: 'Base 120×1.35/s = 162/s · 20 Linh Hồn: ×1.5 = 243/s',
+          dps: 'Base 130×1.35/s = 175/s · Active: ×1.5 (0 hồn) → ×4.0 (20 hồn)',
           difficulty: '⭐⭐ Trung Bình',
-          playstyle: 'Snowball — tích 20 Linh Hồn trước boss',
-          guide: `<b>Passive — Thu Hoạch Linh Hồn:</b> Mỗi kill tạo 1 Linh Hồn (tối đa 20), mỗi linh hồn +2.5% ST. Công thức: totalDmg = baseDmg×dmgMult × (1 + soulCount×0.025). HP<20%: tiêu thụ tất cả → hồi 25 HP/linh hồn.<br><br>
-<b>Active — Quân Đoàn Bất Tử (CD 14s, KHÔNG tiêu soul):</b> Triệu 3 bộ xương (tối đa 9) + tạo <b>Lĩnh Vực Tử Thần</b>: AoE 180đv pulse 5 lần trong 4 giây (×0.4 totalDmg/pulse). Tại 20 souls: mỗi pulse = ×0.4×1.5 = ×0.60 baseDmg, tổng 5 pulse = ×3.0. Linh Hồn không bị mất sau cast.<br><br>
+          playstyle: 'Resource Manager — tích đủ linh hồn trước boss rồi xả active',
+          guide: `<b>Passive — Thu Hoạch Linh Hồn:</b> Mỗi kill tạo 1 Linh Hồn (tối đa 20). Linh Hồn <b>KHÔNG</b> tăng ST trực tiếp — chỉ tăng sức mạnh của Active khi tiêu. HP<20%: tiêu thụ tất cả → hồi 25 HP/linh hồn.<br><br>
+<b>Active — Quân Đoàn Bất Tử (CD 14s):</b> Tiêu thụ toàn bộ Linh Hồn. Triệu 3 bộ xương (tối đa 9) + Lĩnh Vực Tử Thần: AoE 180đv pulse 5 lần / 4 giây. Mỗi pulse = ×(0.3 + hồn×0.025), cap ×0.8. Tại 0 hồn: ×1.5 tổng. Tại 20 hồn: <b>×4.0 tổng</b> — mạnh hơn gần 3 lần.<br><br>
 <b>Tiến hoá → Vong Hồn Đại Liềm:</b> Liềm to ×1.8, hút quái khi bay ra, xuyên tất cả địch khi về.<br><br>
-<b>Lưu ý:</b> Active <b>KHÔNG tiêu Linh Hồn</b> — spam thoải mái để gom xương (tối đa 9) + kích Lĩnh Vực liên tục. Tích đủ 20 souls trước boss để đạt +50% ST tối đa. Souls chỉ mất khi HP xuống dưới 20% — chủ động tránh ngưỡng này khi đang có stack cao.`,
+<b>Lưu ý:</b> Chiến lược "hold & burst" — không spam active, hãy tích đủ 20 linh hồn rồi xả 1 lần ×4.0. Dùng active non-full (0-5 hồn) chỉ khi cần triệu xương để kéo dài sự sống. Xương cũng giết quái → tạo hồn → rút ngắn thời gian tích tụ.`,
         },
         {
           c: CHARS.find(c=>c.id==='loi_than'),
@@ -3449,7 +3449,7 @@ const UI = (() => {
         p('<b>Điều kiện:</b> Nâng vũ khí chính lên <b>cấp 4</b> — thẻ Tiến Hoá sẽ xuất hiện ở lần level-up tiếp theo.<br><br>' +
           '<b>Lợi ích khi tiến hoá:</b> +30% sát thương, +15% AoE, +20% tốc đánh, và thay đổi hoàn toàn cơ chế vũ khí.<br><br>' +
           '<b>Chiến lược:</b> Ưu tiên nâng vũ khí chính thay vì lấy nhiều vũ khí phụ. 1 vũ khí tiến hoá mạnh hơn 3 vũ khí phụ thường.<br><br>' +
-          '⚔️ <b>Lưu Phong</b> → Thần Kiếm Vong Linh: mỗi nhát chém bắn kiếm khí 8 hướng + 2 lưỡi ảo đánh trễ 150ms/300ms.<br>' +
+          '⚔️ <b>Lưu Phong</b> → Thiên Phong Kiếm Ý: mỗi nhát chém phóng 1 kiếm khí xuyên thẳng (×0.7) + cung chém mở rộng ~160°.<br>' +
           '🌙 <b>Huyền Nguyệt</b> → Hắc Nhật Ma Cầu: trúng địch tách 3 mini orb homing vào 3 quái gần nhất (×0.55/orb, pierce 1) + áp độc 4 giây.<br>' +
           '🏹 <b>Thiết Tâm</b> → Tử Thần Chi Tên: áp độc khi trúng + xuyên qua địch đầu phân thành 3 tên nhỏ (×0.55/tên).<br>' +
           '🥋 <b>Kim Cang</b> → Hộ Pháp Thần Trượng: tạo cột sáng thiêng liêng tại mỗi điểm trúng, gây sát thương liên tục 2 giây.<br>' +
@@ -3745,12 +3745,12 @@ const UI = (() => {
         ['✨','Tiến Hoá Là Ưu Tiên Số 1','Nâng vũ khí chính lên cấp 4 càng sớm càng tốt. Tiến hoá cho +30% sát thương và thay đổi hoàn toàn cơ chế — mạnh hơn gộp 3 vũ khí phụ.'],
         ['⚡','Thưởng Trong Run','Đạt 100 kill trước phút 2 (+30 ◈), không bị đánh 30 giây (+15 ◈), hạ tinh anh trong 5 giây (+20 ◈). Chơi tích cực luôn có lợi hơn chỉ tồn tại.'],
         ['🐾','Thú Cưng','Mỗi pet có lối chơi riêng: Linh Hồ (+20% vàng, +5% mỗi 50 kill) cho econ; Bạch Hổ (+15% tốc đánh) cho damage ổn định; Hắc Xà (hút máu 5% + độc scale theo ST) cho sustain; Thần Ưng (+18% tốc, +12% AoE) cho chars AoE; Thần Quy (+25% HP, phản đòn AoE) cho tank; Ma Long (+8% crit + bạo kích +40% sát thương) cho burst damage.'],
-        ['⚔️','Lưu Phong — Kiếm Ý','Tích lũy kill để stack Kiếm Ý (+1.5% tốc/kill, tối đa 30 stack = +45%). Bị đánh mất 50% stack. Active Tàn Phong Trảm scale theo stack: ×(2.5 + stack×0.05), tối đa ×4.0 tại 30 stack — và mỗi quái xuyên qua cộng thêm 1 stack. Kite liên tục để tích lũy.'],
+        ['⚔️','Lưu Phong — Kiếm Ý','Đánh liên tục tích Chiến Tốc (+1.5%/đòn trúng, tối đa 30 stack = +45% tốc chém). Ngừng đánh 1.5s stack tan dần. Bị đánh mất 50% stack. Active Tàn Phong Trảm scale theo Kill Ý (giết quái): ×(2.5 + kill×0.05), tối đa ×4.0 tại 30 kill — và mỗi quái xuyên qua cộng thêm 1 kill stack.'],
         ['🌙','Huyền Nguyệt — Tĩnh Tâm Điện Bão','Đứng yên ≥0.4 giây kích passive +20% ST. Cast active khi đang có buff → Tĩnh Tâm Điện Bão: 12 tia ×1.0 thay vì 8 tia ×0.8. Tiếp tục đứng yên suốt 3 giây → tia cuối là Siêu Lôi ×5.0 nhắm điểm đông quái nhất. Đứng góc tường để tối đa hóa.'],
         ['🏹','Thiết Tâm — Tàn Sát Tầm Xa','Giữ khoảng cách >150 đơn vị để khai thác +25% ST. Active bắn 5 mũi tên liên tục theo 1 hướng — mỗi mũi tự kiểm tra khoảng cách và áp thêm +25% nếu quái bị trúng ở xa. Nhắm thẳng vào đám đông hoặc boss để tối đa hóa pierce.'],
         ['🥋','Kim Cang — Trấn Áp Bất Động','Để quái tấn công để kích Kim Cang Thể: 20% chặn + hồi 5% HP + stack tốc đánh. Active giờ KÉO quái vào gần 80đv rồi stun 1.5s — không đẩy ra xa, giữ quái trong tầm Thiền Trượng. Mỗi block stack tích lũy khi cast: +×0.15 ST và +0.1s stun (tối đa ×6.45, stun 1.8s).'],
-        ['🗡️','Ám Sát — Ẩn Kích Liên Hoàn','ATK +20% luôn có. HP<40%: ATK +50%, SPD +40%, -30% ST nhận + vô hình 5s (CD 15s). Khi vô hình, active Ẩn Kích Liên Hoàn: ×6.0 + chảy máu liên tục 3 giây (40% tổng ST/giây) mỗi mục tiêu, sau đó tái kích vô hình ngay nếu HP vẫn <40%. Vòng lặp: nhận đòn → vô hình → combo → tái vô hình → thoát.'],
-        ['💀','Tử Linh — Lĩnh Vực Tử Thần','Mỗi kill = +2.5% ST, tối đa 20 linh hồn = +50%. Active KHÔNG tiêu soul — triệu 3 bộ xương (tối đa 9) + Lĩnh Vực Tử Thần: AoE 180px pulse 5 lần/4 giây, mỗi pulse hưởng đầy đủ buff +50% souls. Tích đủ 20 souls trước boss để tối đa hóa — damage buff không bị mất sau active.'],
+        ['🗡️','Ám Sát — Sát Thủ Thiên Bẩm','Mỗi đòn tích 1 Sát Khí (max 5, 3s). Đủ 5 → Đột Sát ×3.5 + chảy máu + hồi 8% HP. Active tàng hình 3s + SPD +60%; đòn đầu guaranteed ×5.0. HP<20%: khẩn cấp tàng hình. Đánh liên tục không để Sát Khí hết hạn.'],
+        ['💀','Tử Linh — Thu Hoạch Linh Hồn','Linh Hồn không buff ST thụ động. Active tiêu thụ toàn bộ hồn → pulse ×(0.3+hồn×0.025), cap ×0.8/pulse. 20 hồn → ×4.0 tổng. Chiến lược: tích đủ hồn trước boss, dùng active 1 lần mạnh thay vì spam.'],
         ['⚡','Lôi Thần — Tầm 200px','Vũ khí sét hoạt động trong tầm 200 đơn vị — luôn di chuyển vào gần đám quái. Tích đủ 20 Lôi Tích (+80% ST) trước khi dùng active để tối đa burst ×12.5. Sau active nhận ATK Speed +50% trong 5 giây — đẩy stack về 20 rất nhanh cho lần tiếp theo.'],
       ];
       tips.forEach(([icon, title, text]) => { entry(icon, title, p(text)); });
@@ -3854,13 +3854,14 @@ const UI = (() => {
     document.getElementById('hud-kill-count').textContent = kills;
     document.getElementById('hud-level').textContent  = `LV ${player.level}`;
 
-    // Lưu Phong: show Kiếm Ý stack count on HUD level badge
+    // Lưu Phong: show Chiến Tốc stack count + Kill stack on HUD level badge
     if (player.charData && player.charData.id === 'luu_phong') {
-      const stacks = player.passiveStacks || 0;
-      const pct = Math.floor(stacks * 1.5);
+      const ctStacks = player._chiTocStacks || 0;
+      const killStacks = player.passiveStacks || 0;
+      const pct = Math.floor(ctStacks * 1.5);
       const levelEl = document.getElementById('hud-level');
-      levelEl.textContent = `LV ${player.level}  ⚔${stacks}/30 (+${pct}%)`;
-      levelEl.style.borderColor = stacks >= 25 ? '#ffd700' : stacks >= 15 ? '#60d0ff' : '#c8960c';
+      levelEl.textContent = `LV ${player.level}  ⚡${ctStacks}/30 (+${pct}%) ⚔${killStacks}`;
+      levelEl.style.borderColor = ctStacks >= 25 ? '#ffd700' : ctStacks >= 15 ? '#60d0ff' : '#c8960c';
     } else if (player.charData && player._dragonRageActive) {
       const levelEl = document.getElementById('hud-level');
       levelEl.textContent = `LV ${player.level}  🐲 THỊNH NỘ!`;
@@ -4151,7 +4152,7 @@ const UI = (() => {
         weapon:  { icon:'⚔️', tag:'VŨ KHÍ CHÍNH', name:'Phong Kiếm', desc:'Chém vòng cung ~160° hướng về quái gần nhất, tầm ngắn, tốc độ rất cao. Sát thương tăng dần khi tích lũy stack Kiếm Ý.' },
         passive: { icon:'🌬️', tag:'PASSIVE', name:'Kiếm Ý', desc:'Mỗi lần giết quái, tốc chém +1.5% (tối đa 30 stack = +45%). Bị trúng đòn mất 50% stack (giữ lại 50%) — tích công bền vững.' },
         active:  { icon:'💨', tag:'ACTIVE', name:'Tàn Phong Trảm', desc:'Đóng băng thời gian 0.2s rồi lao xuyên tất cả kẻ thù — sát thương scale theo Kiếm Ý: ×(2.5 + stack×0.05), tối đa ×4.0. Mỗi quái xuyên qua cộng +1 stack. Không tiêu thụ stack.', cd:11  },
-        evolve:  { icon:'🌌', tag:'TIẾN HÓA', name:'Thần Kiếm Vong Linh', desc:'Mỗi nhát chém bắn kiếm khí 8 hướng + tạo 2 lưỡi ảo đánh trễ 150ms và 300ms — hiệu quả tăng 3 lần số đòn.' },
+        evolve:  { icon:'⚡', tag:'TIẾN HÓA', name:'Thiên Phong Kiếm Ý', desc:'Mỗi nhát chém phóng 1 kiếm khí xuyên thẳng (×0.7, pierce tất cả) + cung chém mở rộng ~160°. Tốc đánh cao kết hợp sóng kiếm liên tục = rất nguy hiểm từ xa trung.' },
       }
     },
     {
@@ -4185,7 +4186,7 @@ const UI = (() => {
       extra: {
         statHP: 95, statSPD: 155, statDMG: 14, statATK: 2.4,
         weapon:  { icon:'🗡️', tag:'VŨ KHÍ CHÍNH', name:'Song Tà Đao', desc:'Chém AoE bán kính 50 đ cực nhanh. Tốc độ tấn công cao nhất (2.2×), DMG/đòn thấp nhất — bù bằng tần suất cao.' },
-        passive: { icon:'🌑', tag:'PASSIVE', name:'Bóng Tối', desc:'ATK +20%. HP <40%: ATK +50%, SPD +40%, giảm 30% sát thương nhận vào. Vô hình 5 giây (CD 15s): quái xa >400 đơn vị không truy đuổi — Boss không bị ảnh hưởng.' },
+        passive: { icon:'🌑', tag:'PASSIVE', name:'Bóng Tối', desc:'ATK +20%. HP <40%: ATK +50%, SPD +40%, giảm 30% sát thương nhận vào. Vô hình 5 giây (CD 15s): quái xa hơn ~320đv không truy đuổi (Boss không bị ảnh hưởng).' },
         active:  { icon:'🌀', tag:'ACTIVE', name:'Ẩn Kích Liên Hoàn', desc:'Teleport đến 3 mục tiêu gần nhất trong tầm 450đv. Khi đang vô hình (HP<40%): ×6.0 + chảy máu liên tục 3 giây (40% tổng ST/giây), sau đó tái kích vô hình ngay nếu HP vẫn <40%. Khi không vô hình: ×4.0. Vô địch 0.8 giây.', cd:12 },
         evolve:  { icon:'👥', tag:'TIẾN HÓA', name:'Hư Vô Đoản Kiếm', desc:'Mỗi đòn đánh tạo phân thân ảo lặp lại 300ms sau với 85% DMG — về thực chất mỗi hit đánh 2 lần.' },
       }
@@ -4443,19 +4444,27 @@ const UI = (() => {
           const intensity = Math.round((s / 20) * 40);
           btn.style.boxShadow = `0 0 ${18 + intensity}px rgba(255,60,80,${(0.4 + s/20*0.6).toFixed(2)}),inset 0 0 ${8+Math.round(s/20*12)}px rgba(255,60,80,${(0.15 + s/20*0.35).toFixed(2)})`;
         }
-        // Ám Sát: đổi màu viền sang đỏ-hồng sáng khi đang vô hình (Ẩn Kích sẵn sàng)
+        // Ám Sát: đổi màu viền theo Sát Khí stacks và trạng thái tàng hình
         if (cid === 'am_sat') {
+          const sk = player._satKhiStacks || 0;
           if (player._shadowActive) {
             btn.style.borderColor = '#ff44cc';
             btn.style.boxShadow   = '0 0 28px rgba(255,60,200,.9),inset 0 0 12px rgba(200,60,255,.4)';
+          } else if (sk >= 5) {
+            btn.style.borderColor = '#ffaa00';
+            btn.style.boxShadow   = '0 0 24px rgba(255,170,0,.8),inset 0 0 10px rgba(255,200,0,.35)';
+          } else if (sk > 0) {
+            const ratio = sk / 5;
+            btn.style.borderColor = `rgba(255,${Math.round(80+ratio*120)},200,${0.5+ratio*0.5})`;
+            btn.style.boxShadow   = `0 0 ${10+Math.round(ratio*14)}px rgba(200,80,255,${(0.3+ratio*0.5).toFixed(2)})`;
           } else {
             btn.style.borderColor = '';
             btn.style.boxShadow   = '';
           }
         }
-        // Lưu Phong: glow xanh tỉ lệ stack
+        // Lưu Phong: glow xanh tỉ lệ Chiến Tốc stacks
         if (cid === 'luu_phong') {
-          const st = player.passiveStacks || 0;
+          const st = player._chiTocStacks || 0;
           const glowA = (0.35 + st/30*0.65).toFixed(2);
           btn.style.boxShadow = `0 0 ${14 + Math.round(st/30*20)}px rgba(96,208,255,${glowA}),inset 0 0 ${5+Math.round(st/30*10)}px rgba(96,208,255,${(0.1+st/30*0.3).toFixed(2)})`;
         }
@@ -4515,12 +4524,19 @@ const UI = (() => {
     if (player.charData) {
       const cid = player.charData.id;
       if (cid === 'luu_phong') {
-        const stacks = player.passiveStacks || 0;
-        const activeMult = (2.5 + stacks * 0.05).toFixed(1);
-        html += row('🌬️','Kiếm Ý', stacks + '/30 (+' + Math.floor(stacks * 1.5) + '%⚡ · Active ×' + activeMult + ')', stacks > 0 ? 'up' : '');
+        const ctStacks = player._chiTocStacks || 0;
+        const killStacks = player.passiveStacks || 0;
+        const activeMult = (2.5 + killStacks * 0.05).toFixed(1);
+        html += row('⚡','Chiến Tốc', ctStacks + '/30 (+' + Math.floor(ctStacks * 1.5) + '%⚡)', ctStacks > 0 ? 'up' : '');
+        html += row('🌬️','Kill Ý (Active)', killStacks + '/30 · ×' + activeMult, killStacks > 0 ? 'up' : '');
+      } else if (cid === 'am_sat') {
+        const sk = player._satKhiStacks || 0;
+        const inShadow = player._shadowActive ? ' (TÀNG HÌNH!)' : '';
+        html += row('🗡️','Sát Khí', sk + '/5' + inShadow, sk > 0 ? 'up' : '');
       } else if (cid === 'tu_linh') {
         const souls = player.soulCount || 0;
-        html += row('💀','Linh Hồn', souls + '/20 (+' + Math.round(souls * 2.5) + '%ST)', souls > 0 ? 'up' : '');
+        const pulseMult = Math.min(0.8, 0.3 + souls * 0.025).toFixed(2);
+        html += row('💀','Linh Hồn', souls + '/20 · ×' + pulseMult + '/pulse khi active', souls > 0 ? 'up' : '');
       } else if (cid === 'kim_cang') {
         if (kimCangBonus > 0) {
           const blockCount = Math.min(3, Math.round(kimCangBonus / 0.07));
@@ -5077,16 +5093,16 @@ const CHARS = [
   {
     id: 'luu_phong', icon: '⚔️', name: 'Kiếm Khách Lưu Phong', title: 'Kiếm Khách',
     cost: 0,
-    baseHP: 670, baseSpd: 145, baseDmg: 70, baseAtk: 1.8,
-    weapon: 'Phong Kiếm', weaponDesc: 'Chém vòng cung ~160° hướng về quái gần nhất, tầm ngắn, tốc độ rất cao. Tốc độ tấn công tăng dần khi tích lũy stack Kiếm Ý (+1.5%/stack, tối đa +45%).',
+    baseHP: 670, baseSpd: 145, baseDmg: 85, baseAtk: 1.5,
+    weapon: 'Phong Kiếm', weaponDesc: 'Chém vòng cung ~160° hướng về quái gần nhất, tầm ngắn, tốc độ cao. Đánh liên tục tích "Chiến Tốc" (+1.5%/stack, tối đa 30 stack = +45%). Không đánh trong 1.5s, stack bắt đầu tan dần.',
     weaponIcon: '⚔️',
     passiveName: 'Kiếm Ý',
-    passiveDesc: 'Mỗi lần giết quái, tốc chém +1.5% (tối đa 30 stack = +45%). Bị trúng đòn mất 50% stack (giữ lại 50%) — tích công bền vững hơn.',
+    passiveDesc: 'Đánh liên tục tích Chiến Tốc (tối đa 30 stack = +45% tốc chém). Dừng đánh 1.5s → stack tan dần. Bị trúng đòn mất 50% stack. Active Tàn Phong Trảm scale theo stack Kill Ý (tích riêng khi giết quái).',
     activeName: 'Tàn Phong Trảm',
     activeDesc: 'Đóng băng thời gian 0.2 giây rồi lao xuyên tất cả kẻ thù trên đường đi — sát thương scale theo Kiếm Ý: ×(2.5 + stack×0.05), tối đa ×4.0 tại 30 stack. Mỗi quái bị xuyên qua cộng thêm 1 stack. Không tiêu thụ stack.',
     activeIcon: '💨', activeCooldown: 11,
-    evolvedWeapon: 'Thần Kiếm Vong Linh',
-    evolveDesc: 'Kiếm khí toả ra 8 hướng (×0.15/beam, pierce 3), mỗi nhát chém tạo thêm 2 lưỡi kiếm ảo đánh trễ 150ms và 300ms (×0.5/lưỡi).',
+    evolvedWeapon: 'Thiên Phong Kiếm Ý',
+    evolveDesc: 'Mỗi nhát chém tạo 1 kiếm khí phóng thẳng về phía quái (×0.7, xuyên tất cả địch trên đường đi) + cung chém mở rộng từ ~90° lên ~160° (phủ rộng gần hết nửa vòng tròn).',
     color: '#60d0ff',
   },
   {
@@ -5135,30 +5151,30 @@ const CHARS = [
     color: '#ffd700',
   },
   {
-    id: 'am_sat', icon: '🗡️', name: 'Ám Sát', title: 'Huyết Vũ',
+    id: 'am_sat', icon: '🗡️', name: 'Ám Sát', title: 'Sát Thủ Bóng Đêm',
     cost: 1500,
-    baseHP: 545, baseSpd: 155, baseDmg: 80, baseAtk: 2.4,
-    weapon: 'Song Tà Đao', weaponDesc: 'Chém cực nhanh xung quanh, tốc độ gấp đôi nhân vật khác.',
+    baseHP: 510, baseSpd: 155, baseDmg: 150, baseAtk: 1.1,
+    weapon: 'Song Quỷ Đao', weaponDesc: 'Đánh đơn mục tiêu gần nhất trong tầm 150đv, mỗi đòn tích 1 Sát Khí. Đủ 5 Sát Khí → đòn tiếp theo kích Đột Sát: ×3.5 + chảy máu 3 giây. Khi tàng hình mỗi đòn tích 2 Sát Khí.',
     weaponIcon: '🗡️',
-    passiveName: 'Bóng Tối',
-    passiveDesc: 'ATK +20%. HP <40%: ATK +50%, SPD +40%, giảm 30% sát thương nhận vào. Vô hình 5 giây (CD 15s): quái xa >400 đơn vị không truy đuổi — Boss không bị ảnh hưởng.',
-    activeName: 'Ám Sát Liên Hoàn',
-    activeDesc: 'Ẩn Kích Liên Hoàn: teleport đến 3 mục tiêu gần nhất trong tầm 450 đơn vị. Khi đang vô hình (HP<40%): mỗi đòn ×6.0 + chảy máu liên tục 3 giây (40% tổng ST/giây), sau chuỗi tái kích hoạt vô hình ngay (bypass CD) nếu HP vẫn <40%. Khi không vô hình: ×4.0 thường.',
-    activeIcon: '🌀', activeCooldown: 12,
-    evolvedWeapon: 'Hư Vô Đoản Kiếm',
-    evolveDesc: 'Mỗi đòn đánh tạo phân thân ảo lặp lại đòn đó 0.3 giây sau (hiệu quả đánh 2 lần).',
+    passiveName: 'Sát Thủ Thiên Bẩm',
+    passiveDesc: 'Mỗi đòn tích 1 Sát Khí (max 5, hết hạn 3s không đánh). Đủ 5 → Đột Sát: ×3.5 + chảy máu (50% ST/giây × 3s) + hồi 8% HP. HP<20%: khẩn cấp tàng hình 4s + SPD +60% (CD 20s), quái xa hơn ~320đv không đuổi.',
+    activeName: 'Ẩn Hiện Nhất Kiếm',
+    activeDesc: 'Tức thì tàng hình 3s: SPD +60%, quái xa hơn ~320đv không đuổi. Khi tàng hình: Sát Khí tích gấp đôi (2/đòn). Đòn đầu tiên ra khỏi tàng hình guaranteed Đột Sát ×5.0 + chảy máu cực mạnh (×1.0 ST/giây × 5 giây), sau đó thoát tàng hình.',
+    activeIcon: '🌑', activeCooldown: 11,
+    evolvedWeapon: 'Hư Vô Quỷ Đao',
+    evolveDesc: 'Mỗi Đột Sát tạo phân thân ảo lặp lại đòn đó 0.3 giây sau (×1.0 DMG). Chảy máu từ Đột Sát áp thêm Làm Chậm 30% trong 2 giây.',
     color: '#cc44ff',
   },
   {
     id: 'tu_linh', icon: '💀', name: 'Tử Linh', title: 'Thuật Sĩ Xương',
     cost: 1500,
-    baseHP: 600, baseSpd: 115, baseDmg: 120, baseAtk: 1.35,
+    baseHP: 600, baseSpd: 115, baseDmg: 130, baseAtk: 1.35,
     weapon: 'Lưỡi Liềm Tử Thần', weaponDesc: 'Ném liềm quay vòng ra ngoài rồi quay lại (boomerang).',
     weaponIcon: '☠️',
     passiveName: 'Thu Hoạch Linh Hồn',
-    passiveDesc: 'Giết quái tạo Linh Hồn (tối đa 20), mỗi cái +2.5% sát thương (+50% tối đa). Bộ xương triệu hồi cũng tạo Linh Hồn khi giết quái. HP<20%: tiêu thụ tất cả để hồi 25 HP/linh hồn.',
+    passiveDesc: 'Giết quái tạo Linh Hồn (tối đa 20). Linh Hồn không tăng ST trực tiếp — thay vào đó tăng sức mạnh của active theo số lượng tích được. HP<20%: tiêu thụ tất cả → hồi 25 HP/linh hồn.',
     activeName: 'Quân Đoàn Bất Tử',
-    activeDesc: 'Triệu hồi 3 bộ xương (tối đa 9) + tạo Lĩnh Vực Tử Thần: AoE 180px pulse liên tục 4 giây (5 pulse × ×0.4 sát thương, hưởng trực tiếp từ buff +50% Linh Hồn). Không tiêu thụ Linh Hồn.',
+    activeDesc: 'Tiêu thụ toàn bộ Linh Hồn đang có. Triệu hồi 3 bộ xương (tối đa 9) + tạo Lĩnh Vực Tử Thần: AoE 180px pulse 5 lần trong 4 giây, mỗi pulse ×(0.3 + linh_hồn×0.025), tối đa ×0.8/pulse. Tại 0 linh hồn: ×1.5 tổng. Tại 20 linh hồn: ×4.0 tổng. Tích càng nhiều hồn trước khi cast càng mạnh.',
     activeIcon: '💀', activeCooldown: 14,
     evolvedWeapon: 'Vong Hồn Đại Liềm',
     evolveDesc: 'Liềm to gấp 1.8 lần, hút quái vào khi bay, khi về xuyên tất cả địch còn lại.',
@@ -5673,10 +5689,10 @@ class Player {
     if (this.charData.id === 'huyen_nguyet') {
       d *= (1 + (this.stillTimer >= 0.4 ? 0.20 : 0));
     } else if (this.charData.id === 'am_sat') {
-      // Bóng Tối: ATK +20% thường xuyên, +50% khi HP<40%
-      d *= (this.hp < this.maxHp * 0.40) ? 1.5 : 1.2;
+      // Sát Thủ Thiên Bẩm: không có buff tĩnh — sức mạnh đến từ Sát Khí combo
+      // (Đột Sát ×3.5/×5.0 được xử lý tại fireMainWeapon)
     } else if (this.charData.id === 'tu_linh') {
-      d *= (1 + this.soulCount * 0.025);
+      // Thu Hoạch Linh Hồn: không buff ST trực tiếp — souls chỉ tăng sức mạnh active
     } else if (this.charData.id === 'loi_than') {
       // Tĩnh Điện Tích Tụ: +4% ST/stack Lôi Tích
       d *= (1 + (this.passiveStacks || 0) * 0.04);
@@ -5775,27 +5791,40 @@ class Player {
       this.vy = moveY * spd;
     }
 
-    // Bóng Tối passive (Ám Sát) — speed boost at low HP
-    if (id === 'am_sat' && this.hp < this.maxHp * 0.40) {
-      this.vx *= 1.4; this.vy *= 1.4;
-    }
-
-    // Bóng Tối passive (Ám Sát) — shadow invisibility: 5 giây vô hình, 15 giây cooldown
+    // Sát Thủ Thiên Bẩm (Ám Sát) — tốc độ +60% khi đang tàng hình
     if (id === 'am_sat') {
-      if (this._shadowCooldown === undefined) { this._shadowCooldown = 0; this._shadowActive = false; this._shadowTimer = 0; }
+      if (this._shadowCooldown === undefined) {
+        this._shadowCooldown = 0; this._shadowActive = false; this._shadowTimer = 0;
+        this._stealthFirstAttack = false; this._emergencyStealth = false;
+      }
+      // Speed boost khi đang tàng hình (từ active hoặc emergency)
+      if (this._shadowActive) {
+        this.vx *= 1.6; this.vy *= 1.6;
+      }
       this._shadowCooldown = Math.max(0, this._shadowCooldown - dt);
-      if (this.hp < this.maxHp * 0.40 && !this._shadowActive && this._shadowCooldown <= 0) {
+      // HP<20% — khẩn cấp tàng hình (passive emergency, CD 20s riêng)
+      if (!this._emergencyCooldown) this._emergencyCooldown = 0;
+      this._emergencyCooldown = Math.max(0, this._emergencyCooldown - dt);
+      if (this.hp < this.maxHp * 0.20 && !this._shadowActive && this._emergencyCooldown <= 0) {
         this._shadowActive = true;
-        this._shadowTimer = 5.0;
-        Toast.show('🌑 Bóng Tối: vô hình 5 giây!');
+        this._shadowTimer = 4.0;
+        this._emergencyStealth = true;
+        this._stealthFirstAttack = true;
+        this._emergencyCooldown = 20.0;
+        Toast.show('🌑 Khẩn cấp! Tàng hình 4 giây — SPD +60%!');
         Audio.playSFX('blade');
+        Game.particles && Game.particles.spawn(this.x, this.y, {
+          count: 14, color: '#cc44ff', speedMin: 80, speedMax: 200, life: 0.5,
+        });
       }
       if (this._shadowActive) {
         this._shadowTimer -= dt;
         if (this._shadowTimer <= 0) {
           this._shadowActive = false;
-          this._shadowCooldown = 15.0;
-          Audio.playSFX('passive');  // soft reappear chime
+          this._emergencyStealth = false;
+          this._stealthFirstAttack = false;
+          this._shadowCooldown = 0; // active skill CD handled separately
+          Audio.playSFX('passive');
           Game.particles && Game.particles.spawn(this.x, this.y, {
             count: 10, color: '#cc44ff', speedMin: 60, speedMax: 160, life: 0.5,
           });
@@ -5852,6 +5881,19 @@ class Player {
       }
     }
 
+    // Lưu Phong — Chiến Tốc: không đánh trong 1.5s → stack bắt đầu tan dần (1 stack / 0.25s)
+    if (this.charData.id === 'luu_phong') {
+      if (this._chiTocStacks === undefined) { this._chiTocStacks = 0; this._chiTocIdleTimer = 0; this._chiTocDecayTimer = 0; }
+      this._chiTocIdleTimer += dt;
+      if (this._chiTocIdleTimer > 1.5 && this._chiTocStacks > 0) {
+        this._chiTocDecayTimer += dt;
+        if (this._chiTocDecayTimer >= 0.25) {
+          this._chiTocDecayTimer = 0;
+          this._chiTocStacks = Math.max(0, this._chiTocStacks - 1);
+        }
+      }
+    }
+
     // Active cooldown
     if (!this.activeReady) {
       this.activeTimer += dt;
@@ -5876,6 +5918,17 @@ class Player {
       DmgNumbers.show(this.x, this.y, '+'+Math.floor(heal), 'heal');
       Audio.playSFX('heal');
       Toast.show('💀 Linh Hồn hoá giải — hồi máu!');
+    }
+
+    // Sát Khí decay (Ám Sát) — không đánh trong 3s → stack về 0
+    if (id === 'am_sat') {
+      if (this._satKhiStacks === undefined) { this._satKhiStacks = 0; this._satKhiTimer = 0; }
+      if (this._satKhiStacks > 0) {
+        this._satKhiTimer -= dt;
+        if (this._satKhiTimer <= 0) {
+          this._satKhiStacks = 0;
+        }
+      }
     }
 
     // Long Vảy Linh (Hỏa Long) — HP<30%: kích Cuồng Long ATK +50% SPD +25%
@@ -5928,10 +5981,7 @@ class Player {
       return;
     }
 
-    // Bóng Tối (Ám Sát) — low-HP debuff
-    if (this.charData.id === 'am_sat' && this.hp < this.maxHp * 0.40) {
-      finalDmg *= 0.7;  // takes less damage while in shadow mode
-    }
+    // Sát Thủ Thiên Bẩm (Ám Sát) — không có DR thụ động, nhưng khó bị đánh khi tàng hình
 
     // Long Vảy Linh (Hỏa Long) — giảm 20% mọi ST nhận
     if (this.charData.id === 'hoa_long') {
@@ -5991,20 +6041,27 @@ class Player {
     this.hitFlash  = 0.15;
     this.invincT   = 0.4;
 
-    // Liu Phong passive: partial stack retention on hit (giữ 35% stack)
-    if (this.charData.id === 'luu_phong' && this.passiveStacks > 0) {
-      const retained = Math.floor(this.passiveStacks * 0.50);
-      const lost = this.passiveStacks - retained;
-      this.passiveStacks = retained;
-      // Visual: sword-wind particles scatter on hit + SFX
-      if (lost > 0) {
-        Audio.playSFX('stack_retain');
-        Game.particles.spawn(this.x, this.y, {
-          count: Math.min(lost, 12), color: '#60d0ff',
-          speedMin: 80, speedMax: 220, life: 0.4,
-        });
-        if (retained > 0) {
-          DmgNumbers.show(this.x, this.y - 20, `⚔${retained}`, 'normal');
+    // Liu Phong passive: partial stack retention on hit (giữ 50% Chiến Tốc + 50% passiveStacks kill)
+    if (this.charData.id === 'luu_phong') {
+      if (this.passiveStacks > 0) {
+        const retained = Math.floor(this.passiveStacks * 0.50);
+        this.passiveStacks = retained;
+      }
+      if ((this._chiTocStacks || 0) > 0) {
+        const ctRetained = Math.floor(this._chiTocStacks * 0.50);
+        const ctLost = this._chiTocStacks - ctRetained;
+        this._chiTocStacks = ctRetained;
+        this._chiTocIdleTimer = 0; // reset idle timer
+        // Visual: sword-wind particles scatter on hit + SFX
+        if (ctLost > 0) {
+          Audio.playSFX('stack_retain');
+          Game.particles.spawn(this.x, this.y, {
+            count: Math.min(ctLost, 12), color: '#60d0ff',
+            speedMin: 80, speedMax: 220, life: 0.4,
+          });
+          if (ctRetained > 0) {
+            DmgNumbers.show(this.x, this.y - 20, `⚔${ctRetained}`, 'normal');
+          }
         }
       }
     }
@@ -6090,7 +6147,7 @@ class Player {
       Audio.playSFX('heal');
     }
 
-    // Liu Phong passive: kill stacks (max 30)
+    // Liu Phong passive: kill stacks cho Active Tàn Phong Trảm (riêng với Chiến Tốc)
     if (this.charData.id === 'luu_phong') {
       const prevStacks = this.passiveStacks;
       this.passiveStacks = Math.min(30, this.passiveStacks + 1);
@@ -6539,93 +6596,36 @@ class Player {
   }
 
   _activeAmSat() {
-    // Ẩn Kích Liên Hoàn:
-    // — Nếu _shadowActive: ×6.0 + chảy máu 3 tick, sau chuỗi tái kích vô hình nếu HP <40%
-    // — Nếu không vô hình: ×4.0 thường (không có bonus)
-    const isShadowActive = this._shadowActive === true;
-    const dmgMult = isShadowActive ? 6.0 : 4.0;
+    // Ẩn Hiện Nhất Kiếm: tức thì tàng hình 3s + SPD +60%
+    // Sát Khí tích gấp đôi khi tàng hình. Đòn đầu guaranteed Đột Sát ×5.0.
+    this._shadowActive = true;
+    this._shadowTimer  = 3.0;
+    this._stealthFirstAttack = true;
+    this._emergencyStealth = false;
+    if (this._satKhiStacks === undefined) this._satKhiStacks = 0;
 
-    // FIX: giới hạn tầm teleport 450 đv, tránh bị văng sang góc bản đồ khi thưa quái
-    // Nếu không có quái nào trong 450, mở rộng sang 900 để không bao giờ trả về mảng rỗng
-    const _amSatMaxRange = 450;
-    let _amSatPool = [...Game.enemies]
-      .filter(e => !e.dead && MathU.dist(this.x, this.y, e.x, e.y) <= _amSatMaxRange)
-      .sort((a, b) => MathU.dist2(this.x, this.y, a.x, a.y) - MathU.dist2(this.x, this.y, b.x, b.y));
-    if (_amSatPool.length === 0) {
-      _amSatPool = [...Game.enemies]
-        .filter(e => !e.dead)
-        .sort((a, b) => MathU.dist2(this.x, this.y, a.x, a.y) - MathU.dist2(this.x, this.y, b.x, b.y))
-        .slice(0, 3);
-    }
-    const targets = _amSatPool.slice(0, 3);
-
-    if (targets.length === 0) return;
-
-    // Shadow portal burst at origin
-    Game.slashArcs.push(new SlashArc(this.x, this.y, 0, 40, '#cc44ff', Math.PI));
-    Game.slashArcs.push(new SlashArc(this.x, this.y, Math.PI, 40, '#8020cc', Math.PI));
+    // Visual: dark implosion burst
+    Game.slashArcs.push(new SlashArc(this.x, this.y, 0, 50, '#cc44ff', Math.PI));
+    Game.slashArcs.push(new SlashArc(this.x, this.y, Math.PI * 0.5, 50, '#8020cc', Math.PI));
+    Game.slashArcs.push(new SlashArc(this.x, this.y, Math.PI, 50, '#cc44ff', Math.PI));
+    Game.slashArcs.push(new SlashArc(this.x, this.y, Math.PI * 1.5, 50, '#8020cc', Math.PI));
     Game.particles.spawn(this.x, this.y, {
-      count: 16, color: isShadowActive ? '#ff44cc' : '#cc44ff',
-      speedMin: 80, speedMax: 250, life: 0.4,
+      count: 20, color: '#cc44ff', speedMin: 100, speedMax: 300, life: 0.45,
     });
+    Game.rings && Game.rings.length<28 && Game.rings.push(new RingEffect(this.x, this.y, 52, '#8020cc'));
 
-    if (isShadowActive) Toast.show('🌑 Ẩn Kích Liên Hoàn! ×6.0 + chảy máu!');
-
-    let delay = 0;
-    targets.forEach(e => {
-      setTimeout(() => {
-        if (!e.dead) {
-          // Shadow portal effect at teleport destination
-          Game.shadowClones.push(new ShadowClone(this.x, this.y, '#8020cc', ''));
-          this.x = e.x + MathU.rand(-20, 20);
-          this.y = e.y + MathU.rand(-20, 20);
-          e.takeDamage(this.totalDmg * dmgMult, this, 'assassin');
-
-          // Ẩn Kích bonus: chảy máu 3 tick nếu đang vô hình
-          if (isShadowActive && typeof e.bleed === 'function') {
-            e.bleed(3, this.totalDmg * 0.4, 500);
-          }
-
-          // Impact burst — màu khác khi là Ẩn Kích
-          Game.particles.spawn(e.x, e.y, {
-            count: isShadowActive ? 20 : 14,
-            color: isShadowActive ? '#ff44cc' : '#cc44ff',
-            speedMin: 100, speedMax: 280, life: 0.45,
-          });
-          const impactAngle = Math.atan2(e.y - this.y, e.x - this.x);
-          Game.slashArcs.push(new SlashArc(e.x, e.y, impactAngle, 35,
-            isShadowActive ? '#ff44cc' : '#cc44ff', Math.PI * 0.4));
-        }
-      }, delay);
-      delay += 100;
-    });
-
-    // Sau chuỗi: nếu vô hình và HP vẫn <40% → tái kích vô hình ngay (bypass CD)
-    if (isShadowActive) {
-      const playerRef = this;
-      setTimeout(() => {
-        if (playerRef.hp < playerRef.maxHp * 0.40) {
-          playerRef._shadowActive = true;
-          playerRef._shadowTimer  = 5.0;
-          playerRef._shadowCooldown = 15.0;
-          Toast.show('🌑 Bóng Tối tái kích hoạt — tiếp tục ẩn!');
-          Audio.playSFX('blade');
-          Game.particles && Game.particles.spawn(playerRef.x, playerRef.y, {
-            count: 14, color: '#8020cc', speedMin: 60, speedMax: 200, life: 0.5,
-          });
-        }
-      }, delay + 80);
-    }
-
-    this.invincT = 0.8;
+    Toast.show('🌑 Ẩn Hiện Nhất Kiếm! — SPD +60% · Đòn đầu ×5.0!');
+    this.invincT = 0.4;
   }
 
+
   _activeTuLinh() {
-    // Quân Đoàn Bất Tử (Redesigned — KHÔNG tiêu thụ Linh Hồn)
-    // 1. Triệu 3 bộ xương (như cũ)
-    // 2. Lĩnh Vực Tử Thần: AoE 180px, pulse 7 lần trong 4 giây, ×0.4 totalDmg/pulse
-    //    — hưởng trực tiếp từ buff Linh Hồn trong totalDmg (không cần consume riêng)
-    //    — totalDmg đã bao gồm ×(1 + soulCount×0.035), max ×1.7 tại 20 souls
+    // Quân Đoàn Bất Tử — tiêu thụ toàn bộ Linh Hồn khi cast
+    // Pulse damage = ×(0.3 + souls×0.025)/pulse, max ×0.8/pulse
+    // 0 souls → ×0.3×5 = ×1.5 total | 20 souls → ×0.8×5 = ×4.0 total
+    const soulsConsumed = this.soulCount || 0;
+    const pulseDmgMult  = Math.min(0.8, 0.3 + soulsConsumed * 0.025);
+    this.soulCount = 0; // tiêu thụ toàn bộ
 
     // Ritual circle visual
     Game.rings && Game.rings.length<28 && Game.rings.push(new RingEffect(this.x, this.y, 80, '#ff4060'));
@@ -6633,7 +6633,7 @@ class Player {
     Game.particles.spawn(this.x, this.y, {
       count: 20, color: '#ff4060', speedMin: 40, speedMax: 120, life: 0.6,
     });
-    // Pentagon ritual pattern — 5 dark sparks
+    // Pentagon ritual pattern
     for (let i = 0; i < 5; i++) {
       const a = (i / 5) * Math.PI * 2 - Math.PI/2;
       Game.particles.spawn(
@@ -6648,19 +6648,17 @@ class Player {
     const pulseDuration = 4.0;
     const totalPulses   = 5;
     const castRef       = this;
+    const snapDmgMult   = pulseDmgMult; // snapshot tại thời điểm cast
 
-    // Outer ring marks domain boundary
     Game.spawnRing(this.x, this.y, domainRadius, '#ff2050');
 
     for (let i = 0; i < totalPulses; i++) {
       const delay = (i / totalPulses) * pulseDuration;
       setTimeout(() => {
         if (!castRef || castRef.hp <= 0) return;
-        // Dùng totalDmg tại thời điểm pulse (nếu souls thay đổi trong 4s, vẫn đúng)
-        Audio.playSFX('death_pulse'); // per-pulse audio feedback
-        Game.explosionAt(castRef.x, castRef.y, domainRadius, castRef.totalDmg * 0.4, '#ff4060', 'active_tu_linh');
+        Audio.playSFX('death_pulse');
+        Game.explosionAt(castRef.x, castRef.y, domainRadius, castRef.totalDmg * snapDmgMult, '#ff4060', 'active_tu_linh');
         Game.rings && Game.rings.length<28 && Game.rings.push(new RingEffect(castRef.x, castRef.y, domainRadius * 0.55, '#aa1030'));
-        // Skull particles mỗi 2 pulse
         if (i % 2 === 0) {
           for (let k = 0; k < 3; k++) {
             const ka = Math.random() * Math.PI * 2;
@@ -6696,9 +6694,8 @@ class Player {
       });
     }
 
-    const soulPct = Math.round((this.soulCount || 0) * 2.5);
-    Toast.show(`💀 Lĩnh Vực Tử Thần! ${this.soulCount}/20 linh hồn (+${soulPct}% ST) — AoE 4 giây!`);
-    // Linh Hồn KHÔNG bị tiêu thụ — totalDmg buff vẫn giữ nguyên
+    const totalMult = (snapDmgMult * totalPulses).toFixed(1);
+    Toast.show(`💀 ${soulsConsumed} linh hồn → ×${snapDmgMult.toFixed(2)}/pulse · Tổng ×${totalMult}!`);
   }
 
   draw(ctx, camX, camY) {
@@ -6773,16 +6770,67 @@ class Player {
       }
     }
 
-    // Ám Sát — Bóng Tối vô hình visual: player mờ + nhấp nháy tím khi _shadowActive
+    // Ám Sát — stealth visual: player mờ + nhấp nháy tím khi _shadowActive
     if (cid === 'am_sat' && this._shadowActive) {
-      const flickerAlpha = 0.28 + 0.22 * Math.sin(t * 18);
+      const isFirstAtk = this._stealthFirstAttack;
+      const flickerAlpha = isFirstAtk
+        ? 0.20 + 0.20 * Math.sin(t * 22)   // nhấp nhanh hơn khi chờ đòn đầu
+        : 0.28 + 0.22 * Math.sin(t * 18);
       ctx.globalAlpha = flickerAlpha;
-      // Viền tím ngoài báo hiệu vô hình đang hoạt động
-      ctx.strokeStyle = `rgba(200,80,255,${0.6 + 0.4 * Math.sin(t * 8)})`;
-      ctx.lineWidth   = 2;
+      ctx.strokeStyle = isFirstAtk
+        ? `rgba(255,60,200,${0.7 + 0.3 * Math.sin(t * 10)})`
+        : `rgba(200,80,255,${0.6 + 0.4 * Math.sin(t * 8)})`;
+      ctx.lineWidth   = isFirstAtk ? 3 : 2;
       ctx.beginPath();
       ctx.arc(sx, sy - bob, this.r + 5, 0, Math.PI * 2);
       ctx.stroke();
+    }
+    // Ám Sát — vòng tầm tấn công 150đv: mờ khi không có quái, sáng khi có quái trong tầm
+    if (cid === 'am_sat') {
+      const AM_RANGE_DRAW = 150;
+      const hasTarget = Game.enemies && Game.enemies.some(e => !e.dead && Math.hypot(e.x - this.x, e.y - this.y) <= AM_RANGE_DRAW);
+      const sk = this._satKhiStacks || 0;
+      // Mạnh nhất khi full Sát Khí hoặc đang tàng hình
+      const ringAlpha = this._shadowActive ? (0.55 + 0.2 * Math.sin(t * 8)) :
+                        hasTarget ? (0.18 + sk * 0.04 + 0.08 * Math.sin(t * 4)) :
+                        0.06;
+      const ringColor = this._shadowActive ? `rgba(255,60,200,${ringAlpha})` :
+                        sk >= 5 ? `rgba(255,200,0,${ringAlpha})` :
+                        `rgba(180,60,255,${ringAlpha})`;
+      ctx.save();
+      ctx.setLineDash([8, 6]);
+      ctx.lineDashOffset = -t * 30; // vòng chạy ngược chiều kim đồng hồ
+      ctx.strokeStyle = ringColor;
+      ctx.lineWidth = hasTarget ? (sk >= 5 ? 2.2 : 1.5) : 1;
+      ctx.beginPath();
+      ctx.arc(sx, sy - bob, AM_RANGE_DRAW, 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.restore();
+    }
+
+    // Ám Sát — Sát Khí stacking charge aura
+    if (cid === 'am_sat' && !this._shadowActive) {
+      const sk = this._satKhiStacks || 0;
+      if (sk > 0) {
+        const chargeRatio = sk / 5;
+        const chargePulse = 0.6 + 0.4 * Math.sin(t * (6 + sk * 1.5));
+        const chgGrd = ctx.createRadialGradient(sx, sy - bob, 2, sx, sy - bob, this.r * 1.8);
+        chgGrd.addColorStop(0, `rgba(200,80,255,${0.18 * chargeRatio * chargePulse})`);
+        chgGrd.addColorStop(1, 'transparent');
+        ctx.fillStyle = chgGrd;
+        ctx.beginPath();
+        ctx.arc(sx, sy - bob, this.r * 1.8, 0, Math.PI * 2);
+        ctx.fill();
+        if (sk >= 5) {
+          // Full charge — bright gold ring
+          ctx.strokeStyle = `rgba(255,220,0,${0.7 + 0.3 * Math.sin(t * 12)})`;
+          ctx.lineWidth = 2.5;
+          ctx.beginPath();
+          ctx.arc(sx, sy - bob, this.r + 4, 0, Math.PI * 2);
+          ctx.stroke();
+        }
+      }
     }
 
     // Ma Long — Dragon rage fiery aura
@@ -7755,8 +7803,8 @@ class Enemy {
     const dy = player.y - this.y;
     const dist = Math.sqrt(dx*dx + dy*dy) || 1;
 
-    // Bóng Tối (Ám Sát) — vô hình: quái xa hơn 400 units không nhắm vào nhân vật
-    if (player._shadowActive && dist > 400 && !this.isBoss) {
+    // Sát Thủ Thiên Bẩm (Ám Sát) — tàng hình: quái xa hơn 200 units không nhắm vào nhân vật
+    if (player._shadowActive && dist > 320 && !this.isBoss) {
       // Wander randomly instead of chasing
       if (!this._wanderAngle) this._wanderAngle = Math.random() * Math.PI * 2;
       this._wanderAngle += (Math.random() - 0.5) * 0.3;
@@ -9923,7 +9971,7 @@ const Game = (() => {
     p.mainWeapon.timer += dt;
     // p.atkSpeed already includes stat_atkspd bonus from applySkill; _kimCangBlockBoost is additive temp buff
     // Liu Phong "Kiếm Ý" passive: each kill stack adds +2% attack speed (not damage)
-    const liuPhongSpdBonus = (p.charData.id === 'luu_phong') ? (p.passiveStacks || 0) * 0.015 : 0;
+    const liuPhongSpdBonus = (p.charData.id === 'luu_phong') ? (p._chiTocStacks || 0) * 0.015 : 0;
     const mainInterval = 1 / (p.atkSpd * (p.atkSpeed + (p._kimCangBlockBoost || 0) + liuPhongSpdBonus));
     if (p.mainWeapon.timer >= mainInterval) {
       p.mainWeapon.timer = 0;
@@ -9952,6 +10000,9 @@ const Game = (() => {
     switch (id) {
       case 'luu_phong': {
         Audio.playSFX('slash');
+        // Chiến Tốc: tích stack khi đánh trúng liên tục (riêng với passiveStacks kill stacks)
+        if (p._chiTocStacks === undefined) { p._chiTocStacks = 0; p._chiTocIdleTimer = 0; p._chiTocDecayTimer = 0; }
+        let didHit = false;
         // Arc slash — luôn nhắm về phía quái gần nhất, bất kể hướng di chuyển
         const slashTarget = getNearestEnemy(p.x, p.y);
         const aimAngle = slashTarget
@@ -9966,18 +10017,28 @@ const Game = (() => {
           if (dist > 80 * aoe) return;
           const angle = Math.atan2(dy, dx);
           const diff  = Math.abs(MathU.angleDiff(angle, aimAngle));
-          if (diff < Math.PI * 0.45) {
+          // Evolved: slash arc mở rộng ~160° (PI*0.88/2 ~ 79°), thường ~90° (PI*0.45 ~ 81° — giữ nguyên)
+          const arcLimit = p.mainWeapon.evolved ? Math.PI * 0.44 : Math.PI * 0.45;
+          if (diff < arcLimit) {
             const { val, crit } = p.rollCrit(dmg);
             e.takeDamage(val, p, crit ? 'crit' : 'normal');
             p.trackSkillDmg('main_' + p.charData.id, val);
+            didHit = true;
             // Snake pet: apply poison
             if (p._pendingPoison) { p._pendingPoison = false; e.applyPoison(3, p.totalDmg * 0.08); Audio.playSFX('pet_skill'); }
-            if (p.mainWeapon.evolved) {
-              setTimeout(() => { if (!e.dead) { e.takeDamage(dmg * 0.5, p, 'normal'); p.trackSkillDmg('main_luu_phong', dmg * 0.5); } }, 150);
-              setTimeout(() => { if (!e.dead) { e.takeDamage(dmg * 0.5, p, 'normal'); p.trackSkillDmg('main_luu_phong', dmg * 0.5); } }, 300);
-            }
           }
         });
+        // Chiến Tốc: tích 1 stack khi đánh trúng, reset idle timer
+        if (didHit) {
+          p._chiTocIdleTimer = 0;
+          const prevCT = p._chiTocStacks;
+          p._chiTocStacks = Math.min(30, p._chiTocStacks + 1);
+          // Milestone particles tại 10/20/30
+          if (p._chiTocStacks !== prevCT && p._chiTocStacks % 10 === 0 && Game.particles) {
+            const ringCol = p._chiTocStacks >= 30 ? '#ffd700' : '#60d0ff';
+            Game.rings && Game.rings.length<28 && Game.rings.push(new RingEffect(p.x, p.y, 36, ringCol));
+          }
+        }
 
         // ── SLASH ARC VISUAL ──
         slashArcs.push(new SlashArc(p.x, p.y, aimAngle, 75 * aoe, p.charData.color));
@@ -9993,22 +10054,19 @@ const Game = (() => {
           );
         }
 
-        // Thần Kiếm Vong Linh evolved: fire 8-directional sword ki on every slash
+        // Thiên Phong Kiếm Ý evolved: bắn 1 kiếm khí xuyên thẳng về hướng chém
         if (p.mainWeapon.evolved) {
-          for (let i = 0; i < 8; i++) {
-            const a = (i / 8) * Math.PI * 2;
-            spawnProjectile({ _skillId: 'main_luu_phong',
-              x: p.x, y: p.y,
-              vx: Math.cos(a) * 280,
-              vy: Math.sin(a) * 280,
-              dmg: dmg * 0.15,
-              r: 5, life: 0.55,
-              color: '#c0e8ff', owner: 'player',
-              pierce: 3, shape: 'sword_ki',
-            });
-          }
-          // Extra slash arc burst for evolved
-          slashArcs.push(new SlashArc(p.x, p.y, aimAngle + Math.PI, 70 * aoe, '#ffffff', Math.PI * 0.3));
+          spawnProjectile({ _skillId: 'main_luu_phong',
+            x: p.x, y: p.y,
+            vx: Math.cos(aimAngle) * 380,
+            vy: Math.sin(aimAngle) * 380,
+            dmg: dmg * 0.7,
+            r: 7, life: 0.7,
+            color: '#e8f8ff', owner: 'player',
+            pierce: 99, shape: 'sword_ki',
+          });
+          // Wider slash arc (160° instead of ~90°) — phủ nửa vòng tròn
+          slashArcs.push(new SlashArc(p.x, p.y, aimAngle, 82 * aoe, '#ffffff', Math.PI * 0.88));
         }
         break;
       }
@@ -10164,40 +10222,106 @@ const Game = (() => {
       }
 
       case 'am_sat': {
-        Audio.playSFX('blade');
-        // Ultra-fast multi-hit around player
-        const atkRadius = 72 * aoe;
-        let hitCount = 0;
-        enemies.forEach(e => {
-          if (MathU.dist(e.x, e.y, p.x, p.y) < atkRadius) {
-            const { val, crit } = p.rollCrit(dmg);
-            e.takeDamage(val, p, crit ? 'crit' : 'normal');
-            p.trackSkillDmg('active_' + p.charData.id, val);
-            hitCount++;
-            if (p.mainWeapon.evolved) {
-              // Phantom copy hits again after 0.3s
-              const capturedE = e, capturedVal = val;
-              setTimeout(() => {
-                if (!capturedE.dead) {
-                  capturedE.takeDamage(capturedVal * 0.85, p, 'normal');
-                  p.trackSkillDmg('main_am_sat', capturedVal * 0.85);
-                  // Shadow clone flicker at enemy
-                  shadowClones.push(new ShadowClone(capturedE.x, capturedE.y, '#cc44ff', '🗡️'));
-                }
-              }, 300);
-            }
+        // Song Quỷ Đao — ưu tiên mục tiêu thấp HP nhất trong tầm 150đv, tích Sát Khí combo
+        const AM_SAT_RANGE = 150;
+        let amTarget = null;
+        let lowestHpRatio = Infinity;
+        if (Game.enemies) {
+          for (const e of Game.enemies) {
+            if (e.dead) continue;
+            if (Math.hypot(e.x - p.x, e.y - p.y) > AM_SAT_RANGE) continue;
+            const hpRatio = e.hp / (e.maxHp || e.hp || 1);
+            if (hpRatio < lowestHpRatio) { lowestHpRatio = hpRatio; amTarget = e; }
           }
-        });
-        // Spin slash visual — dark blades radiating
-        const slashCount = Math.min(5 + hitCount, 8);
-        for (let i = 0; i < slashCount; i++) {
-          const a = (i / slashCount) * Math.PI * 2;
-          slashArcs.push(new SlashArc(p.x, p.y, a, atkRadius * 0.9, '#cc44ff', Math.PI * 0.3));
         }
-        particles.spawn(p.x, p.y, {
-          count: 8, color: '#cc44ff',
-          speedMin: 80, speedMax: 200, life: 0.25,
-        });
+        if (!amTarget) {
+          if (!p._amOobFlash || p._amOobFlash <= 0) {
+            p._amOobFlash = 0.3;
+            slashArcs.push(new SlashArc(p.x, p.y, 0, AM_SAT_RANGE, '#44006688', Math.PI * 2));
+          }
+          break;
+        }
+
+        // Init Sát Khí state
+        if (p._satKhiStacks === undefined) { p._satKhiStacks = 0; p._satKhiTimer = 0; }
+        const stackGain = (p._shadowActive) ? 2 : 1;
+        p._satKhiStacks = Math.min(5, p._satKhiStacks + stackGain);
+        p._satKhiTimer = 3.0;
+
+        const isFirstStealth = p._stealthFirstAttack;
+        const isDotSat = isFirstStealth || p._satKhiStacks >= 5;
+        // Hành Quyết: +40% ST khi mục tiêu < 30% HP
+        const isExecute = lowestHpRatio < 0.30;
+        const dmgMult = (isFirstStealth ? 5.0 : (isDotSat ? 3.5 : 1.0)) * (isExecute ? 1.4 : 1.0);
+        if (isExecute && !isDotSat) {
+          particles.spawn(amTarget.x, amTarget.y - 10, { count: 3, color: '#ff2255', speedMin: 40, speedMax: 100, life: 0.2 });
+        }
+
+        const { val, crit } = p.rollCrit(p.totalDmg * dmgMult);
+        amTarget.takeDamage(val, p, crit ? 'crit' : 'assassin');
+        p.trackSkillDmg('main_am_sat', val);
+
+        if (isDotSat) {
+          // Chảy máu
+          const bleedPower  = isFirstStealth ? 1.0 : 0.5;
+          const bleedTicks  = isFirstStealth ? 5 : 3;
+          if (typeof amTarget.bleed === 'function') {
+            amTarget.bleed(bleedTicks, p.totalDmg * bleedPower, 1000);
+          }
+          // Làm chậm khi evolved
+          if (p.mainWeapon.evolved && amTarget._slowTimer !== undefined) {
+            amTarget._slowTimer = Math.max(amTarget._slowTimer || 0, 2.0);
+            amTarget._slowMult = Math.min(amTarget._slowMult || 1, 0.7);
+          }
+          // Hồi máu (chỉ cho Đột Sát thường, không cho stealth)
+          if (!isFirstStealth) {
+            const healAmt = Math.floor(p.maxHp * 0.08);
+            p.hp = Math.min(p.maxHp, p.hp + healAmt);
+            DmgNumbers.show(p.x, p.y, '+' + healAmt, 'heal');
+          }
+          p._satKhiStacks = 0;
+
+          // Evolved: phân thân lặp lại đòn Đột Sát sau 0.3s
+          if (p.mainWeapon.evolved) {
+            const capturedE = amTarget, capturedVal = val;
+            setTimeout(() => {
+              if (!capturedE.dead) {
+                capturedE.takeDamage(capturedVal, p, 'assassin');
+                p.trackSkillDmg('main_am_sat', capturedVal);
+                shadowClones.push(new ShadowClone(capturedE.x, capturedE.y, '#cc44ff', '🗡️'));
+              }
+            }, 300);
+          }
+
+          // Toast & visual
+          const toastMsg = isFirstStealth ? '🌑 Tối Thượng Đột Sát ×5.0!' : '🗡️ Đột Sát ×3.5!';
+          Toast.show(toastMsg);
+          Game.slashArcs.push(new SlashArc(amTarget.x, amTarget.y, Math.atan2(amTarget.y - p.y, amTarget.x - p.x), 42, '#cc44ff', Math.PI * 0.5));
+          particles.spawn(amTarget.x, amTarget.y, {
+            count: isFirstStealth ? 22 : 14,
+            color: isFirstStealth ? '#ff44cc' : '#cc44ff',
+            speedMin: 100, speedMax: 280, life: 0.4,
+          });
+          Audio.playSFX('blade');
+
+          // Thoát tàng hình sau đòn đầu stealth
+          if (isFirstStealth) {
+            p._stealthFirstAttack = false;
+            p._shadowActive = false;
+            p._shadowTimer = 0;
+            p._emergencyStealth = false;
+            Audio.playSFX('passive');
+          }
+        } else {
+          // Đòn thường — hiệu ứng nhẹ
+          Audio.playSFX('blade');
+          Game.slashArcs.push(new SlashArc(amTarget.x, amTarget.y, Math.atan2(amTarget.y - p.y, amTarget.x - p.x), 32, '#8820bb', Math.PI * 0.35));
+          particles.spawn(amTarget.x, amTarget.y, {
+            count: 5, color: '#aa33ee', speedMin: 60, speedMax: 160, life: 0.25,
+          });
+        }
+        // Snake pet poison
+        if (p._pendingPoison) { p._pendingPoison = false; amTarget.applyPoison(3, p.totalDmg * 0.08); Audio.playSFX('pet_skill'); }
         break;
       }
 
