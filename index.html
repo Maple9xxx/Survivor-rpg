@@ -3299,10 +3299,7 @@ const UI = (() => {
           dps: 'Base 155×1.25/s = 194/s · +25% quái xa >250đv = 242/s',
           difficulty: '⭐⭐ Trung Bình',
           playstyle: 'Kiter — luôn giữ khoảng cách >250đv',
-          guide: `<b>Passive — Mắt Đại Bàng:</b> Quái ở xa >250 đơn vị nhận thêm +25% sát thương. Công thức: totalDmg × 1.25 tại thời điểm hit.<br><br>
-<b>Active — Vũ Bão Tiễn / Tàn Sát Tầm Xa (CD 10s):</b> Bắn 5 mũi tên liên tiếp theo 1 hướng (1 mũi/300ms, tốc bay 700đv/s, xuyên 5 quái). onHit tự động kiểm tra: nếu quái bị trúng cách player >250đv → áp thêm <b>+25% sát thương</b> (kích hoạt Mắt Đại Bàng). Giữ và kéo nút skill để chọn hướng.<br><br>
-<b>Tiến hoá → Tử Thần Chi Tên:</b> Mỗi mũi tên áp độc khi trúng + xuyên qua địch đầu phân thành 3 tên nhỏ (×0.55/tên).<br><br>
-<b>Lưu ý:</b> Tầm bắn 1050đv (700×1.5s). Giữ khoảng cách >250đv liên tục để passive và active cùng kích hoạt. Active nhắm 1 hướng — dùng khi đã thấy hướng đông quái hoặc boss. Ưu tiên diệt quái bắn xa trước.`,
+          guide: `<b>Passive — Mắt Đại Bàng:</b> Quái ở xa >250 đơn vị nhận thêm +25% sát thương. Áp dụng cho vũ khí chính, tiến hoá và active.<br><br>\n<b>Vũ khí — Cung Xương:</b> Bắn quạt 3 tên (±18°) cùng lúc — phủ rộng đám quái theo chiều ngang. Mỗi quái chỉ nhận đúng 1 đòn/loạt dù nhiều tên bay qua.<br><br>\n<b>Tiến hoá → Tử Thần Chi Tên:</b> Mỗi tên trúng địch tạo AoE độc 70px (×0.55) quanh điểm trúng. Không cộng dồn lên cùng 1 mục tiêu trong loạt.<br><br>\n<b>Active — Vũ Bão Tiễn / Tàn Sát Tầm Xa (CD 10s):</b> 2 đợt quạt tên phủ 60°: đợt 1 (3 tên ±25°, t=0) + đợt 2 (4 tên ±37°/12°, t=350ms). Tổng 7 tên — đám đông nhận full DPS, mỗi quái chỉ nhận 1 đòn/đợt. Mắt Đại Bàng +25% áp dụng tất cả. Evolved: splash độc 80px/điểm trúng. Giữ và kéo nút skill để chọn hướng.<br><br>\n<b>Lưu ý:</b> Giữ khoảng cách >250đv để passive luôn kích. Thiết Tâm mạnh nhất khi đứng xa và nhắm vào đám đông.`
         },
         {
           c: CHARS.find(c=>c.id==='kim_cang'),
@@ -4112,8 +4109,8 @@ const UI = (() => {
         statHP: 100, statSPD: 120, statDMG: 22, statATK: 1.25,
         weapon:  { icon:'🏹', tag:'VŨ KHÍ CHÍNH', name:'Cung Xương', desc:'Mũi tên xuyên thấu đường thẳng, tốc độ 600 đ/giây. Tầm xa nhất 6 nhân vật. Passive kích hoạt khi mục tiêu >250 đ.' },
         passive: { icon:'🦅', tag:'PASSIVE', name:'Mắt Đại Bàng', desc:'Quái ở xa (>250 đơn vị) nhận thêm 25% sát thương.' },
-        active:  { icon:'🎯', tag:'ACTIVE', name:'Tàn Sát Tầm Xa', desc:'Bắn 5 mũi tên liên tiếp theo 1 hướng (1/300ms, xuyên 5 quái). Quái bị trúng ở khoảng cách >250đv nhận thêm 25% sát thương (kích passive tầm xa). Giữ và kéo nút để chọn hướng.', cd:10 },
-        evolve:  { icon:'☠️', tag:'TIẾN HÓA', name:'Tử Thần Chi Tên', desc:'Mũi tên áp độc khi trúng địch đầu; phân thành 3 tên nhỏ (pierce 2 mỗi tên) lan ra 3 hướng từ điểm trúng.' },
+        active:  { icon:'🎯', tag:'ACTIVE', name:'Tàn Sát Tầm Xa', desc:'2 đợt quạt tên phủ 60°: đợt 1 (3 tên ±25°) + đợt 2 (4 tên ±37°/12°) cách 350ms. Mỗi quái chỉ nhận 1 đòn/đợt. Range >250đv: +25% (Mắt Đại Bàng). Evolved: splash độc 80px/điểm trúng.', cd:10 },
+        evolve:  { icon:'☠️', tag:'TIẾN HÓA', name:'Tử Thần Chi Tên', desc:'Mỗi tên trúng địch tạo AoE độc 70px (×0.55) — phủ rộng quanh điểm trúng. Không cộng dồn lên cùng 1 mục tiêu.' },
       }
     },
     {
@@ -5025,15 +5022,15 @@ const CHARS = [
     id: 'thiet_tam', icon: '🏹', name: 'Thiết Tâm', title: 'Xạ Thủ',
     cost: 1500,
     baseHP: 570, baseSpd: 120, baseDmg: 155, baseAtk: 1.25,
-    weapon: 'Cung Xương', weaponDesc: 'Bắn mũi tên xuyên thấu đường thẳng, tầm rất xa.',
+    weapon: 'Cung Xương', weaponDesc: 'Bắn quạt 3 mũi tên (±18°) xuyên thấu cùng lúc. Mỗi quái chỉ nhận 1 đòn/loạt — AoE tự nhiên không cộng dồn.',
     weaponIcon: '🏹',
     passiveName: 'Mắt Đại Bàng',
     passiveDesc: 'Quái ở xa (>250 đơn vị) nhận thêm 25% sát thương.',
     activeName: 'Vũ Bão Tiễn',
-    activeDesc: 'Tàn Sát Tầm Xa: bắn 5 mũi tên liên tục theo hướng mục tiêu (1 mũi/300ms), mỗi mũi xuyên 5 quái, tốc bay 700đv/s. Quái bị trúng ở khoảng cách >250 đơn vị nhận thêm 25% sát thương (kích hoạt passive Mắt Đại Bàng).',
+    activeDesc: 'Tàn Sát Tầm Xa: 2 đợt quạt tên (đợt 1: 3 tên ±25°, đợt 2: 4 tên ±37°/12°, cách nhau 350ms). Tổng 7 tên phủ 60°, mỗi quái chỉ nhận 1 đòn/đợt. Quái >250đv nhận thêm +25% (Mắt Đại Bàng).',
     activeIcon: '🎯', activeCooldown: 10,
     evolvedWeapon: 'Tử Thần Chi Tên',
-    evolveDesc: 'Mũi tên áp độc khi trúng; xuyên qua địch đầu phân thành 3 tên nhỏ (×0.55/tên).',
+    evolveDesc: 'Mỗi tên trúng địch gây AoE độc 70px (×0.55, không đánh lại quái đã dính loạt). Áp độc lên tất cả trúng đòn.',
     color: '#ff9060',
   },
   {
@@ -6313,11 +6310,8 @@ class Player {
   }
 
   _activeThietTam(aimDir) {
-    // Tàn Sát Tầm Xa: 5 mũi tên liên tục theo 1 hướng, mỗi mũi/300ms, xuyên 5 quái
-    // onHit: nếu quái cách player >250 units → áp thêm +25% (passive Mắt Đại Bàng)
-    const arrowCount = 5;
-    const intervalMs = 300;
-
+    // Tàn Sát Tầm Xa: 2 đợt quạt tên — đợt 1 (3 tên, t=0), đợt 2 (4 tên, t=350ms)
+    // Tổng 7 tên phủ góc 60°. hitSet per đợt — cùng quái chỉ nhận 1 đòn/đợt.
     const centerAngle = aimDir
       ? Math.atan2(aimDir.y, aimDir.x)
       : (() => {
@@ -6328,50 +6322,66 @@ class Player {
             : (this.lastAngle !== undefined ? this.lastAngle : 0);
         })();
 
-    // Focus burst indicator — narrow arc thay vì quạt 180°
-    Game.slashArcs.push(new SlashArc(this.x, this.y, centerAngle, 55, '#ff9060', Math.PI * 0.18));
-    Game.particles.spawn(this.x, this.y, { count: 10, color: '#ff9060', speedMin: 60, speedMax: 180, life: 0.3,
-      angle: centerAngle, spread: 0.25 });
+    Game.slashArcs.push(new SlashArc(this.x, this.y, centerAngle, 70, '#ff9060', Math.PI * 0.35));
+    Game.particles.spawn(this.x, this.y, { count:12, color:'#ff9060', speedMin:80, speedMax:200, life:0.35,
+      angle: centerAngle, spread: 0.6 });
     Toast.show('🎯 Tàn Sát Tầm Xa!');
 
-    for (let i = 0; i < arrowCount; i++) {
-      const playerRef = this;
+    const playerRef = this;
+    const fireBurst = (angles, delay) => {
       setTimeout(() => {
-        // Mỗi mũi tên bắn từ vị trí hiện tại của player (cho phép di chuyển nhẹ giữa các phát)
-        Game.spawnProjectile({
-          x: playerRef.x, y: playerRef.y,
-          vx: Math.cos(centerAngle) * 700,
-          vy: Math.sin(centerAngle) * 700,
-          dmg: playerRef.totalDmg * 1.0,
-          r: 7, life: 1.5,
-          color: '#ff9060', owner: 'player',
-          pierce: 5,
-          shape: 'arrow',
-          _skillId: 'active_thiet_tam',
-          onHit: (e, p) => {
-            // Range check: nếu quái cách player >250 units → áp passive +25%
-            const distToPlayer = MathU.dist(playerRef.x, playerRef.y, e.x, e.y);
-            if (distToPlayer > 250) {
-              const bonusDmg = playerRef.totalDmg * 0.25;
-              e.takeDamage(bonusDmg, playerRef, 'arrow_range');
-              playerRef.trackSkillDmg('active_thiet_tam', bonusDmg);
-              Game.particles.spawn(e.x, e.y, {
-                count: 3, color: '#ffd700', speedMin: 20, speedMax: 60, life: 0.35,
-              });
-            }
-            Game.particles.spawn(p.x, p.y, {
-              count: 4, color: '#ff6020', speedMin: 20, speedMax: 60, life: 0.4,
-            });
-          },
+        if (!playerRef || playerRef.hp <= 0) return;
+        const burstHit = new Set();
+        angles.forEach(offset => {
+          const a = centerAngle + offset;
+          Game.spawnProjectile({
+            x: playerRef.x, y: playerRef.y,
+            vx: Math.cos(a) * 700,
+            vy: Math.sin(a) * 700,
+            dmg: playerRef.totalDmg * 1.0,
+            r: 7, life: 1.6,
+            color: '#ff7040', owner: 'player',
+            pierce: 5,
+            shape: playerRef.mainWeapon.evolved ? 'arrow_evolved' : 'arrow',
+            _skillId: 'active_thiet_tam',
+            onHit: (e, proj) => {
+              if (burstHit.has(e)) return;
+              burstHit.add(e);
+              // Mắt Đại Bàng range bonus
+              const distToPlayer = MathU.dist(playerRef.x, playerRef.y, e.x, e.y);
+              if (distToPlayer > 250) {
+                const bonusDmg = playerRef.totalDmg * 0.25;
+                e.takeDamage(bonusDmg, playerRef, 'arrow_range');
+                playerRef.trackSkillDmg('active_thiet_tam', bonusDmg);
+                Game.particles.spawn(e.x, e.y, { count:3, color:'#ffd700', speedMin:20, speedMax:60, life:0.35 });
+              }
+              // Evolved: AoE splash 80px tại điểm trúng
+              if (playerRef.mainWeapon.evolved) {
+                e.applyPoison(2, playerRef.totalDmg * 0.08);
+                Game.enemies.forEach(nearby => {
+                  if (nearby.dead || burstHit.has(nearby)) return;
+                  if (MathU.dist(e.x, e.y, nearby.x, nearby.y) <= 80) {
+                    burstHit.add(nearby);
+                    nearby.takeDamage(playerRef.totalDmg * 0.55, playerRef, 'normal');
+                    playerRef.trackSkillDmg('active_thiet_tam', playerRef.totalDmg * 0.55);
+                    nearby.applyPoison(2, playerRef.totalDmg * 0.08);
+                  }
+                });
+                Game.rings && Game.rings.push(new RingEffect(e.x, e.y, 80, '#ff5020'));
+              }
+              Game.particles.spawn(e.x, e.y, { count:5, color:'#ff6020', speedMin:30, speedMax:80, life:0.4 });
+            },
+          });
+          Game.particles.spawn(playerRef.x, playerRef.y, { count:3, color:'#ffcc88', speedMin:60, speedMax:130, life:0.2, angle: a, spread: 0.1 });
+          Audio.playSFX('slash');
         });
-        // Small spark mỗi phát bắn
-        Game.particles.spawn(playerRef.x, playerRef.y, {
-          count: 4, color: '#ffcc88', speedMin: 60, speedMax: 130, life: 0.2,
-          angle: centerAngle, spread: 0.2,
-        });
-        Audio.playSFX('slash');
-      }, i * intervalMs);
-    }
+      }, delay);
+    };
+
+    // Đợt 1: 3 tên (-25°, 0°, +25°)
+    fireBurst([-0.44, 0, 0.44], 0);
+    // Đợt 2: 4 tên (-37°, -12°, +12°, +37°)
+    fireBurst([-0.65, -0.21, 0.21, 0.65], 350);
   }
 
   _activeKimCang() {
@@ -9875,52 +9885,53 @@ const Game = (() => {
         if (!nearest) return;
         const dx = nearest.x - p.x;
         const dy = nearest.y - p.y;
-        const len = Math.sqrt(dx*dx+dy*dy)||1;
-        const pierce = Math.floor(p.pierce * 10) + (p.mainWeapon.evolved ? 99 : 0);
+        const baseAngle = Math.atan2(dy, dx);
+        const pierce = Math.floor(p.pierce * 10) + (p.mainWeapon.evolved ? 99 : 3);
         const baseProjDmg = dmg;
-        const spread = 0;
-        const a = Math.atan2(dy, dx) + spread;
-        spawnProjectile({ _skillId: 'main_thiet_tam',
-          x: p.x, y: p.y,
-          vx: Math.cos(a) * 600,
-          vy: Math.sin(a) * 600,
-          dmg: baseProjDmg,
-          r: 5 * aoe, life: 1.5,
-          color: '#ff9060',
-          owner: 'player',
-          pierce,
-          shape: p.mainWeapon.evolved ? 'arrow_evolved' : 'arrow',
-          onHit: (e, proj) => {
-            // Mắt Đại Bàng: +25% dmg to enemies >300 units away
-            const rangeDist = MathU.dist(p.x, p.y, e.x, e.y);
-            if (rangeDist > 250) {
-              e.takeDamage(baseProjDmg * 0.25, p, 'normal');
-              p.trackSkillDmg('main_thiet_tam', baseProjDmg * 0.25);
-              // Eagle Eye flash at hit point
-              particles.spawn(e.x, e.y, { count:5, color:'#ffcc60', speedMin:40, speedMax:90, life:0.3 });
-              Audio.playSFX('passive');  // subtle hawk screech
-            }
-            if (p.mainWeapon.evolved) {
-              // Fire trail DoT
-              e.applyPoison(2, baseProjDmg * 0.08);
-              // Tử Thần Chi Tên: split into 3 mini arrows after hitting first enemy
-              const hitAngle = Math.atan2(proj.vy, proj.vx);
-              for (let j = 0; j < 3; j++) {
-                const splitA = hitAngle + (j - 1) * 0.45;
-                spawnProjectile({ _skillId: 'main_thiet_tam',
-                  x: e.x, y: e.y,
-                  vx: Math.cos(splitA) * 380,
-                  vy: Math.sin(splitA) * 380,
-                  dmg: baseProjDmg * 0.55,
-                  r: 4 * aoe, life: 0.9,
-                  color: '#ffaa60',
-                  owner: 'player',
-                  pierce: 2,
-                  shape: 'arrow',
-                });
+        // Shared hitSet — cùng 1 quái chỉ nhận 1 đòn trong loạt quạt này
+        const volleyHit = new Set();
+        const spreadAngles = [-0.31, 0, 0.31]; // 3 tên, ±18°
+        spreadAngles.forEach(offset => {
+          const a = baseAngle + offset;
+          spawnProjectile({ _skillId: 'main_thiet_tam',
+            x: p.x, y: p.y,
+            vx: Math.cos(a) * 600,
+            vy: Math.sin(a) * 600,
+            dmg: baseProjDmg,
+            r: 5 * aoe, life: 1.5,
+            color: '#ff9060',
+            owner: 'player',
+            pierce,
+            shape: p.mainWeapon.evolved ? 'arrow_evolved' : 'arrow',
+            onHit: (e, proj) => {
+              // Chặn double-damage trong cùng loạt quạt
+              if (volleyHit.has(e)) return;
+              volleyHit.add(e);
+              // Mắt Đại Bàng: +25% dmg nếu quái >250 đơn vị
+              const rangeDist = MathU.dist(p.x, p.y, e.x, e.y);
+              if (rangeDist > 250) {
+                e.takeDamage(baseProjDmg * 0.25, p, 'normal');
+                p.trackSkillDmg('main_thiet_tam', baseProjDmg * 0.25);
+                particles.spawn(e.x, e.y, { count:5, color:'#ffcc60', speedMin:40, speedMax:90, life:0.3 });
+                Audio.playSFX('passive');
               }
-            }
-          },
+              if (p.mainWeapon.evolved) {
+                e.applyPoison(2, baseProjDmg * 0.08);
+                // AoE splash 70px tại điểm trúng — không đánh lại quái đã dính
+                Game.enemies.forEach(nearby => {
+                  if (nearby.dead || volleyHit.has(nearby)) return;
+                  if (MathU.dist(e.x, e.y, nearby.x, nearby.y) <= 70 * aoe) {
+                    volleyHit.add(nearby);
+                    nearby.takeDamage(baseProjDmg * 0.55, p, 'normal');
+                    p.trackSkillDmg('main_thiet_tam', baseProjDmg * 0.55);
+                    nearby.applyPoison(2, baseProjDmg * 0.08);
+                  }
+                });
+                particles.spawn(e.x, e.y, { count:8, color:'#ff4040', speedMin:50, speedMax:140, life:0.4 });
+                Game.rings && Game.rings.push(new RingEffect(e.x, e.y, 70 * aoe, '#ff4040'));
+              }
+            },
+          });
         });
         break;
       }
