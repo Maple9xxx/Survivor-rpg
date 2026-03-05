@@ -3326,20 +3326,20 @@ const UI = (() => {
         },
         {
           c: CHARS.find(c=>c.id==='tu_linh'),
-          dps: 'Base 120×1.35/s = 162/s · 20 Linh Hồn: ×1.7 = 275/s',
+          dps: 'Base 120×1.35/s = 162/s · 20 Linh Hồn: ×1.5 = 243/s',
           difficulty: '⭐⭐ Trung Bình',
           playstyle: 'Snowball — tích 20 Linh Hồn trước boss',
-          guide: `<b>Passive — Thu Hoạch Linh Hồn:</b> Mỗi kill tạo 1 Linh Hồn (tối đa 20), mỗi linh hồn +3.5% ST. Công thức: totalDmg = baseDmg×dmgMult × (1 + soulCount×0.035). HP<20%: tiêu thụ tất cả → hồi 25 HP/linh hồn.<br><br>
-<b>Active — Quân Đoàn Bất Tử (CD 9s, KHÔNG tiêu soul):</b> Triệu 3 bộ xương (tối đa 9) + tạo <b>Lĩnh Vực Tử Thần</b>: AoE 180đv pulse 7 lần trong 4 giây (×0.4 totalDmg/pulse). totalDmg đã bao gồm buff Linh Hồn → tại 20 souls: mỗi pulse đạt ×0.4×1.7 = ×0.68 baseDmg, tổng 7 pulse = ×4.76. Linh Hồn không bị mất sau cast.<br><br>
+          guide: `<b>Passive — Thu Hoạch Linh Hồn:</b> Mỗi kill tạo 1 Linh Hồn (tối đa 20), mỗi linh hồn +2.5% ST. Công thức: totalDmg = baseDmg×dmgMult × (1 + soulCount×0.025). HP<20%: tiêu thụ tất cả → hồi 25 HP/linh hồn.<br><br>
+<b>Active — Quân Đoàn Bất Tử (CD 9s, KHÔNG tiêu soul):</b> Triệu 3 bộ xương (tối đa 9) + tạo <b>Lĩnh Vực Tử Thần</b>: AoE 180đv pulse 5 lần trong 4 giây (×0.4 totalDmg/pulse). Tại 20 souls: mỗi pulse = ×0.4×1.5 = ×0.60 baseDmg, tổng 5 pulse = ×3.0. Linh Hồn không bị mất sau cast.<br><br>
 <b>Tiến hoá → Vong Hồn Đại Liềm:</b> Liềm to ×1.8, hút quái khi bay ra, xuyên tất cả địch khi về.<br><br>
-<b>Lưu ý:</b> Active <b>KHÔNG tiêu Linh Hồn</b> — spam thoải mái để gom xương (tối đa 9) + kích Lĩnh Vực liên tục. Tích đủ 20 souls trước boss để đạt +70% ST tối đa. Souls chỉ mất khi HP xuống dưới 20% (tiêu thụ toàn bộ để hồi 25 HP/soul) — chủ động tránh ngưỡng này khi đang có stack cao.`,
+<b>Lưu ý:</b> Active <b>KHÔNG tiêu Linh Hồn</b> — spam thoải mái để gom xương (tối đa 9) + kích Lĩnh Vực liên tục. Tích đủ 20 souls trước boss để đạt +50% ST tối đa. Souls chỉ mất khi HP xuống dưới 20% — chủ động tránh ngưỡng này khi đang có stack cao.`,
         },
         {
           c: CHARS.find(c=>c.id==='loi_than'),
           dps: 'Base 170×1.35/s = 230/s · 20 stack: ×1.8 → 414/s · Active: totalDmg×2.5 KHÔNG tiêu stack',
           difficulty: '⭐⭐ Trung Bình',
           playstyle: 'Stack builder — tích Lôi Tích rồi active để khuếch đại, không mất buff',
-          guide: `<b>Passive — Tĩnh Điện Tích Tụ:</b> Mỗi cú đánh tích 1 Lôi Tích (tối đa 20 stack, tích 2/đòn khi active đang buff). Mỗi stack +4% ST tổng — đạt +80% tại 20 stack. Đủ 20 stack: tự phóng AoE sét bán kính 130đv mỗi 3 giây liên tục.<br><br>\n<b>Active — Thiên Lôi Giáng Thế (CD 9s):</b> Phóng 5 tia Thiên Lôi — mỗi tia = <b>Tổng ST × 2.5 (KHÔNG tiêu stack)</b>, dây chuyền 4 mục tiêu (evolved: 6). Sau cast: ATK Speed +50% trong 5 giây + tích 2 Lôi Tích/đòn — vừa burst vừa đẩy stack nhanh hơn. Vũ khí tiếp tục khai thác đầy đủ buff stack trong suốt thời gian.<br><br>\n<b>Tiến hoá → Thần Lôi Vô Song:</b> Dây chuyền lên 6 mục tiêu. Mỗi link để lại vết sét gây 20% ST/giây × 2 giây. Active chain thêm 2 mục tiêu.<br><br>\n<b>Lưu ý:</b> Tích đủ 20 stack → dùng Active để burst 5×2.5=×12.5 totalDmg <b>trong khi giữ nguyên +80% buff</b> — vũ khí và auto-discharge tiếp tục hoạt động bình thường. Sau Active: ATK Speed +50% đẩy stack về 20 rất nhanh → vòng lặp siêu hiệu quả. Ưu tiên Dragon pet (crit) + AtkSpd để tối đa DPS liên tục.`,
+          guide: `<b>Passive — Tĩnh Điện Tích Tụ:</b> Mỗi cú đánh tích 1 Lôi Tích (tối đa 20 stack, tích 2/đòn khi active đang buff). Mỗi stack +4% ST tổng — đạt +80% tại 20 stack. Đủ 20 stack: tự phóng AoE sét bán kính 130đv mỗi 3 giây liên tục.<br><br>\n<b>Active — Thiên Lôi Giáng Thế (CD 9s):</b> Phóng 5 tia Thiên Lôi trong <b>tầm 400đv</b> — mỗi tia = <b>Tổng ST × 2.5 (KHÔNG tiêu stack)</b>, dây chuyền 4 mục tiêu (evolved: 6). Sau cast: ATK Speed +50% trong 5 giây + tích 2 Lôi Tích/đòn — vừa burst vừa đẩy stack nhanh hơn. Vũ khí tiếp tục khai thác đầy đủ buff stack trong suốt thời gian.<br><br>\n<b>Tiến hoá → Thần Lôi Vô Song:</b> Dây chuyền lên 6 mục tiêu. Mỗi link để lại vết sét gây 20% ST/giây × 2 giây. Active chain thêm 2 mục tiêu.<br><br>\n<b>Lưu ý:</b> Vũ khí chính và active đều nhắm trong <b>tầm 400đv</b> — di chuyển lại gần địch nếu không thấy sét khai hỏa. Tích đủ 20 stack → dùng Active để burst 5×2.5=×12.5 totalDmg <b>trong khi giữ nguyên +80% buff</b>. Sau Active: ATK Speed +50% đẩy stack về 20 rất nhanh → vòng lặp siêu hiệu quả. Ưu tiên Dragon pet (crit) + AtkSpd để tối đa DPS liên tục.`,
         },
         {
           c: CHARS.find(c=>c.id==='hoa_long'),
@@ -3692,7 +3692,8 @@ const UI = (() => {
         ['🏹','Thiết Tâm — Tàn Sát Tầm Xa','Giữ khoảng cách >250 đơn vị để khai thác +25% ST. Active bắn 5 mũi tên liên tục theo 1 hướng — mỗi mũi tự kiểm tra khoảng cách và áp thêm +25% nếu quái bị trúng ở xa. Nhắm thẳng vào đám đông hoặc boss để tối đa hóa pierce.'],
         ['🥋','Kim Cang — Trấn Áp Bất Động','Để quái tấn công để kích Kim Cang Thể: 20% chặn + hồi 5% HP + stack tốc đánh. Active giờ KÉO quái vào gần 80đv rồi stun 1.5s — không đẩy ra xa, giữ quái trong tầm Thiền Trượng. Mỗi block stack tích lũy khi cast: +×0.15 ST và +0.1s stun (tối đa ×6.45, stun 1.8s).'],
         ['🗡️','Ám Sát — Ẩn Kích Liên Hoàn','ATK +20% luôn có. HP<40%: ATK +50%, SPD +40%, -30% ST nhận + vô hình 5s (CD 15s). Khi vô hình, active Ẩn Kích Liên Hoàn: ×6.0 + chảy máu liên tục 3 giây (40% tổng ST/giây) mỗi mục tiêu, sau đó tái kích vô hình ngay nếu HP vẫn <40%. Vòng lặp: nhận đòn → vô hình → combo → tái vô hình → thoát.'],
-        ['💀','Tử Linh — Lĩnh Vực Tử Thần','Mỗi kill = +3.5% ST, tối đa 20 linh hồn = +70%. Active KHÔNG tiêu soul — triệu 3 bộ xương (tối đa 9) + Lĩnh Vực Tử Thần: AoE 180px pulse 7 lần/4 giây, mỗi pulse hưởng đầy đủ buff +70% souls. Tích đủ 20 souls trước boss để tối đa hóa — damage buff không bị mất sau active.'],
+        ['💀','Tử Linh — Lĩnh Vực Tử Thần','Mỗi kill = +2.5% ST, tối đa 20 linh hồn = +50%. Active KHÔNG tiêu soul — triệu 3 bộ xương (tối đa 9) + Lĩnh Vực Tử Thần: AoE 180px pulse 5 lần/4 giây, mỗi pulse hưởng đầy đủ buff +50% souls. Tích đủ 20 souls trước boss để tối đa hóa — damage buff không bị mất sau active.'],
+        ['⚡','Lôi Thần — Tầm 400px','Vũ khí sét và active đều hoạt động trong tầm 400 đơn vị — luôn di chuyển vào gần đám quái. Tích đủ 20 Lôi Tích (+80% ST) trước khi dùng active để tối đa burst ×12.5. Sau active nhận ATK Speed +50% trong 5 giây — đẩy stack về 20 rất nhanh cho lần tiếp theo.'],
       ];
       tips.forEach(([icon, title, text]) => { entry(icon, title, p(text)); });
     }
@@ -4137,8 +4138,8 @@ const UI = (() => {
       extra: {
         statHP: 105, statSPD: 115, statDMG: 20, statATK: 1.35,
         weapon:  { icon:'☠️', tag:'VŨ KHÍ CHÍNH', name:'Lưỡi Liềm Tử Thần', desc:'Boomerang: bay ra rồi tự quay lại, pierce 5 kẻ thù mỗi chiều. Cả đường đi lẫn đường về đều gây sát thương.' },
-        passive: { icon:'💀', tag:'PASSIVE', name:'Thu Hoạch Linh Hồn', desc:'Giết quái tạo Linh Hồn (tối đa 20), mỗi cái +3.5% sát thương (+70% tối đa). Bộ xương triệu hồi cũng tạo Linh Hồn khi giết quái. HP<20%: tiêu thụ tất cả để hồi 25 HP/linh hồn.' },
-        active:  { icon:'💀', tag:'ACTIVE', name:'Quân Đoàn Bất Tử', desc:'Triệu 3 bộ xương (tối đa 9) + Lĩnh Vực Tử Thần: AoE 180px pulse 7 lần trong 4 giây (×0.4 totalDmg/pulse, hưởng đầy đủ buff Linh Hồn). KHÔNG tiêu thụ Linh Hồn.', cd:9 },
+        passive: { icon:'💀', tag:'PASSIVE', name:'Thu Hoạch Linh Hồn', desc:'Giết quái tạo Linh Hồn (tối đa 20), mỗi cái +2.5% sát thương (+50% tối đa). Bộ xương triệu hồi cũng tạo Linh Hồn khi giết quái. HP<20%: tiêu thụ tất cả để hồi 25 HP/linh hồn.' },
+        active:  { icon:'💀', tag:'ACTIVE', name:'Quân Đoàn Bất Tử', desc:'Triệu 3 bộ xương (tối đa 9) + Lĩnh Vực Tử Thần: AoE 180px pulse 5 lần trong 4 giây (×0.4 totalDmg/pulse, hưởng đầy đủ buff Linh Hồn). KHÔNG tiêu thụ Linh Hồn.', cd:9 },
         evolve:  { icon:'🌀', tag:'TIẾN HÓA', name:'Vong Hồn Đại Liềm', desc:'Liềm to ×1.8, hút quái vào khi bay đi (knockback ngược). Đường về: xuyên tất cả kẻ thù còn lại, không giới hạn.' },
       }
     },
@@ -4432,7 +4433,7 @@ const UI = (() => {
         html += row('🌬️','Kiếm Ý', stacks + '/30 (+' + Math.floor(stacks * 1.5) + '%⚡ · Active ×' + activeMult + ')', stacks > 0 ? 'up' : '');
       } else if (cid === 'tu_linh') {
         const souls = player.soulCount || 0;
-        html += row('💀','Linh Hồn', souls + '/20 (+' + Math.round(souls * 3.5) + '%ST)', souls > 0 ? 'up' : '');
+        html += row('💀','Linh Hồn', souls + '/20 (+' + Math.round(souls * 2.5) + '%ST)', souls > 0 ? 'up' : '');
       } else if (cid === 'kim_cang') {
         if (kimCangBonus > 0) {
           const blockCount = Math.min(3, Math.round(kimCangBonus / 0.07));
@@ -5072,9 +5073,9 @@ const CHARS = [
     weapon: 'Lưỡi Liềm Tử Thần', weaponDesc: 'Ném liềm quay vòng ra ngoài rồi quay lại (boomerang).',
     weaponIcon: '☠️',
     passiveName: 'Thu Hoạch Linh Hồn',
-    passiveDesc: 'Giết quái tạo Linh Hồn (tối đa 20), mỗi cái +3.5% sát thương (+70% tối đa). Bộ xương triệu hồi cũng tạo Linh Hồn khi giết quái. HP<20%: tiêu thụ tất cả để hồi 25 HP/linh hồn.',
+    passiveDesc: 'Giết quái tạo Linh Hồn (tối đa 20), mỗi cái +2.5% sát thương (+50% tối đa). Bộ xương triệu hồi cũng tạo Linh Hồn khi giết quái. HP<20%: tiêu thụ tất cả để hồi 25 HP/linh hồn.',
     activeName: 'Quân Đoàn Bất Tử',
-    activeDesc: 'Triệu hồi 3 bộ xương (tối đa 9) + tạo Lĩnh Vực Tử Thần: AoE 180px pulse liên tục 4 giây (7 pulse × ×0.4 sát thương, hưởng trực tiếp từ buff +70% Linh Hồn). Không tiêu thụ Linh Hồn.',
+    activeDesc: 'Triệu hồi 3 bộ xương (tối đa 9) + tạo Lĩnh Vực Tử Thần: AoE 180px pulse liên tục 4 giây (5 pulse × ×0.4 sát thương, hưởng trực tiếp từ buff +50% Linh Hồn). Không tiêu thụ Linh Hồn.',
     activeIcon: '💀', activeCooldown: 9,
     evolvedWeapon: 'Vong Hồn Đại Liềm',
     evolveDesc: 'Liềm to gấp 1.8 lần, hút quái vào khi bay, khi về xuyên tất cả địch còn lại.',
@@ -5082,14 +5083,14 @@ const CHARS = [
   },
   {
     id: 'loi_than', icon: '⚡', name: 'Lôi Thần', title: 'Thần Lôi Vương',
-    cost: 1800,
+    cost: 250000,
     baseHP: 580, baseSpd: 130, baseDmg: 170, baseAtk: 1.35,
-    weapon: 'Thiên Lôi Cổ', weaponDesc: 'Gọi sét xuống quái gần nhất, dây chuyền sang 3 quái bên (×0.6/chuỗi). Mỗi cú tích 1 Lôi Tích (tối đa 20). ST tổng đã bao gồm +4%/stack.',
+    weapon: 'Thiên Lôi Cổ', weaponDesc: 'Gọi sét xuống quái gần nhất trong tầm 400đv, dây chuyền sang 3 quái bên (×0.6/chuỗi). Mỗi cú tích 1 Lôi Tích (tối đa 20). ST tổng đã bao gồm +4%/stack.',
     weaponIcon: '⚡',
     passiveName: 'Tĩnh Điện Tích Tụ',
     passiveDesc: 'Mỗi cú đánh tích 1 Lôi Tích (tối đa 20), mỗi stack +4% ST (tối đa +80%). Đủ 20 stack: tự phóng AoE sét mỗi 3 giây liên tục. Dùng Active KHÔNG tiêu stack.',
     activeName: 'Thiên Lôi Giáng Thế',
-    activeDesc: 'Phóng 5 tia Thiên Lôi cộng hưởng — mỗi tia = Tổng ST hiện tại × 2.5 (đã nhân buff Lôi Tích, KHÔNG tiêu stack). Dây chuyền 4 mục tiêu. Sau cast: ATK Speed +50% trong 5 giây + tích 2 Lôi Tích/đòn.',
+    activeDesc: 'Phóng 5 tia Thiên Lôi cộng hưởng trong tầm 400đv — mỗi tia = Tổng ST hiện tại × 2.5 (đã nhân buff Lôi Tích, KHÔNG tiêu stack). Dây chuyền 4 mục tiêu. Sau cast: ATK Speed +50% trong 5 giây + tích 2 Lôi Tích/đòn.',
     activeIcon: '🌩️', activeCooldown: 9,
     evolvedWeapon: 'Thần Lôi Vô Song',
     evolveDesc: 'Sét dây chuyền lên 6 mục tiêu/chuỗi. Mỗi dây chuyền để lại vết sét gây 20% ST/giây trong 2 giây. Active chain thêm 2 mục tiêu (tổng 6).',
@@ -5097,7 +5098,7 @@ const CHARS = [
   },
   {
     id: 'hoa_long', icon: '🔥', name: 'Hỏa Long', title: 'Rồng Lửa Thiêu Thân',
-    cost: 2200,
+    cost: 250000,
     baseHP: 720, baseSpd: 110, baseDmg: 155, baseAtk: 1.3,
     weapon: 'Long Hỏa Quyền', weaponDesc: 'Đấm lửa rồng tạo AoE 120° rộng quanh người. Quái cháy nhận 20% ST/giây thêm 2 giây. Trong Dragon Form: vũ khí tiếp tục khai thác toàn bộ buff passive.',
     weaponIcon: '🔥',
@@ -5112,9 +5113,9 @@ const CHARS = [
   },
   {
     id: 'bang_vuong', icon: '❄️', name: 'Băng Vương', title: 'Vương Giả Tuyết Lạnh',
-    cost: 2500,
+    cost: 250000,
     baseHP: 500, baseSpd: 125, baseDmg: 195, baseAtk: 1.0,
-    weapon: 'Băng Linh Nhẫn', weaponDesc: 'Phóng 4 vòng băng xoay tròn quanh người, va chạm làm chậm địch 40% trong 2 giây. Địch đang chậm/đóng băng nhận thêm 45% ST từ mọi nguồn.',
+    weapon: 'Băng Linh Nhẫn', weaponDesc: 'Phóng 4 vòng băng trong vòng cung 180° hướng về quái gần nhất, va chạm làm chậm địch 40% trong 2 giây. Địch đang chậm/đóng băng nhận thêm 45% ST từ mọi nguồn.',
     weaponIcon: '🧊',
     passiveName: 'Tuyệt Đối Không Độ',
     passiveDesc: 'Địch đang chậm/đóng băng nhận thêm 45% ST từ mọi nguồn. Giết địch đóng băng: hồi 8 HP. HP<25%: Băng Hộ Thể — hấp thụ 400 ST và phản chiếu 60% về nguồn tấn công.',
@@ -5140,7 +5141,7 @@ const AIM_CONFIG = {
   kim_cang:     { type:'aoe',       range:90,  color:'#ffd700', label:'Trấn Áp Bất Động'  },
   am_sat:       { type:'target',    range:450, color:'#cc44ff', maxT:3, label:'Ẩn Kích'   },
   tu_linh:      { type:'aoe',       range:185, color:'#ff4060', label:'Lĩnh Vực Tử Thần' },
-  loi_than:     { type:'target',    range:300, color:'#00eeff', maxT:5, label:'Thiên Lôi' },
+  loi_than:     { type:'target',    range:400, color:'#00eeff', maxT:5, label:'Thiên Lôi' },
   hoa_long:     { type:'aoe',       range:200, color:'#ff5500', label:'Rồng Lửa'          },
   bang_vuong:   { type:'aoe',       range:355, color:'#88eeff', label:'Bão Tuyết'         },
 };
@@ -5592,7 +5593,7 @@ class Player {
       // Bóng Tối: ATK +20% thường xuyên, +50% khi HP<40%
       d *= (this.hp < this.maxHp * 0.40) ? 1.5 : 1.2;
     } else if (this.charData.id === 'tu_linh') {
-      d *= (1 + this.soulCount * 0.035);
+      d *= (1 + this.soulCount * 0.025);
     } else if (this.charData.id === 'loi_than') {
       // Tĩnh Điện Tích Tụ: +4% ST/stack Lôi Tích
       d *= (1 + (this.passiveStacks || 0) * 0.04);
@@ -6548,7 +6549,7 @@ class Player {
     // ── Lĩnh Vực Tử Thần: pulsing death field ──
     const domainRadius = 180 * this.aoeSize;
     const pulseDuration = 4.0;
-    const totalPulses   = 7;
+    const totalPulses   = 5;
     const castRef       = this;
 
     // Outer ring marks domain boundary
@@ -6598,7 +6599,7 @@ class Player {
       });
     }
 
-    const soulPct = Math.round((this.soulCount || 0) * 3.5);
+    const soulPct = Math.round((this.soulCount || 0) * 2.5);
     Toast.show(`💀 Lĩnh Vực Tử Thần! ${this.soulCount}/20 linh hồn (+${soulPct}% ST) — AoE 4 giây!`);
     // Linh Hồn KHÔNG bị tiêu thụ — totalDmg buff vẫn giữ nguyên
   }
@@ -6801,6 +6802,7 @@ class Player {
         const tgt = Game.enemies.reduce((best, e) => {
           if (e.dead) return best;
           const d = MathU.dist(p.x, p.y, e.x, e.y);
+          if (d > 400) return best;
           return (!best || d < MathU.dist(p.x, p.y, best.x, best.y)) ? e : best;
         }, null);
         if (!tgt) return;
@@ -6912,6 +6914,7 @@ class Player {
       blizzElapsed += 0.3;
       if (blizzElapsed >= 6) { clearInterval(dti5); return; }
       Game.enemies.forEach(e => {
+        if (MathU.dist(castRef3.x, castRef3.y, e.x, e.y) > blizzardR) return;
         e.slowFactor = 0.4; e.slowTimer = 600;
         e.takeDamage(castRef3.totalDmg * 1.2 * 0.3, castRef3, 'normal');
         const entry = blizzardEntry.get(e) || 0;
@@ -9744,8 +9747,8 @@ const Game = (() => {
     const dmg = p.totalDmg;
     const aoe = p.aoeSize;
 
-    // Find nearest enemy for targeting
-    const nearest = getNearestEnemy(p.x, p.y);
+    // Find nearest enemy — Lôi Thần capped at 400px to stay on-screen
+    const nearest = getNearestEnemy(p.x, p.y, 0, id === 'loi_than' ? 400 : Infinity);
     // am_sat, luu_phong, huyen_nguyet use AoE/random/homing — don't need a specific target
     if (!nearest && id !== 'kim_cang' && id !== 'am_sat' && id !== 'luu_phong' && id !== 'huyen_nguyet') return;
 
@@ -10169,7 +10172,8 @@ const Game = (() => {
         const hlDmg2 = dmg;
         const coneR2 = 110 * aoe;
         // ── Fire cone visual toward nearest enemy ──
-        const hlAngle = nearest ? Math.atan2(nearest.y - p.y, nearest.x - p.x) : p._facing === -1 ? Math.PI : 0;
+        const hlNearest = nearest && MathU.dist(p.x, p.y, nearest.x, nearest.y) < 320 ? nearest : null;
+        const hlAngle = hlNearest ? Math.atan2(hlNearest.y - p.y, hlNearest.x - p.x) : p._facing === -1 ? Math.PI : 0;
         fireConeEffects.push(new FireConeEffect(p.x, p.y, hlAngle, coneR2, p.mainWeapon.evolved));
         Game.explosionAt(p.x, p.y, coneR2, hlDmg2, '#ff5500', 'main_hoa_long');
         rings.push(new RingEffect(p.x, p.y, coneR2, '#ff3300'));
@@ -10197,7 +10201,7 @@ const Game = (() => {
         const iceDmg2 = dmg;
         const baseAng2 = nearest ? Math.atan2(nearest.y - p.y, nearest.x - p.x) : 0;
         for (let ri = 0; ri < 4; ri++) {
-          const ra = baseAng2 + (ri / 4) * Math.PI * 2;
+          const ra = baseAng2 + (ri / 3 - 0.5) * Math.PI;
           const irProj = {
             x: p.x, y: p.y,
             vx: Math.cos(ra) * 210, vy: Math.sin(ra) * 210,
@@ -11583,9 +11587,9 @@ const Game = (() => {
   }
 
   // ----- HELPERS -----
-  function getNearestEnemy(x, y, skip = 0) {
+  function getNearestEnemy(x, y, skip = 0, maxRange = Infinity) {
     let sorted = enemies
-      .filter(e => !e.dead)
+      .filter(e => !e.dead && (maxRange === Infinity || MathU.dist(x, y, e.x, e.y) < maxRange))
       .sort((a, b) => MathU.dist2(x,y,a.x,a.y) - MathU.dist2(x,y,b.x,b.y));
     return sorted[skip] || null;
   }
