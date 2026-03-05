@@ -9211,7 +9211,7 @@ class RingEffect {
   draw(ctx, camX, camY) {
     if (this.dead) return;
     const sx = this.x - camX, sy = this.y - camY;
-    if (sx + this.maxR < -20 || sx - this.maxR > (canvas ? canvas.width : 900) + 20) return;
+    if (sx + this.maxR < -20 || sx - this.maxR > (window.innerWidth || 900) + 20) return;
     const alpha = this.life / this.maxLife;
     const r = Math.max(1, this.r);
     const prevAlpha = ctx.globalAlpha;
@@ -9677,7 +9677,7 @@ class IceShardBurst {
   draw(ctx, camX, camY) {
     if (this.dead) return;
     const sx = this.x - camX, sy = this.y - camY;
-    if (sx < -this.radius * 3 || sx > (canvas ? canvas.width : 900) + this.radius * 3) return;
+    if (sx < -this.radius * 3 || sx > (window.innerWidth || 900) + this.radius * 3) return;
     const alpha    = this.life / this.maxLife;
     const progress = 1 - alpha;
     const prevAlpha = ctx.globalAlpha;
@@ -10030,7 +10030,7 @@ const Game = (() => {
 
     if (!paused) {
       try { update(dt); } catch(e) { console.error('[update error]', e); }
-      try { render(); }  catch(e) { console.error('[render error]', e); Toast && Toast.show('\u26a0\ufe0f Render: ' + String(e.message).substring(0,50)); }
+      try { render(); }  catch(e) { console.error('[render error]', e); }
     }
 
     // Đăng ký frame tiếp theo SAU update/render
