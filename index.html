@@ -9680,7 +9680,8 @@ class IceShardBurst {
     if (sx < -this.radius * 3 || sx > (window.innerWidth || 900) + this.radius * 3) return;
     const alpha    = this.life / this.maxLife;
     const progress = 1 - alpha;
-    const prevAlpha = ctx.globalAlpha;
+
+    ctx.save();
 
     // ── Central impact flash (only very start) ──
     if (alpha > 0.72) {
@@ -9697,7 +9698,7 @@ class IceShardBurst {
     ctx.strokeStyle = '#55ccff';
     ctx.lineWidth   = 7;
     ctx.beginPath();
-    ctx.arc(sx, sy, this.radius * (0.35 + progress * 0.95), 0, 6.2832);
+    ctx.arc(sx, sy, Math.max(1, this.radius * (0.35 + progress * 0.95)), 0, 6.2832);
     ctx.stroke();
 
     // ── Main freeze ring ──
@@ -9705,7 +9706,7 @@ class IceShardBurst {
     ctx.strokeStyle = '#ccf8ff';
     ctx.lineWidth   = 2.2;
     ctx.beginPath();
-    ctx.arc(sx, sy, this.radius * (0.4 + progress * 0.8), 0, 6.2832);
+    ctx.arc(sx, sy, Math.max(1, this.radius * (0.4 + progress * 0.8)), 0, 6.2832);
     ctx.stroke();
 
     // ── Inner bright ring ──
@@ -9713,7 +9714,7 @@ class IceShardBurst {
     ctx.strokeStyle = '#ffffff';
     ctx.lineWidth   = 1.2;
     ctx.beginPath();
-    ctx.arc(sx, sy, this.radius * (0.35 + progress * 0.7) * 0.88, 0, 6.2832);
+    ctx.arc(sx, sy, Math.max(1, this.radius * (0.35 + progress * 0.7) * 0.88), 0, 6.2832);
     ctx.stroke();
 
     if (this.evolved) {
@@ -9721,7 +9722,7 @@ class IceShardBurst {
       ctx.strokeStyle = '#88eeff';
       ctx.lineWidth   = 1.5;
       ctx.beginPath();
-      ctx.arc(sx, sy, this.radius * (0.6 + progress * 1.1), 0, 6.2832);
+      ctx.arc(sx, sy, Math.max(1, this.radius * (0.6 + progress * 1.1)), 0, 6.2832);
       ctx.stroke();
     }
 
@@ -9741,7 +9742,8 @@ class IceShardBurst {
     }
     ctx.stroke();
 
-    ctx.globalAlpha = prevAlpha;
+    ctx.globalAlpha = 1;
+    ctx.restore();
   }
 }
 
