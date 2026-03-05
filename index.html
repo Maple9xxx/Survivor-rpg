@@ -1416,7 +1416,7 @@ const CFG = {
   WAVE_DURATION: 30,            // giây mỗi wave
   MAX_ENEMIES_ON_SCREEN: 120,
   JOYSTICK_RADIUS: 55,
-  EXP_TABLE: [0,10,25,45,70,100,140,185,240,300,380,470,570,680,800],
+  EXP_TABLE: [0,8,11,14,19,24,30,37,46,55,66,78,92,108,125,145,167,191,218,248],
   GOLD_MULTIPLIER: 1,
   MAX_ENEMIES: 120,
   MAX_WAVES: 20,
@@ -3838,13 +3838,11 @@ const UI = (() => {
       `${Math.ceil(player.hp)}/${player.maxHp}`;
 
     const expNeeded = CFG.EXP_TABLE[Math.min(player.level, CFG.EXP_TABLE.length-1)] || 999;
-    const expPrev   = CFG.EXP_TABLE[Math.min(player.level-1, CFG.EXP_TABLE.length-1)] || 0;
-    const expRange  = expNeeded - expPrev;
-    const expCur    = player.exp - expPrev;
-    const expPct    = Math.min(100, (expCur / expRange) * 100);
+    const expCur    = Math.max(0, player.exp);  // exp giờ là số dư trong level hiện tại
+    const expPct    = Math.min(100, (expCur / expNeeded) * 100);
     document.getElementById('hud-exp-bar').style.width = expPct + '%';
     document.getElementById('hud-exp-text').textContent =
-      `${Math.floor(expCur)}/${expRange}`;
+      `${Math.floor(expCur)}/${expNeeded}`;
 
     const m = Math.floor(timer / 60);
     const s = Math.floor(timer % 60);
@@ -6065,6 +6063,7 @@ class Player {
     while (this.level < 20) {
       const needed = CFG.EXP_TABLE[Math.min(this.level, CFG.EXP_TABLE.length - 1)];
       if (this.exp < needed) break;
+      this.exp -= needed;   // FIX: trừ exp đã dùng — không tích lũy xuyên level
       this.level++;
       Audio.playSFX('levelup');
       Game.particles.spawn(this.x, this.y, {
@@ -10865,7 +10864,7 @@ const Game = (() => {
       ...template,
       hp:  template.hp  * (1 + wave * 0.15),
       dmg: template.dmg * (1 + wave * 0.08),
-      exp: template.exp,
+      exp: Math.round(template.exp * (1 + wave * 0.10)),
     });
     enemies.push(e);
   }
