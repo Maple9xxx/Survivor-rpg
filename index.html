@@ -3353,7 +3353,7 @@ const UI = (() => {
           dps: 'Base 195×1.0/s × 4 rings = 780/s · vs chậm/đóng băng ×1.45 = 1,131/s (distributed)',
           difficulty: '⭐⭐ Trung Bình',
           playstyle: 'Control-burst — slow địch → khai thác +45% mọi nguồn ST, active không gián đoạn vũ khí',
-          guide: `<b>Passive — Tuyệt Đối Không Độ:</b> Địch chậm/đóng băng nhận thêm +45% ST từ <b>mọi nguồn: vũ khí, active, crit, evolved shard</b> đều hưởng. Băng Linh Nhẫn tự kích điều kiện mỗi lần trúng (slow 40% × 2 giây). Giết địch đóng băng: hồi 8 HP. HP<25%: <b>Băng Hộ Thể — hấp thụ 400 ST, phản chiếu 60%</b>.<br><br>\n<b>Active — Bão Tuyết Tận Thế (CD 11s):</b> Bão tuyết 350px trong 6 giây: chậm 60% + ×1.2/giây (hưởng +45%). <b>Vũ khí Băng Linh Nhẫn tiếp tục bắn bình thường trong bão</b> — 4 rings/giây × ×1.45 effective. Địch trong bão ≥3 giây → đóng băng 2 giây. Kết thúc: Băng Nổ ×5.5 (địch còn chậm → ×5.5×1.45 = ×7.98 effective).<br><br>\n<b>Tiến hoá → Vong Linh Băng Trận:</b> Băng Nhẫn trúng địch tách 2 mảnh homing (×0.6/mảnh, đều hưởng +45%). Địch đóng băng chết nổ AoE băng 120px + đóng băng địch xung quanh 1 giây.<br><br>\n<b>Lưu ý:</b> 4 rings × 195 × 1.45 × 1.0/s = 1,131/s distributed — cao nhất game với evolved. Active KHÔNG làm mất vũ khí: Bão + rings đồng thời = toàn bộ +45% hoạt động mọi lúc. Dùng Dragon pet — 4 rings/shot = 4 cơ hội crit → Dragon Rage kích liên tục. Ưu tiên AtkSpd + CritDMG.`,
+          guide: `<b>Passive — Tuyệt Đối Không Độ:</b> Địch chậm/đóng băng nhận thêm +45% ST từ <b>mọi nguồn: vũ khí, active, crit, evolved shard</b> đều hưởng. Băng Linh Nhẫn tự kích điều kiện mỗi lần trúng (slow 40% × 2 giây). Giết địch đóng băng: hồi 8 HP. HP<25%: <b>Băng Hộ Thể — hấp thụ 400 ST, phản chiếu 60%</b>.<br><br>\n<b>Active — Bão Tuyết Tận Thế (CD 11s):</b> Bão tuyết 200px trong 6 giây: chậm 60% + ×1.2/giây (hưởng +45%). <b>Vũ khí Băng Linh Nhẫn tiếp tục bắn bình thường trong bão</b> — 4 rings/giây × ×1.45 effective. Địch trong bão ≥3 giây → đóng băng 2 giây. Kết thúc: Băng Nổ ×5.5 (địch còn chậm → ×5.5×1.45 = ×7.98 effective).<br><br>\n<b>Tiến hoá → Vong Linh Băng Trận:</b> Băng Nhẫn trúng địch tách 2 mảnh homing (×0.6/mảnh, đều hưởng +45%). Địch đóng băng chết nổ AoE băng 120px + đóng băng địch xung quanh 1 giây.<br><br>\n<b>Lưu ý:</b> 4 rings × 195 × 1.45 × 1.0/s = 1,131/s distributed — cao nhất game với evolved. Active KHÔNG làm mất vũ khí: Bão + rings đồng thời = toàn bộ +45% hoạt động mọi lúc. Dùng Dragon pet — 4 rings/shot = 4 cơ hội crit → Dragon Rage kích liên tục. Ưu tiên AtkSpd + CritDMG.`,
         },
       ];
 
@@ -4166,7 +4166,7 @@ const UI = (() => {
         statHP: 100, statSPD: 125, statDMG: 37, statATK: 0.85,
         weapon:  { icon:'🧊', tag:'VŨ KHÍ CHÍNH', name:'Băng Linh Nhẫn', desc:'Phóng 4 vòng băng xoay tròn quanh người, va chạm làm chậm địch 30% trong 1.5 giây. Địch đang chậm nhận thêm 35% sát thương.' },
         passive: { icon:'❄️', tag:'PASSIVE', name:'Tuyệt Đối Không Độ', desc:'Địch đang chậm/đóng băng nhận thêm 35% ST. Giết địch đóng băng: hồi 8 HP. HP<25%: bọc băng bảo hộ — hấp thụ 300 ST và phản chiếu 50%.' },
-        active:  { icon:'🌨️', tag:'ACTIVE', name:'Bão Tuyết Tận Thế', desc:'Bão tuyết bán kính 350px trong 6 giây: địch chậm 60% + ST ×1.2/giây. Đứng trong bão 3 giây liên tiếp bị đóng băng 2 giây. Kết thúc: Băng Nổ ×4.0 toàn vùng.', cd:14 },
+        active:  { icon:'🌨️', tag:'ACTIVE', name:'Bão Tuyết Tận Thế', desc:'Bão tuyết bán kính 200px trong 6 giây: địch chậm 60% + ST ×1.2/giây. Đứng trong bão 3 giây liên tiếp bị đóng băng 2 giây. Kết thúc: Băng Nổ ×4.0 toàn vùng.', cd:14 },
         evolve:  { icon:'❄️', tag:'TIẾN HÓA', name:'Vong Linh Băng Trận', desc:'Băng Nhẫn trúng địch phân nhánh 2 mảnh băng homing (×0.5/mảnh). Địch đóng băng chết nổ AoE băng thêm 100px.' },
       }
     },
@@ -5120,7 +5120,7 @@ const CHARS = [
     passiveName: 'Tuyệt Đối Không Độ',
     passiveDesc: 'Địch đang chậm/đóng băng nhận thêm 45% ST từ mọi nguồn. Giết địch đóng băng: hồi 8 HP. HP<25%: Băng Hộ Thể — hấp thụ 400 ST và phản chiếu 60% về nguồn tấn công.',
     activeName: 'Bão Tuyết Tận Thế',
-    activeDesc: 'Bão tuyết 350px trong 6 giây: địch chậm 60% + ×1.2/giây (vũ khí/crit hưởng +45%). Đứng trong bão 3 giây liên tiếp → đóng băng 2 giây. Kết thúc: Băng Nổ ×5.5 toàn vùng.',
+    activeDesc: 'Bão tuyết 200px trong 6 giây: địch chậm 60% + ×1.2/giây (vũ khí/crit hưởng +45%). Đứng trong bão 3 giây liên tiếp → đóng băng 2 giây. Kết thúc: Băng Nổ ×5.5 toàn vùng.',
     activeIcon: '🌨️', activeCooldown: 11,
     evolvedWeapon: 'Vong Linh Băng Trận',
     evolveDesc: 'Băng Nhẫn trúng địch phân nhánh 2 mảnh băng homing (×0.6/mảnh). Địch đóng băng chết: nổ AoE băng 120px + đóng băng địch xung quanh trong 1 giây.',
@@ -5143,7 +5143,7 @@ const AIM_CONFIG = {
   tu_linh:      { type:'aoe',       range:185, color:'#ff4060', label:'Lĩnh Vực Tử Thần' },
   loi_than:     { type:'target',    range:200, color:'#00eeff', maxT:5, label:'Thiên Lôi' },
   hoa_long:     { type:'aoe',       range:200, color:'#ff5500', label:'Rồng Lửa'          },
-  bang_vuong:   { type:'aoe',       range:355, color:'#88eeff', label:'Bão Tuyết'         },
+  bang_vuong:   { type:'aoe',       range:200, color:'#88eeff', label:'Bão Tuyết'         },
 };
 
 /* ============================================================
@@ -6900,7 +6900,7 @@ class Player {
   _activeBangVuong() {
     const p = this;
     Audio.playSFX('active_bang_vuong');
-    const blizzardR = 350;
+    const blizzardR = 200;
     p._blizzardActive = true;
     Game.rings.push(new RingEffect(p.x, p.y, blizzardR, '#88eeff'));
     Game.rings.push(new RingEffect(p.x, p.y, blizzardR * 0.6, '#ccf8ff'));
