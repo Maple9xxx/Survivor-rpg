@@ -170,14 +170,30 @@ canvas{display:block;image-rendering:pixelated;}
 #skill-btn.theme-bang_vuong:not(.on-cooldown){animation:skb-bv 2.5s ease-in-out infinite;}
 #skill-aim-indicator{display:none!important;}
 #pause-btn{position:absolute;top:8px;left:12px;width:36px;height:36px;background:rgba(0,0,0,.5);border:1px solid rgba(255,255,255,.2);border-radius:6px;color:#fff;font-size:16px;display:flex;align-items:center;justify-content:center;cursor:pointer;pointer-events:all;z-index:10;-webkit-appearance:none;}
-#stat-toggle-btn{position:absolute;top:52px;left:12px;width:36px;height:36px;background:rgba(0,0,0,.6);border:1px solid rgba(100,180,255,.35);border-radius:6px;color:#fff;font-size:16px;display:flex;align-items:center;justify-content:center;cursor:pointer;pointer-events:all;z-index:10;-webkit-appearance:none;transition:border-color .2s;}
+#stat-toggle-btn{position:absolute;top:52px;left:12px;width:36px;height:36px;background:rgba(0,0,0,.55);border:1px solid rgba(100,180,255,.35);border-radius:6px;color:#fff;font-size:16px;display:flex;align-items:center;justify-content:center;cursor:pointer;pointer-events:all;z-index:10;-webkit-appearance:none;transition:border-color .2s,box-shadow .2s;}
 #stat-toggle-btn.active{border-color:#60d0ff;box-shadow:0 0 8px rgba(96,208,255,.4);}
-#ingame-stat-panel{position:absolute;top:96px;left:8px;width:180px;background:rgba(5,10,20,.88);border:1px solid rgba(96,208,255,.3);border-radius:8px;padding:8px 10px;pointer-events:all;z-index:10;backdrop-filter:blur(4px);}
-.isp-title{font-size:9px;color:#60d0ff;letter-spacing:2px;font-weight:700;margin-bottom:6px;text-align:center;}
-.isp-row{display:flex;justify-content:space-between;align-items:center;padding:2px 0;border-bottom:1px solid rgba(255,255,255,.05);}
+#ingame-stat-panel{
+  position:absolute;top:96px;left:0;width:160px;
+  background:rgba(4,8,18,.72);
+  border:1px solid rgba(96,208,255,.25);
+  border-left:none;
+  border-radius:0 8px 8px 0;
+  padding:7px 10px 4px 10px;
+  pointer-events:all;z-index:10;
+  backdrop-filter:blur(6px);
+  -webkit-backdrop-filter:blur(6px);
+  transform:translateX(-100%);
+  opacity:0;
+  transition:transform .22s cubic-bezier(.25,.8,.25,1), opacity .22s ease;
+}
+#ingame-stat-panel.isp-visible{transform:translateX(0);opacity:1;}
+#isp-timer-bar-wrap{height:2px;background:rgba(255,255,255,.1);border-radius:1px;margin-top:5px;overflow:hidden;}
+#isp-timer-bar{height:100%;width:100%;background:#60d0ff;border-radius:1px;transition:width linear;}
+.isp-title{font-size:9px;color:#60d0ff;letter-spacing:2px;font-weight:700;margin-bottom:5px;text-align:center;}
+.isp-row{display:flex;justify-content:space-between;align-items:center;padding:1px 0;border-bottom:1px solid rgba(255,255,255,.04);}
 .isp-row:last-child{border-bottom:none;}
-.isp-lbl{font-size:10px;color:#aaa;}
-.isp-val{font-size:10px;color:#fff;font-weight:700;}
+.isp-lbl{font-size:10px;color:#9ab;}
+.isp-val{font-size:10px;color:#dde;font-weight:700;}
 .isp-val.up{color:#60ff90;}
 .isp-val.warn{color:#ffaa40;}
 #screen-levelup{background:rgba(0,0,0,.88);z-index:20;}
@@ -1187,9 +1203,10 @@ canvas{display:block;image-rendering:pixelated;}
 
     <!-- In-game Stat Panel -->
     <button id="stat-toggle-btn" onclick="UI.toggleStatPanel()" title="Xem chỉ số nhân vật">📊</button>
-    <div id="ingame-stat-panel" style="display:none">
+    <div id="ingame-stat-panel">
       <div class="isp-title">📊 CHỈ SỐ HIỆN TẠI</div>
       <div id="isp-body"></div>
+      <div id="isp-timer-bar-wrap"><div id="isp-timer-bar"></div></div>
     </div>
   </div>
 
@@ -4331,13 +4348,44 @@ const UI = (() => {
 
   // ── IN-GAME STAT PANEL ───────────────────────────────────────────
   let _statPanelOpen = false;
+  let _statAutoCloseTimer = null;
+  const _STAT_AUTO_CLOSE_MS = 4000;
 
-  function toggleStatPanel() {
-    _statPanelOpen = !_statPanelOpen;
+  function _clearStatTimer() {
+    if (_statAutoCloseTimer) { clearTimeout(_statAutoCloseTimer); _statAutoCloseTimer = null; }
+  }
+
+  function _closeStatPanel() {
+    _statPanelOpen = false;
+    _clearStatTimer();
     const panel = document.getElementById('ingame-stat-panel');
     const btn   = document.getElementById('stat-toggle-btn');
-    if (panel) panel.style.display = _statPanelOpen ? 'block' : 'none';
-    if (btn)   btn.classList.toggle('active', _statPanelOpen);
+    const bar   = document.getElementById('isp-timer-bar');
+    if (panel) panel.classList.remove('isp-visible');
+    if (btn)   btn.classList.remove('active');
+    if (bar)   { bar.style.transition = 'none'; bar.style.width = '100%'; }
+  }
+
+  function toggleStatPanel() {
+    if (_statPanelOpen) { _closeStatPanel(); return; }
+    _statPanelOpen = true;
+    const panel = document.getElementById('ingame-stat-panel');
+    const btn   = document.getElementById('stat-toggle-btn');
+    const bar   = document.getElementById('isp-timer-bar');
+    if (panel) panel.classList.add('isp-visible');
+    if (btn)   btn.classList.add('active');
+    // Thanh đếm ngược
+    if (bar) {
+      bar.style.transition = 'none'; bar.style.width = '100%';
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          bar.style.transition = 'width ' + (_STAT_AUTO_CLOSE_MS / 1000) + 's linear';
+          bar.style.width = '0%';
+        });
+      });
+    }
+    _clearStatTimer();
+    _statAutoCloseTimer = setTimeout(_closeStatPanel, _STAT_AUTO_CLOSE_MS);
   }
 
   function updateStatPanel(player) {
@@ -4484,11 +4532,7 @@ const UI = (() => {
   }
 
   function resetStatPanel() {
-    _statPanelOpen = false;
-    const panel = document.getElementById('ingame-stat-panel');
-    const btn   = document.getElementById('stat-toggle-btn');
-    if (panel) { panel.style.display = 'none'; }
-    if (btn)   btn.classList.remove('active');
+    _closeStatPanel();
     const body = document.getElementById('isp-body');
     if (body)  body.innerHTML = '';
   }
