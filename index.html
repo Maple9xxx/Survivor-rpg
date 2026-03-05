@@ -3296,10 +3296,10 @@ const UI = (() => {
         },
         {
           c: CHARS.find(c=>c.id==='thiet_tam'),
-          dps: 'Base 155×1.25/s = 194/s · +25% quái xa >250đv = 242/s',
+          dps: 'Base 155×1.25/s = 194/s · +25% quái xa >150đv = 242/s',
           difficulty: '⭐⭐ Trung Bình',
-          playstyle: 'Kiter — luôn giữ khoảng cách >250đv',
-          guide: `<b>Passive — Mắt Đại Bàng:</b> Quái ở xa >250 đơn vị nhận thêm +25% sát thương. Áp dụng cho vũ khí chính, tiến hoá và active.<br><br>\n<b>Vũ khí — Cung Xương:</b> Bắn quạt 3 tên (±18°) cùng lúc — phủ rộng đám quái theo chiều ngang. Mỗi quái chỉ nhận đúng 1 đòn/loạt dù nhiều tên bay qua.<br><br>\n<b>Tiến hoá → Tử Thần Chi Tên:</b> Mỗi tên trúng địch tạo AoE độc 70px (×0.55) quanh điểm trúng. Không cộng dồn lên cùng 1 mục tiêu trong loạt.<br><br>\n<b>Active — Vũ Bão Tiễn / Tàn Sát Tầm Xa (CD 10s):</b> 2 đợt quạt tên phủ 60°: đợt 1 (3 tên ±25°, t=0) + đợt 2 (4 tên ±37°/12°, t=350ms). Tổng 7 tên — đám đông nhận full DPS, mỗi quái chỉ nhận 1 đòn/đợt. Mắt Đại Bàng +25% áp dụng tất cả. Evolved: splash độc 80px/điểm trúng. Giữ và kéo nút skill để chọn hướng.<br><br>\n<b>Lưu ý:</b> Giữ khoảng cách >250đv để passive luôn kích. Thiết Tâm mạnh nhất khi đứng xa và nhắm vào đám đông.`
+          playstyle: 'Kiter — luôn giữ khoảng cách >150đv',
+          guide: `<b>Passive — Mắt Đại Bàng:</b> Quái ở xa >150 đơn vị nhận thêm +25% sát thương. Áp dụng cho vũ khí chính, tiến hoá và active.<br><br>\n<b>Vũ khí — Cung Xương:</b> Bắn quạt 3 tên (±18°) cùng lúc — phủ rộng đám quái theo chiều ngang. Mỗi quái chỉ nhận đúng 1 đòn/loạt dù nhiều tên bay qua.<br><br>\n<b>Tiến hoá → Tử Thần Chi Tên:</b> Mỗi tên trúng địch tạo AoE độc 70px (×0.55) quanh điểm trúng. Không cộng dồn lên cùng 1 mục tiêu trong loạt.<br><br>\n<b>Active — Vũ Bão Tiễn / Tàn Sát Tầm Xa (CD 10s):</b> 2 đợt quạt tên phủ 60°: đợt 1 (3 tên ±25°, t=0) + đợt 2 (4 tên ±37°/12°, t=350ms). Tổng 7 tên — đám đông nhận full DPS, mỗi quái chỉ nhận 1 đòn/đợt. Mắt Đại Bàng +25% áp dụng tất cả. Evolved: splash độc 80px/điểm trúng. Giữ và kéo nút skill để chọn hướng.<br><br>\n<b>Lưu ý:</b> Giữ khoảng cách >150đv để passive luôn kích. Thiết Tâm mạnh nhất khi đứng xa và nhắm vào đám đông.`
         },
         {
           c: CHARS.find(c=>c.id==='kim_cang'),
@@ -3686,7 +3686,7 @@ const UI = (() => {
         ['🐾','Thú Cưng','Mỗi pet có lối chơi riêng: Linh Hồ (+20% vàng, +5% mỗi 50 kill) cho econ; Bạch Hổ (+15% tốc đánh) cho damage ổn định; Hắc Xà (hút máu 5% + độc scale theo ST) cho sustain; Thần Ưng (+18% tốc, +12% AoE) cho chars AoE; Thần Quy (+25% HP, phản đòn AoE) cho tank; Ma Long (+8% crit + bạo kích +40% sát thương) cho burst damage.'],
         ['⚔️','Lưu Phong — Kiếm Ý','Tích lũy kill để stack Kiếm Ý (+1.5% tốc/kill, tối đa 30 stack = +45%). Bị đánh mất 50% stack. Active Tàn Phong Trảm scale theo stack: ×(2.5 + stack×0.05), tối đa ×4.0 tại 30 stack — và mỗi quái xuyên qua cộng thêm 1 stack. Kite liên tục để tích lũy.'],
         ['🌙','Huyền Nguyệt — Tĩnh Tâm Điện Bão','Đứng yên ≥0.4 giây kích passive +20% ST. Cast active khi đang có buff → Tĩnh Tâm Điện Bão: 12 tia ×1.0 thay vì 8 tia ×0.8. Tiếp tục đứng yên suốt 3 giây → tia cuối là Siêu Lôi ×5.0 nhắm điểm đông quái nhất. Đứng góc tường để tối đa hóa.'],
-        ['🏹','Thiết Tâm — Tàn Sát Tầm Xa','Giữ khoảng cách >250 đơn vị để khai thác +25% ST. Active bắn 5 mũi tên liên tục theo 1 hướng — mỗi mũi tự kiểm tra khoảng cách và áp thêm +25% nếu quái bị trúng ở xa. Nhắm thẳng vào đám đông hoặc boss để tối đa hóa pierce.'],
+        ['🏹','Thiết Tâm — Tàn Sát Tầm Xa','Giữ khoảng cách >150 đơn vị để khai thác +25% ST. Active bắn 5 mũi tên liên tục theo 1 hướng — mỗi mũi tự kiểm tra khoảng cách và áp thêm +25% nếu quái bị trúng ở xa. Nhắm thẳng vào đám đông hoặc boss để tối đa hóa pierce.'],
         ['🥋','Kim Cang — Trấn Áp Bất Động','Để quái tấn công để kích Kim Cang Thể: 20% chặn + hồi 5% HP + stack tốc đánh. Active giờ KÉO quái vào gần 80đv rồi stun 1.5s — không đẩy ra xa, giữ quái trong tầm Thiền Trượng. Mỗi block stack tích lũy khi cast: +×0.15 ST và +0.1s stun (tối đa ×6.45, stun 1.8s).'],
         ['🗡️','Ám Sát — Ẩn Kích Liên Hoàn','ATK +20% luôn có. HP<40%: ATK +50%, SPD +40%, -30% ST nhận + vô hình 5s (CD 15s). Khi vô hình, active Ẩn Kích Liên Hoàn: ×6.0 + chảy máu liên tục 3 giây (40% tổng ST/giây) mỗi mục tiêu, sau đó tái kích vô hình ngay nếu HP vẫn <40%. Vòng lặp: nhận đòn → vô hình → combo → tái vô hình → thoát.'],
         ['💀','Tử Linh — Lĩnh Vực Tử Thần','Mỗi kill = +2.5% ST, tối đa 20 linh hồn = +50%. Active KHÔNG tiêu soul — triệu 3 bộ xương (tối đa 9) + Lĩnh Vực Tử Thần: AoE 180px pulse 5 lần/4 giây, mỗi pulse hưởng đầy đủ buff +50% souls. Tích đủ 20 souls trước boss để tối đa hóa — damage buff không bị mất sau active.'],
@@ -4107,9 +4107,9 @@ const UI = (() => {
     {
       extra: {
         statHP: 100, statSPD: 120, statDMG: 22, statATK: 1.25,
-        weapon:  { icon:'🏹', tag:'VŨ KHÍ CHÍNH', name:'Cung Xương', desc:'Mũi tên xuyên thấu đường thẳng, tốc độ 600 đ/giây. Tầm xa nhất 6 nhân vật. Passive kích hoạt khi mục tiêu >250 đ.' },
-        passive: { icon:'🦅', tag:'PASSIVE', name:'Mắt Đại Bàng', desc:'Quái ở xa (>250 đơn vị) nhận thêm 25% sát thương.' },
-        active:  { icon:'🎯', tag:'ACTIVE', name:'Tàn Sát Tầm Xa', desc:'2 đợt quạt tên phủ 60°: đợt 1 (3 tên ±25°) + đợt 2 (4 tên ±37°/12°) cách 350ms. Mỗi quái chỉ nhận 1 đòn/đợt. Range >250đv: +25% (Mắt Đại Bàng). Evolved: splash độc 80px/điểm trúng.', cd:10 },
+        weapon:  { icon:'🏹', tag:'VŨ KHÍ CHÍNH', name:'Cung Xương', desc:'Mũi tên xuyên thấu đường thẳng, tốc độ 600 đ/giây. Tầm xa nhất 6 nhân vật. Passive kích hoạt khi mục tiêu >150 đ.' },
+        passive: { icon:'🦅', tag:'PASSIVE', name:'Mắt Đại Bàng', desc:'Quái ở xa (>150 đơn vị) nhận thêm 25% sát thương.' },
+        active:  { icon:'🎯', tag:'ACTIVE', name:'Tàn Sát Tầm Xa', desc:'2 đợt quạt tên phủ 60°: đợt 1 (3 tên ±25°) + đợt 2 (4 tên ±37°/12°) cách 350ms. Mỗi quái chỉ nhận 1 đòn/đợt. Range >150đv: +25% (Mắt Đại Bàng). Evolved: splash độc 80px/điểm trúng.', cd:10 },
         evolve:  { icon:'☠️', tag:'TIẾN HÓA', name:'Tử Thần Chi Tên', desc:'Mỗi tên trúng địch tạo AoE độc 70px (×0.55) — phủ rộng quanh điểm trúng. Không cộng dồn lên cùng 1 mục tiêu.' },
       }
     },
@@ -5025,9 +5025,9 @@ const CHARS = [
     weapon: 'Cung Xương', weaponDesc: 'Bắn quạt 3 mũi tên (±18°) xuyên thấu cùng lúc. Mỗi quái chỉ nhận 1 đòn/loạt — AoE tự nhiên không cộng dồn.',
     weaponIcon: '🏹',
     passiveName: 'Mắt Đại Bàng',
-    passiveDesc: 'Quái ở xa (>250 đơn vị) nhận thêm 25% sát thương.',
+    passiveDesc: 'Quái ở xa (>150 đơn vị) nhận thêm 25% sát thương.',
     activeName: 'Vũ Bão Tiễn',
-    activeDesc: 'Tàn Sát Tầm Xa: 2 đợt quạt tên (đợt 1: 3 tên ±25°, đợt 2: 4 tên ±37°/12°, cách nhau 350ms). Tổng 7 tên phủ 60°, mỗi quái chỉ nhận 1 đòn/đợt. Quái >250đv nhận thêm +25% (Mắt Đại Bàng).',
+    activeDesc: 'Tàn Sát Tầm Xa: 2 đợt quạt tên (đợt 1: 3 tên ±25°, đợt 2: 4 tên ±37°/12°, cách nhau 350ms). Tổng 7 tên phủ 60°, mỗi quái chỉ nhận 1 đòn/đợt. Quái >150đv nhận thêm +25% (Mắt Đại Bàng).',
     activeIcon: '🎯', activeCooldown: 10,
     evolvedWeapon: 'Tử Thần Chi Tên',
     evolveDesc: 'Mỗi tên trúng địch gây AoE độc 70px (×0.55, không đánh lại quái đã dính loạt). Áp độc lên tất cả trúng đòn.',
@@ -6349,7 +6349,7 @@ class Player {
               burstHit.add(e);
               // Mắt Đại Bàng range bonus
               const distToPlayer = MathU.dist(playerRef.x, playerRef.y, e.x, e.y);
-              if (distToPlayer > 250) {
+              if (distToPlayer > 150) {
                 const bonusDmg = playerRef.totalDmg * 0.25;
                 e.takeDamage(bonusDmg, playerRef, 'arrow_range');
                 playerRef.trackSkillDmg('active_thiet_tam', bonusDmg);
@@ -9907,9 +9907,9 @@ const Game = (() => {
               // Chặn double-damage trong cùng loạt quạt
               if (volleyHit.has(e)) return;
               volleyHit.add(e);
-              // Mắt Đại Bàng: +25% dmg nếu quái >250 đơn vị
+              // Mắt Đại Bàng: +25% dmg nếu quái >150 đơn vị
               const rangeDist = MathU.dist(p.x, p.y, e.x, e.y);
-              if (rangeDist > 250) {
+              if (rangeDist > 150) {
                 e.takeDamage(baseProjDmg * 0.25, p, 'normal');
                 p.trackSkillDmg('main_thiet_tam', baseProjDmg * 0.25);
                 particles.spawn(e.x, e.y, { count:5, color:'#ffcc60', speedMin:40, speedMax:90, life:0.3 });
