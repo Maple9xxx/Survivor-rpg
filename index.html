@@ -3280,7 +3280,7 @@ const UI = (() => {
           difficulty: '⭐⭐ Trung Bình',
           playstyle: 'Aggressive — tích stack, kite',
           guide: `<b>Passive — Kiếm Ý:</b> Mỗi kill +1 stack (tối đa 30 stack = +45% tốc đánh). Bị đánh mất 50% stack hiện có. Tốc đánh thực = 1.8 × (1 + stack×0.015)/s.<br><br>
-<b>Active — Tàn Phong Trảm (CD 7s):</b> Freeze 0.2s → dash 250đv xuyên quái với sát thương scale theo Kiếm Ý: <b>×(2.5 + stack×0.05)</b>, tối đa <b>×4.0</b> tại 30 stack. Mỗi quái bị xuyên qua <b>cộng +1 stack</b> (không tiêu thụ stack). Kết hợp <b>chảy máu liên tục 5 giây (30% tổng ST/giây)</b> + vô địch 0.3 giây sau dash. <b>Giữ và kéo nút skill để chọn hướng</b>.<br><br>
+<b>Active — Tàn Phong Trảm (CD 11s):</b> Freeze 0.2s → dash 250đv xuyên quái với sát thương scale theo Kiếm Ý: <b>×(2.5 + stack×0.05)</b>, tối đa <b>×4.0</b> tại 30 stack. Mỗi quái bị xuyên qua <b>cộng +1 stack</b> (không tiêu thụ stack). Kết hợp <b>chảy máu liên tục 5 giây (30% tổng ST/giây)</b> + vô địch 0.3 giây sau dash. <b>Giữ và kéo nút skill để chọn hướng</b>.<br><br>
 <b>Tiến hoá → Thần Kiếm Vong Linh:</b> Mỗi nhát chém bắn 8 tia kiếm khí (×0.15/tia, pierce 3) + 2 lưỡi ảo đánh trễ 150ms/300ms (×0.5/lưỡi). Tốc đánh cao = AoE liên tục.<br><br>
 <b>Lưu ý:</b> Vòng lặp cốt lõi: kill → stack tăng → active mạnh hơn → dash xuyên thêm quái → thêm stack. Full 30 stack: ×4.0 thay vì ×2.5 — chênh lệch 60%. Tầm chém ngắn (~80đv) — kite liên tục để tích stack bền vững.`,
         },
@@ -3290,7 +3290,7 @@ const UI = (() => {
           difficulty: '⭐ Dễ',
           playstyle: 'Stationary — đứng yên 0.4s để kích passive',
           guide: `<b>Passive — Mana Tích Tụ:</b> Đứng yên ≥0.4 giây → +20% sát thương. Di chuyển reset ngay. Công thức: totalDmg × 1.2.<br><br>
-<b>Active — Hắc Động Lôi / Tĩnh Tâm Điện Bão (CD 9s):</b> Triệu sét AoE bán kính 200đv trong 3 giây. <b>Nếu đang có Mana Tích Tụ khi cast:</b> 12 tia ×1.0 thay vì 8 tia ×0.8. <b>Nếu tiếp tục đứng yên suốt 3 giây:</b> tia cuối là Siêu Lôi — nhắm điểm đông quái nhất, ×5.0 AoE. (+1 tia/cấp AoE)<br><br>
+<b>Active — Hắc Động Lôi / Tĩnh Tâm Điện Bão (CD 14s):</b> Triệu sét AoE bán kính 200đv trong 3 giây. <b>Nếu đang có Mana Tích Tụ khi cast:</b> 12 tia ×1.0 thay vì 8 tia ×0.8. <b>Nếu tiếp tục đứng yên suốt 3 giây:</b> tia cuối là Siêu Lôi — nhắm điểm đông quái nhất, ×5.0 AoE. (+1 tia/cấp AoE)<br><br>
 <b>Tiến hoá → Hắc Nhật Ma Cầu:</b> Mỗi orb trúng tách 3 mini orb (×0.55/orb, pierce 1) tự homing + áp độc 0.15×/s×4s. Khi đứng yên: ×2.65×1.2 = <b>×3.18</b> mỗi target hit.<br><br>
 <b>Lưu ý:</b> Luôn đứng yên ≥0.4s trước khi cast để kích hoạt Tĩnh Tâm Điện Bão (12 tia). Sau đó tiếp tục đứng yên toàn bộ 3s để nhận Siêu Lôi ×5.0. Đứng góc tường để không bị đẩy. Ưu tiên Hồi HP/s hoặc Giáp để đứng yên an toàn.`,
         },
@@ -3300,7 +3300,7 @@ const UI = (() => {
           difficulty: '⭐⭐ Trung Bình',
           playstyle: 'Kiter — luôn giữ khoảng cách >250đv',
           guide: `<b>Passive — Mắt Đại Bàng:</b> Quái ở xa >250 đơn vị nhận thêm +25% sát thương. Công thức: totalDmg × 1.25 tại thời điểm hit.<br><br>
-<b>Active — Vũ Bão Tiễn / Tàn Sát Tầm Xa (CD 6s):</b> Bắn 5 mũi tên liên tiếp theo 1 hướng (1 mũi/300ms, tốc bay 700đv/s, xuyên 5 quái). onHit tự động kiểm tra: nếu quái bị trúng cách player >250đv → áp thêm <b>+25% sát thương</b> (kích hoạt Mắt Đại Bàng). Giữ và kéo nút skill để chọn hướng.<br><br>
+<b>Active — Vũ Bão Tiễn / Tàn Sát Tầm Xa (CD 10s):</b> Bắn 5 mũi tên liên tiếp theo 1 hướng (1 mũi/300ms, tốc bay 700đv/s, xuyên 5 quái). onHit tự động kiểm tra: nếu quái bị trúng cách player >250đv → áp thêm <b>+25% sát thương</b> (kích hoạt Mắt Đại Bàng). Giữ và kéo nút skill để chọn hướng.<br><br>
 <b>Tiến hoá → Tử Thần Chi Tên:</b> Mỗi mũi tên áp độc khi trúng + xuyên qua địch đầu phân thành 3 tên nhỏ (×0.55/tên).<br><br>
 <b>Lưu ý:</b> Tầm bắn 1050đv (700×1.5s). Giữ khoảng cách >250đv liên tục để passive và active cùng kích hoạt. Active nhắm 1 hướng — dùng khi đã thấy hướng đông quái hoặc boss. Ưu tiên diệt quái bắn xa trước.`,
         },
@@ -3310,7 +3310,7 @@ const UI = (() => {
           difficulty: '⭐ Dễ',
           playstyle: 'Tank — đứng giữa đám quái, chịu đòn counter',
           guide: `<b>Passive — Kim Cang Thể:</b> 20% xác suất chặn hoàn toàn mọi đòn (dmg=0) + hồi 5% HP tối đa + AtkSpeedMult +0.07 tạm thời 3 giây (stack được). HP tối đa: 1050 (cao nhất game).<br><br>
-<b>Active — Trấn Áp Bất Động (CD 8s):</b> AoE ×6.0 + <b>kéo quái vào gần 80đv</b> rồi <b>stun 1.5 giây</b> (giữ quái trong tầm Thiền Trượng, không đẩy ra xa). Mỗi block stack đang tích lũy khi cast: <b>+×0.15 sát thương và +0.1 giây stun</b> (tối đa 3 stack → ×6.45 DMG, stun 1.8s).<br><br>
+<b>Active — Trấn Áp Bất Động (CD 13s):</b> AoE ×6.0 + <b>kéo quái vào gần 80đv</b> rồi <b>stun 1.5 giây</b> (giữ quái trong tầm Thiền Trượng, không đẩy ra xa). Mỗi block stack đang tích lũy khi cast: <b>+×0.15 sát thương và +0.1 giây stun</b> (tối đa 3 stack → ×6.45 DMG, stun 1.8s).<br><br>
 <b>Tiến hoá → Hộ Pháp Thần Trượng:</b> Mỗi điểm trúng địch tạo cột thánh sáng tồn tại 2 giây, tiếp tục gây sát thương liên tục.<br><br>
 <b>Lưu ý:</b> Đứng giữa đám quái để tối đa cơ hội Block — mỗi block tăng damage và stun cho active tiếp theo. Dùng active SAU khi đã tích được 2–3 stack block để kéo quái gom lại và stun → tiếp tục đập AoE Thiền Trượng trong tầm. Ưu tiên Xuyên Giáp để counter quái elite có khiên.`,
         },
@@ -3320,7 +3320,7 @@ const UI = (() => {
           difficulty: '⭐⭐⭐ Khó',
           playstyle: 'Reverse risk — càng nguy hiểm càng mạnh',
           guide: `<b>Passive — Bóng Tối:</b> Luôn +20% ATK. HP<40%: thêm +50% ATK (×1.5 thay ×1.2), +40% SPD, -30% ST nhận. Công thức: totalDmg = baseDmg×dmgMult × (HP<40% ? 1.5 : 1.2).<br><br>
-<b>Active — Ẩn Kích Liên Hoàn (CD 10s):</b> Teleport đến 3 mục tiêu gần nhất trong tầm 450đv. <b>Khi đang vô hình (HP<40%):</b> mỗi đòn ×6.0 + <b>chảy máu liên tục 3 giây (40% tổng ST/giây)</b>, sau chuỗi <b>tái kích hoạt vô hình ngay lập tức</b> nếu HP vẫn <40% — bypass CD 15 giây bình thường. Khi không vô hình: ×4.0 thường. iframe 0.8 giây.<br><br>
+<b>Active — Ẩn Kích Liên Hoàn (CD 12s):</b> Teleport đến 3 mục tiêu gần nhất trong tầm 450đv. <b>Khi đang vô hình (HP<40%):</b> mỗi đòn ×6.0 + <b>chảy máu liên tục 3 giây (40% tổng ST/giây)</b>, sau chuỗi <b>tái kích hoạt vô hình ngay lập tức</b> nếu HP vẫn <40% — bypass CD 15 giây bình thường. Khi không vô hình: ×4.0 thường. iframe 0.8 giây.<br><br>
 <b>Tiến hoá → Hư Vô Đoản Kiếm:</b> Mỗi đòn tạo phân thân lặp lại sau 0.3 giây (×1.0 dmg). Với 2.4/s tốc đánh = thực tế ~4.8 nhát/s.<br><br>
 <b>Lưu ý:</b> Vòng lặp glass-cannon: nhận đòn về HP<40% → vô hình → bứt vào Ẩn Kích ×6.0 + chảy máu → tái vô hình → thoát ra. Rủi ro cao, phần thưởng tương xứng. Có thể chủ động nhận 1-2 đòn đầu boss để kích sớm.`,
         },
@@ -3330,7 +3330,7 @@ const UI = (() => {
           difficulty: '⭐⭐ Trung Bình',
           playstyle: 'Snowball — tích 20 Linh Hồn trước boss',
           guide: `<b>Passive — Thu Hoạch Linh Hồn:</b> Mỗi kill tạo 1 Linh Hồn (tối đa 20), mỗi linh hồn +2.5% ST. Công thức: totalDmg = baseDmg×dmgMult × (1 + soulCount×0.025). HP<20%: tiêu thụ tất cả → hồi 25 HP/linh hồn.<br><br>
-<b>Active — Quân Đoàn Bất Tử (CD 9s, KHÔNG tiêu soul):</b> Triệu 3 bộ xương (tối đa 9) + tạo <b>Lĩnh Vực Tử Thần</b>: AoE 180đv pulse 5 lần trong 4 giây (×0.4 totalDmg/pulse). Tại 20 souls: mỗi pulse = ×0.4×1.5 = ×0.60 baseDmg, tổng 5 pulse = ×3.0. Linh Hồn không bị mất sau cast.<br><br>
+<b>Active — Quân Đoàn Bất Tử (CD 14s, KHÔNG tiêu soul):</b> Triệu 3 bộ xương (tối đa 9) + tạo <b>Lĩnh Vực Tử Thần</b>: AoE 180đv pulse 5 lần trong 4 giây (×0.4 totalDmg/pulse). Tại 20 souls: mỗi pulse = ×0.4×1.5 = ×0.60 baseDmg, tổng 5 pulse = ×3.0. Linh Hồn không bị mất sau cast.<br><br>
 <b>Tiến hoá → Vong Hồn Đại Liềm:</b> Liềm to ×1.8, hút quái khi bay ra, xuyên tất cả địch khi về.<br><br>
 <b>Lưu ý:</b> Active <b>KHÔNG tiêu Linh Hồn</b> — spam thoải mái để gom xương (tối đa 9) + kích Lĩnh Vực liên tục. Tích đủ 20 souls trước boss để đạt +50% ST tối đa. Souls chỉ mất khi HP xuống dưới 20% — chủ động tránh ngưỡng này khi đang có stack cao.`,
         },
@@ -3339,21 +3339,21 @@ const UI = (() => {
           dps: 'Base 170×1.35/s = 230/s · 20 stack: ×1.8 → 414/s · Active: totalDmg×2.5 KHÔNG tiêu stack',
           difficulty: '⭐⭐ Trung Bình',
           playstyle: 'Stack builder — tích Lôi Tích rồi active để khuếch đại, không mất buff',
-          guide: `<b>Passive — Tĩnh Điện Tích Tụ:</b> Mỗi cú đánh tích 1 Lôi Tích (tối đa 20 stack, tích 2/đòn khi active đang buff). Mỗi stack +4% ST tổng — đạt +80% tại 20 stack. Đủ 20 stack: tự phóng AoE sét bán kính 130đv mỗi 3 giây liên tục.<br><br>\n<b>Active — Thiên Lôi Giáng Thế (CD 9s):</b> Phóng 5 tia Thiên Lôi trong <b>tầm 200đv</b> — mỗi tia = <b>Tổng ST × 2.5 (KHÔNG tiêu stack)</b>, dây chuyền 4 mục tiêu (evolved: 6). Sau cast: ATK Speed +50% trong 5 giây + tích 2 Lôi Tích/đòn — vừa burst vừa đẩy stack nhanh hơn. Vũ khí tiếp tục khai thác đầy đủ buff stack trong suốt thời gian.<br><br>\n<b>Tiến hoá → Thần Lôi Vô Song:</b> Dây chuyền lên 6 mục tiêu. Mỗi link để lại vết sét gây 20% ST/giây × 2 giây. Active chain thêm 2 mục tiêu.<br><br>\n<b>Lưu ý:</b> Vũ khí chính và active đều nhắm trong <b>tầm 200đv</b> — luôn di chuyển áp sát đám quái để sét khai hỏa. Tích đủ 20 stack → dùng Active để burst 5×2.5=×12.5 totalDmg <b>trong khi giữ nguyên +80% buff</b>. Sau Active: ATK Speed +50% đẩy stack về 20 rất nhanh → vòng lặp siêu hiệu quả. Ưu tiên Dragon pet (crit) + AtkSpd để tối đa DPS liên tục.`,
+          guide: `<b>Passive — Tĩnh Điện Tích Tụ:</b> Mỗi cú đánh tích 1 Lôi Tích (tối đa 20 stack, tích 2/đòn khi active đang buff). Mỗi stack +4% ST tổng — đạt +80% tại 20 stack. Đủ 20 stack: tự phóng AoE sét bán kính 130đv mỗi 3 giây liên tục.<br><br>\n<b>Active — Thiên Lôi Giáng Thế (CD 16s):</b> Phóng 5 tia Thiên Lôi trong <b>tầm 200đv</b> — mỗi tia = <b>Tổng ST × 2.5 (KHÔNG tiêu stack)</b>, dây chuyền 4 mục tiêu (evolved: 6). Sau cast: ATK Speed +50% trong 5 giây + tích 2 Lôi Tích/đòn — vừa burst vừa đẩy stack nhanh hơn. Vũ khí tiếp tục khai thác đầy đủ buff stack trong suốt thời gian.<br><br>\n<b>Tiến hoá → Thần Lôi Vô Song:</b> Dây chuyền lên 6 mục tiêu. Mỗi link để lại vết sét gây 20% ST/giây × 2 giây. Active chain thêm 2 mục tiêu.<br><br>\n<b>Lưu ý:</b> Vũ khí chính và active đều nhắm trong <b>tầm 200đv</b> — luôn di chuyển áp sát đám quái để sét khai hỏa. Tích đủ 20 stack → dùng Active để burst 5×2.5=×12.5 totalDmg <b>trong khi giữ nguyên +80% buff</b>. Sau Active: ATK Speed +50% đẩy stack về 20 rất nhanh → vòng lặp siêu hiệu quả. Ưu tiên Dragon pet (crit) + AtkSpd để tối đa DPS liên tục.`,
         },
         {
           c: CHARS.find(c=>c.id==='hoa_long'),
           dps: 'Base 155×1.3/s = 202/s · Full stack +105%: 414/s · Cuồng Long ×1.5: 620/s',
           difficulty: '⭐⭐ Trung Bình',
           playstyle: 'Tank-aggro — vào gần, stack kill, active KHÔNG gián đoạn vũ khí',
-          guide: `<b>Passive — Long Vảy Linh:</b> Giảm 20% ST nhận vô điều kiện. Mỗi 25 kill: ATK +35% <b>vĩnh viễn trong run</b> (stack 3 lần = +105%). HP<40%: kích <b>Cuồng Long</b> — ATK ×1.5, SPD +25%.<br><br>\n<b>Active — Rồng Lửa Thiêu Thân (CD 10s):</b> Hóa thân 5 giây: AoE 200đv (×1.5/giây) + <b>vũ khí Long Hỏa Quyền tiếp tục bắn bình thường với full buff</b> (Long Vảy Linh + Cuồng Long) + SPD +20%, miễn knockback. Kết thúc: Thiên Long Nổ ×7.0. Tổng burst = AoE 5s + weapon DPS + finale ×7.0.<br><br>\n<b>Tiến hoá → Thiên Long Hỏa Hải:</b> Mỗi cú đấm để lại đám lửa 90px trong 3 giây (25% ST/giây). Khi biến thân: mỗi tick triệu 2 cầu lửa homing truy đuổi quái gần nhất.<br><br>\n<b>Lưu ý:</b> Milestone 25 kill tích rất nhanh — đạt full 3 stack (+105%) trước wave 3. 20% DR + HP 720 giúp an toàn ở ngưỡng Cuồng Long HP<40% — đây là trạng thái chiến đấu lý tưởng. Active KHÔNG làm mất vũ khí/buff passive — dùng thoải mái. Dùng Turtle pet để tối đa survival và duy trì Cuồng Long lâu hơn.`,
+          guide: `<b>Passive — Long Vảy Linh:</b> Giảm 20% ST nhận vô điều kiện. Mỗi 25 kill: ATK +35% <b>vĩnh viễn trong run</b> (stack 3 lần = +105%). HP<40%: kích <b>Cuồng Long</b> — ATK ×1.5, SPD +25%.<br><br>\n<b>Active — Rồng Lửa Thiêu Thân (CD 17s):</b> Hóa thân 5 giây: AoE 200đv (×1.5/giây) + <b>vũ khí Long Hỏa Quyền tiếp tục bắn bình thường với full buff</b> (Long Vảy Linh + Cuồng Long) + SPD +20%, miễn knockback. Kết thúc: Thiên Long Nổ ×7.0. Tổng burst = AoE 5s + weapon DPS + finale ×7.0.<br><br>\n<b>Tiến hoá → Thiên Long Hỏa Hải:</b> Mỗi cú đấm để lại đám lửa 90px trong 3 giây (25% ST/giây). Khi biến thân: mỗi tick triệu 2 cầu lửa homing truy đuổi quái gần nhất.<br><br>\n<b>Lưu ý:</b> Milestone 25 kill tích rất nhanh — đạt full 3 stack (+105%) trước wave 3. 20% DR + HP 720 giúp an toàn ở ngưỡng Cuồng Long HP<40% — đây là trạng thái chiến đấu lý tưởng. Active KHÔNG làm mất vũ khí/buff passive — dùng thoải mái. Dùng Turtle pet để tối đa survival và duy trì Cuồng Long lâu hơn.`,
         },
         {
           c: CHARS.find(c=>c.id==='bang_vuong'),
           dps: 'Base 195×1.0/s × 4 rings = 780/s · vs chậm/đóng băng ×1.45 = 1,131/s (distributed)',
           difficulty: '⭐⭐ Trung Bình',
           playstyle: 'Control-burst — slow địch → khai thác +45% mọi nguồn ST, active không gián đoạn vũ khí',
-          guide: `<b>Passive — Tuyệt Đối Không Độ:</b> Địch chậm/đóng băng nhận thêm +45% ST từ <b>mọi nguồn: vũ khí, active, crit, evolved shard</b> đều hưởng. Băng Linh Nhẫn tự kích điều kiện mỗi lần trúng (slow 40% × 2 giây). Giết địch đóng băng: hồi 8 HP. HP<25%: <b>Băng Hộ Thể — hấp thụ 400 ST, phản chiếu 60%</b>.<br><br>\n<b>Active — Bão Tuyết Tận Thế (CD 11s):</b> Bão tuyết 200px trong 6 giây: chậm 60% + ×1.2/giây (hưởng +45%). <b>Vũ khí Băng Linh Nhẫn tiếp tục bắn bình thường trong bão</b> — 4 rings/giây × ×1.45 effective. Địch trong bão ≥3 giây → đóng băng 2 giây. Kết thúc: Băng Nổ ×5.5 (địch còn chậm → ×5.5×1.45 = ×7.98 effective).<br><br>\n<b>Tiến hoá → Vong Linh Băng Trận:</b> Băng Nhẫn trúng địch tách 2 mảnh homing (×0.6/mảnh, đều hưởng +45%). Địch đóng băng chết nổ AoE băng 120px + đóng băng địch xung quanh 1 giây.<br><br>\n<b>Lưu ý:</b> 4 rings × 195 × 1.45 × 1.0/s = 1,131/s distributed — cao nhất game với evolved. Active KHÔNG làm mất vũ khí: Bão + rings đồng thời = toàn bộ +45% hoạt động mọi lúc. Dùng Dragon pet — 4 rings/shot = 4 cơ hội crit → Dragon Rage kích liên tục. Ưu tiên AtkSpd + CritDMG.`,
+          guide: `<b>Passive — Tuyệt Đối Không Độ:</b> Địch chậm/đóng băng nhận thêm +45% ST từ <b>mọi nguồn: vũ khí, active, crit, evolved shard</b> đều hưởng. Băng Linh Nhẫn tự kích điều kiện mỗi lần trúng (slow 40% × 2 giây). Giết địch đóng băng: hồi 8 HP. HP<25%: <b>Băng Hộ Thể — hấp thụ 400 ST, phản chiếu 60%</b>.<br><br>\n<b>Active — Bão Tuyết Tận Thế (CD 18s):</b> Bão tuyết 200px trong 6 giây: chậm 60% + ×1.2/giây (hưởng +45%). <b>Vũ khí Băng Linh Nhẫn tiếp tục bắn bình thường trong bão</b> — 4 rings/giây × ×1.45 effective. Địch trong bão ≥3 giây → đóng băng 2 giây. Kết thúc: Băng Nổ ×5.5 (địch còn chậm → ×5.5×1.45 = ×7.98 effective).<br><br>\n<b>Tiến hoá → Vong Linh Băng Trận:</b> Băng Nhẫn trúng địch tách 2 mảnh homing (×0.6/mảnh, đều hưởng +45%). Địch đóng băng chết nổ AoE băng 120px + đóng băng địch xung quanh 1 giây.<br><br>\n<b>Lưu ý:</b> 4 rings × 195 × 1.45 × 1.0/s = 1,131/s distributed — cao nhất game với evolved. Active KHÔNG làm mất vũ khí: Bão + rings đồng thời = toàn bộ +45% hoạt động mọi lúc. Dùng Dragon pet — 4 rings/shot = 4 cơ hội crit → Dragon Rage kích liên tục. Ưu tiên AtkSpd + CritDMG.`,
         },
       ];
 
@@ -4094,7 +4094,7 @@ const UI = (() => {
         statHP: 120, statSPD: 145, statDMG: 18, statATK: 1.8,
         weapon:  { icon:'⚔️', tag:'VŨ KHÍ CHÍNH', name:'Phong Kiếm', desc:'Chém vòng cung ~160° hướng về quái gần nhất, tầm ngắn, tốc độ rất cao. Sát thương tăng dần khi tích lũy stack Kiếm Ý.' },
         passive: { icon:'🌬️', tag:'PASSIVE', name:'Kiếm Ý', desc:'Mỗi lần giết quái, tốc chém +1.5% (tối đa 30 stack = +45%). Bị trúng đòn mất 50% stack (giữ lại 50%) — tích công bền vững.' },
-        active:  { icon:'💨', tag:'ACTIVE', name:'Tàn Phong Trảm', desc:'Đóng băng thời gian 0.2s rồi lao xuyên tất cả kẻ thù — sát thương scale theo Kiếm Ý: ×(2.5 + stack×0.05), tối đa ×4.0. Mỗi quái xuyên qua cộng +1 stack. Không tiêu thụ stack.', cd:7 },
+        active:  { icon:'💨', tag:'ACTIVE', name:'Tàn Phong Trảm', desc:'Đóng băng thời gian 0.2s rồi lao xuyên tất cả kẻ thù — sát thương scale theo Kiếm Ý: ×(2.5 + stack×0.05), tối đa ×4.0. Mỗi quái xuyên qua cộng +1 stack. Không tiêu thụ stack.', cd:11  },
         evolve:  { icon:'🌌', tag:'TIẾN HÓA', name:'Thần Kiếm Vong Linh', desc:'Mỗi nhát chém bắn kiếm khí 8 hướng + tạo 2 lưỡi ảo đánh trễ 150ms và 300ms — hiệu quả tăng 3 lần số đòn.' },
       }
     },
@@ -4103,7 +4103,7 @@ const UI = (() => {
         statHP: 90, statSPD: 110, statDMG: 33, statATK: 0.95,
         weapon:  { icon:'🔮', tag:'VŨ KHÍ CHÍNH', name:'Tinh Linh Cầu', desc:'Bắn cầu ma thuật tự truy đuổi (homing) kẻ thù gần nhất. Sát thương cao nhất, tốc độ tấn công thấp nhất.' },
         passive: { icon:'🧘', tag:'PASSIVE', name:'Mana Tích Tụ', desc:'Đứng yên 0.4 giây: sát thương +20%. Di chuyển reset về 0. Khi tiến hoá: mini orb và độc cũng hưởng buff — tối đa ×3.54 effective per target.' },
-        active:  { icon:'🌩️', tag:'ACTIVE', name:'Hắc Động Lôi', desc:'Thường: 8 tia ×0.8 rải ngẫu nhiên, 3 giây, bán kính 200đv. Khi đang có Mana Tích Tụ khi cast → <b>Tĩnh Tâm Điện Bão</b>: 12 tia ×1.0, 70% tia nhắm trúng quái trong vùng. Tiếp tục đứng yên suốt 3 giây → tia cuối là <b>Siêu Lôi ×5.0</b> AoE nhắm điểm đông quái nhất.', cd:9 },
+        active:  { icon:'🌩️', tag:'ACTIVE', name:'Hắc Động Lôi', desc:'Thường: 8 tia ×0.8 rải ngẫu nhiên, 3 giây, bán kính 200đv. Khi đang có Mana Tích Tụ khi cast → <b>Tĩnh Tâm Điện Bão</b>: 12 tia ×1.0, 70% tia nhắm trúng quái trong vùng. Tiếp tục đứng yên suốt 3 giây → tia cuối là <b>Siêu Lôi ×5.0</b> AoE nhắm điểm đông quái nhất.', cd:14 },
         evolve:  { icon:'☄️', tag:'TIẾN HÓA', name:'Hắc Nhật Ma Cầu', desc:'Khi trúng địch: tách 3 mini orb (×0.55 mỗi cái, pierce 1) tự homing vào 3 quái gần nhất + áp độc 0.15×/s trong 4 giây. Effective ×2.95 per target; ×3.54 khi đứng yên.' },
       }
     },
@@ -4112,7 +4112,7 @@ const UI = (() => {
         statHP: 100, statSPD: 120, statDMG: 22, statATK: 1.25,
         weapon:  { icon:'🏹', tag:'VŨ KHÍ CHÍNH', name:'Cung Xương', desc:'Mũi tên xuyên thấu đường thẳng, tốc độ 600 đ/giây. Tầm xa nhất 6 nhân vật. Passive kích hoạt khi mục tiêu >250 đ.' },
         passive: { icon:'🦅', tag:'PASSIVE', name:'Mắt Đại Bàng', desc:'Quái ở xa (>250 đơn vị) nhận thêm 25% sát thương.' },
-        active:  { icon:'🎯', tag:'ACTIVE', name:'Tàn Sát Tầm Xa', desc:'Bắn 5 mũi tên liên tiếp theo 1 hướng (1/300ms, xuyên 5 quái). Quái bị trúng ở khoảng cách >250đv nhận thêm 25% sát thương (kích passive tầm xa). Giữ và kéo nút để chọn hướng.', cd:6 },
+        active:  { icon:'🎯', tag:'ACTIVE', name:'Tàn Sát Tầm Xa', desc:'Bắn 5 mũi tên liên tiếp theo 1 hướng (1/300ms, xuyên 5 quái). Quái bị trúng ở khoảng cách >250đv nhận thêm 25% sát thương (kích passive tầm xa). Giữ và kéo nút để chọn hướng.', cd:10 },
         evolve:  { icon:'☠️', tag:'TIẾN HÓA', name:'Tử Thần Chi Tên', desc:'Mũi tên áp độc khi trúng địch đầu; phân thành 3 tên nhỏ (pierce 2 mỗi tên) lan ra 3 hướng từ điểm trúng.' },
       }
     },
@@ -4121,7 +4121,7 @@ const UI = (() => {
         statHP: 180, statSPD: 100, statDMG: 24, statATK: 0.95,
         weapon:  { icon:'🪄', tag:'VŨ KHÍ CHÍNH', name:'Thiền Trượng', desc:'Đập mặt đất tạo sóng chấn động AoE bán kính 85 đơn vị quanh người. HP cao nhất — thiết kế cho lối chơi chịu đòn.' },
         passive: { icon:'🛡️', tag:'PASSIVE', name:'Kim Cang Thể', desc:'20% xác suất chặn hoàn toàn đòn bất kỳ. Chặn thành công: hồi 5% HP tối đa + cộng dồn +7% tốc đánh (stack được), reset sau 3 giây.' },
-        active:  { icon:'☄️', tag:'ACTIVE', name:'Trấn Áp Bất Động', desc:'AoE khổng lồ ×6.0+ kéo quái vào gần 80đv rồi stun 1.5 giây — giữ quái trong tầm Thiền Trượng thay vì đẩy ra xa. Mỗi block stack đang tích: +×0.15 sát thương và +0.1s stun.', cd:8 },
+        active:  { icon:'☄️', tag:'ACTIVE', name:'Trấn Áp Bất Động', desc:'AoE khổng lồ ×6.0+ kéo quái vào gần 80đv rồi stun 1.5 giây — giữ quái trong tầm Thiền Trượng thay vì đẩy ra xa. Mỗi block stack đang tích: +×0.15 sát thương và +0.1s stun.', cd:13 },
         evolve:  { icon:'✨', tag:'TIẾN HÓA', name:'Hộ Pháp Thần Trượng', desc:'Quái trong AoE bị áp cột sáng 2 giây: 5 tick × 0.45 DMG. Tổng thêm ×2.25 sát thương bổ sung cho mỗi mục tiêu.' },
       }
     },
@@ -4130,7 +4130,7 @@ const UI = (() => {
         statHP: 95, statSPD: 155, statDMG: 14, statATK: 2.4,
         weapon:  { icon:'🗡️', tag:'VŨ KHÍ CHÍNH', name:'Song Tà Đao', desc:'Chém AoE bán kính 50 đ cực nhanh. Tốc độ tấn công cao nhất (2.2×), DMG/đòn thấp nhất — bù bằng tần suất cao.' },
         passive: { icon:'🌑', tag:'PASSIVE', name:'Bóng Tối', desc:'ATK +20%. HP <40%: ATK +50%, SPD +40%, giảm 30% sát thương nhận vào. Vô hình 5 giây (CD 15s): quái xa >400 đơn vị không truy đuổi — Boss không bị ảnh hưởng.' },
-        active:  { icon:'🌀', tag:'ACTIVE', name:'Ẩn Kích Liên Hoàn', desc:'Teleport đến 3 mục tiêu gần nhất trong tầm 450đv. Khi đang vô hình (HP<40%): ×6.0 + chảy máu liên tục 3 giây (40% tổng ST/giây), sau đó tái kích vô hình ngay nếu HP vẫn <40%. Khi không vô hình: ×4.0. Vô địch 0.8 giây.', cd:10 },
+        active:  { icon:'🌀', tag:'ACTIVE', name:'Ẩn Kích Liên Hoàn', desc:'Teleport đến 3 mục tiêu gần nhất trong tầm 450đv. Khi đang vô hình (HP<40%): ×6.0 + chảy máu liên tục 3 giây (40% tổng ST/giây), sau đó tái kích vô hình ngay nếu HP vẫn <40%. Khi không vô hình: ×4.0. Vô địch 0.8 giây.', cd:12 },
         evolve:  { icon:'👥', tag:'TIẾN HÓA', name:'Hư Vô Đoản Kiếm', desc:'Mỗi đòn đánh tạo phân thân ảo lặp lại 300ms sau với 85% DMG — về thực chất mỗi hit đánh 2 lần.' },
       }
     },
@@ -4139,7 +4139,7 @@ const UI = (() => {
         statHP: 105, statSPD: 115, statDMG: 20, statATK: 1.35,
         weapon:  { icon:'☠️', tag:'VŨ KHÍ CHÍNH', name:'Lưỡi Liềm Tử Thần', desc:'Boomerang: bay ra rồi tự quay lại, pierce 5 kẻ thù mỗi chiều. Cả đường đi lẫn đường về đều gây sát thương.' },
         passive: { icon:'💀', tag:'PASSIVE', name:'Thu Hoạch Linh Hồn', desc:'Giết quái tạo Linh Hồn (tối đa 20), mỗi cái +2.5% sát thương (+50% tối đa). Bộ xương triệu hồi cũng tạo Linh Hồn khi giết quái. HP<20%: tiêu thụ tất cả để hồi 25 HP/linh hồn.' },
-        active:  { icon:'💀', tag:'ACTIVE', name:'Quân Đoàn Bất Tử', desc:'Triệu 3 bộ xương (tối đa 9) + Lĩnh Vực Tử Thần: AoE 180px pulse 5 lần trong 4 giây (×0.4 totalDmg/pulse, hưởng đầy đủ buff Linh Hồn). KHÔNG tiêu thụ Linh Hồn.', cd:9 },
+        active:  { icon:'💀', tag:'ACTIVE', name:'Quân Đoàn Bất Tử', desc:'Triệu 3 bộ xương (tối đa 9) + Lĩnh Vực Tử Thần: AoE 180px pulse 5 lần trong 4 giây (×0.4 totalDmg/pulse, hưởng đầy đủ buff Linh Hồn). KHÔNG tiêu thụ Linh Hồn.', cd:14 },
         evolve:  { icon:'🌀', tag:'TIẾN HÓA', name:'Vong Hồn Đại Liềm', desc:'Liềm to ×1.8, hút quái vào khi bay đi (knockback ngược). Đường về: xuyên tất cả kẻ thù còn lại, không giới hạn.' },
       }
     },
@@ -4148,7 +4148,7 @@ const UI = (() => {
         statHP: 116, statSPD: 130, statDMG: 32, statATK: 1.1,
         weapon:  { icon:'⚡', tag:'VŨ KHÍ CHÍNH', name:'Thiên Lôi Cổ', desc:'Gọi sét xuống quái gần nhất, dây chuyền sang 2 quái bên (×0.6/chuỗi). Mỗi cú đánh tích 1 Lôi Tích (tối đa 20). Sát thương tăng +4%/stack.' },
         passive: { icon:'⚡', tag:'PASSIVE', name:'Tĩnh Điện Tích Tụ', desc:'Mỗi Lôi Tích +4% sát thương (tối đa +80%). Đủ 20 stack: tự phóng AoE sét mỗi 3 giây. Stack reset về 0 khi dùng Active.' },
-        active:  { icon:'🌩️', tag:'ACTIVE', name:'Thiên Lôi Giáng Thế', desc:'Tiêu thụ toàn bộ Lôi Tích — phóng 5 tia sét (×1.8 × bonus stack, dây chuyền 4 mục tiêu). Sau skill: ATK Speed +30% trong 4 giây.', cd:10 },
+        active:  { icon:'🌩️', tag:'ACTIVE', name:'Thiên Lôi Giáng Thế', desc:'Tiêu thụ toàn bộ Lôi Tích — phóng 5 tia sét (×1.8 × bonus stack, dây chuyền 4 mục tiêu). Sau skill: ATK Speed +30% trong 4 giây.', cd:16 },
         evolve:  { icon:'⚡', tag:'TIẾN HÓA', name:'Thần Lôi Vô Song', desc:'Sét dây chuyền lên 5 mục tiêu/chuỗi. Mỗi dây chuyền để lại vết sét gây 15% ST/giây trong 2 giây.' },
       }
     },
@@ -4157,7 +4157,7 @@ const UI = (() => {
         statHP: 144, statSPD: 105, statDMG: 29, statATK: 1.05,
         weapon:  { icon:'🔥', tag:'VŨ KHÍ CHÍNH', name:'Long Hỏa Quyền', desc:'Đấm lửa rồng tạo hình nón lửa rộng 120° quanh người. Quái cháy nhận 15% ST/giây thêm 2 giây sau khi trúng.' },
         passive: { icon:'🐉', tag:'PASSIVE', name:'Long Vảy Linh', desc:'Giảm 20% mọi ST nhận. Mỗi 50 quái tiêu diệt: ATK +35% trong 6 giây (stack 3 lần). HP<30%: kích Cuồng Long — ATK +50%, SPD +25%.' },
-        active:  { icon:'🐉', tag:'ACTIVE', name:'Rồng Lửa Thiêu Thân', desc:'Hóa thân Rồng Lửa 5 giây: AoE 200px liên tục (×2.0/giây) + SPD +20%, miễn knockback. Kết thúc: nổ lửa cuối ×5.0 AoE khổng lồ.', cd:12 },
+        active:  { icon:'🐉', tag:'ACTIVE', name:'Rồng Lửa Thiêu Thân', desc:'Hóa thân Rồng Lửa 5 giây: AoE 200px liên tục (×2.0/giây) + SPD +20%, miễn knockback. Kết thúc: nổ lửa cuối ×5.0 AoE khổng lồ.', cd:17 },
         evolve:  { icon:'🔥', tag:'TIẾN HÓA', name:'Thiên Long Hỏa Hải', desc:'Mỗi cú đấm để lại đám lửa 3 giây (20% ST/giây). Khi biến thân: mỗi va chạm triệu thêm cầu lửa nhỏ ×2.' },
       }
     },
@@ -4166,7 +4166,7 @@ const UI = (() => {
         statHP: 100, statSPD: 125, statDMG: 37, statATK: 0.85,
         weapon:  { icon:'🧊', tag:'VŨ KHÍ CHÍNH', name:'Băng Linh Nhẫn', desc:'Phóng 4 vòng băng xoay tròn quanh người, va chạm làm chậm địch 30% trong 1.5 giây. Địch đang chậm nhận thêm 35% sát thương.' },
         passive: { icon:'❄️', tag:'PASSIVE', name:'Tuyệt Đối Không Độ', desc:'Địch đang chậm/đóng băng nhận thêm 35% ST. Giết địch đóng băng: hồi 8 HP. HP<25%: bọc băng bảo hộ — hấp thụ 300 ST và phản chiếu 50%.' },
-        active:  { icon:'🌨️', tag:'ACTIVE', name:'Bão Tuyết Tận Thế', desc:'Bão tuyết bán kính 200px trong 6 giây: địch chậm 60% + ST ×1.2/giây. Đứng trong bão 3 giây liên tiếp bị đóng băng 2 giây. Kết thúc: Băng Nổ ×4.0 toàn vùng.', cd:14 },
+        active:  { icon:'🌨️', tag:'ACTIVE', name:'Bão Tuyết Tận Thế', desc:'Bão tuyết bán kính 200px trong 6 giây: địch chậm 60% + ST ×1.2/giây. Đứng trong bão 3 giây liên tiếp bị đóng băng 2 giây. Kết thúc: Băng Nổ ×4.0 toàn vùng.', cd:18 },
         evolve:  { icon:'❄️', tag:'TIẾN HÓA', name:'Vong Linh Băng Trận', desc:'Băng Nhẫn trúng địch phân nhánh 2 mảnh băng homing (×0.5/mảnh). Địch đóng băng chết nổ AoE băng thêm 100px.' },
       }
     },
@@ -5001,7 +5001,7 @@ const CHARS = [
     passiveDesc: 'Mỗi lần giết quái, tốc chém +1.5% (tối đa 30 stack = +45%). Bị trúng đòn mất 50% stack (giữ lại 50%) — tích công bền vững hơn.',
     activeName: 'Tàn Phong Trảm',
     activeDesc: 'Đóng băng thời gian 0.2 giây rồi lao xuyên tất cả kẻ thù trên đường đi — sát thương scale theo Kiếm Ý: ×(2.5 + stack×0.05), tối đa ×4.0 tại 30 stack. Mỗi quái bị xuyên qua cộng thêm 1 stack. Không tiêu thụ stack.',
-    activeIcon: '💨', activeCooldown: 7,
+    activeIcon: '💨', activeCooldown: 11,
     evolvedWeapon: 'Thần Kiếm Vong Linh',
     evolveDesc: 'Kiếm khí toả ra 8 hướng (×0.15/beam, pierce 3), mỗi nhát chém tạo thêm 2 lưỡi kiếm ảo đánh trễ 150ms và 300ms (×0.5/lưỡi).',
     color: '#60d0ff',
@@ -5016,7 +5016,7 @@ const CHARS = [
     passiveDesc: 'Đứng yên 0.4 giây: sát thương +20%. Di chuyển reset về 0. Khi tiến hoá: mini orb và độc cũng hưởng buff — tối đa ×3.54 effective per target.',
     activeName: 'Hắc Động Lôi',
     activeDesc: 'Triệu hồi sét trong vùng rộng 3 giây. Nếu đang có buff Mana Tích Tụ khi cast: 12 tia ×1.0 thay vì 8 tia ×0.8. Nếu đứng yên suốt 3 giây: tia cuối là Siêu Lôi (×5.0 AoE nhắm điểm đông quái nhất).',
-    activeIcon: '⚡', activeCooldown: 9,
+    activeIcon: '⚡', activeCooldown: 14,
     evolvedWeapon: 'Hắc Nhật Ma Cầu',
     evolveDesc: 'Khi trúng địch: tách 3 mini orb homing tự truy đuổi 3 quái gần nhất (×0.55/orb, pierce 1) + áp độc mạnh (0.15×/s × 4 giây).',
     color: '#a060ff',
@@ -5031,7 +5031,7 @@ const CHARS = [
     passiveDesc: 'Quái ở xa (>250 đơn vị) nhận thêm 25% sát thương.',
     activeName: 'Vũ Bão Tiễn',
     activeDesc: 'Tàn Sát Tầm Xa: bắn 5 mũi tên liên tục theo hướng mục tiêu (1 mũi/300ms), mỗi mũi xuyên 5 quái, tốc bay 700đv/s. Quái bị trúng ở khoảng cách >250 đơn vị nhận thêm 25% sát thương (kích hoạt passive Mắt Đại Bàng).',
-    activeIcon: '🎯', activeCooldown: 6,
+    activeIcon: '🎯', activeCooldown: 10,
     evolvedWeapon: 'Tử Thần Chi Tên',
     evolveDesc: 'Mũi tên áp độc khi trúng; xuyên qua địch đầu phân thành 3 tên nhỏ (×0.55/tên).',
     color: '#ff9060',
@@ -5046,7 +5046,7 @@ const CHARS = [
     passiveDesc: '20% xác suất chặn hoàn toàn đòn bất kỳ. Chặn thành công: hồi 5% HP tối đa + cộng dồn +7% tốc đánh (stack được), reset sau 3 giây.',
     activeName: 'Phật Nộ Giáng Thiên',
     activeDesc: 'Trấn Áp Bất Động: AoE ×6.0 khổng lồ + kéo quái vào gần 80 đơn vị rồi stun 1.5 giây (không đẩy ra xa). Mỗi stack block đang tích lũy khi cast: +×0.15 sát thương và +0.1 giây stun (tối đa 3 stack = +×0.45, stun 1.8 giây).',
-    activeIcon: '☄️', activeCooldown: 8,
+    activeIcon: '☄️', activeCooldown: 13,
     evolvedWeapon: 'Hộ Pháp Thần Trượng',
     evolveDesc: 'Sóng chấn động tạo cột sáng thiêng liêng tại vị trí trúng địch, tồn tại 2 giây.',
     color: '#ffd700',
@@ -5061,7 +5061,7 @@ const CHARS = [
     passiveDesc: 'ATK +20%. HP <40%: ATK +50%, SPD +40%, giảm 30% sát thương nhận vào. Vô hình 5 giây (CD 15s): quái xa >400 đơn vị không truy đuổi — Boss không bị ảnh hưởng.',
     activeName: 'Ám Sát Liên Hoàn',
     activeDesc: 'Ẩn Kích Liên Hoàn: teleport đến 3 mục tiêu gần nhất trong tầm 450 đơn vị. Khi đang vô hình (HP<40%): mỗi đòn ×6.0 + chảy máu liên tục 3 giây (40% tổng ST/giây), sau chuỗi tái kích hoạt vô hình ngay (bypass CD) nếu HP vẫn <40%. Khi không vô hình: ×4.0 thường.',
-    activeIcon: '🌀', activeCooldown: 10,
+    activeIcon: '🌀', activeCooldown: 12,
     evolvedWeapon: 'Hư Vô Đoản Kiếm',
     evolveDesc: 'Mỗi đòn đánh tạo phân thân ảo lặp lại đòn đó 0.3 giây sau (hiệu quả đánh 2 lần).',
     color: '#cc44ff',
@@ -5076,7 +5076,7 @@ const CHARS = [
     passiveDesc: 'Giết quái tạo Linh Hồn (tối đa 20), mỗi cái +2.5% sát thương (+50% tối đa). Bộ xương triệu hồi cũng tạo Linh Hồn khi giết quái. HP<20%: tiêu thụ tất cả để hồi 25 HP/linh hồn.',
     activeName: 'Quân Đoàn Bất Tử',
     activeDesc: 'Triệu hồi 3 bộ xương (tối đa 9) + tạo Lĩnh Vực Tử Thần: AoE 180px pulse liên tục 4 giây (5 pulse × ×0.4 sát thương, hưởng trực tiếp từ buff +50% Linh Hồn). Không tiêu thụ Linh Hồn.',
-    activeIcon: '💀', activeCooldown: 9,
+    activeIcon: '💀', activeCooldown: 14,
     evolvedWeapon: 'Vong Hồn Đại Liềm',
     evolveDesc: 'Liềm to gấp 1.8 lần, hút quái vào khi bay, khi về xuyên tất cả địch còn lại.',
     color: '#ff4060',
@@ -5091,7 +5091,7 @@ const CHARS = [
     passiveDesc: 'Mỗi cú đánh tích 1 Lôi Tích (tối đa 20), mỗi stack +4% ST (tối đa +80%). Đủ 20 stack: tự phóng AoE sét mỗi 3 giây liên tục. Dùng Active KHÔNG tiêu stack.',
     activeName: 'Thiên Lôi Giáng Thế',
     activeDesc: 'Phóng 5 tia Thiên Lôi cộng hưởng trong tầm 200đv — mỗi tia = Tổng ST hiện tại × 2.5 (đã nhân buff Lôi Tích, KHÔNG tiêu stack). Dây chuyền 4 mục tiêu. Sau cast: ATK Speed +50% trong 5 giây + tích 2 Lôi Tích/đòn.',
-    activeIcon: '🌩️', activeCooldown: 9,
+    activeIcon: '🌩️', activeCooldown: 16,
     evolvedWeapon: 'Thần Lôi Vô Song',
     evolveDesc: 'Sét dây chuyền lên 6 mục tiêu/chuỗi. Mỗi dây chuyền để lại vết sét gây 20% ST/giây trong 2 giây. Active chain thêm 2 mục tiêu (tổng 6).',
     color: '#00ccff',
@@ -5106,7 +5106,7 @@ const CHARS = [
     passiveDesc: 'Giảm 20% ST nhận. Mỗi 25 quái tiêu diệt: ATK +35% vĩnh viễn trong run (stack 3 lần = +105%). HP<40%: Cuồng Long — ATK +50%, SPD +25%. Active không gián đoạn vũ khí.',
     activeName: 'Rồng Lửa Thiêu Thân',
     activeDesc: 'Hóa thân Rồng Lửa 5 giây: AoE 200px liên tục (×1.5/giây) + vũ khí tiếp tục bắn bình thường với full buff, +20% SPD, miễn knockback. Kết thúc: Thiên Long Nổ ×7.0.',
-    activeIcon: '🐉', activeCooldown: 10,
+    activeIcon: '🐉', activeCooldown: 17,
     evolvedWeapon: 'Thiên Long Hỏa Hải',
     evolveDesc: 'Mỗi cú đấm để lại đám lửa 3 giây (25% ST/giây trong 90px). Khi biến thân: mỗi tick AoE triệu thêm 2 cầu lửa homing tự truy đuổi quái gần nhất.',
     color: '#ff6600',
@@ -5121,7 +5121,7 @@ const CHARS = [
     passiveDesc: 'Địch đang chậm/đóng băng nhận thêm 45% ST từ mọi nguồn. Giết địch đóng băng: hồi 8 HP. HP<25%: Băng Hộ Thể — hấp thụ 400 ST và phản chiếu 60% về nguồn tấn công.',
     activeName: 'Bão Tuyết Tận Thế',
     activeDesc: 'Bão tuyết 200px trong 6 giây: địch chậm 60% + ×1.2/giây (vũ khí/crit hưởng +45%). Đứng trong bão 3 giây liên tiếp → đóng băng 2 giây. Kết thúc: Băng Nổ ×5.5 toàn vùng.',
-    activeIcon: '🌨️', activeCooldown: 11,
+    activeIcon: '🌨️', activeCooldown: 18,
     evolvedWeapon: 'Vong Linh Băng Trận',
     evolveDesc: 'Băng Nhẫn trúng địch phân nhánh 2 mảnh băng homing (×0.6/mảnh). Địch đóng băng chết: nổ AoE băng 120px + đóng băng địch xung quanh trong 1 giây.',
     color: '#88eeff',
