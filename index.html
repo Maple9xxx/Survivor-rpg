@@ -9422,18 +9422,19 @@ class FireConeEffect {
 class IceShardBurst {
   constructor(x, y, radius, evolved) {
     this.x = x; this.y = y;
-    this.radius = radius;
+    this.radius  = radius;
     this.evolved = evolved;
-    this.life   = 0.55;
-    this.maxLife= 0.55;
-    this.dead   = false;
-    const count = evolved ? 20 : 12;
+    this.life    = 0.55;
+    this.maxLife = 0.55;
+    this.dead    = false;
+    // Evolved: 14 shards, normal: 9 — đủ visual mà không quá nhiều draw call
+    const count = evolved ? 14 : 9;
     this._shards = [];
     for (let i = 0; i < count; i++) {
-      const a = (i / count) * Math.PI * 2 + (Math.random() - 0.5) * 0.4;
+      const a   = (i / count) * Math.PI * 2 + (Math.random() - 0.5) * 0.4;
       const spd = (0.5 + Math.random() * 0.5) * radius * 1.8;
       const len = 8 + Math.random() * 12;
-      this._shards.push({ a, spd, len, size: 3 + Math.random() * 4 });
+      this._shards.push({ a, spd, len, w: 1.0 + Math.random() * 1.5 });
     }
   }
   update(dt) {
@@ -9443,49 +9444,45 @@ class IceShardBurst {
   draw(ctx, camX, camY) {
     if (this.dead) return;
     const sx = this.x - camX, sy = this.y - camY;
-    const alpha = this.life / this.maxLife;
+    // Offscreen cull
+    if (sx < -this.radius * 2 || sy < -this.radius * 2) return;
+    const alpha    = this.life / this.maxLife;
     const progress = 1 - alpha;
-    ctx.save();
-    ctx.shadowColor = '#88eeff';
-    ctx.shadowBlur = 15 * alpha;
+    const prevAlpha = ctx.globalAlpha;
 
-    // ── Freeze ring ──
-    ctx.globalAlpha = alpha * 0.7;
+    // ── Freeze ring (không dùng save/restore) ──
+    ctx.globalAlpha = alpha * 0.65;
     ctx.strokeStyle = '#ccf8ff';
-    ctx.lineWidth = 2.5;
+    ctx.lineWidth   = 2;
     ctx.beginPath();
-    ctx.arc(sx, sy, this.radius * (0.4 + progress * 0.8), 0, Math.PI * 2);
+    ctx.arc(sx, sy, this.radius * (0.4 + progress * 0.8), 0, 6.2832);
     ctx.stroke();
 
     if (this.evolved) {
-      ctx.globalAlpha = alpha * 0.4;
+      ctx.globalAlpha = alpha * 0.35;
       ctx.strokeStyle = '#88eeff';
-      ctx.lineWidth = 1.5;
+      ctx.lineWidth   = 1.5;
       ctx.beginPath();
-      ctx.arc(sx, sy, this.radius * (0.6 + progress * 1.1), 0, Math.PI * 2);
+      ctx.arc(sx, sy, this.radius * (0.6 + progress * 1.1), 0, 6.2832);
       ctx.stroke();
     }
 
-    // ── Shards flying outward ──
-    this._shards.forEach(s => {
+    // ── Shards: batch toàn bộ vào 1 beginPath — 1 stroke duy nhất ──
+    ctx.globalAlpha = alpha * 0.88;
+    ctx.strokeStyle = '#e8f8ff';
+    ctx.lineWidth   = 1.5;
+    ctx.beginPath();
+    for (let i = 0; i < this._shards.length; i++) {
+      const s    = this._shards[i];
       const dist = s.spd * progress;
-      const x2 = sx + Math.cos(s.a) * dist;
-      const y2 = sy + Math.sin(s.a) * dist;
-      const x1 = sx + Math.cos(s.a) * Math.max(0, dist - s.len);
-      const y1 = sy + Math.sin(s.a) * Math.max(0, dist - s.len);
-      ctx.globalAlpha = alpha * 0.9;
-      ctx.strokeStyle = '#e8f8ff';
-      ctx.lineWidth = s.size * 0.5 * alpha;
-      ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2); ctx.stroke();
-      // Shard tip glow
-      ctx.globalAlpha = alpha * 0.7;
-      ctx.fillStyle = '#88eeff';
-      ctx.beginPath(); ctx.arc(x2, y2, s.size * alpha * 0.6, 0, Math.PI * 2); ctx.fill();
-    });
+      ctx.moveTo(sx + Math.cos(s.a) * Math.max(0, dist - s.len),
+                 sy + Math.sin(s.a) * Math.max(0, dist - s.len));
+      ctx.lineTo(sx + Math.cos(s.a) * dist,
+                 sy + Math.sin(s.a) * dist);
+    }
+    ctx.stroke();
 
-    ctx.shadowBlur = 0;
-    ctx.globalAlpha = 1;
-    ctx.restore();
+    ctx.globalAlpha = prevAlpha;
   }
 }
 
@@ -10403,7 +10400,7 @@ const Game = (() => {
         const iceDmg2 = dmg;
         const baseAng2 = nearest ? Math.atan2(nearest.y - p.y, nearest.x - p.x) : 0;
         for (let ri = 0; ri < 4; ri++) {
-          const ra = baseAng2 + (ri / 3 - 0.5) * Math.PI;
+          const ra = baseAng2 + (ri / 3 - 0.5) * (Math.PI / 3); // spread ±30° thay vì ±90°
           const irProj = {
             x: p.x, y: p.y,
             vx: Math.cos(ra) * 210, vy: Math.sin(ra) * 210,
