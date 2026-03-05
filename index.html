@@ -150,6 +150,24 @@ canvas{display:block;image-rendering:pixelated;}
 #skill-btn.theme-tu_linh #skill-cd-text{color:#ff8090;}
 @keyframes skb-tl{0%,100%{box-shadow:0 0 20px rgba(255,60,80,.55),inset 0 0 10px rgba(255,60,80,.2);}50%{box-shadow:0 0 36px rgba(255,80,100,.95),inset 0 0 18px rgba(255,60,80,.45);}}
 #skill-btn.theme-tu_linh:not(.on-cooldown){animation:skb-tl 2.0s ease-in-out infinite;}
+/* Lôi Thần — electric cyan */
+#skill-btn.theme-loi_than{background:radial-gradient(circle at 35% 35%,rgba(0,160,220,.9),rgba(0,40,80,.95));border-color:#00ccff;box-shadow:0 0 22px rgba(0,200,255,.65),inset 0 0 10px rgba(0,200,255,.3);}
+#skill-btn.theme-loi_than.on-cooldown{border-color:rgba(0,200,255,.2);box-shadow:none;}
+#skill-btn.theme-loi_than #skill-cd-text{color:#80f0ff;}
+@keyframes skb-lt{0%,100%{box-shadow:0 0 20px rgba(0,200,255,.6);}30%{box-shadow:0 0 40px rgba(100,240,255,1);}60%{box-shadow:0 0 15px rgba(0,180,220,.4);}}
+#skill-btn.theme-loi_than:not(.on-cooldown){animation:skb-lt 0.8s ease-in-out infinite;}
+/* Hỏa Long — fiery orange */
+#skill-btn.theme-hoa_long{background:radial-gradient(circle at 35% 30%,rgba(220,80,10,.9),rgba(100,20,0,.95));border-color:#ff6600;box-shadow:0 0 22px rgba(255,100,0,.6),inset 0 0 10px rgba(255,100,0,.25);}
+#skill-btn.theme-hoa_long.on-cooldown{border-color:rgba(255,100,0,.2);box-shadow:none;}
+#skill-btn.theme-hoa_long #skill-cd-text{color:#ffaa60;}
+@keyframes skb-hl{0%,100%{box-shadow:0 0 18px rgba(255,100,0,.55);}50%{box-shadow:0 0 36px rgba(255,160,20,1);}}
+#skill-btn.theme-hoa_long:not(.on-cooldown){animation:skb-hl 1.3s ease-in-out infinite;}
+/* Băng Vương — icy crystalline */
+#skill-btn.theme-bang_vuong{background:radial-gradient(circle at 35% 35%,rgba(0,160,220,.85),rgba(0,20,60,.95));border-color:#88eeff;box-shadow:0 0 22px rgba(136,238,255,.55),inset 0 0 10px rgba(136,238,255,.25);}
+#skill-btn.theme-bang_vuong.on-cooldown{border-color:rgba(136,238,255,.2);box-shadow:none;}
+#skill-btn.theme-bang_vuong #skill-cd-text{color:#ccf8ff;}
+@keyframes skb-bv{0%,100%{box-shadow:0 0 20px rgba(136,238,255,.5);}50%{box-shadow:0 0 38px rgba(200,250,255,.9);}}
+#skill-btn.theme-bang_vuong:not(.on-cooldown){animation:skb-bv 2.5s ease-in-out infinite;}
 #skill-aim-indicator{position:fixed;pointer-events:none;z-index:99;display:none;height:4px;background:linear-gradient(90deg,transparent,rgba(160,96,255,.5) 30%,rgba(210,170,255,.95));border-radius:2px;transform-origin:0 50%;}
 #skill-aim-indicator::after{content:'';position:absolute;right:-8px;top:-6px;border-left:14px solid rgba(210,170,255,.95);border-top:7px solid transparent;border-bottom:7px solid transparent;}
 #skill-aim-indicator.visible{display:block;}
@@ -222,8 +240,11 @@ canvas{display:block;image-rendering:pixelated;}
 .codex-entry h4{color:#ffd700;margin-bottom:6px;}
 .codex-entry p{font-size:12px;color:#a08050;line-height:1.6;}
 #screen-potential{background:linear-gradient(160deg,#000510,#001020);padding:0;justify-content:flex-start;align-items:stretch;}
-#potential-scroll-area{position:absolute;top:0;left:0;right:0;bottom:76px;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;touch-action:pan-y;padding:16px 12px 12px;box-sizing:border-box;}
-#potential-footer{position:absolute;left:0;right:0;bottom:0;height:76px;padding:10px 14px 16px;box-sizing:border-box;border-top:1px solid rgba(96,160,255,.15);background:linear-gradient(0deg,rgba(0,5,16,1),rgba(0,5,16,.95));}
+#potential-scroll-area{position:absolute;top:0;left:0;right:0;bottom:80px;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;touch-action:pan-y;padding:16px 12px 12px;box-sizing:border-box;}
+#potential-footer{position:absolute;left:0;right:0;bottom:0;height:80px;padding:10px 14px 14px;box-sizing:border-box;border-top:1px solid rgba(96,160,255,.15);background:linear-gradient(0deg,rgba(0,5,16,1),rgba(0,5,16,.95));display:flex;align-items:center;}
+#potential-footer-row{display:flex;gap:10px;width:100%;max-width:700px;margin:0 auto;align-items:stretch;}
+.btn-reset-pot{flex:0 0 auto;padding:14px 18px;font-size:12px;font-weight:700;letter-spacing:1px;color:#ff9060;background:linear-gradient(135deg,rgba(80,20,0,.95),rgba(50,10,0,.9));border:1px solid rgba(255,100,60,.5);border-radius:4px;cursor:pointer;white-space:nowrap;-webkit-appearance:none;transition:all .2s;}
+.btn-reset-pot:active{transform:scale(.96);border-color:#ff6030;box-shadow:0 0 12px rgba(255,80,30,.4);}
 #potential-header{text-align:center;margin-bottom:6px;}
 #potential-header h2{font-size:clamp(16px,4.5vw,24px);color:#60d0ff;letter-spacing:3px;}
 #potential-gold-info{text-align:center;font-size:12px;color:#ffd700;margin-bottom:14px;}
@@ -381,6 +402,85 @@ canvas{display:block;image-rendering:pixelated;}
   border:1px solid rgba(200,150,12,.2);
   background:linear-gradient(160deg,rgba(12,8,0,.97),rgba(6,4,0,.97));
 }
+
+/* ══ CHAR DETAIL OVERLAY ══ */
+#char-detail-overlay {
+  display:none;
+  position:fixed;inset:0;z-index:9000;
+  background:rgba(0,0,0,.92);
+  flex-direction:column;
+  animation:fadeInOverlay .18s ease;
+}
+@keyframes fadeInOverlay{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+#char-detail-overlay.show { display:flex; }
+
+/* Header */
+#cdo-header{
+  display:flex;align-items:center;gap:10px;
+  padding:14px 16px 10px;
+  background:linear-gradient(180deg,rgba(20,10,0,.98),rgba(10,5,0,.95));
+  border-bottom:1px solid rgba(200,150,12,.2);
+  flex-shrink:0;
+}
+#cdo-avatar{width:44px;height:44px;border-radius:50%;border:2px solid #c8960c;background:radial-gradient(circle,rgba(100,60,0,.4),rgba(0,0,0,.6));flex-shrink:0;}
+#cdo-name{font-size:17px;font-weight:900;color:#ffd700;letter-spacing:2px;line-height:1.2;}
+#cdo-title{font-size:11px;color:#c8960c;opacity:.8;}
+#cdo-close{margin-left:auto;width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);color:#fff;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;-webkit-appearance:none;flex-shrink:0;}
+
+/* Tabs */
+#cdo-tabs{
+  display:flex;gap:0;flex-shrink:0;
+  border-bottom:2px solid rgba(200,150,12,.2);
+  background:rgba(10,5,0,.98);
+}
+.cdo-tab{
+  flex:1;padding:10px 0;font-size:12px;font-weight:700;letter-spacing:2px;
+  color:#6a4500;background:none;border:none;cursor:pointer;-webkit-appearance:none;
+  border-bottom:2px solid transparent;margin-bottom:-2px;transition:all .2s;text-align:center;
+}
+.cdo-tab.active{color:#ffd700;border-bottom-color:#ffd700;}
+
+/* Scroll body */
+#cdo-body{
+  flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;
+  padding:14px 14px 20px;
+}
+.cdo-panel{display:none;}
+.cdo-panel.active{display:block;}
+
+/* Stat panel in overlay */
+#cdo-body .cu-stat-grid{border-radius:8px;overflow:hidden;}
+
+/* Skill rows for desc tab */
+.cdo-skill-block{
+  background:rgba(255,255,255,.03);border:1px solid rgba(200,150,12,.15);
+  border-radius:8px;padding:12px 14px;margin-bottom:10px;
+}
+.cdo-sk-type{font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:6px;}
+.cdo-sk-type.t-weapon{color:#c8960c;}
+.cdo-sk-type.t-passive{color:#60c860;}
+.cdo-sk-type.t-active{color:#a060ff;}
+.cdo-sk-type.t-evolve{color:#ffd700;}
+.cdo-sk-name{font-size:14px;font-weight:700;color:#ffd700;margin-bottom:4px;}
+.cdo-sk-cd{display:inline-block;font-size:9px;color:#a060ff;background:rgba(160,96,255,.1);border:1px solid rgba(160,96,255,.25);border-radius:8px;padding:1px 7px;margin-left:6px;vertical-align:middle;}
+.cdo-sk-desc{font-size:12px;color:#c0a060;line-height:1.6;}
+
+/* Footer */
+#cdo-footer{
+  flex-shrink:0;padding:10px 14px 18px;
+  background:linear-gradient(0deg,rgba(10,5,0,1),rgba(10,5,0,.9));
+  border-top:1px solid rgba(200,150,12,.15);
+}
+#cdo-footer .menu-btn{width:100%;max-width:700px;display:block;margin:0 auto;}
+
+/* Long-press ripple hint */
+.char-card-longpress-hint {
+  position:absolute;inset:0;border-radius:8px;
+  background:rgba(255,215,0,.08);
+  animation:lpPulse .35s ease forwards;
+  pointer-events:none;
+}
+@keyframes lpPulse{from{opacity:1}to{opacity:0;transform:scale(1.06)}}
 
 /* ── Section header bar ── */
 .cu-section {
@@ -964,13 +1064,14 @@ canvas{display:block;image-rendering:pixelated;}
   <div id="charselect-scroll-area">
     <div id="charselect-header">
       <h2>⚔ CHỌN NHÂN VẬT</h2>
+      <div style="font-size:10px;color:#6a4500;margin-top:4px;letter-spacing:1px;">💡 Nhấn giữ để xem chi tiết nhân vật</div>
     </div>
     <div class="char-grid" id="char-grid"></div>
     <div class="char-detail-panel" id="char-detail-panel" style="display:none">
       <h3 id="char-detail-name"></h3>
       <div id="char-detail-content"></div>
     </div>
-    <div id="char-unified-card"></div>
+    <div id="char-unified-card" style="display:none"></div>
     <div id="stat-preview-panel" style="display:none"></div>
   </div>
   <div id="charselect-footer">
@@ -978,6 +1079,29 @@ canvas{display:block;image-rendering:pixelated;}
       <button class="menu-btn" onclick="UI.showScreen('menu')">← QUAY LẠI</button>
       <button class="menu-btn primary" id="btn-go-mapselect" onclick="UI.goToMapSelect()">CHỌN MAP →</button>
     </div>
+  </div>
+</div>
+
+<!-- ══ CHAR DETAIL OVERLAY (long-press) ══ -->
+<div id="char-detail-overlay">
+  <div id="cdo-header">
+    <canvas id="cdo-avatar" width="44" height="44"></canvas>
+    <div>
+      <div id="cdo-name">—</div>
+      <div id="cdo-title">—</div>
+    </div>
+    <button id="cdo-close" onclick="document.getElementById('char-detail-overlay').classList.remove('show')">✕</button>
+  </div>
+  <div id="cdo-tabs">
+    <button class="cdo-tab active" onclick="UI.cdoSwitchTab('stats')">📊 THUỘC TÍNH</button>
+    <button class="cdo-tab" onclick="UI.cdoSwitchTab('skills')">⚔️ KỸ NĂNG</button>
+  </div>
+  <div id="cdo-body">
+    <div class="cdo-panel active" id="cdo-panel-stats"></div>
+    <div class="cdo-panel" id="cdo-panel-skills"></div>
+  </div>
+  <div id="cdo-footer">
+    <button class="menu-btn" onclick="document.getElementById('char-detail-overlay').classList.remove('show')">← ĐÓNG LẠI</button>
   </div>
 </div>
 
@@ -1176,8 +1300,10 @@ canvas{display:block;image-rendering:pixelated;}
     <div class="potential-grid" id="potential-grid"></div>
   </div>
   <div id="potential-footer">
-    <button class="menu-btn" style="width:100%;max-width:700px;display:block;margin:0 auto;"
-      onclick="UI.showScreen('menu')">← QUAY LẠI</button>
+    <div id="potential-footer-row">
+      <button class="btn-reset-pot" onclick="UI.resetPotential()">🔄 RESET (-20%)</button>
+      <button class="menu-btn" style="flex:1;" onclick="UI.showScreen('menu')">← QUAY LẠI</button>
+    </div>
   </div>
 </div>
 
@@ -1448,6 +1574,7 @@ const Audio = (() => {
   const _minGap = {          // minimum ms between repeats of same SFX
     slash: 55,  orb: 120, orb_split: 80, arrow: 80, slam: 160, blade: 45, scythe: 200,
     hit: 30,    kill: 60, damage: 80,  pet_skill: 250,
+    death_pulse: 420, super_lightning: 3000,
   };
 
   function init(s) {
@@ -1678,10 +1805,15 @@ const Audio = (() => {
       // ── Per-character active skills ──
       case 'active_luu_phong':    _sfxActiveLiu(t);   break;
       case 'active_huyen_nguyet': _sfxActiveHuyen(t); break;
+      case 'super_lightning':     _sfxSuperLightning(t); break;
+      case 'death_pulse':         _sfxDeathPulse(t);  break;
       case 'active_thiet_tam':    _sfxActiveThiet(t); break;
       case 'active_kim_cang':     _sfxActiveKim(t);   break;
       case 'active_am_sat':       _sfxActiveAm(t);    break;
       case 'active_tu_linh':      _sfxActiveTu(t);    break;
+      case 'active_loi_than':     _sfxActiveLoiThan(t);  break;
+      case 'active_hoa_long':     _sfxActiveHoaLong(t);  break;
+      case 'active_bang_vuong':   _sfxActiveBangVuong(t); break;
       case 'active': _sfxActiveLiu(t); break; // fallback
 
       // ── Events ──
@@ -1774,9 +1906,11 @@ const Audio = (() => {
   }
 
   function _sfxOrb(t) {
-    // Huyền Nguyệt: magical hum pulse
-    _tone(440,'sine',0.1,0.08,t);
-    _tone(660,'sine',0.08,0.06,t+0.02);
+    // Huyền Nguyệt: tiếng ma cầu homing — layered magical pulse
+    _tone(330, 'sine',     0.12, 0.12, t);           // warm fundamental
+    _tone(495, 'sine',     0.08, 0.10, t + 0.02);    // perfect 5th harmonic
+    _tone(660, 'triangle', 0.05, 0.08, t + 0.04);    // octave shimmer
+    _noise(0.025, 0.04, t, 5500);                    // crystal dust
   }
 
   function _sfxOrbSplit(t) {
@@ -1820,17 +1954,42 @@ const Audio = (() => {
   }
 
   function _sfxActiveHuyen(t) {
-    // Hắc Động Lôi: thunder + crackle + deep rumble
-    _noise(0.08,0.45,t,4000);                  // lightning crack
-    _tone(60,'sawtooth',0.4,0.45,t);           // deep thunder
-    _tone(120,'sine',0.3,0.6,t+0.05);
-    // Rolling thunder tail
+    // Hắc Động Lôi: tiếng sét đánh — crackle + deep rumble + rolling tail
+    _noise(0.08, 0.48, t, 4000);                // lightning crack
+    _tone(60,  'sawtooth', 0.40, 0.45, t);      // deep thunder body
+    _tone(120, 'sine',     0.28, 0.55, t + 0.05);
+    _noise(0.08, 0.10, t + 0.06, 1200);         // low-mid texture
     setTimeout(() => {
       if (!ctx) return;
       const t2 = ctx.currentTime;
-      _noise(0.4,0.2,t2,800);
-      _tone(55,'sine',0.15,0.4,t2);
-    }, 120);
+      _noise(0.4, 0.18, t2, 600);               // rolling thunder tail
+      _tone(50, 'sine', 0.12, 0.4, t2);
+    }, 130);
+  }
+
+  function _sfxSuperLightning(t) {
+    // Siêu Lôi ×5.0 — dramatically louder + white-hot crackle + 3-stage boom
+    _noise(0.06, 0.65, t, 5000);               // ultra-bright crack
+    _tone(55,  'sawtooth', 0.55, 0.7,  t);     // sub-bass stage 1
+    _tone(90,  'sine',     0.40, 0.65, t + 0.04);
+    _tone(130, 'sine',     0.25, 0.50, t + 0.10);
+    _noise(0.18, 0.30, t + 0.08, 1800);        // mid rumble
+    // Rolling aftershock: 3 diminishing booms
+    [0.18, 0.38, 0.62].forEach((d, i) => {
+      setTimeout(() => {
+        if (!ctx) return;
+        const t2 = ctx.currentTime;
+        _noise(0.3 - i * 0.06, 0.22 - i * 0.05, t2, 500);
+        _tone(52 - i * 4, 'sine', 0.18 - i * 0.04, 0.35, t2);
+      }, d * 1000);
+    });
+  }
+
+  function _sfxDeathPulse(t) {
+    // Lĩnh Vực Tử Thần per-pulse — short dark thud + spectral hiss
+    _tone(80, 'sawtooth', 0.09, 0.12, t, 40);
+    _noise(0.04, 0.08, t, 900);
+    _tone(160, 'sine',   0.04, 0.06, t + 0.03); // faint harmonic overtone
   }
 
   function _sfxActiveThiet(t) {
@@ -1891,6 +2050,63 @@ const Audio = (() => {
         _noise(0.05,0.1,t2,1500);
       }, d * 1000);
     });
+  }
+
+  function _sfxActiveLoiThan(t) {
+    // Electric crack + thunder roll
+    const g1 = t.createGain(); g1.gain.setValueAtTime(0.001, t.currentTime);
+    g1.gain.exponentialRampToValueAtTime(0.5, t.currentTime + 0.01);
+    g1.gain.exponentialRampToValueAtTime(0.001, t.currentTime + 0.2);
+    const osc1 = t.createOscillator(); osc1.type = 'sawtooth';
+    osc1.frequency.setValueAtTime(800, t.currentTime);
+    osc1.frequency.exponentialRampToValueAtTime(80, t.currentTime + 0.15);
+    osc1.connect(g1); g1.connect(t.destination); osc1.start(t.currentTime); osc1.stop(t.currentTime + 0.25);
+    // Rumble
+    const g2 = t.createGain(); g2.gain.setValueAtTime(0.3, t.currentTime + 0.1);
+    g2.gain.exponentialRampToValueAtTime(0.001, t.currentTime + 0.8);
+    const buf = t.createBuffer(1, t.sampleRate * 0.7, t.sampleRate);
+    const d = buf.getChannelData(0);
+    for (let i = 0; i < d.length; i++) d[i] = (Math.random()*2-1) * Math.exp(-i/(t.sampleRate*0.15));
+    const src = t.createBufferSource(); src.buffer = buf;
+    src.connect(g2); g2.connect(t.destination); src.start(t.currentTime + 0.1);
+  }
+
+  function _sfxActiveHoaLong(t) {
+    // Dragon roar + fire crackle
+    const g1 = t.createGain(); g1.gain.setValueAtTime(0.001, t.currentTime);
+    g1.gain.exponentialRampToValueAtTime(0.6, t.currentTime + 0.05);
+    g1.gain.exponentialRampToValueAtTime(0.001, t.currentTime + 0.6);
+    const osc1 = t.createOscillator(); osc1.type = 'sawtooth';
+    osc1.frequency.setValueAtTime(120, t.currentTime);
+    osc1.frequency.exponentialRampToValueAtTime(40, t.currentTime + 0.5);
+    osc1.connect(g1); g1.connect(t.destination); osc1.start(t.currentTime); osc1.stop(t.currentTime + 0.6);
+    // Crackle
+    const g2 = t.createGain(); g2.gain.setValueAtTime(0.2, t.currentTime);
+    g2.gain.exponentialRampToValueAtTime(0.001, t.currentTime + 0.4);
+    const buf2 = t.createBuffer(1, t.sampleRate * 0.4, t.sampleRate);
+    const d2 = buf2.getChannelData(0);
+    for (let i = 0; i < d2.length; i++) d2[i] = (Math.random()*2-1) * 0.8;
+    const src2 = t.createBufferSource(); src2.buffer = buf2;
+    src2.connect(g2); g2.connect(t.destination); src2.start(t.currentTime);
+  }
+
+  function _sfxActiveBangVuong(t) {
+    // Ice shatter + blizzard howl
+    const g1 = t.createGain(); g1.gain.setValueAtTime(0.001, t.currentTime);
+    g1.gain.exponentialRampToValueAtTime(0.4, t.currentTime + 0.02);
+    g1.gain.exponentialRampToValueAtTime(0.001, t.currentTime + 0.3);
+    const osc1 = t.createOscillator(); osc1.type = 'square';
+    osc1.frequency.setValueAtTime(1200, t.currentTime);
+    osc1.frequency.exponentialRampToValueAtTime(200, t.currentTime + 0.25);
+    osc1.connect(g1); g1.connect(t.destination); osc1.start(t.currentTime); osc1.stop(t.currentTime + 0.3);
+    // Howl
+    const g2 = t.createGain(); g2.gain.setValueAtTime(0.001, t.currentTime + 0.05);
+    g2.gain.exponentialRampToValueAtTime(0.3, t.currentTime + 0.2);
+    g2.gain.exponentialRampToValueAtTime(0.001, t.currentTime + 1.0);
+    const osc2 = t.createOscillator(); osc2.type = 'sine';
+    osc2.frequency.setValueAtTime(300, t.currentTime + 0.05);
+    osc2.frequency.exponentialRampToValueAtTime(80, t.currentTime + 0.9);
+    osc2.connect(g2); g2.connect(t.destination); osc2.start(t.currentTime + 0.05); osc2.stop(t.currentTime + 1.0);
   }
 
   /* ── Event SFX ── */
@@ -2448,11 +2664,26 @@ const UI = (() => {
         }
         selectedChar = c.id;
         renderCharGrid();
-        showCharDetail(c);
-        // Auto-scroll so unified card is visible
-        const ucard = document.getElementById('char-unified-card');
-        if (ucard) setTimeout(() => ucard.scrollIntoView({ behavior:'smooth', block:'nearest' }), 80);
       });
+
+      // ── Long-press → open full overlay ──
+      let _lpTimer = null;
+      div.addEventListener('touchstart', (e) => {
+        _lpTimer = setTimeout(() => {
+          _lpTimer = null;
+          Audio.playSFX('select');
+          // Ripple hint
+          const ripple = document.createElement('div');
+          ripple.className = 'char-card-longpress-hint';
+          div.appendChild(ripple);
+          setTimeout(() => ripple.remove(), 400);
+          // Show overlay
+          showCharOverlay(c);
+        }, 420);
+      }, {passive:true});
+      div.addEventListener('touchend',   () => { if (_lpTimer) { clearTimeout(_lpTimer); _lpTimer = null; } }, {passive:true});
+      div.addEventListener('touchmove',  () => { if (_lpTimer) { clearTimeout(_lpTimer); _lpTimer = null; } }, {passive:true});
+      div.addEventListener('touchcancel',() => { if (_lpTimer) { clearTimeout(_lpTimer); _lpTimer = null; } }, {passive:true});
       grid.appendChild(div);
     });
 
@@ -2461,19 +2692,147 @@ const UI = (() => {
       const canvas = document.getElementById(`portrait-${c.id}`);
       if (canvas) CharPortrait.draw(canvas, c.id, c.color);
     });
-
-    const selChar = CHARS.find(c => c.id === selectedChar);
-    if (selChar) showCharDetail(selChar);
   }
 
   function showCharDetail(c) {
     renderUnifiedCard(c.id);
   }
 
+  function showCharOverlay(c) {
+    const overlay = document.getElementById('char-detail-overlay');
+    if (!overlay) return;
+
+    // Header
+    document.getElementById('cdo-name').textContent  = c.name;
+    document.getElementById('cdo-title').textContent = c.title;
+    const avatarCanvas = document.getElementById('cdo-avatar');
+    if (avatarCanvas) CharPortrait.draw(avatarCanvas, c.id, c.color);
+
+    // Store char id for tab switching
+    overlay.dataset.charId = c.id;
+
+    // Render both panels
+    _cdoRenderStats(c);
+    _cdoRenderSkills(c);
+
+    // Reset to stats tab
+    cdoSwitchTab('stats');
+    overlay.classList.add('show');
+    document.getElementById('cdo-body').scrollTop = 0;
+  }
+
+  function cdoSwitchTab(tab) {
+    document.querySelectorAll('.cdo-tab').forEach((t, i) => {
+      t.classList.toggle('active', (i === 0 && tab === 'stats') || (i === 1 && tab === 'skills'));
+    });
+    document.getElementById('cdo-panel-stats').classList.toggle('active', tab === 'stats');
+    document.getElementById('cdo-panel-skills').classList.toggle('active', tab === 'skills');
+    document.getElementById('cdo-body').scrollTop = 0;
+  }
+
+  function _cdoRenderStats(char) {
+    const panel = document.getElementById('cdo-panel-stats');
+    if (!panel) return;
+    const save = Save.get();
+    const pot  = save.potential || { survival:[0,0,0,0], damage:[0,0,0,0], mobility:[0,0,0,0], fortune:[0,0,0,0] };
+    const petId= save.activePet;
+    const pet  = (typeof PETS !== 'undefined') ? PETS.find(p => p.id === petId) : null;
+    const petLabel = pet ? `${pet.icon} ${pet.name}` : null;
+
+    const baseHP = char.baseHP;
+    const potHP  = (pot.survival[0]||0) * 125;
+    const petHP  = pet && pet.id === 'pet_turtle' ? Math.floor(baseHP * 0.25) : 0;
+    const baseDmg = char.baseDmg;
+    const potDmgP = (pot.damage[0]||0) * 10;
+    const finalDmg = Math.round(baseDmg * (1 + potDmgP / 100));
+    const baseAtk = char.baseAtk;
+    const potAtkSp = (pot.mobility[2]||0) * 0.10;
+    const petAtkSp = pet && pet.id === 'pet_tiger' ? 0.15 : 0;
+    const finalAPS = (baseAtk * (1.0 + potAtkSp + petAtkSp)).toFixed(2);
+    const baseSpd  = char.baseSpd;
+    const potSpdP  = (pot.mobility[0]||0) * 6;
+    const finalSpd = Math.round(baseSpd * (1 + potSpdP / 100));
+    const potCrit  = (pot.damage[1]||0) * 6;
+    const petCrit  = pet && pet.id === 'pet_dragon' ? 8 : 0;
+    const potCritD = (pot.damage[2]||0) * 30;
+    const petCritD = pet && pet.id === 'pet_dragon' ? 40 : 0;
+    const potArmor = (pot.survival[1]||0) * 5;
+    const petArmor = pet && pet.id === 'pet_turtle' ? 8 : 0;
+    const potRegen = (pot.survival[2]||0) * 4;
+    const potHPK   = (pot.survival[3]||0) * 10;
+    const petSteal = pet && pet.id === 'pet_snake' ? 5 : 0;
+    const potGold  = (pot.fortune[0]||0) * 15;
+    const petGold  = pet && pet.id === 'pet_fox'   ? 20 : 0;
+    const petAoE   = pet && pet.id === 'pet_eagle' ? 12 : 0;
+    const potArmorPen = (pot.damage[3]||0) * 15;
+
+    function row(icon, label, base, unit, potB, potU, petB, petU, fin, finU) {
+      const hp = potB !== 0 && potB !== '';
+      const he = petB !== 0 && petB !== '';
+      return `
+        <div class="cu-td v-label">${icon} ${label}</div>
+        <div class="cu-td v-base">${base}${unit}</div>
+        <div class="cu-td ${hp ? 'v-pot' : 'v-zero'}">${hp ? `+${potB}${potU}` : '—'}</div>
+        <div class="cu-td ${he ? 'v-pet' : 'v-zero'}">${he ? `+${petB}${petU}` : '—'}</div>
+        <div class="cu-td v-fin">${fin}${finU}</div>`;
+    }
+
+    panel.innerHTML = `
+      <div style="font-size:10px;color:#60a0c0;letter-spacing:1px;margin-bottom:8px;opacity:.7;">
+        ${petLabel ? `🐾 Thú cưng đang trang bị: <b style="color:#4aff88">${petLabel}</b>` : '🐾 Chưa trang bị thú cưng'}
+      </div>
+      <div class="cu-stat-grid" style="border-radius:8px;overflow:hidden;border:1px solid rgba(255,255,255,.06);">
+        <div class="cu-th">Chỉ Số</div>
+        <div class="cu-th">Cơ Bản</div>
+        <div class="cu-th th-pot">T.Năng</div>
+        <div class="cu-th th-pet">Thú Cưng</div>
+        <div class="cu-th th-fin">Tổng</div>
+        ${row('❤️','HP',        baseHP,'', potHP,'', petHP,'', baseHP+potHP+petHP,'')}
+        ${row('⚔️','Sát Thương', baseDmg,'', potDmgP>0?potDmgP:0, potDmgP>0?'%→'+finalDmg:'', 0,'', finalDmg,'')}
+        ${row('⚡','Tốc Đánh',  baseAtk+'×','', potAtkSp>0?Math.round(potAtkSp*100):0,'%', petAtkSp>0?Math.round(petAtkSp*100):0,'%', finalAPS,'/s')}
+        ${row('🏃','Tốc Độ',    baseSpd,'', potSpdP>0?potSpdP:0,'%', 0,'', finalSpd,'')}
+        <div class="cu-td v-sep" style="grid-column:1/-1"></div>
+        ${(potCrit+petCrit>0)?row('🎯','Crit Rate',0,'%',potCrit,'%',petCrit,'%',potCrit+petCrit,'%'):''}
+        ${row('💢','Crit DMG', 150,'%', potCritD,'%', petCritD,'%', 150+potCritD+petCritD,'%')}
+        ${(potArmor+petArmor>0)?row('🛡️','Giáp',0,'%',potArmor,'%',petArmor,'%',potArmor+petArmor,'%'):''}
+        ${(potRegen>0)?row('💚','Hồi HP/s',0,'',potRegen,'/s',0,'',potRegen,'/s'):''}
+        ${(potHPK>0)?row('🩸','HP/Kill',0,'',potHPK,'',0,'',potHPK,''):''}
+        ${(petSteal>0)?row('🧛','Hút Máu',0,'%',0,'',petSteal,'%',petSteal,'%'):''}
+        ${(potGold+petGold>0)?row('◈','Vàng Thêm',0,'%',potGold,'%',petGold,'%',potGold+petGold,'%'):''}
+        ${(potArmorPen>0)?row('🗡️','Xuyên Giáp',0,'%',potArmorPen,'%',0,'',potArmorPen,'%'):''}
+      </div>
+      <div class="cu-note" style="margin-top:6px;">Crit · Lifesteal · ArmorPen không áp dụng vũ khí phụ</div>`;
+  }
+
+  function _cdoRenderSkills(char) {
+    const panel = document.getElementById('cdo-panel-skills');
+    if (!panel) return;
+
+    function block(typeClass, typeLabel, name, cd, desc) {
+      const cdTag = cd ? `<span class="cdo-sk-cd">⏱ CD ${cd}s</span>` : '';
+      return `<div class="cdo-skill-block">
+        <div class="cdo-sk-type ${typeClass}">${typeLabel}</div>
+        <div class="cdo-sk-name">${name}${cdTag}</div>
+        <div class="cdo-sk-desc">${desc}</div>
+      </div>`;
+    }
+
+    panel.innerHTML =
+      block('t-weapon',  '⚔️ VŨ KHÍ CHÍNH',   char.weapon,                        null,               char.weaponDesc  || '—') +
+      block('t-passive', '🔮 BỊ ĐỘNG',          char.passiveName || 'Passive',       null,               char.passiveDesc || '—') +
+      block('t-active',  '💜 KỸ NĂNG CHỦ ĐỘNG', char.activeName  || 'Active Skill',  char.activeCooldown, char.activeDesc  || '—') +
+      block('t-evolve',  '✨ TIẾN HÓA',          `${char.evolvedWeapon || 'Evolved'}`, null,              char.evolveDesc  || '—');
+  }
+
   function renderStatPanel(charId) { renderUnifiedCard(charId); } // compat alias
 
   function renderUnifiedCard(charId) {
-    const card = document.getElementById('char-unified-card');
+    // Could be rendering into overlay or main card — find the active one
+    const overlayActive = document.getElementById('char-detail-overlay')?.classList.contains('show');
+    const card = overlayActive
+      ? document.getElementById('char-detail-overlay-content')?.querySelector('#char-unified-card')
+        || document.getElementById('char-detail-overlay-content')
+      : document.getElementById('char-unified-card');
     if (!card) return;
     const char = CHARS.find(c => c.id === charId);
     if (!char) { card.innerHTML = ''; return; }
@@ -2549,10 +2908,25 @@ const UI = (() => {
     }
 
     card.innerHTML = `
+      <!-- ══ NHÂN VẬT INFO HEADER ══ -->
+      <div class="cu-section s-stat" style="display:flex;align-items:center;gap:10px;padding:9px 12px;">
+        <span style="font-size:22px;line-height:1">${char.icon}</span>
+        <div style="flex:1;min-width:0">
+          <div style="font-size:13px;font-weight:700;color:#ffd700;letter-spacing:.5px">${char.name}</div>
+          <div style="font-size:10px;color:#a08040;margin-top:1px">${char.title}</div>
+        </div>
+        <span class="cu-pet-tag ${petLabel ? '' : 'none'}">${petLabel || '🐾 Chưa có'}</span>
+      </div>
+      <!-- ══ SKILLS ══ -->
+      <div class="cu-skill-list" style="padding:8px 12px 4px">
+        ${skillRow('b-weapon', char.weaponIcon || '⚔️', char.weapon, null, char.weaponDesc)}
+        ${skillRow('b-passive', '🔮', char.passiveName, null, char.passiveDesc)}
+        ${skillRow('b-active', '💥', char.activeName, char.activeCooldown, char.activeDesc)}
+        ${skillRow('b-evolve', '✨', `Tiến Hoá: ${char.evolvedWeapon}`, null, char.evolveDesc)}
+      </div>
       <!-- ══ THUỘC TÍNH ══ -->
-      <div class="cu-section s-stat">
+      <div class="cu-section s-stat" style="font-size:10px;padding:5px 12px;border-top:1px solid rgba(96,160,255,.15)">
         📊 THUỘC TÍNH THỰC TẾ
-        <span class="cu-pet-tag ${petLabel ? '' : 'none'}">${petLabel || '🐾 Chưa có Thú Cưng'}</span>
       </div>
       <div class="cu-stat-grid">
         <div class="cu-th">Chỉ Số</div>
@@ -2576,7 +2950,7 @@ const UI = (() => {
         ${(petAoE > 0) ? statRow('🌐','AoE', 1,'×', 0, '', petAoE, '%', '×1.' + String(petAoE).padStart(2,'0'), '') : ''}
         ${(potArmorPen > 0) ? statRow('🗡️','Xuyên Giáp', 0,'%', potArmorPen, '%', 0, '', potArmorPen, '%') : ''}
       </div>
-      <div class="cu-note">Crit · Lifesteal · ArmorPen chỉ áp dụng cho Vũ Khí Chính và bản Tiến Hoá</div>`;
+      <div class="cu-note">Crit · Lifesteal · ArmorPen áp dụng cho Vũ Khí Chính, bản Tiến Hoá và Kỹ Năng Chủ Động — không áp dụng vũ khí phụ</div>`;
 
   }
 
@@ -2595,9 +2969,9 @@ const UI = (() => {
     const save = Save.get();
 
     // Tier-based unlock: complete map index 2,5,8,11 (boss of each tier) to open next tier
-    const TIER_UNLOCK_MAP = [null, 'map03', 'map06', 'map09', 'map12']; // tier N needs this completed
-    const TIER_NAMES = ['', 'CUNG 1 — Nhập Môn', 'CUNG 2 — Thử Thách', 'CUNG 3 — Áp Lực', 'CUNG 4 — Đỉnh Cao', 'CUNG 5 — Tận Cùng'];
-    const TIER_COLORS = ['','#c8960c','#60c8ff','#a060ff','#ff6060','#ffd700'];
+    const TIER_UNLOCK_MAP = [null, 'map03', 'map06', 'map09', 'map12', 'map15']; // tier N needs this completed
+    const TIER_NAMES = ['', 'CUNG 1 — Nhập Môn', 'CUNG 2 — Thử Thách', 'CUNG 3 — Áp Lực', 'CUNG 4 — Đỉnh Cao', 'CUNG 5 — Tận Cùng', 'CUNG 6 — Siêu Việt'];
+    const TIER_COLORS = ['','#c8960c','#60c8ff','#a060ff','#ff6060','#ffd700','#00ffcc'];
 
     // Build tier groups
     const tierGroups = {};
@@ -2698,7 +3072,7 @@ const UI = (() => {
       {
         key:'survival', label:'⚔ THỂ CHẤT', color:'#ff6060',
         nodes:[
-          {name:'HP Tối Đa',       icon:'❤️', shortDesc:'+125 HP/lv (max +875)', desc:'+125 HP tối đa/cấp + hồi ngay 125 HP. Cấp 7: +875 HP. Chi phí: 80→160→320→480×4◈.',   maxLv:7, baseCost:80},
+          {name:'HP Tối Đa',       icon:'❤️', shortDesc:'+125 HP/lv (max +1250)', desc:'+125 HP tối đa/cấp + hồi ngay 125 HP. Cấp 10: +1250 HP. Chi phí: 80→160→320→480×7◈.',   maxLv:10, baseCost:80},
           {name:'Giảm Sát Thương', icon:'🛡️', shortDesc:'+5% Giáp/lv (max +20%)', desc:'+5% Armor/cấp (tối đa +20%). Cộng với thẻ/pet → tổng tối đa 78%. Chi phí: 150→300→600→900◈.',   maxLv:4, baseCost:150},
           {name:'Hồi HP/giây',     icon:'💚', shortDesc:'+4 HP/s/lv (max +16/s)', desc:'+4 HP/s/cấp (tối đa +16 HP/s). Hồi liên tục kể cả trong combat. Chi phí: 200→400→800→1200◈.',   maxLv:4, baseCost:200},
           {name:'Hồi HP/kill',     icon:'🩸', shortDesc:'+10 HP/kill/lv (max +40)', desc:'+10 HP/kill/cấp (tối đa +40 HP/kill). Hồi ngay khi tiêu diệt bất kỳ quái nào. Chi phí: 350→700→1400→2100◈.',         maxLv:4, baseCost:350},
@@ -2707,9 +3081,9 @@ const UI = (() => {
       {
         key:'damage', label:'💥 SỨC MẠNH', color:'#ff9060',
         nodes:[
-          {name:'% Sát Thương',    icon:'⚔️', shortDesc:'+10% BaseDMG/lv (max +60%)', desc:'+10% BaseDMG/cấp (tối đa +60%). Nhân với DMGMult. Cấp 6: baseDmg ×1.60. Chi phí: 100→200→400→600×3◈.',     maxLv:6, baseCost:100},
-          {name:'Tỉ Lệ Crit',      icon:'🎯', shortDesc:'+6% Crit Rate/lv (max +24%)', desc:'+6% Crit Rate/cấp (tối đa +24%). Chỉ áp dụng vũ khí chính+tiến hoá. Chi phí: 200→400→800→1200◈.',     maxLv:4, baseCost:200},
-          {name:'Crit Damage',     icon:'💢', shortDesc:'+30% CritDMG/lv (max +90%)', desc:'+30% CritDMG/cấp (tối đa +90%, tổng 240%). Chỉ áp dụng vũ khí chính+tiến hoá. Chi phí: 300→600→1200◈.',     maxLv:3, baseCost:300},
+          {name:'% Sát Thương',    icon:'⚔️', shortDesc:'+10% BaseDMG/lv (max +100%)', desc:'+10% BaseDMG/cấp (tối đa +100%). Nhân với DMGMult. Cấp 10: baseDmg ×2.00. Chi phí: 100→200→400→600×7◈.',     maxLv:10, baseCost:100},
+          {name:'Tỉ Lệ Crit',      icon:'🎯', shortDesc:'+6% Crit Rate/lv (max +24%)', desc:'+6% Crit Rate/cấp (tối đa +24%). Áp dụng vũ khí chính, bản Tiến Hoá và kỹ năng chủ động — không áp dụng vũ khí phụ. Chi phí: 200→400→800→1200◈.',     maxLv:4, baseCost:200},
+          {name:'Crit Damage',     icon:'💢', shortDesc:'+30% CritDMG/lv (max +90%)', desc:'+30% CritDMG/cấp (tối đa +90%, tổng 240%). Áp dụng vũ khí chính, bản Tiến Hoá và kỹ năng chủ động — không áp dụng vũ khí phụ. Chi phí: 300→600→1200◈.',     maxLv:3, baseCost:300},
           {name:'Xuyên Giáp',      icon:'🗡️', shortDesc:'+15% ArmorPen/lv (max 45%)', desc:'+15% ArmorPen/cấp (tối đa 45%). Bypass 45% khiên địch + bonus ×1.36 vs Boss/Elite. Chi phí: 450→900→1800◈.',  maxLv:3, baseCost:450},
         ]
       },
@@ -2820,7 +3194,47 @@ const UI = (() => {
     });
   }
 
-// [UI.Codex]  renderCodex(tab)  chars/maps/enemies/skills/tips
+  /* ---------- POTENTIAL RESET ---------- */
+  function resetPotential() {
+    // Tính tổng vàng đã đầu tư vào toàn bộ cây Tiềm Năng
+    const branches = [
+      { key:'survival', costs:[80,150,200,350],   maxLvs:[10,4,4,4] },
+      { key:'damage',   costs:[100,200,300,450],  maxLvs:[10,4,3,3] },
+      { key:'mobility', costs:[80,150,200,450],   maxLvs:[5,4,4,2]  },
+      { key:'fortune',  costs:[120,250,800,650],  maxLvs:[4,3,1,1]  },
+    ];
+    let totalSpent = 0;
+    branches.forEach(b => {
+      b.costs.forEach((baseCost, idx) => {
+        const lv = Save.getPotentialLevel(b.key, idx);
+        for (let l = 0; l < lv; l++) {
+          const mults = [1, 2, 4, 6, 6, 6];
+          totalSpent += baseCost * (mults[Math.min(l, mults.length - 1)]);
+        }
+      });
+    });
+
+    if (totalSpent === 0) {
+      Toast.show('⚠️ Chưa có điểm Tiềm Năng nào để reset!');
+      return;
+    }
+
+    const refund = Math.floor(totalSpent * 0.8);
+    showConfirm(
+      '🔄 Reset Toàn Bộ Tiềm Năng?',
+      `Hoàn trả <b>◈${refund}</b> (80% của ◈${totalSpent} đã đầu tư).<br>Toàn bộ điểm sẽ về 0.`,
+      function() {
+        // Reset tất cả level về 0
+        const d = Save.get();
+        d.potential = { survival:[0,0,0,0], damage:[0,0,0,0], mobility:[0,0,0,0], fortune:[0,0,0,0] };
+        Save.set(d);
+        // Hoàn vàng
+        Save.addGold(refund);
+        Toast.show(`✅ Reset xong! Hoàn ◈${refund} vàng`);
+        renderPotential();
+      }
+    );
+  }
   /* ---------- CODEX ---------- */
   function renderCodex(tab) {
     const content = document.getElementById('codex-content');
@@ -2856,7 +3270,7 @@ const UI = (() => {
           'Đây là cách farm hiệu quả nhất: thành thạo một map trước khi leo lên map khó hơn.'));
       entry('🐾','Hệ Thống Thú Cưng',
         p('Thú Cưng cho buff vĩnh viễn trong mỗi run và thêm kỹ năng đặc biệt. Mua tại màn hình <b>Thú Cưng</b>.<br><br>' +
-          '🦊 <b>Linh Hồ (450◈):</b> +20% vàng | Kỹ năng: mỗi 5 tinh anh tiêu diệt → +3% vàng thêm (max +15%).<br>' +
+          '🦊 <b>Linh Hồ (450◈):</b> +20% vàng | Kỹ năng: mỗi 50 quái tiêu diệt → +5% vàng thêm (max +15%).<br>' +
           '🐯 <b>Bạch Hổ (750◈):</b> +15% tốc đánh | Kỹ năng: HP>70% → +12% sát thương.<br>' +
           '🐍 <b>Hắc Xà (1000◈):</b> Hút máu 5% | Kỹ năng: 20% cơ hội áp độc (5ST/giây × 3 giây).<br>' +
           '🦅 <b>Thần Ưng (1200◈):</b> +18% di chuyển | Kỹ năng: AoE toàn bộ vũ khí/kỹ năng +12%.<br>' +
@@ -2879,7 +3293,7 @@ const UI = (() => {
           difficulty: '⭐⭐ Trung Bình',
           playstyle: 'Aggressive — tích stack, kite',
           guide: `<b>Passive — Kiếm Ý:</b> Mỗi kill +1 stack (tối đa 30 stack = +45% tốc đánh). Bị đánh mất 50% stack hiện có. Tốc đánh thực = 1.8 × (1 + stack×0.015)/s.<br><br>
-<b>Active — Tàn Phong Trảm (CD 7s):</b> Freeze 0.2s → dash 250đv xuyên quái với sát thương scale theo Kiếm Ý: <b>×(2.5 + stack×0.05)</b>, tối đa <b>×4.0</b> tại 30 stack. Mỗi quái bị xuyên qua <b>cộng +1 stack</b> (không tiêu thụ stack). Kết hợp chảy máu 30%×5 tick×0.6s + vô địch suốt dash. <b>Giữ và kéo nút skill để chọn hướng</b>.<br><br>
+<b>Active — Tàn Phong Trảm (CD 7s):</b> Freeze 0.2s → dash 250đv xuyên quái với sát thương scale theo Kiếm Ý: <b>×(2.5 + stack×0.05)</b>, tối đa <b>×4.0</b> tại 30 stack. Mỗi quái bị xuyên qua <b>cộng +1 stack</b> (không tiêu thụ stack). Kết hợp <b>chảy máu liên tục 5 giây (30% tổng ST/giây)</b> + vô địch 0.3 giây sau dash. <b>Giữ và kéo nút skill để chọn hướng</b>.<br><br>
 <b>Tiến hoá → Thần Kiếm Vong Linh:</b> Mỗi nhát chém bắn 8 tia kiếm khí (×0.15/tia, pierce 3) + 2 lưỡi ảo đánh trễ 150ms/300ms (×0.5/lưỡi). Tốc đánh cao = AoE liên tục.<br><br>
 <b>Lưu ý:</b> Vòng lặp cốt lõi: kill → stack tăng → active mạnh hơn → dash xuyên thêm quái → thêm stack. Full 30 stack: ×4.0 thay vì ×2.5 — chênh lệch 60%. Tầm chém ngắn (~80đv) — kite liên tục để tích stack bền vững.`,
         },
@@ -2919,7 +3333,7 @@ const UI = (() => {
           difficulty: '⭐⭐⭐ Khó',
           playstyle: 'Reverse risk — càng nguy hiểm càng mạnh',
           guide: `<b>Passive — Bóng Tối:</b> Luôn +20% ATK. HP<40%: thêm +50% ATK (×1.5 thay ×1.2), +40% SPD, -30% ST nhận. Công thức: totalDmg = baseDmg×dmgMult × (HP<40% ? 1.5 : 1.2).<br><br>
-<b>Active — Ẩn Kích Liên Hoàn (CD 10s):</b> Teleport đến 3 mục tiêu gần nhất. <b>Khi đang vô hình (HP<40%):</b> mỗi đòn ×6.0 + chảy máu 3 tick, sau chuỗi <b>tái kích hoạt vô hình ngay lập tức</b> nếu HP vẫn <40% — bypass CD 15 giây bình thường. Khi không vô hình: ×4.0 thường. iframe 0.8 giây.<br><br>
+<b>Active — Ẩn Kích Liên Hoàn (CD 10s):</b> Teleport đến 3 mục tiêu gần nhất trong tầm 450đv. <b>Khi đang vô hình (HP<40%):</b> mỗi đòn ×6.0 + <b>chảy máu liên tục 3 giây (40% tổng ST/giây)</b>, sau chuỗi <b>tái kích hoạt vô hình ngay lập tức</b> nếu HP vẫn <40% — bypass CD 15 giây bình thường. Khi không vô hình: ×4.0 thường. iframe 0.8 giây.<br><br>
 <b>Tiến hoá → Hư Vô Đoản Kiếm:</b> Mỗi đòn tạo phân thân lặp lại sau 0.3 giây (×1.0 dmg). Với 2.4/s tốc đánh = thực tế ~4.8 nhát/s.<br><br>
 <b>Lưu ý:</b> Vòng lặp glass-cannon: nhận đòn về HP<40% → vô hình → bứt vào Ẩn Kích ×6.0 + chảy máu → tái vô hình → thoát ra. Rủi ro cao, phần thưởng tương xứng. Có thể chủ động nhận 1-2 đòn đầu boss để kích sớm.`,
         },
@@ -2931,7 +3345,28 @@ const UI = (() => {
           guide: `<b>Passive — Thu Hoạch Linh Hồn:</b> Mỗi kill tạo 1 Linh Hồn (tối đa 20), mỗi linh hồn +3.5% ST. Công thức: totalDmg = baseDmg×dmgMult × (1 + soulCount×0.035). HP<20%: tiêu thụ tất cả → hồi 25 HP/linh hồn.<br><br>
 <b>Active — Quân Đoàn Bất Tử (CD 9s, KHÔNG tiêu soul):</b> Triệu 3 bộ xương (tối đa 9) + tạo <b>Lĩnh Vực Tử Thần</b>: AoE 180đv pulse 7 lần trong 4 giây (×0.4 totalDmg/pulse). totalDmg đã bao gồm buff Linh Hồn → tại 20 souls: mỗi pulse đạt ×0.4×1.7 = ×0.68 baseDmg, tổng 7 pulse = ×4.76. Linh Hồn không bị mất sau cast.<br><br>
 <b>Tiến hoá → Vong Hồn Đại Liềm:</b> Liềm to ×1.8, hút quái khi bay ra, xuyên tất cả địch khi về.<br><br>
-<b>Lưu ý:</b> Tích lũy souls càng nhiều càng lâu dài — không nên tiêu hết qua active. 20 souls = +70% ST vĩnh viễn cho đến khi HP<20%. Spam active để gom thêm xương truy đuổi (tối đa 9) + kích Lĩnh Vực liên tục. Không để HP<20% sẽ mất toàn bộ stack.`,
+<b>Lưu ý:</b> Active <b>KHÔNG tiêu Linh Hồn</b> — spam thoải mái để gom xương (tối đa 9) + kích Lĩnh Vực liên tục. Tích đủ 20 souls trước boss để đạt +70% ST tối đa. Souls chỉ mất khi HP xuống dưới 20% (tiêu thụ toàn bộ để hồi 25 HP/soul) — chủ động tránh ngưỡng này khi đang có stack cao.`,
+        },
+        {
+          c: CHARS.find(c=>c.id==='loi_than'),
+          dps: 'Base 170×1.35/s = 230/s · 20 stack: ×1.8 → 414/s · Active: totalDmg×2.5 KHÔNG tiêu stack',
+          difficulty: '⭐⭐ Trung Bình',
+          playstyle: 'Stack builder — tích Lôi Tích rồi active để khuếch đại, không mất buff',
+          guide: `<b>Passive — Tĩnh Điện Tích Tụ:</b> Mỗi cú đánh tích 1 Lôi Tích (tối đa 20 stack, tích 2/đòn khi active đang buff). Mỗi stack +4% ST tổng — đạt +80% tại 20 stack. Đủ 20 stack: tự phóng AoE sét bán kính 130đv mỗi 3 giây liên tục.<br><br>\n<b>Active — Thiên Lôi Giáng Thế (CD 9s):</b> Phóng 5 tia Thiên Lôi — mỗi tia = <b>Tổng ST × 2.5 (KHÔNG tiêu stack)</b>, dây chuyền 4 mục tiêu (evolved: 6). Sau cast: ATK Speed +50% trong 5 giây + tích 2 Lôi Tích/đòn — vừa burst vừa đẩy stack nhanh hơn. Vũ khí tiếp tục khai thác đầy đủ buff stack trong suốt thời gian.<br><br>\n<b>Tiến hoá → Thần Lôi Vô Song:</b> Dây chuyền lên 6 mục tiêu. Mỗi link để lại vết sét gây 20% ST/giây × 2 giây. Active chain thêm 2 mục tiêu.<br><br>\n<b>Lưu ý:</b> Tích đủ 20 stack → dùng Active để burst 5×2.5=×12.5 totalDmg <b>trong khi giữ nguyên +80% buff</b> — vũ khí và auto-discharge tiếp tục hoạt động bình thường. Sau Active: ATK Speed +50% đẩy stack về 20 rất nhanh → vòng lặp siêu hiệu quả. Ưu tiên Dragon pet (crit) + AtkSpd để tối đa DPS liên tục.`,
+        },
+        {
+          c: CHARS.find(c=>c.id==='hoa_long'),
+          dps: 'Base 155×1.3/s = 202/s · Full stack +105%: 414/s · Cuồng Long ×1.5: 620/s',
+          difficulty: '⭐⭐ Trung Bình',
+          playstyle: 'Tank-aggro — vào gần, stack kill, active KHÔNG gián đoạn vũ khí',
+          guide: `<b>Passive — Long Vảy Linh:</b> Giảm 20% ST nhận vô điều kiện. Mỗi 25 kill: ATK +35% <b>vĩnh viễn trong run</b> (stack 3 lần = +105%). HP<40%: kích <b>Cuồng Long</b> — ATK ×1.5, SPD +25%.<br><br>\n<b>Active — Rồng Lửa Thiêu Thân (CD 10s):</b> Hóa thân 5 giây: AoE 200đv (×1.5/giây) + <b>vũ khí Long Hỏa Quyền tiếp tục bắn bình thường với full buff</b> (Long Vảy Linh + Cuồng Long) + SPD +20%, miễn knockback. Kết thúc: Thiên Long Nổ ×7.0. Tổng burst = AoE 5s + weapon DPS + finale ×7.0.<br><br>\n<b>Tiến hoá → Thiên Long Hỏa Hải:</b> Mỗi cú đấm để lại đám lửa 90px trong 3 giây (25% ST/giây). Khi biến thân: mỗi tick triệu 2 cầu lửa homing truy đuổi quái gần nhất.<br><br>\n<b>Lưu ý:</b> Milestone 25 kill tích rất nhanh — đạt full 3 stack (+105%) trước wave 3. 20% DR + HP 720 giúp an toàn ở ngưỡng Cuồng Long HP<40% — đây là trạng thái chiến đấu lý tưởng. Active KHÔNG làm mất vũ khí/buff passive — dùng thoải mái. Dùng Turtle pet để tối đa survival và duy trì Cuồng Long lâu hơn.`,
+        },
+        {
+          c: CHARS.find(c=>c.id==='bang_vuong'),
+          dps: 'Base 195×1.0/s × 4 rings = 780/s · vs chậm/đóng băng ×1.45 = 1,131/s (distributed)',
+          difficulty: '⭐⭐ Trung Bình',
+          playstyle: 'Control-burst — slow địch → khai thác +45% mọi nguồn ST, active không gián đoạn vũ khí',
+          guide: `<b>Passive — Tuyệt Đối Không Độ:</b> Địch chậm/đóng băng nhận thêm +45% ST từ <b>mọi nguồn: vũ khí, active, crit, evolved shard</b> đều hưởng. Băng Linh Nhẫn tự kích điều kiện mỗi lần trúng (slow 40% × 2 giây). Giết địch đóng băng: hồi 8 HP. HP<25%: <b>Băng Hộ Thể — hấp thụ 400 ST, phản chiếu 60%</b>.<br><br>\n<b>Active — Bão Tuyết Tận Thế (CD 11s):</b> Bão tuyết 350px trong 6 giây: chậm 60% + ×1.2/giây (hưởng +45%). <b>Vũ khí Băng Linh Nhẫn tiếp tục bắn bình thường trong bão</b> — 4 rings/giây × ×1.45 effective. Địch trong bão ≥3 giây → đóng băng 2 giây. Kết thúc: Băng Nổ ×5.5 (địch còn chậm → ×5.5×1.45 = ×7.98 effective).<br><br>\n<b>Tiến hoá → Vong Linh Băng Trận:</b> Băng Nhẫn trúng địch tách 2 mảnh homing (×0.6/mảnh, đều hưởng +45%). Địch đóng băng chết nổ AoE băng 120px + đóng băng địch xung quanh 1 giây.<br><br>\n<b>Lưu ý:</b> 4 rings × 195 × 1.45 × 1.0/s = 1,131/s distributed — cao nhất game với evolved. Active KHÔNG làm mất vũ khí: Bão + rings đồng thời = toàn bộ +45% hoạt động mọi lúc. Dùng Dragon pet — 4 rings/shot = 4 cơ hội crit → Dragon Rage kích liên tục. Ưu tiên AtkSpd + CritDMG.`,
         },
       ];
 
@@ -2974,7 +3409,10 @@ const UI = (() => {
           '🏹 <b>Thiết Tâm</b> → Tử Thần Chi Tên: áp độc khi trúng + xuyên qua địch đầu phân thành 3 tên nhỏ (×0.55/tên).<br>' +
           '🥋 <b>Kim Cang</b> → Hộ Pháp Thần Trượng: tạo cột sáng thiêng liêng tại mỗi điểm trúng, gây sát thương liên tục 2 giây.<br>' +
           '🗡️ <b>Ám Sát</b> → Hư Vô Đoản Kiếm: mỗi đòn đánh tạo phân thân ảo lặp lại đòn đó sau 0.3 giây.<br>' +
-          '💀 <b>Tử Linh</b> → Vong Hồn Đại Liềm: liềm to gấp 1.8 lần, hút quái vào khi bay, xuyên tất cả địch khi về.'));
+          '💀 <b>Tử Linh</b> → Vong Hồn Đại Liềm: liềm to gấp 1.8 lần, hút quái vào khi bay, xuyên tất cả địch khi về.<br>' +
+          '⚡ <b>Lôi Thần</b> → Thần Lôi Vô Song: dây chuyền lên 5 mục tiêu/chuỗi + vết sét gây 15% ST/giây × 2 giây sau mỗi link.<br>' +
+          '🔥 <b>Hỏa Long</b> → Thiên Long Hỏa Hải: mỗi cú đấm để lại đám lửa 3 giây (20% ST/giây); khi biến thân triệu thêm cầu lửa ×2 mỗi tick.<br>' +
+          '❄️ <b>Băng Vương</b> → Vong Linh Băng Trận: Băng Nhẫn trúng địch phân nhánh 2 mảnh homing (×0.5/mảnh); địch đóng băng chết nổ AoE băng thêm 100px.'));
       entry('🗡️','Vũ Khí Phụ (Sub Weapons)',
         p('Nhận qua level-up, tối đa <b>6 vũ khí phụ</b> cùng lúc. Mỗi loại nâng tối đa cấp 5.<br>' +
           '⚠️ Vũ khí phụ <b>không</b> nhận crit/hút máu/xuyên giáp — chỉ nhân hệ số Sát Thương (DMGMult).'));
@@ -3104,22 +3542,22 @@ const UI = (() => {
         {map:'Map 11 — Vùng Hỗn Mang',icon:'🌀',tier:4,e:[
           {i:'🌀',n:'Chaos',       hp:500,d:110,s:105,ai:'Vòng cánh', t:'HP và dmg tăng đáng kể so Tier 3. Hiệu ứng Hỗn Mang (chậm/đảo chiều/mù) mỗi phút làm khó đoán.'},
           {i:'👁️',n:'Phantom',    hp:400,d:95, s:115,ai:'Lao thẳng',  t:'Nhanh và khó bắt. Kết hợp hiệu ứng ngẫu nhiên của map.'},
-          {i:'🕳️',n:'Rift',       hp:350,d:140,s:0,  ai:'Tấn công xa',t:'Lỗ hổng không gian — đứng yên bắn tia tối từ xa (DMG 140), không di chuyển. Nguy hiểm khi bị đám quái che khuất.'},
-          {i:'🕳️',n:'Rift Tinh Anh ⭐',hp:1750,d:350,s:0,ai:'Tốc đánh ×2',elite:true,t:'Đứng yên bắn tia DMG 350 liên tục gấp đôi. Kết hợp hiệu ứng ngẫu nhiên map (chậm/đảo chiều/mù) = không thể thoát nếu bị chặn tầm nhìn. Ưu tiên ngay.'},
+          {i:'🕳️',n:'Rift',       hp:200,d:85, s:0,  ai:'Tấn công xa',t:'Lỗ hổng không gian — đứng yên bắn tia tối từ xa (DMG 85), không di chuyển. Nguy hiểm khi bị đám quái che khuất.'},
+          {i:'🕳️',n:'Rift Tinh Anh ⭐',hp:1000,d:212,s:0,ai:'Tốc đánh ×2',elite:true,t:'Đứng yên bắn tia DMG 212 liên tục gấp đôi. Kết hợp hiệu ứng ngẫu nhiên map (chậm/đảo chiều/mù) = không thể thoát nếu bị chặn tầm nhìn. Ưu tiên ngay.'},
           {i:'👁️',n:'Quỷ Hỗn Loạn',hp:163400,d:230,s:80,ai:'BOSS',boss:true,t:'Đạn bay hướng + tốc độ ngẫu nhiên — không thể đoán. Giai đoạn 3: 3 luồng đạn xoáy cùng lúc. Kết hợp hiệu ứng map = hỗn loạn tuyệt đối.'},
         ]},
         {map:'Map 12 — Bầu Trời Sụp Đổ',icon:'⛈️',tier:4,e:[
           {i:'⚡',n:'Stormbird',    hp:550,d:125,s:140,ai:'Vòng cánh', t:'Nhanh và mạnh (DMG 125). Sét ngẫu nhiên + quái vòng cánh = cực kỳ nguy hiểm.'},
-          {i:'🦬',n:'Thunderbeast',hp:900,d:150,s:80, ai:'Lao thẳng',  t:'Trâu sét khổng lồ — HP 900, DMG 150. Hay xuất hiện cuối wave cùng Stormbird.'},
-          {i:'⚡',n:'Lightning',   hp:200,d:170,s:160,ai:'Vòng cánh', t:'Nhanh nhất game (SPD 160). HP thấp nhưng DMG cực cao (170). Xuất hiện như chớp, rất khó bắn hạ.'},
+          {i:'🦬',n:'Thunderbeast',hp:550,d:95,s:80, ai:'Lao thẳng',  t:'Trâu sét — HP 550, DMG 95. Hay xuất hiện cuối wave cùng Stormbird.'},
+          {i:'⚡',n:'Lightning',   hp:150,d:110,s:160,ai:'Vòng cánh', t:'Nhanh nhất game (SPD 160). HP thấp nhưng DMG cao (110). Xuất hiện như chớp, ưu tiên xử lý sớm.'},
           {i:'⚡',n:'Stormbird Tinh Anh ⭐',hp:2750,d:312,s:168,ai:'Vòng cánh',elite:true,t:'Nhanh nhất mọi tinh anh (SPD 168) + DMG 312. Sét map ngẫu nhiên + Stormbird vòng cánh = xử lý ngay khi icon xuất hiện — không có cơ hội thứ 2.'},
           {i:'🐉',n:'Long Vương Hắc Lôi',hp:182250,d:250,s:75,ai:'BOSS',boss:true,t:'Hơi thở sét cone 6→8 đạn tốc độ 320–350. Giai đoạn 3: breath + ring xoáy 16 đạn trắng đồng thời. Boss nhanh nhất Tier 4.'},
         ]},
         {map:'Map 13 — Mê Cung Gương',icon:'🪞',tier:5,e:[
-          {i:'🪞',n:'Mirror',      hp:500,d:110,s:90, ai:'Lao thẳng',  t:'Bản sao gương — tiếp cận từ hướng đối diện. Cơ chế map: nhận biết đúng quái thật mới gây full dmg.'},
-          {i:'🌫️',n:'Illusion',   hp:300,d:100,s:130,ai:'Vòng cánh', t:'Nhanh và mờ ảo. HP thấp — dễ xử nếu nhận biết đúng con thật.'},
-          {i:'🌑',n:'Shade',       hp:700,d:155,s:75, ai:'Lao thẳng',  t:'Bóng tối ngưng tụ — HP 700, DMG 155. Chậm nhưng cực đau. Giai đoạn cuối có thể vô hình ngắn.'},
-          {i:'🌑',n:'Shade Tinh Anh ⭐',hp:3500,d:387,s:90,ai:'Vòng cánh',elite:true,t:'Vô hình ngắn định kỳ + tiếp cận từ hông. DMG 387 cực nặng — phân biệt với clone gương trước khi tập trung đòn, tránh lãng phí output.'},
+          {i:'🪞',n:'Mirror',      hp:300,d:70, s:90, ai:'Lao thẳng',  t:'Bản sao gương — tiếp cận từ hướng đối diện. Cơ chế map: nhận biết đúng quái thật mới gây full dmg.'},
+          {i:'🌫️',n:'Illusion',   hp:175,d:65, s:130,ai:'Vòng cánh', t:'Nhanh và mờ ảo. HP thấp — dễ xử nếu nhận biết đúng con thật.'},
+          {i:'🌑',n:'Shade',       hp:450,d:100,s:75, ai:'Lao thẳng',  t:'Bóng tối ngưng tụ — HP 450, DMG 100. Chậm nhưng đau. Giai đoạn cuối có thể vô hình ngắn.'},
+          {i:'🌑',n:'Shade Tinh Anh ⭐',hp:2250,d:250,s:90,ai:'Vòng cánh',elite:true,t:'Vô hình ngắn định kỳ + tiếp cận từ hông. DMG 250 — phân biệt với clone gương trước khi tập trung đòn.'},
           {i:'👁️',n:'Ảo Vương Gương Tà',hp:241000,d:243,s:70,ai:'BOSS',boss:true,t:'Ring 8 đạn lặp offset theo phase. Giai đoạn 3: 3 đợt ring cách 250ms — đạn dày nhưng có kẽ hở. Quan sát kỹ để luồn qua.'},
         ]},
         {map:'Map 14 — Địa Ngục Thứ 9',icon:'🔥',tier:5,e:[
@@ -3132,12 +3570,33 @@ const UI = (() => {
         {map:'Map 15 — Tâm Vũ Trụ',icon:'🌌',tier:5,e:[
           {i:'⬛',n:'Void',        hp:600,d:145,s:100,ai:'Lao thẳng',  t:'Gravity thay đổi ngẫu nhiên + boss clone liên tục. Luôn chú ý hướng di chuyển thực.'},
           {i:'⭐',n:'Starspawn',   hp:450,d:115,s:110,ai:'Vòng cánh', t:'Nhanh, dễ nhầm với clone boss. Diệt nhanh để tập trung vào boss thật.'},
-          {i:'🌠',n:'Nebula',      hp:700,d:130,s:65, ai:'Tấn công xa',t:'Tinh vân vũ trụ — bắn loạt đạn từ xa (DMG 130), di chuyển chậm. Kết hợp gravity = khó thoát khi bị bao vây.'},
+          {i:'🌠',n:'Nebula',      hp:425,d:80, s:65, ai:'Tấn công xa',t:'Tinh vân vũ trụ — bắn loạt đạn từ xa (DMG 80), di chuyển chậm. Kết hợp gravity = khó thoát khi bị bao vây.'},
           {i:'⬛',n:'Void Tinh Anh ⭐',hp:3000,d:362,s:120,ai:'Vòng cánh',elite:true,t:'Gravity ngẫu nhiên + Void tiếp cận từ hướng không đoán được. Kết hợp boss clone liên tục = cực hỗn loạn. Di chuyển liên tục, không đứng yên.'},
           {i:'🌌',n:'Hư Vô Chi Thần',hp:301000,d:298,s:75,ai:'BOSS',boss:true,t:'Hút người chơi về phía boss (P2: -80 đơn vị, P3: -120). Giai đoạn 3: 3 xoáy 12 đạn + hút mạnh. Boss nguy hiểm nhất game — cần build tốt nhất.'},
         ]},
+        {map:'Map 16 — Lăng Mộ Tinh Thần',icon:'🪦',tier:6,e:[
+          {i:'👻',n:'Spectre',       hp:800, d:190,s:85, ai:'Lao thẳng',  t:'Ám ảnh tốc độ vừa phải, HP 800/DMG 190. Kết hợp Nghi Thức Linh Hút → lifesteal bị đảo ngược; diệt nhanh trước khi tích đám.'},
+          {i:'💀',n:'BoneCollector', hp:1200,d:160,s:65, ai:'Lao thẳng',  t:'Xương cốt bền nhất Tier 6 (HP 1200). Chậm nhưng nếu bị bao vây kết hợp DMG 160 sẽ tử vong nhanh.'},
+          {i:'☠️',n:'SoulReaper',    hp:500, d:220,s:55, ai:'Tấn công xa',t:'DMG 220 cao nhất map — đứng yên bắn từ xa. Ưu tiên số 1 trong mọi tình huống.'},
+          {i:'☠️',n:'SoulReaper Tinh Anh ⭐',hp:3750,d:550,s:65,ai:'Tốc đánh ×2',elite:true,t:'Bắn liên tục DMG 550 từ xa — nguy hiểm hơn nhiều boss Tier 1-3. Tiêu diệt ngay lập tức.'},
+          {i:'👑',n:'Hồn Vương Cổ Đại',hp:400000,d:355,s:80,ai:'BOSS',boss:true,t:'Xoáy 8 linh hồn từ di tích 4 góc sàn. Giai đoạn 2: vệt linh hồn truy đuổi 3 giây. Giai đoạn 3: Nghi Thức Linh Hút vĩnh viễn + ring kép 16 đạn ×2 — KHÔNG dùng lifesteal/regen trong phase 3.'},
+        ]},
+        {map:'Map 17 — Vực Thẳm Hỗn Nguyên',icon:'🌑',tier:6,e:[
+          {i:'⬛',n:'Abyssal',       hp:950, d:200,s:100,ai:'Lao thẳng',  t:'Nhanh (SPD 100) và HP cao (950). Tiếp cận từ mọi hướng sau Sụp Đổ dịch chuyển.'},
+          {i:'🌑',n:'Riftborn',      hp:650, d:175,s:130,ai:'Vòng cánh',  t:'Nhanh nhất map (SPD 130). Xuất hiện từ rạn nứt không gian — cảnh giác góc khuất.'},
+          {i:'🕳️',n:'Anomaly',       hp:450, d:240,s:45, ai:'Tấn công xa',t:'DMG 240 cực cao, đứng yên bắn. Kết hợp Sụp Đổ dịch chuyển ngẫu nhiên → xuất hiện sát mặt ngay.'},
+          {i:'⬛',n:'Abyssal Tinh Anh ⭐',hp:7125,d:500,s:120,ai:'Vòng cánh',elite:true,t:'HP 7125 + SPD 120 — di chuyển từ hông sau khi Sụp Đổ. Cần xử lý trước khi CD boss kết thúc.'},
+          {i:'🕳️',n:'Thần Hỗn Nguyên',hp:448000,d:375,s:85,ai:'BOSS',boss:true,t:'3 luồng đạn tốc độ ngẫu nhiên 200–500đv/s. Giai đoạn 2: Cổng Hỗn Nguyên triệu quái liên tục. Giai đoạn 3: 5 luồng + Sụp Đổ mỗi 12 giây + vùng nứt phủ toàn sàn — di chuyển không ngừng.'},
+        ]},
+        {map:'Map 18 — Đỉnh Tuyệt Diệt',icon:'💠',tier:6,e:[
+          {i:'💠',n:'Annihilator',   hp:1100,d:215,s:115,ai:'Lao thẳng',  t:'HP cao (1100) + tốc độ (115). Tăng ST/HP theo Siêu Việt Thể sau mỗi 30 giây — tiêu diệt càng sớm càng tốt.'},
+          {i:'⚡',n:'Executor',      hp:800, d:235,s:95, ai:'Vòng cánh',  t:'DMG 235 kết hợp tiếp cận từ hông. Từ stack 3 Siêu Việt Thể trở đi DMG đạt ~340 — nguy hiểm cao nhất.'},
+          {i:'🔷',n:'Obliterator',   hp:550, d:255,s:60, ai:'Tấn công xa',t:'DMG 255 cao nhất map, bắn từ xa. Mục tiêu ưu tiên số 1 — không để tích stack Siêu Việt Thể.'},
+          {i:'💠',n:'Annihilator Tinh Anh ⭐',hp:8250,d:537,s:138,ai:'Vòng cánh',elite:true,t:'Xuất hiện thêm từ stack 3 Siêu Việt Thể. HP và DMG tăng theo mỗi stack — nguy hiểm hơn bất kỳ boss nào Tier 1-4.'},
+          {i:'💠',n:'Thượng Đế Hủy Diệt',hp:500000,d:398,s:90,ai:'BOSS',boss:true,t:'BẤT TỬ cho đến khi giết hết quái trên sân (mỗi kill -2% bất tử). Giai đoạn 2: 8 tia xuyên suốt + Siêu Việt Thể. Giai đoạn 3: 3 Lõi Bất Tử phụ phải phá đồng thời. DPS cao nhất game mới sống sót.'},
+        ]},
       ];
-      const _tc=['','#88cc44','#ffcc00','#ff9040','#ff5050','#cc40ff'];
+      const _tc=['','#88cc44','#ffcc00','#ff9040','#ff5050','#cc40ff','#00ffcc'];
       MCED.forEach(md=>{
         const tc=_tc[md.tier]||'#888';
         let rows='';
@@ -3170,7 +3629,7 @@ const UI = (() => {
           '• <b>BaseDMG:</b> chỉ số gốc của nhân vật, tăng qua Tiềm Năng Sát Thương[0] (+10%/cấp) và nâng cấp vũ khí chính (+10%/lv).<br>' +
           '• <b>DMGMult:</b> nhân từ thẻ Sát Thương (+8%/cấp) và Tiến Hoá (+35%). Áp dụng toàn bộ vũ khí và kỹ năng.<br>' +
           '• <b>CritMult:</b> khi kích crit, nhân thêm CritDMG (mặc định 150%).<br><br>' +
-          '⚠️ Crit · Hút Máu · Xuyên Giáp <b>chỉ áp dụng cho vũ khí chính và bản Tiến Hoá</b>, không áp dụng vũ khí phụ.'));
+          '⚠️ Crit · Hút Máu · Xuyên Giáp <b>áp dụng cho vũ khí chính, bản Tiến Hoá và kỹ năng chủ động</b> — không áp dụng vũ khí phụ.'));
       entry('🎯','Crit Rate & Crit DMG',
         p('• <b>Crit Rate:</b> xác suất kích crit. Mặc định 0%. Tiềm Năng Sát Thương[1] +6%/cấp (max +24%). Ma Long +8%.<br>' +
           '• <b>Crit DMG:</b> hệ số nhân khi crit. Mặc định 150%. Tiềm Năng Sát Thương[2] +30%/cấp (max cộng thêm +270% = tổng 420%). Ma Long +40%.<br><br>' +
@@ -3245,7 +3704,7 @@ const UI = (() => {
         ['🌙','Huyền Nguyệt — Tĩnh Tâm Điện Bão','Đứng yên ≥0.4 giây kích passive +20% ST. Cast active khi đang có buff → Tĩnh Tâm Điện Bão: 12 tia ×1.0 thay vì 8 tia ×0.8. Tiếp tục đứng yên suốt 3 giây → tia cuối là Siêu Lôi ×5.0 nhắm điểm đông quái nhất. Đứng góc tường để tối đa hóa.'],
         ['🏹','Thiết Tâm — Tàn Sát Tầm Xa','Giữ khoảng cách >250 đơn vị để khai thác +25% ST. Active bắn 5 mũi tên liên tục theo 1 hướng — mỗi mũi tự kiểm tra khoảng cách và áp thêm +25% nếu quái bị trúng ở xa. Nhắm thẳng vào đám đông hoặc boss để tối đa hóa pierce.'],
         ['🥋','Kim Cang — Trấn Áp Bất Động','Để quái tấn công để kích Kim Cang Thể: 20% chặn + hồi 5% HP + stack tốc đánh. Active giờ KÉO quái vào gần 80đv rồi stun 1.5s — không đẩy ra xa, giữ quái trong tầm Thiền Trượng. Mỗi block stack tích lũy khi cast: +×0.15 ST và +0.1s stun (tối đa ×6.45, stun 1.8s).'],
-        ['🗡️','Ám Sát — Ẩn Kích Liên Hoàn','ATK +20% luôn có. HP<40%: ATK +50%, SPD +40%, -30% ST nhận + vô hình 5s (CD 15s). Khi vô hình, active Ẩn Kích Liên Hoàn: ×6.0 + chảy máu 3 tick mỗi mục tiêu, sau đó tái kích vô hình ngay nếu HP vẫn <40%. Vòng lặp: nhận đòn → vô hình → combo → tái vô hình → thoát.'],
+        ['🗡️','Ám Sát — Ẩn Kích Liên Hoàn','ATK +20% luôn có. HP<40%: ATK +50%, SPD +40%, -30% ST nhận + vô hình 5s (CD 15s). Khi vô hình, active Ẩn Kích Liên Hoàn: ×6.0 + chảy máu liên tục 3 giây (40% tổng ST/giây) mỗi mục tiêu, sau đó tái kích vô hình ngay nếu HP vẫn <40%. Vòng lặp: nhận đòn → vô hình → combo → tái vô hình → thoát.'],
         ['💀','Tử Linh — Lĩnh Vực Tử Thần','Mỗi kill = +3.5% ST, tối đa 20 linh hồn = +70%. Active KHÔNG tiêu soul — triệu 3 bộ xương (tối đa 9) + Lĩnh Vực Tử Thần: AoE 180px pulse 7 lần/4 giây, mỗi pulse hưởng đầy đủ buff +70% souls. Tích đủ 20 souls trước boss để tối đa hóa — damage buff không bị mất sau active.'],
       ];
       tips.forEach(([icon, title, text]) => { entry(icon, title, p(text)); });
@@ -3512,12 +3971,16 @@ const UI = (() => {
     const totalGold = stats.baseGold + (stats.streakBonus||0) + (stats.achievementBonus||0);
     const bonusEl = document.createElement('div');
     bonusEl.className = 'bonus-section';
-    let bonusHtml = `<div class="bonus-section-title">◈ VÀNG NHẬN ĐƯỢC</div>
-      <div class="bonus-row"><span class="bonus-label">Vàng cơ bản</span><span class="bonus-value">+${stats.baseGold}</span></div>`;
+    let bonusHtml = `<div class="bonus-section-title">◈ VÀNG NHẬN ĐƯỢC</div>`;
+    if (stats.baseGold > 0)
+      bonusHtml += `<div class="bonus-row"><span class="bonus-label">Vàng cơ bản</span><span class="bonus-value">+${stats.baseGold}</span></div>`;
     if (stats.streakBonus > 0)
       bonusHtml += `<div class="bonus-row"><span class="bonus-label">Thưởng chuỗi thắng (${stats.winStreak}×)</span><span class="bonus-value">+${stats.streakBonus}</span></div>`;
     if (stats.achievementBonus > 0)
       bonusHtml += `<div class="bonus-row"><span class="bonus-label">Thưởng thành tích trong run</span><span class="bonus-value">+${stats.achievementBonus}</span></div>`;
+    if (totalGold === 0) {
+      bonusHtml += `<div class="bonus-row"><span class="bonus-label" style="color:#666">Chưa đủ thời gian để nhận vàng (tối thiểu 10 giây)</span></div>`;
+    }
     bonusHtml += `<div class="bonus-row" style="border-top:1px solid rgba(74,255,136,.2);margin-top:4px;padding-top:6px">
       <span class="bonus-label" style="color:#ffd700;font-weight:700">TỔNG CỘNG</span>
       <span class="bonus-value" style="color:#ffd700;font-size:15px">◈ ${totalGold}</span></div>`;
@@ -3641,7 +4104,7 @@ const UI = (() => {
     {
       extra: {
         statHP: 120, statSPD: 145, statDMG: 18, statATK: 1.8,
-        weapon:  { icon:'⚔️', tag:'VŨ KHÍ CHÍNH', name:'Phong Kiếm', desc:'Chém vòng cung 90° hướng về quái gần nhất, tầm ngắn, tốc độ rất cao. Sát thương tăng dần khi tích lũy stack Kiếm Ý.' },
+        weapon:  { icon:'⚔️', tag:'VŨ KHÍ CHÍNH', name:'Phong Kiếm', desc:'Chém vòng cung ~160° hướng về quái gần nhất, tầm ngắn, tốc độ rất cao. Sát thương tăng dần khi tích lũy stack Kiếm Ý.' },
         passive: { icon:'🌬️', tag:'PASSIVE', name:'Kiếm Ý', desc:'Mỗi lần giết quái, tốc chém +1.5% (tối đa 30 stack = +45%). Bị trúng đòn mất 50% stack (giữ lại 50%) — tích công bền vững.' },
         active:  { icon:'💨', tag:'ACTIVE', name:'Tàn Phong Trảm', desc:'Đóng băng thời gian 0.2s rồi lao xuyên tất cả kẻ thù — sát thương scale theo Kiếm Ý: ×(2.5 + stack×0.05), tối đa ×4.0. Mỗi quái xuyên qua cộng +1 stack. Không tiêu thụ stack.', cd:7 },
         evolve:  { icon:'🌌', tag:'TIẾN HÓA', name:'Thần Kiếm Vong Linh', desc:'Mỗi nhát chém bắn kiếm khí 8 hướng + tạo 2 lưỡi ảo đánh trễ 150ms và 300ms — hiệu quả tăng 3 lần số đòn.' },
@@ -3652,13 +4115,13 @@ const UI = (() => {
         statHP: 90, statSPD: 110, statDMG: 33, statATK: 0.95,
         weapon:  { icon:'🔮', tag:'VŨ KHÍ CHÍNH', name:'Tinh Linh Cầu', desc:'Bắn cầu ma thuật tự truy đuổi (homing) kẻ thù gần nhất. Sát thương cao nhất, tốc độ tấn công thấp nhất.' },
         passive: { icon:'🧘', tag:'PASSIVE', name:'Mana Tích Tụ', desc:'Đứng yên 0.4 giây: sát thương +20%. Di chuyển reset về 0. Khi tiến hoá: mini orb và độc cũng hưởng buff — tối đa ×3.54 effective per target.' },
-        active:  { icon:'🌩️', tag:'ACTIVE', name:'Hắc Động Lôi', desc:'Triệu hồi 8 tia sét rải đều trong 3 giây, bán kính 200 đơn vị. Hiệu quả cực mạnh khi kết hợp passive đứng yên.', cd:9 },
+        active:  { icon:'🌩️', tag:'ACTIVE', name:'Hắc Động Lôi', desc:'Thường: 8 tia ×0.8 rải ngẫu nhiên, 3 giây, bán kính 200đv. Khi đang có Mana Tích Tụ khi cast → <b>Tĩnh Tâm Điện Bão</b>: 12 tia ×1.0, 70% tia nhắm trúng quái trong vùng. Tiếp tục đứng yên suốt 3 giây → tia cuối là <b>Siêu Lôi ×5.0</b> AoE nhắm điểm đông quái nhất.', cd:9 },
         evolve:  { icon:'☄️', tag:'TIẾN HÓA', name:'Hắc Nhật Ma Cầu', desc:'Khi trúng địch: tách 3 mini orb (×0.55 mỗi cái, pierce 1) tự homing vào 3 quái gần nhất + áp độc 0.15×/s trong 4 giây. Effective ×2.95 per target; ×3.54 khi đứng yên.' },
       }
     },
     {
       extra: {
-        statHP: 100, statSPD: 120, statDMG: 22, statATK: 1.1,
+        statHP: 100, statSPD: 120, statDMG: 22, statATK: 1.25,
         weapon:  { icon:'🏹', tag:'VŨ KHÍ CHÍNH', name:'Cung Xương', desc:'Mũi tên xuyên thấu đường thẳng, tốc độ 600 đ/giây. Tầm xa nhất 6 nhân vật. Passive kích hoạt khi mục tiêu >250 đ.' },
         passive: { icon:'🦅', tag:'PASSIVE', name:'Mắt Đại Bàng', desc:'Quái ở xa (>250 đơn vị) nhận thêm 25% sát thương.' },
         active:  { icon:'🎯', tag:'ACTIVE', name:'Tàn Sát Tầm Xa', desc:'Bắn 5 mũi tên liên tiếp theo 1 hướng (1/300ms, xuyên 5 quái). Quái bị trúng ở khoảng cách >250đv nhận thêm 25% sát thương (kích passive tầm xa). Giữ và kéo nút để chọn hướng.', cd:6 },
@@ -3667,7 +4130,7 @@ const UI = (() => {
     },
     {
       extra: {
-        statHP: 180, statSPD: 100, statDMG: 24, statATK: 0.85,
+        statHP: 180, statSPD: 100, statDMG: 24, statATK: 0.95,
         weapon:  { icon:'🪄', tag:'VŨ KHÍ CHÍNH', name:'Thiền Trượng', desc:'Đập mặt đất tạo sóng chấn động AoE bán kính 85 đơn vị quanh người. HP cao nhất — thiết kế cho lối chơi chịu đòn.' },
         passive: { icon:'🛡️', tag:'PASSIVE', name:'Kim Cang Thể', desc:'20% xác suất chặn hoàn toàn đòn bất kỳ. Chặn thành công: hồi 5% HP tối đa + cộng dồn +7% tốc đánh (stack được), reset sau 3 giây.' },
         active:  { icon:'☄️', tag:'ACTIVE', name:'Trấn Áp Bất Động', desc:'AoE khổng lồ ×6.0+ kéo quái vào gần 80đv rồi stun 1.5 giây — giữ quái trong tầm Thiền Trượng thay vì đẩy ra xa. Mỗi block stack đang tích: +×0.15 sát thương và +0.1s stun.', cd:8 },
@@ -3676,20 +4139,47 @@ const UI = (() => {
     },
     {
       extra: {
-        statHP: 95, statSPD: 155, statDMG: 14, statATK: 2.2,
+        statHP: 95, statSPD: 155, statDMG: 14, statATK: 2.4,
         weapon:  { icon:'🗡️', tag:'VŨ KHÍ CHÍNH', name:'Song Tà Đao', desc:'Chém AoE bán kính 50 đ cực nhanh. Tốc độ tấn công cao nhất (2.2×), DMG/đòn thấp nhất — bù bằng tần suất cao.' },
         passive: { icon:'🌑', tag:'PASSIVE', name:'Bóng Tối', desc:'ATK +20%. HP <40%: ATK +50%, SPD +40%, giảm 30% sát thương nhận vào. Vô hình 5 giây (CD 15s): quái xa >400 đơn vị không truy đuổi — Boss không bị ảnh hưởng.' },
-        active:  { icon:'🌀', tag:'ACTIVE', name:'Ẩn Kích Liên Hoàn', desc:'Teleport đến 3 mục tiêu gần nhất. Khi đang vô hình (HP<40%): ×6.0 + chảy máu 3 tick mỗi mục tiêu, sau đó tái kích vô hình ngay nếu HP vẫn <40%. Khi không vô hình: ×4.0.', cd:10 },
+        active:  { icon:'🌀', tag:'ACTIVE', name:'Ẩn Kích Liên Hoàn', desc:'Teleport đến 3 mục tiêu gần nhất trong tầm 450đv. Khi đang vô hình (HP<40%): ×6.0 + chảy máu liên tục 3 giây (40% tổng ST/giây), sau đó tái kích vô hình ngay nếu HP vẫn <40%. Khi không vô hình: ×4.0. Vô địch 0.8 giây.', cd:10 },
         evolve:  { icon:'👥', tag:'TIẾN HÓA', name:'Hư Vô Đoản Kiếm', desc:'Mỗi đòn đánh tạo phân thân ảo lặp lại 300ms sau với 85% DMG — về thực chất mỗi hit đánh 2 lần.' },
       }
     },
     {
       extra: {
-        statHP: 105, statSPD: 115, statDMG: 20, statATK: 1.0,
+        statHP: 105, statSPD: 115, statDMG: 20, statATK: 1.35,
         weapon:  { icon:'☠️', tag:'VŨ KHÍ CHÍNH', name:'Lưỡi Liềm Tử Thần', desc:'Boomerang: bay ra rồi tự quay lại, pierce 5 kẻ thù mỗi chiều. Cả đường đi lẫn đường về đều gây sát thương.' },
         passive: { icon:'💀', tag:'PASSIVE', name:'Thu Hoạch Linh Hồn', desc:'Giết quái tạo Linh Hồn (tối đa 20), mỗi cái +3.5% sát thương (+70% tối đa). Bộ xương triệu hồi cũng tạo Linh Hồn khi giết quái. HP<20%: tiêu thụ tất cả để hồi 25 HP/linh hồn.' },
         active:  { icon:'💀', tag:'ACTIVE', name:'Quân Đoàn Bất Tử', desc:'Triệu 3 bộ xương (tối đa 9) + Lĩnh Vực Tử Thần: AoE 180px pulse 7 lần trong 4 giây (×0.4 totalDmg/pulse, hưởng đầy đủ buff Linh Hồn). KHÔNG tiêu thụ Linh Hồn.', cd:9 },
         evolve:  { icon:'🌀', tag:'TIẾN HÓA', name:'Vong Hồn Đại Liềm', desc:'Liềm to ×1.8, hút quái vào khi bay đi (knockback ngược). Đường về: xuyên tất cả kẻ thù còn lại, không giới hạn.' },
+      }
+    },
+    {
+      extra: {
+        statHP: 116, statSPD: 130, statDMG: 32, statATK: 1.1,
+        weapon:  { icon:'⚡', tag:'VŨ KHÍ CHÍNH', name:'Thiên Lôi Cổ', desc:'Gọi sét xuống quái gần nhất, dây chuyền sang 2 quái bên (×0.6/chuỗi). Mỗi cú đánh tích 1 Lôi Tích (tối đa 20). Sát thương tăng +4%/stack.' },
+        passive: { icon:'⚡', tag:'PASSIVE', name:'Tĩnh Điện Tích Tụ', desc:'Mỗi Lôi Tích +4% sát thương (tối đa +80%). Đủ 20 stack: tự phóng AoE sét mỗi 3 giây. Stack reset về 0 khi dùng Active.' },
+        active:  { icon:'🌩️', tag:'ACTIVE', name:'Thiên Lôi Giáng Thế', desc:'Tiêu thụ toàn bộ Lôi Tích — phóng 5 tia sét (×1.8 × bonus stack, dây chuyền 4 mục tiêu). Sau skill: ATK Speed +30% trong 4 giây.', cd:10 },
+        evolve:  { icon:'⚡', tag:'TIẾN HÓA', name:'Thần Lôi Vô Song', desc:'Sét dây chuyền lên 5 mục tiêu/chuỗi. Mỗi dây chuyền để lại vết sét gây 15% ST/giây trong 2 giây.' },
+      }
+    },
+    {
+      extra: {
+        statHP: 144, statSPD: 105, statDMG: 29, statATK: 1.05,
+        weapon:  { icon:'🔥', tag:'VŨ KHÍ CHÍNH', name:'Long Hỏa Quyền', desc:'Đấm lửa rồng tạo hình nón lửa rộng 120° quanh người. Quái cháy nhận 15% ST/giây thêm 2 giây sau khi trúng.' },
+        passive: { icon:'🐉', tag:'PASSIVE', name:'Long Vảy Linh', desc:'Giảm 20% mọi ST nhận. Mỗi 50 quái tiêu diệt: ATK +35% trong 6 giây (stack 3 lần). HP<30%: kích Cuồng Long — ATK +50%, SPD +25%.' },
+        active:  { icon:'🐉', tag:'ACTIVE', name:'Rồng Lửa Thiêu Thân', desc:'Hóa thân Rồng Lửa 5 giây: AoE 200px liên tục (×2.0/giây) + SPD +20%, miễn knockback. Kết thúc: nổ lửa cuối ×5.0 AoE khổng lồ.', cd:12 },
+        evolve:  { icon:'🔥', tag:'TIẾN HÓA', name:'Thiên Long Hỏa Hải', desc:'Mỗi cú đấm để lại đám lửa 3 giây (20% ST/giây). Khi biến thân: mỗi va chạm triệu thêm cầu lửa nhỏ ×2.' },
+      }
+    },
+    {
+      extra: {
+        statHP: 100, statSPD: 125, statDMG: 37, statATK: 0.85,
+        weapon:  { icon:'🧊', tag:'VŨ KHÍ CHÍNH', name:'Băng Linh Nhẫn', desc:'Phóng 4 vòng băng xoay tròn quanh người, va chạm làm chậm địch 30% trong 1.5 giây. Địch đang chậm nhận thêm 35% sát thương.' },
+        passive: { icon:'❄️', tag:'PASSIVE', name:'Tuyệt Đối Không Độ', desc:'Địch đang chậm/đóng băng nhận thêm 35% ST. Giết địch đóng băng: hồi 8 HP. HP<25%: bọc băng bảo hộ — hấp thụ 300 ST và phản chiếu 50%.' },
+        active:  { icon:'🌨️', tag:'ACTIVE', name:'Bão Tuyết Tận Thế', desc:'Bão tuyết bán kính 350px trong 6 giây: địch chậm 60% + ST ×1.2/giây. Đứng trong bão 3 giây liên tiếp bị đóng băng 2 giây. Kết thúc: Băng Nổ ×4.0 toàn vùng.', cd:14 },
+        evolve:  { icon:'❄️', tag:'TIẾN HÓA', name:'Vong Linh Băng Trận', desc:'Băng Nhẫn trúng địch phân nhánh 2 mảnh băng homing (×0.5/mảnh). Địch đóng băng chết nổ AoE băng thêm 100px.' },
       }
     },
   ];
@@ -4029,6 +4519,7 @@ const UI = (() => {
     showBossBar, hideBossBar, showWaveAnnounce, showBossAppear,
     showResult, startRun, getSelected, goToMapSelect, renderStatPanel,
     toggleStatPanel, updateStatPanel, resetStatPanel, applySkillBtnTheme,
+    resetPotential, cdoSwitchTab,
   };
 })();
 
@@ -4282,6 +4773,126 @@ const CharPortrait = (() => {
     ctx.beginPath(); ctx.moveTo(x+5.5,y-15); ctx.quadraticCurveTo(x+9,y-9,x+8,y-4); ctx.stroke();
   }
 
+  function drawLoiThan(ctx, x, y) {
+    // Electric thunder god portrait
+    const lt = performance.now() / 1000;
+    // Glow
+    const gr = ctx.createRadialGradient(x,y-4,2,x,y-4,20);
+    gr.addColorStop(0,'rgba(0,200,255,0.5)'); gr.addColorStop(1,'rgba(0,50,100,0)');
+    ctx.fillStyle = gr; ctx.beginPath(); ctx.arc(x,y-4,20,0,Math.PI*2); ctx.fill();
+    // Robe
+    ctx.fillStyle = '#001a3a'; ctx.beginPath(); ctx.moveTo(x-9,y-7); ctx.lineTo(x+9,y-7); ctx.lineTo(x+11,y+8); ctx.lineTo(x-11,y+8); ctx.closePath(); ctx.fill();
+    // Lightning rune
+    ctx.strokeStyle = '#00ccff'; ctx.lineWidth = 2; ctx.shadowColor = '#00ccff'; ctx.shadowBlur = 8;
+    ctx.beginPath(); ctx.moveTo(x-1.5,y-4); ctx.lineTo(x+2,y); ctx.lineTo(x-1.5,y+2); ctx.lineTo(x+2,y+6); ctx.stroke();
+    ctx.shadowBlur = 0;
+    // Legs
+    ctx.fillStyle = '#003050'; ctx.fillRect(x-5,y+7,4,9); ctx.fillRect(x+1,y+7,4,9);
+    ctx.fillStyle = '#005070'; ctx.fillRect(x-7,y+14,6,4); ctx.fillRect(x+1,y+14,6,4);
+    // Arms
+    ctx.strokeStyle = '#0088cc'; ctx.lineWidth = 4; ctx.lineCap = 'round';
+    ctx.beginPath(); ctx.moveTo(x-7,y-2); ctx.lineTo(x-13,y+5); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(x+7,y-2); ctx.lineTo(x+13,y+5); ctx.stroke();
+    ctx.fillStyle = '#00eeff'; ctx.shadowColor = '#00ccff'; ctx.shadowBlur = 12;
+    ctx.beginPath(); ctx.arc(x-13,y+5,4,0,Math.PI*2); ctx.fill();
+    ctx.beginPath(); ctx.arc(x+13,y+5,4,0,Math.PI*2); ctx.fill();
+    ctx.shadowBlur = 0;
+    // Head
+    ctx.fillStyle = '#002244'; ctx.beginPath(); ctx.arc(x,y-14,7,0,Math.PI*2); ctx.fill();
+    // Lightning crown
+    ctx.strokeStyle = '#00eeff'; ctx.lineWidth = 1.5; ctx.shadowColor = '#00ccff'; ctx.shadowBlur = 8;
+    const ltP2 = (lt*2)%(Math.PI*2);
+    for (let ci = 0; ci < 3; ci++) {
+      const a = ltP2 + ci*Math.PI*2/3;
+      ctx.beginPath(); ctx.moveTo(x,y-21); ctx.lineTo(x+Math.cos(a)*5,y-21+Math.sin(a)*4); ctx.stroke();
+    }
+    ctx.shadowBlur = 0;
+    // Eyes
+    ctx.fillStyle = '#00eeff'; ctx.shadowColor = '#00aaff'; ctx.shadowBlur = 8;
+    ctx.beginPath(); ctx.arc(x-3,y-15,2,0,Math.PI*2); ctx.fill();
+    ctx.beginPath(); ctx.arc(x+3,y-15,2,0,Math.PI*2); ctx.fill();
+    ctx.shadowBlur = 0;
+  }
+
+  function drawHoaLong(ctx, x, y) {
+    // Fire dragon portrait
+    const ft2 = performance.now() / 1000;
+    // Fire aura
+    const fr2 = ctx.createRadialGradient(x,y,2,x,y,24);
+    fr2.addColorStop(0,'rgba(255,80,0,0.5)'); fr2.addColorStop(1,'rgba(180,20,0,0)');
+    ctx.fillStyle = fr2; ctx.beginPath(); ctx.arc(x,y,24,0,Math.PI*2); ctx.fill();
+    // Dragon horns
+    ctx.fillStyle = '#ff6600'; ctx.shadowColor = '#ff3300'; ctx.shadowBlur = 6;
+    ctx.beginPath(); ctx.moveTo(x-4,y-19); ctx.lineTo(x-1,y-13); ctx.lineTo(x-7,y-13); ctx.closePath(); ctx.fill();
+    ctx.beginPath(); ctx.moveTo(x+4,y-19); ctx.lineTo(x+7,y-13); ctx.lineTo(x+1,y-13); ctx.closePath(); ctx.fill();
+    ctx.shadowBlur = 0;
+    // Legs
+    ctx.fillStyle = '#5c1500'; ctx.fillRect(x-5,y+7,5,9); ctx.fillRect(x+0,y+7,5,9);
+    ctx.fillStyle = '#8b2500'; ctx.fillRect(x-7,y+14,6,5); ctx.fillRect(x+1,y+14,6,5);
+    // Scale body
+    ctx.fillStyle = '#3d0e00'; ctx.beginPath(); ctx.moveTo(x-10,y-7); ctx.lineTo(x+10,y-7); ctx.lineTo(x+12,y+8); ctx.lineTo(x-12,y+8); ctx.closePath(); ctx.fill();
+    ctx.strokeStyle = '#cc3300'; ctx.lineWidth = 0.8;
+    for (let si = -2; si <= 2; si++) { ctx.beginPath(); ctx.arc(x+si*4, y-1, 3, 0, Math.PI); ctx.stroke(); }
+    // Arms claws
+    ctx.strokeStyle = '#ff4400'; ctx.lineWidth = 4; ctx.lineCap = 'round';
+    ctx.beginPath(); ctx.moveTo(x-8,y-2); ctx.lineTo(x-14,y+6); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(x+8,y-2); ctx.lineTo(x+14,y+6); ctx.stroke();
+    // Head
+    ctx.fillStyle = '#4a1000'; ctx.beginPath(); ctx.ellipse(x,y-13,8,7,0,0,Math.PI*2); ctx.fill();
+    ctx.fillStyle = '#6a1800'; ctx.beginPath(); ctx.ellipse(x+3,y-11,5,4,0,0,Math.PI*2); ctx.fill();
+    // Eyes
+    ctx.fillStyle = '#ffaa00'; ctx.shadowColor = '#ff4400'; ctx.shadowBlur = 10;
+    ctx.beginPath(); ctx.arc(x-2,y-14,2.5,0,Math.PI*2); ctx.fill();
+    ctx.beginPath(); ctx.arc(x+4,y-14,2.5,0,Math.PI*2); ctx.fill();
+    ctx.shadowBlur = 0;
+  }
+
+  function drawBangVuong(ctx, x, y) {
+    // Ice king portrait
+    const bt2 = performance.now() / 1000;
+    // Ice aura
+    const ir2 = ctx.createRadialGradient(x,y-4,2,x,y-4,22);
+    ir2.addColorStop(0,'rgba(136,238,255,0.4)'); ir2.addColorStop(1,'rgba(0,80,150,0)');
+    ctx.fillStyle = ir2; ctx.beginPath(); ctx.arc(x,y-4,22,0,Math.PI*2); ctx.fill();
+    // Ice cape
+    ctx.fillStyle = 'rgba(40,130,200,0.8)'; ctx.beginPath(); ctx.moveTo(x-12,y-6); ctx.lineTo(x+12,y-6); ctx.lineTo(x+14,y+12); ctx.lineTo(x-14,y+12); ctx.closePath(); ctx.fill();
+    ctx.strokeStyle = '#88eeff'; ctx.lineWidth = 0.8; ctx.beginPath(); ctx.moveTo(x-14,y+12); ctx.lineTo(x+14,y+12); ctx.stroke();
+    // Legs
+    ctx.fillStyle = '#003355'; ctx.fillRect(x-5,y+7,4,9); ctx.fillRect(x+1,y+7,4,9);
+    ctx.fillStyle = '#005577'; ctx.fillRect(x-7,y+14,6,4); ctx.fillRect(x+1,y+14,6,4);
+    // Ice robe
+    ctx.fillStyle = '#001828'; ctx.beginPath(); ctx.moveTo(x-9,y-7); ctx.lineTo(x+9,y-7); ctx.lineTo(x+11,y+8); ctx.lineTo(x-11,y+8); ctx.closePath(); ctx.fill();
+    // Snowflake
+    ctx.strokeStyle = '#88eeff'; ctx.lineWidth = 1.2; ctx.shadowColor = '#88eeff'; ctx.shadowBlur = 5;
+    for (let si = 0; si < 6; si++) { const sa3 = si*Math.PI/3; ctx.beginPath(); ctx.moveTo(x,y); ctx.lineTo(x+Math.cos(sa3)*5,y+Math.sin(sa3)*5); ctx.stroke(); }
+    ctx.shadowBlur = 0;
+    // Arms
+    ctx.strokeStyle = '#4488aa'; ctx.lineWidth = 4; ctx.lineCap = 'round';
+    ctx.beginPath(); ctx.moveTo(x-7,y-2); ctx.lineTo(x-13,y+6); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(x+7,y-2); ctx.lineTo(x+13,y+6); ctx.stroke();
+    ctx.fillStyle = '#88eeff'; ctx.shadowColor = '#00ccff'; ctx.shadowBlur = 12;
+    ctx.beginPath(); ctx.arc(x-13,y+6,4.5,0,Math.PI*2); ctx.fill();
+    ctx.beginPath(); ctx.arc(x+13,y+6,4.5,0,Math.PI*2); ctx.fill();
+    ctx.shadowBlur = 0;
+    // Head + crown
+    ctx.fillStyle = '#001833'; ctx.beginPath(); ctx.arc(x,y-14,7,0,Math.PI*2); ctx.fill();
+    ctx.fillStyle = '#88eeff'; ctx.shadowColor = '#00ccff'; ctx.shadowBlur = 8;
+    for (let cr = 0; cr < 5; cr++) {
+      const ch2 = cr%2===0 ? 7 : 5;
+      ctx.beginPath(); ctx.moveTo(x-8+cr*4,y-20); ctx.lineTo(x-10+cr*4,y-20-ch2); ctx.lineTo(x-6+cr*4,y-20); ctx.closePath(); ctx.fill();
+    }
+    ctx.shadowBlur = 0;
+    ctx.fillStyle = '#00eeff'; ctx.shadowColor = '#0088ff'; ctx.shadowBlur = 8;
+    ctx.beginPath(); ctx.arc(x-3,y-15,2,0,Math.PI*2); ctx.fill();
+    ctx.beginPath(); ctx.arc(x+3,y-15,2,0,Math.PI*2); ctx.fill();
+    ctx.shadowBlur = 0;
+    // Orbiting crystal
+    const bA2 = bt2 * 2;
+    ctx.fillStyle = '#ccf8ff'; ctx.shadowColor = '#88eeff'; ctx.shadowBlur = 10;
+    ctx.beginPath(); ctx.arc(x+Math.cos(bA2)*16, y+Math.sin(bA2)*9-4, 3, 0, Math.PI*2); ctx.fill();
+    ctx.shadowBlur = 0;
+  }
+
   function draw(canvas, charId, charColor) {
     const ctx = canvas.getContext('2d');
     const W = canvas.width, H = canvas.height;
@@ -4303,6 +4914,9 @@ const CharPortrait = (() => {
       case 'kim_cang':     drawKimCang(ctx, cx, cy);     break;
       case 'am_sat':       drawAmSat(ctx, cx, cy);       break;
       case 'tu_linh':      drawTuLinh(ctx, cx, cy);      break;
+      case 'loi_than':     drawLoiThan(ctx, cx, cy);     break;
+      case 'hoa_long':     drawHoaLong(ctx, cx, cy);     break;
+      case 'bang_vuong':   drawBangVuong(ctx, cx, cy);   break;
       default:
         ctx.font = '32px serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
         ctx.fillText('❓', cx, cy);
@@ -4393,7 +5007,7 @@ const CHARS = [
     id: 'luu_phong', icon: '⚔️', name: 'Kiếm Khách Lưu Phong', title: 'Kiếm Khách',
     cost: 0,
     baseHP: 670, baseSpd: 145, baseDmg: 70, baseAtk: 1.8,
-    weapon: 'Phong Kiếm', weaponDesc: 'Chém vòng cung 90° hướng về quái gần nhất, tầm ngắn, tốc độ rất cao. Tốc độ tấn công tăng dần khi tích lũy stack Kiếm Ý (+1.5%/stack, tối đa +45%).',
+    weapon: 'Phong Kiếm', weaponDesc: 'Chém vòng cung ~160° hướng về quái gần nhất, tầm ngắn, tốc độ rất cao. Tốc độ tấn công tăng dần khi tích lũy stack Kiếm Ý (+1.5%/stack, tối đa +45%).',
     weaponIcon: '⚔️',
     passiveName: 'Kiếm Ý',
     passiveDesc: 'Mỗi lần giết quái, tốc chém +1.5% (tối đa 30 stack = +45%). Bị trúng đòn mất 50% stack (giữ lại 50%) — tích công bền vững hơn.',
@@ -4406,7 +5020,7 @@ const CHARS = [
   },
   {
     id: 'huyen_nguyet', icon: '🌙', name: 'Huyền Nguyệt', title: 'Pháp Sư',
-    cost: 500,
+    cost: 1500,
     baseHP: 520, baseSpd: 110, baseDmg: 175, baseAtk: 0.95,
     weapon: 'Tinh Linh Cầu', weaponDesc: 'Bắn cầu ma thuật tự truy đuổi kẻ thù gần nhất.',
     weaponIcon: '🔮',
@@ -4421,7 +5035,7 @@ const CHARS = [
   },
   {
     id: 'thiet_tam', icon: '🏹', name: 'Thiết Tâm', title: 'Xạ Thủ',
-    cost: 800,
+    cost: 1500,
     baseHP: 570, baseSpd: 120, baseDmg: 155, baseAtk: 1.25,
     weapon: 'Cung Xương', weaponDesc: 'Bắn mũi tên xuyên thấu đường thẳng, tầm rất xa.',
     weaponIcon: '🏹',
@@ -4436,7 +5050,7 @@ const CHARS = [
   },
   {
     id: 'kim_cang', icon: '🥋', name: 'Kim Cang', title: 'Võ Tăng',
-    cost: 1000,
+    cost: 1500,
     baseHP: 1050, baseSpd: 100, baseDmg: 140, baseAtk: 0.95,
     weapon: 'Thiền Trượng', weaponDesc: 'Đập mặt đất tạo sóng chấn động AoE quanh người.',
     weaponIcon: '🪄',
@@ -4451,14 +5065,14 @@ const CHARS = [
   },
   {
     id: 'am_sat', icon: '🗡️', name: 'Ám Sát', title: 'Huyết Vũ',
-    cost: 1200,
+    cost: 1500,
     baseHP: 545, baseSpd: 155, baseDmg: 80, baseAtk: 2.4,
     weapon: 'Song Tà Đao', weaponDesc: 'Chém cực nhanh xung quanh, tốc độ gấp đôi nhân vật khác.',
     weaponIcon: '🗡️',
     passiveName: 'Bóng Tối',
     passiveDesc: 'ATK +20%. HP <40%: ATK +50%, SPD +40%, giảm 30% sát thương nhận vào. Vô hình 5 giây (CD 15s): quái xa >400 đơn vị không truy đuổi — Boss không bị ảnh hưởng.',
     activeName: 'Ám Sát Liên Hoàn',
-    activeDesc: 'Ẩn Kích Liên Hoàn: teleport đến 3 mục tiêu gần nhất. Khi đang vô hình (HP<40%): mỗi đòn ×6.0 + chảy máu 3 tick, sau chuỗi tái kích hoạt vô hình ngay (bypass CD) nếu HP vẫn <40%. Khi không vô hình: ×4.0 thường.',
+    activeDesc: 'Ẩn Kích Liên Hoàn: teleport đến 3 mục tiêu gần nhất trong tầm 450 đơn vị. Khi đang vô hình (HP<40%): mỗi đòn ×6.0 + chảy máu liên tục 3 giây (40% tổng ST/giây), sau chuỗi tái kích hoạt vô hình ngay (bypass CD) nếu HP vẫn <40%. Khi không vô hình: ×4.0 thường.',
     activeIcon: '🌀', activeCooldown: 10,
     evolvedWeapon: 'Hư Vô Đoản Kiếm',
     evolveDesc: 'Mỗi đòn đánh tạo phân thân ảo lặp lại đòn đó 0.3 giây sau (hiệu quả đánh 2 lần).',
@@ -4478,6 +5092,51 @@ const CHARS = [
     evolvedWeapon: 'Vong Hồn Đại Liềm',
     evolveDesc: 'Liềm to gấp 1.8 lần, hút quái vào khi bay, khi về xuyên tất cả địch còn lại.',
     color: '#ff4060',
+  },
+  {
+    id: 'loi_than', icon: '⚡', name: 'Lôi Thần', title: 'Thần Lôi Vương',
+    cost: 1800,
+    baseHP: 580, baseSpd: 130, baseDmg: 170, baseAtk: 1.35,
+    weapon: 'Thiên Lôi Cổ', weaponDesc: 'Gọi sét xuống quái gần nhất, dây chuyền sang 3 quái bên (×0.6/chuỗi). Mỗi cú tích 1 Lôi Tích (tối đa 20). ST tổng đã bao gồm +4%/stack.',
+    weaponIcon: '⚡',
+    passiveName: 'Tĩnh Điện Tích Tụ',
+    passiveDesc: 'Mỗi cú đánh tích 1 Lôi Tích (tối đa 20), mỗi stack +4% ST (tối đa +80%). Đủ 20 stack: tự phóng AoE sét mỗi 3 giây liên tục. Dùng Active KHÔNG tiêu stack.',
+    activeName: 'Thiên Lôi Giáng Thế',
+    activeDesc: 'Phóng 5 tia Thiên Lôi cộng hưởng — mỗi tia = Tổng ST hiện tại × 2.5 (đã nhân buff Lôi Tích, KHÔNG tiêu stack). Dây chuyền 4 mục tiêu. Sau cast: ATK Speed +50% trong 5 giây + tích 2 Lôi Tích/đòn.',
+    activeIcon: '🌩️', activeCooldown: 9,
+    evolvedWeapon: 'Thần Lôi Vô Song',
+    evolveDesc: 'Sét dây chuyền lên 6 mục tiêu/chuỗi. Mỗi dây chuyền để lại vết sét gây 20% ST/giây trong 2 giây. Active chain thêm 2 mục tiêu (tổng 6).',
+    color: '#00ccff',
+  },
+  {
+    id: 'hoa_long', icon: '🔥', name: 'Hỏa Long', title: 'Rồng Lửa Thiêu Thân',
+    cost: 2200,
+    baseHP: 720, baseSpd: 110, baseDmg: 155, baseAtk: 1.3,
+    weapon: 'Long Hỏa Quyền', weaponDesc: 'Đấm lửa rồng tạo AoE 120° rộng quanh người. Quái cháy nhận 20% ST/giây thêm 2 giây. Trong Dragon Form: vũ khí tiếp tục khai thác toàn bộ buff passive.',
+    weaponIcon: '🔥',
+    passiveName: 'Long Vảy Linh',
+    passiveDesc: 'Giảm 20% ST nhận. Mỗi 25 quái tiêu diệt: ATK +35% vĩnh viễn trong run (stack 3 lần = +105%). HP<40%: Cuồng Long — ATK +50%, SPD +25%. Active không gián đoạn vũ khí.',
+    activeName: 'Rồng Lửa Thiêu Thân',
+    activeDesc: 'Hóa thân Rồng Lửa 5 giây: AoE 200px liên tục (×1.5/giây) + vũ khí tiếp tục bắn bình thường với full buff, +20% SPD, miễn knockback. Kết thúc: Thiên Long Nổ ×7.0.',
+    activeIcon: '🐉', activeCooldown: 10,
+    evolvedWeapon: 'Thiên Long Hỏa Hải',
+    evolveDesc: 'Mỗi cú đấm để lại đám lửa 3 giây (25% ST/giây trong 90px). Khi biến thân: mỗi tick AoE triệu thêm 2 cầu lửa homing tự truy đuổi quái gần nhất.',
+    color: '#ff6600',
+  },
+  {
+    id: 'bang_vuong', icon: '❄️', name: 'Băng Vương', title: 'Vương Giả Tuyết Lạnh',
+    cost: 2500,
+    baseHP: 500, baseSpd: 125, baseDmg: 195, baseAtk: 1.0,
+    weapon: 'Băng Linh Nhẫn', weaponDesc: 'Phóng 4 vòng băng xoay tròn quanh người, va chạm làm chậm địch 40% trong 2 giây. Địch đang chậm/đóng băng nhận thêm 45% ST từ mọi nguồn.',
+    weaponIcon: '🧊',
+    passiveName: 'Tuyệt Đối Không Độ',
+    passiveDesc: 'Địch đang chậm/đóng băng nhận thêm 45% ST từ mọi nguồn. Giết địch đóng băng: hồi 8 HP. HP<25%: Băng Hộ Thể — hấp thụ 400 ST và phản chiếu 60% về nguồn tấn công.',
+    activeName: 'Bão Tuyết Tận Thế',
+    activeDesc: 'Bão tuyết 350px trong 6 giây: địch chậm 60% + ×1.2/giây (vũ khí/crit hưởng +45%). Đứng trong bão 3 giây liên tiếp → đóng băng 2 giây. Kết thúc: Băng Nổ ×5.5 toàn vùng.',
+    activeIcon: '🌨️', activeCooldown: 11,
+    evolvedWeapon: 'Vong Linh Băng Trận',
+    evolveDesc: 'Băng Nhẫn trúng địch phân nhánh 2 mảnh băng homing (×0.6/mảnh). Địch đóng băng chết: nổ AoE băng 120px + đóng băng địch xung quanh trong 1 giây.',
+    color: '#88eeff',
   },
 ];
 
@@ -4650,6 +5309,39 @@ const MAPS = [
     specialMech:'gravityShift', bgPattern:'cosmos',
     tier:5, goldMin:700, goldMax:800,
   },
+  {
+    id:'map16', name:'Lăng Mộ Tinh Thần', icon:'🪦',
+    bgColor:'linear-gradient(135deg,#0d0018,#180025)',
+    groundColor:'#14001e', wallColor:'#2a0040',
+    mechDesc:'Cứ 20 giây: Nghi Thức Linh Hút — toàn bộ hồi máu bị đảo ngược thành sát thương trong 5 giây. Hồi HP/giây và lifesteal trở thành độc hại.',
+    bossName:'Hồn Vương Cổ Đại', bossIcon:'👑',
+    bossDesc:'Triệu linh hồn xoáy 8 hướng từ di tích xung quanh sàn. Giai đoạn 2: thêm vệt linh hồn truy đuổi 3 giây. Giai đoạn 3: Nghi Thức Linh Hút kích hoạt vĩnh viễn + xoáy kép 16 đạn 2 vòng liên tiếp 200ms.',
+    difficulty:6, enemyTypes:['spectre','bonecollector','soulreaper'],
+    specialMech:'spiritDrain', bgPattern:'tomb',
+    tier:6, goldMin:850, goldMax:980,
+  },
+  {
+    id:'map17', name:'Vực Thẳm Hỗn Nguyên', icon:'🌑',
+    bgColor:'linear-gradient(135deg,#000000,#08000f)',
+    groundColor:'#060008', wallColor:'#120018',
+    mechDesc:'Cứ 35 giây: Sụp Đổ Chiều Không Gian — tất cả quái tức thời dịch chuyển đến vị trí ngẫu nhiên, xuất hiện vùng nứt chiều không gian (AoE 80đv, DMG 120/s) trong 8 giây.',
+    bossName:'Thần Hỗn Nguyên', bossIcon:'🕳️',
+    bossDesc:'Bắn 3 luồng đạn hỗn độn tốc độ ngẫu nhiên 200–500đv/s. Giai đoạn 2: mở Cổng Hỗn Nguyên — portal triệu quái tại chỗ liên tục. Giai đoạn 3: Sụp Đổ Chiều Không Gian kích hoạt mỗi 12 giây + 5 luồng đạn + toàn sàn có vùng nứt.',
+    difficulty:6, enemyTypes:['abyssal','riftborn','anomaly'],
+    specialMech:'dimensionCollapse', bgPattern:'abyss',
+    tier:6, goldMin:920, goldMax:1050,
+  },
+  {
+    id:'map18', name:'Đỉnh Tuyệt Diệt', icon:'💠',
+    bgColor:'linear-gradient(135deg,#000005,#00000a)',
+    groundColor:'#02000a', wallColor:'#0a0020',
+    mechDesc:'Siêu Việt Thể: mỗi 30 giây toàn bộ quái tăng 20% ST và HP. Tích lũy không giới hạn. Sau 3 lần (90 giây) bắt đầu spawn thêm 1 quái elite bổ sung mỗi lần.',
+    bossName:'Thượng Đế Hủy Diệt', bossIcon:'💠',
+    bossDesc:'Boss cuối game — bất tử cho đến khi tất cả quái trên sân bị tiêu diệt (mỗi kill trừ 2% bất tử). Giai đoạn 2: bắn 8 tia năng lượng xuyên suốt màn hình. Giai đoạn 3: kích hoạt Siêu Việt Thể × vĩnh viễn + 3 lõi bất tử phụ phải phá đồng thời. Cần DPS cao nhất có thể.',
+    difficulty:6, enemyTypes:['annihilator','executor','obliterator'],
+    specialMech:'ascensionMode', bgPattern:'apex',
+    tier:6, goldMin:1000, goldMax:1200,
+  },
 ];
 
 /* ============================================================
@@ -4806,7 +5498,7 @@ class Player {
     this.pot      = potentialBonus;
 
     // Base stats from char + potential
-    this.maxHp   = charData.baseHP  + (potentialBonus.survival[0] || 0) * 125; // +125/lv (scaled x5)
+    this.maxHp   = charData.baseHP  + (potentialBonus.survival[0] || 0) * 125; // +125/lv (max lv10 = +1250)
     this.hp      = this.maxHp;
     this.speed   = charData.baseSpd * (1 + (potentialBonus.mobility[0] || 0) * 0.06);  // +6%/lv (was 5%)
     this.baseDmg = charData.baseDmg * (1 + (potentialBonus.damage[0]  || 0) * 0.10);  // +10%/lv (was 8%)
@@ -4896,6 +5588,12 @@ class Player {
       d *= (this.hp < this.maxHp * 0.40) ? 1.5 : 1.2;
     } else if (this.charData.id === 'tu_linh') {
       d *= (1 + this.soulCount * 0.035);
+    } else if (this.charData.id === 'loi_than') {
+      // Tĩnh Điện Tích Tụ: +4% ST/stack Lôi Tích
+      d *= (1 + (this.passiveStacks || 0) * 0.04);
+    } else if (this.charData.id === 'hoa_long') {
+      // Long Vảy Linh: bonus ATK từ kill milestone
+      d *= (1 + (this._hlAtkBonus || 0));
     }
     return d;
   }
@@ -5036,9 +5734,10 @@ class Player {
       if (!wasBuffed && nowBuffed) {
         Audio.playSFX('passive');  // buff ON — soft chime
         Game.particles && Game.particles.spawn(this.x, this.y, {
-          count: 6, color: '#a060ff', speedMin: 30, speedMax: 80, life: 0.5,
-          angle: -Math.PI/2, spread: Math.PI * 0.5, gravity: -20,
+          count: 14, color: '#a060ff', speedMin: 40, speedMax: 120, life: 0.6,
+          angle: -Math.PI/2, spread: Math.PI * 0.7, gravity: -30,
         });
+        Game.rings && Game.rings.push(new RingEffect(this.x, this.y, 38, '#c090ff'));
       } else if (wasBuffed && !nowBuffed) {
         Audio.playSFX('hit');      // buff OFF — subtle break
       }
@@ -5089,14 +5788,34 @@ class Player {
       Audio.playSFX('heal');
       Toast.show('💀 Linh Hồn hoá giải — hồi máu!');
     }
+
+    // Long Vảy Linh (Hỏa Long) — HP<30%: kích Cuồng Long ATK +50% SPD +25%
+    if (id === 'hoa_long') {
+      const isCuongLong = this.hp < this.maxHp * 0.40;
+      if (isCuongLong && !this._cuongLongActive) {
+        this._cuongLongActive = true;
+        this._cuongLongSpdBonus = this.speed * 0.25;
+        this.speed += this._cuongLongSpdBonus;
+        this.dmgMult *= 1.50;
+        Toast.show('🐉 CUỒNG LONG! ATK +50% SPD +25%!');
+        Audio.playSFX('evolve');
+        Game.particles.spawn(this.x, this.y, {count:20, color:'#ff4400', speedMin:100, speedMax:250, life:0.7});
+        Game.rings && Game.rings.push(new RingEffect(this.x, this.y, 70, '#ff6600'));
+      } else if (!isCuongLong && this._cuongLongActive) {
+        // Hồi máu qua 30% — hoàn tác
+        this._cuongLongActive = false;
+        this.speed -= (this._cuongLongSpdBonus || 0);
+        this.dmgMult /= 1.50;
+        this._cuongLongSpdBonus = 0;
+      }
+    }
   }
 
   takeDamage(dmg, source) {
     if (this.invincT > 0) return;
 
-    // Armor reduction
-    const reduction = Math.min(0.78,
-      this.armor + (this.skillLevels['stat_armor'] || 0) * 0.08);
+    // Armor reduction — player.armor đã bao gồm tất cả nguồn (potential + thẻ + pet)
+    const reduction = Math.min(0.78, this.armor);
     let finalDmg = dmg * (1 - reduction);
 
     // Phản Dame Move (mobility[3]): giảm ST khi đang di chuyển
@@ -5123,6 +5842,39 @@ class Player {
     // Bóng Tối (Ám Sát) — low-HP debuff
     if (this.charData.id === 'am_sat' && this.hp < this.maxHp * 0.40) {
       finalDmg *= 0.7;  // takes less damage while in shadow mode
+    }
+
+    // Long Vảy Linh (Hỏa Long) — giảm 20% mọi ST nhận
+    if (this.charData.id === 'hoa_long') {
+      finalDmg *= 0.80;
+    }
+
+    // Tuyệt Đối Không Độ (Băng Vương) — HP<25%: Ice Shield hấp thụ 300 ST, phản 50%
+    if (this.charData.id === 'bang_vuong' && this.hp < this.maxHp * 0.25 && !this._bvShieldActive) {
+      this._bvShieldActive = true;
+      this._bvShieldHP = 400;
+      Toast.show('❄️ Băng Hộ Thể kích hoạt! Hấp thụ 300 ST!');
+      Audio.playSFX('passive');
+      Game.rings && Game.rings.push(new RingEffect(this.x, this.y, 60, '#88eeff'));
+      Game.particles.spawn(this.x, this.y, {count:15, color:'#ccf8ff', speedMin:60, speedMax:160, life:0.6});
+    }
+    if (this._bvShieldActive && this._bvShieldHP > 0) {
+      const absorbed = Math.min(this._bvShieldHP, finalDmg);
+      this._bvShieldHP -= absorbed;
+      // Phản 50% lại source
+      if (source && source.takeDamage && absorbed > 0) {
+        source.takeDamage(absorbed * 0.6, null);
+      }
+      finalDmg -= absorbed;
+      if (this._bvShieldHP <= 0) {
+        this._bvShieldActive = false;
+        Toast.show('❄️ Băng Hộ vỡ!');
+        Game.rings && Game.rings.push(new RingEffect(this.x, this.y, 55, '#00eeff'));
+      }
+      if (finalDmg <= 0) {
+        DmgNumbers.show(this.x, this.y, '🧊', 'normal');
+        return;
+      }
     }
 
     // Thần Quy pet skill — counterattack AoE on hit + extra DR when HP < 30%
@@ -5300,6 +6052,36 @@ class Player {
     if ((this.skillLevels['special_curse'] || 0) > 0) {
       Game.explosionAt(enemy.x, enemy.y, 60, this.totalDmg * 0.3, '#ff4080');
     }
+
+    // ── Lôi Thần: tích Lôi Tích khi giết (weapon fire cũng tích)
+    // (stack đã được tích trong weapon fire per hit — onKill không tích thêm)
+
+    // ── Hỏa Long: Long Vảy Linh — mỗi 25 kill ATK +35% VĨNH VIỄN trong run (stack tối đa 3)
+    if (this.charData.id === 'hoa_long') {
+      this._hlKillCount = (this._hlKillCount || 0) + 1;
+      if (this._hlKillCount % 25 === 0) {
+        const curStacks = Math.floor((this._hlAtkBonus || 0) / 0.35 + 0.01);
+        if (curStacks < 3) {
+          this._hlAtkBonus = (this._hlAtkBonus || 0) + 0.35;
+          const newStacks = curStacks + 1;
+          Toast.show(`🔥 Long Vảy Linh x${newStacks}! ATK +35% vĩnh viễn (${newStacks}/3 stack)`);
+          Audio.playSFX('passive');
+          Game.particles.spawn(this.x, this.y, {count:15, color:'#ff6600', speedMin:80, speedMax:200, life:0.6});
+          Game.rings && Game.rings.push(new RingEffect(this.x, this.y, 55, '#ff6600'));
+        } else if (curStacks >= 3 && this._hlKillCount % 25 === 0) {
+          // Đã max stack: mỗi 25 kill thêm cho 1 burst sét nhỏ
+          Game.explosionAt(this.x, this.y, 100, this.totalDmg * 0.5, '#ff4400', 'main_hoa_long');
+          Game.particles.spawn(this.x, this.y, {count:8, color:'#ff8800', speedMin:60, speedMax:140, life:0.4});
+        }
+      }
+    }
+
+    // ── Băng Vương: Tuyệt Đối Không Độ — giết địch đóng băng → hồi 8 HP
+    if (this.charData.id === 'bang_vuong' && enemy._bvFrozen) {
+      this.hp = Math.min(this.maxHp, this.hp + 8);
+      DmgNumbers.show(this.x, this.y, '+8', 'heal');
+      Audio.playSFX('heal');
+    }
   }
 
   useActive(dir) {
@@ -5316,6 +6098,9 @@ class Player {
       case 'kim_cang':    this._activeKimCang();        break;
       case 'am_sat':      this._activeAmSat();          break;
       case 'tu_linh':     this._activeTuLinh();         break;
+      case 'loi_than':    this._activeLoiThan();         break;
+      case 'hoa_long':    this._activeHoaLong();         break;
+      case 'bang_vuong':  this._activeBangVuong();       break;
     }
     return true;
   }
@@ -5328,7 +6113,7 @@ class Player {
       dir = aimDir;
     } else {
       const nearest = Game.enemies.reduce((best, e) => {
-        if (!e.active) return best;
+        if (e.dead) return best; // FIX: đổi !e.active → e.dead (skip quái đã chết)
         const d = MathU.dist(this.x, this.y, e.x, e.y);
         return (!best || d < best.d) ? { e, d } : best;
       }, null);
@@ -5462,6 +6247,7 @@ class Player {
               if (nearCount > bestCount) { bestCount = nearCount; bestX = e.x; bestY = e.y; }
             });
             Game.explosionAt(bestX, bestY, 140 * castRef.aoeSize, castRef.totalDmg * 5.0, '#ffffff', 'active_huyen_nguyet');
+            Audio.playSFX('super_lightning'); // Siêu Lôi — SFX riêng, mạnh hơn sét thường
             // Siêu Lôi visual — trắng chói, bolt dày
             Game.lightningBolts.push(new LightningBolt(bestX + MathU.rand(-20,20), bestY - 280, bestX, bestY, '#ffffff'));
             Game.lightningBolts.push(new LightningBolt(bestX + MathU.rand(-30,30), bestY - 220, bestX, bestY, '#e0d0ff'));
@@ -5485,10 +6271,19 @@ class Player {
             Game.particles.spawn(tx, ty, { count: 8, color: '#e0c0ff', speedMin: 80, speedMax: 200, life: 0.3, sizeMin: 1, sizeMax: 3 });
           }
         } else {
-          const angle = Math.random() * Math.PI * 2;
-          const r     = Math.random() * radius;
-          const tx    = castRef.x + Math.cos(angle) * r;
-          const ty    = castRef.y + Math.sin(angle) * r;
+          // FIX: 70% bolt nhắm về phía một quái ngẫu nhiên trong radius, 30% ngẫu nhiên hoàn toàn
+          const _hnTargets = Game.enemies.filter(e => !e.dead && MathU.dist(castRef.x, castRef.y, e.x, e.y) < radius);
+          let tx, ty;
+          if (_hnTargets.length > 0 && Math.random() < 0.70) {
+            const _tgt = _hnTargets[Math.floor(Math.random() * _hnTargets.length)];
+            tx = _tgt.x + MathU.rand(-30, 30);
+            ty = _tgt.y + MathU.rand(-30, 30);
+          } else {
+            const angle = Math.random() * Math.PI * 2;
+            const r     = Math.random() * radius;
+            tx = castRef.x + Math.cos(angle) * r;
+            ty = castRef.y + Math.sin(angle) * r;
+          }
           Game.explosionAt(tx, ty, 70 * castRef.aoeSize, castRef.totalDmg * boltDmg, '#a060ff', 'active_huyen_nguyet');
 
           // Lightning bolt from sky — source above player's view
@@ -5647,11 +6442,19 @@ class Player {
     const isShadowActive = this._shadowActive === true;
     const dmgMult = isShadowActive ? 6.0 : 4.0;
 
-    const targets = [...Game.enemies]
-      .sort((a, b) =>
-        MathU.dist2(this.x, this.y, a.x, a.y) -
-        MathU.dist2(this.x, this.y, b.x, b.y))
-      .slice(0, 3);
+    // FIX: giới hạn tầm teleport 450 đv, tránh bị văng sang góc bản đồ khi thưa quái
+    // Nếu không có quái nào trong 450, mở rộng sang 900 để không bao giờ trả về mảng rỗng
+    const _amSatMaxRange = 450;
+    let _amSatPool = [...Game.enemies]
+      .filter(e => !e.dead && MathU.dist(this.x, this.y, e.x, e.y) <= _amSatMaxRange)
+      .sort((a, b) => MathU.dist2(this.x, this.y, a.x, a.y) - MathU.dist2(this.x, this.y, b.x, b.y));
+    if (_amSatPool.length === 0) {
+      _amSatPool = [...Game.enemies]
+        .filter(e => !e.dead)
+        .sort((a, b) => MathU.dist2(this.x, this.y, a.x, a.y) - MathU.dist2(this.x, this.y, b.x, b.y))
+        .slice(0, 3);
+    }
+    const targets = _amSatPool.slice(0, 3);
 
     if (targets.length === 0) return;
 
@@ -5751,6 +6554,7 @@ class Player {
       setTimeout(() => {
         if (!castRef || castRef.hp <= 0) return;
         // Dùng totalDmg tại thời điểm pulse (nếu souls thay đổi trong 4s, vẫn đúng)
+        Audio.playSFX('death_pulse'); // per-pulse audio feedback
         Game.explosionAt(castRef.x, castRef.y, domainRadius, castRef.totalDmg * 0.4, '#ff4060', 'active_tu_linh');
         Game.rings.push(new RingEffect(castRef.x, castRef.y, domainRadius * 0.55, '#aa1030'));
         // Skull particles mỗi 2 pulse
@@ -5974,6 +6778,164 @@ class Player {
     ctx.restore();
   }
 
+  // ═══════════════════════════════════════════════════════════
+  //  LÔI THẦN — Active: Thiên Lôi Giáng Thế
+  // ═══════════════════════════════════════════════════════════
+  _activeLoiThan() {
+    const p = this;
+    // ── KHÔNG tiêu stack — active khuếch đại trên nền buff Lôi Tích hiện tại ──
+    Audio.playSFX('active_loi_than');
+    Game.rings.push(new RingEffect(p.x, p.y, 110, '#00ccff'));
+    Game.rings.push(new RingEffect(p.x, p.y, 70, '#00aaff'));
+    Game.rings.push(new RingEffect(p.x, p.y, 40, '#ffffff'));
+    Game.particles.spawn(p.x, p.y, {count:30, color:'#00eeff', speedMin:100, speedMax:300, life:0.6});
+    // 5 tia Thiên Lôi — damage = totalDmg (đã nhân stack +4%/stack) × 2.5
+    for (let bi = 0; bi < 5; bi++) {
+      setTimeout(() => {
+        if (!p || p.hp <= 0) return;
+        const tgt = enemies.reduce((best, e) => {
+          if (e.dead) return best;
+          const d = MathU.dist(p.x, p.y, e.x, e.y);
+          return (!best || d < MathU.dist(p.x, p.y, best.x, best.y)) ? e : best;
+        }, null);
+        if (!tgt) return;
+        const chainCountAct = p.mainWeapon.evolved ? 6 : 4;
+        let cur = tgt;
+        let bd = p.totalDmg * 2.5; // totalDmg đã có buff Lôi Tích
+        const bHit = new Set([cur]);
+        for (let ci = 0; ci < chainCountAct; ci++) {
+          if (!cur) break;
+          const {val: bVal} = p.rollCrit(bd);
+          cur.takeDamage(bVal, p, 'normal');
+          p.trackSkillDmg('active_loi_than', bVal);
+          Game.particles.spawn(cur.x, cur.y, {count:8, color:'#00eeff', speedMin:60, speedMax:160, life:0.35});
+          Game.rings && Game.rings.push(new RingEffect(cur.x, cur.y, 32, '#00ccff'));
+          if (p.mainWeapon.evolved) {
+            const dtTgt = cur; const dtV = bd * 0.20; let dtN = 0;
+            const dtiA = setInterval(() => { if (dtTgt.dead || dtN >= 2) { clearInterval(dtiA); return; } dtTgt.takeDamage(dtV, p, 'normal'); dtN++; }, 1000);
+          }
+          let nxt = null; let nxtD = 999;
+          enemies.forEach(e => {
+            if (e.dead || bHit.has(e)) return;
+            const d3 = MathU.dist(cur.x, cur.y, e.x, e.y);
+            if (d3 < 220 && d3 < nxtD) { nxtD = d3; nxt = e; }
+          });
+          bd *= 0.65; cur = nxt; if (nxt) bHit.add(nxt);
+        }
+      }, bi * 110);
+    }
+    // ATK Speed +50% trong 5 giây + tích 2 Lôi Tích/đòn
+    if (!p._loiAtkBoost) {
+      p._loiAtkBoost = true;
+      p.atkSpeedMult = (p.atkSpeedMult || 1) * 1.5;
+    }
+    p._loiDoubleStack = true;
+    Toast.show('⚡ Thiên Lôi Giáng Thế! ATK Speed +50%');
+    if (p._loiActiveTimer) clearTimeout(p._loiActiveTimer);
+    p._loiActiveTimer = setTimeout(() => {
+      if (p._loiAtkBoost) {
+        p._loiAtkBoost = false;
+        p.atkSpeedMult = (p.atkSpeedMult || 1.5) / 1.5;
+      }
+      p._loiDoubleStack = false;
+      p._loiActiveTimer = null;
+    }, 5000);
+  }
+
+  // ═══════════════════════════════════════════════════════════
+  //  HỎA LONG — Active: Rồng Lửa Thiêu Thân
+  // ═══════════════════════════════════════════════════════════
+  _activeHoaLong() {
+    const p = this;
+    Audio.playSFX('active_hoa_long');
+    p._dragonActive = true;
+    p.invincT = 5.2;
+    // +20% SPD trong dragon form
+    const spdBoostHL = p.speed * 0.20;
+    p.speed += spdBoostHL;
+    const dragonR = 200;
+    Game.rings.push(new RingEffect(p.x, p.y, 80, '#ff6600'));
+    Game.particles.spawn(p.x, p.y, {count:25, color:'#ff5500', speedMin:100, speedMax:280, life:0.6});
+    // Continuous AoE for 5 seconds
+    let elapsed = 0;
+    const castRef2 = p;
+    const dti4 = setInterval(() => {
+      if (!castRef2 || castRef2.hp <= 0) { clearInterval(dti4); castRef2._dragonActive = false; return; }
+      elapsed += 0.25;
+      if (elapsed >= 5) { clearInterval(dti4); return; }
+      Game.explosionAt(castRef2.x, castRef2.y, dragonR, castRef2.totalDmg * 1.5 * 0.25, '#ff4400', 'active_hoa_long');
+      Game.particles.spawn(castRef2.x, castRef2.y, {count:6, color:'#ff6600', speedMin:60, speedMax:180, life:0.3});
+      if (p.mainWeapon.evolved) {
+        // Triệu 2 cầu lửa homing hướng về 2 quái gần nhất
+        const sorted = enemies.filter(e=>!e.dead).sort((a,b)=>MathU.dist(castRef2.x,castRef2.y,a.x,a.y)-MathU.dist(castRef2.x,castRef2.y,b.x,b.y));
+        sorted.slice(0,2).forEach(te => {
+          const da = MathU.angle(castRef2.x,castRef2.y,te.x,te.y);
+          Game.spawnProjectile && Game.spawnProjectile({x:castRef2.x,y:castRef2.y,vx:Math.cos(da)*280,vy:Math.sin(da)*280,
+            dmg:castRef2.totalDmg*0.8,r:10,life:1.2,color:'#ff6600',owner:'player',pierce:2,shape:'fire_orb',
+            onHit:(e2)=>{Game.explosionAt(e2.x,e2.y,50,castRef2.totalDmg*0.5,'#ff4400');Audio.playSFX('explode');}});
+        });
+      }
+    }, 250);
+    // Finale explosion + restore SPD
+    setTimeout(() => {
+      if (!castRef2 || castRef2.hp <= 0) return;
+      castRef2._dragonActive = false;
+      castRef2.speed -= spdBoostHL; // hoàn trả SPD boost
+      Game.explosionAt(castRef2.x, castRef2.y, dragonR + 60, castRef2.totalDmg * 7.0, '#ff2200', 'active_hoa_long');
+      Game.rings.push(new RingEffect(castRef2.x, castRef2.y, dragonR + 60, '#ff4400'));
+      Game.particles.spawn(castRef2.x, castRef2.y, {count:40, color:'#ff4400', speedMin:120, speedMax:350, life:0.7});
+    }, 5200);
+  }
+
+  // ═══════════════════════════════════════════════════════════
+  //  BĂNG VƯƠNG — Active: Bão Tuyết Tận Thế
+  // ═══════════════════════════════════════════════════════════
+  _activeBangVuong() {
+    const p = this;
+    Audio.playSFX('active_bang_vuong');
+    const blizzardR = 350;
+    p._blizzardActive = true;
+    Game.rings.push(new RingEffect(p.x, p.y, blizzardR, '#88eeff'));
+    Game.rings.push(new RingEffect(p.x, p.y, blizzardR * 0.6, '#ccf8ff'));
+    Game.particles.spawn(p.x, p.y, {count:30, color:'#ccf8ff', speedMin:60, speedMax:200, life:0.8});
+    const castRef3 = p;
+    // Track per-enemy time-in-blizzard
+    const blizzardEntry = new Map();
+    let blizzElapsed = 0;
+    const dti5 = setInterval(() => {
+      if (!castRef3 || castRef3.hp <= 0) { clearInterval(dti5); castRef3._blizzardActive = false; return; }
+      blizzElapsed += 0.3;
+      if (blizzElapsed >= 6) { clearInterval(dti5); return; }
+      enemies.forEach(e => {
+        if (e.dead) return;
+        if (MathU.dist(castRef3.x, castRef3.y, e.x, e.y) > blizzardR + e.r) { blizzardEntry.delete(e); return; }
+        e.slowFactor = 0.4; e.slowTimer = 600;
+        e.takeDamage(castRef3.totalDmg * 1.2 * 0.3, castRef3, 'normal');
+        const entry = blizzardEntry.get(e) || 0;
+        blizzardEntry.set(e, entry + 0.3);
+        if (entry + 0.3 >= 3 && !e._bvFrozen) {
+          e._bvFrozen = true;
+          e.slowFactor = 0.0; e.slowTimer = 2000;
+          Game.particles.spawn(e.x, e.y, {count:8, color:'#88eeff', speedMin:20, speedMax:60, life:0.5});
+          setTimeout(() => { if (e) e._bvFrozen = false; }, 2000);
+        }
+      });
+      Game.particles.spawn(
+        castRef3.x + (Math.random()-0.5)*blizzardR*1.6,
+        castRef3.y + (Math.random()-0.5)*blizzardR*1.6,
+        {count:2, color:'#ccf8ff', speedMin:10, speedMax:40, life:0.6}
+      );
+    }, 300);
+    // Finale: Băng Nổ
+    setTimeout(() => {
+      if (!castRef3 || castRef3.hp <= 0) return;
+      castRef3._blizzardActive = false;
+      Game.explosionAt(castRef3.x, castRef3.y, blizzardR + 50, castRef3.totalDmg * 5.5, '#88eeff', 'active_bang_vuong');
+      Game.rings.push(new RingEffect(castRef3.x, castRef3.y, blizzardR + 50, '#00eeff'));
+      Game.particles.spawn(castRef3.x, castRef3.y, {count:50, color:'#ccf8ff', speedMin:80, speedMax:300, life:0.8});
+    }, 6200);
+  }
+
   _drawChar(ctx, sx, sy) {
     const c   = this.charData;
     const spd = Math.sqrt(this.vx * this.vx + this.vy * this.vy);
@@ -5998,6 +6960,9 @@ class Player {
       case 'kim_cang':     this._drawKimCang(ctx, sx, sy, f, leg, t);     break;
       case 'am_sat':       this._drawAmSat(ctx, sx, sy, f, leg, t);       break;
       case 'tu_linh':      this._drawTuLinh(ctx, sx, sy, f, leg, t);      break;
+      case 'loi_than':     this._drawLoiThan(ctx, sx, sy, f, leg, t);     break;
+      case 'hoa_long':     this._drawHoaLong(ctx, sx, sy, f, leg, t);     break;
+      case 'bang_vuong':   this._drawBangVuong(ctx, sx, sy, f, leg, t);   break;
       default:
         ctx.fillStyle = c.color;
         ctx.beginPath(); ctx.arc(sx, sy, this.r, 0, Math.PI*2); ctx.fill();
@@ -6298,6 +7263,137 @@ class Player {
     ctx.beginPath(); ctx.moveTo(x-5,y-13); ctx.quadraticCurveTo(x-8,y-9,x-7,y-5); ctx.stroke();
     ctx.beginPath(); ctx.moveTo(x+5,y-13); ctx.quadraticCurveTo(x+8,y-9,x+7,y-5); ctx.stroke();
   }
+
+  /* ── 7. Lôi Thần ── */
+  _drawLoiThan(ctx, sx, sy, f, leg, t) {
+    const x = sx, y = sy;
+    const lt = performance.now() / 1000;
+    const gr = ctx.createRadialGradient(x,y-5,2,x,y-5,22);
+    gr.addColorStop(0,'rgba(0,200,255,0.35)'); gr.addColorStop(1,'rgba(0,100,200,0)');
+    ctx.fillStyle = gr; ctx.beginPath(); ctx.arc(x,y-5,22,0,Math.PI*2); ctx.fill();
+    ctx.fillStyle = '#003050'; ctx.fillRect(x-5+f*leg*0.3,y+6,4,10); ctx.fillRect(x+1-f*leg*0.3,y+6,4,10);
+    ctx.fillStyle = '#005070'; ctx.fillRect(x-7+f*leg*0.3,y+14,6,4); ctx.fillRect(x-0-f*leg*0.3,y+14,6,4);
+    ctx.fillStyle = '#001a3a';
+    ctx.beginPath(); ctx.moveTo(x-9,y-8); ctx.lineTo(x+9,y-8); ctx.lineTo(x+11,y+8); ctx.lineTo(x-11,y+8); ctx.closePath(); ctx.fill();
+    ctx.strokeStyle = '#004488'; ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(x-11,y+8); ctx.lineTo(x+11,y+8); ctx.stroke();
+    ctx.strokeStyle = '#00ccff'; ctx.lineWidth = 1.5; ctx.shadowColor = '#00ccff'; ctx.shadowBlur = 6;
+    ctx.beginPath(); ctx.moveTo(x-1,y-5); ctx.lineTo(x+2,y-1); ctx.lineTo(x-1,y+1); ctx.lineTo(x+2,y+5); ctx.stroke();
+    ctx.shadowBlur = 0;
+    ctx.strokeStyle = '#00aacc'; ctx.lineWidth = 4; ctx.lineCap = 'round';
+    ctx.beginPath(); ctx.moveTo(x-7,y-3); ctx.lineTo(x-13,y+4); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(x+7,y-3); ctx.lineTo(x+13,y+4); ctx.stroke();
+    ctx.fillStyle = '#00eeff'; ctx.shadowColor = '#00ccff'; ctx.shadowBlur = 12;
+    ctx.beginPath(); ctx.arc(x-13,y+4,4,0,Math.PI*2); ctx.fill();
+    ctx.beginPath(); ctx.arc(x+13,y+4,4,0,Math.PI*2); ctx.fill();
+    ctx.shadowBlur = 0;
+    ctx.fillStyle = '#002244'; ctx.beginPath(); ctx.arc(x,y-14,7,0,Math.PI*2); ctx.fill();
+    ctx.fillStyle = '#00eeff'; ctx.shadowColor = '#00aaff'; ctx.shadowBlur = 8;
+    ctx.beginPath(); ctx.arc(x-3,y-15,2.2,0,Math.PI*2); ctx.fill();
+    ctx.beginPath(); ctx.arc(x+3,y-15,2.2,0,Math.PI*2); ctx.fill();
+    ctx.shadowBlur = 0;
+    const ltP = (lt * 3) % (Math.PI * 2);
+    ctx.strokeStyle = '#00eeff'; ctx.lineWidth = 1.5; ctx.shadowColor = '#00ccff'; ctx.shadowBlur = 8;
+    for (let ci = 0; ci < 3; ci++) {
+      const a = ltP + ci * Math.PI * 2 / 3;
+      ctx.beginPath(); ctx.moveTo(x, y-21); ctx.lineTo(x+Math.cos(a)*5, y-21+Math.sin(a)*4); ctx.stroke();
+    }
+    ctx.shadowBlur = 0;
+  }
+
+  /* ── 8. Hỏa Long ── */
+  _drawHoaLong(ctx, sx, sy, f, leg, t) {
+    const x = sx, y = sy;
+    const ft = performance.now() / 1000;
+    const fr = ctx.createRadialGradient(x,y,3,x,y,26);
+    fr.addColorStop(0,'rgba(255,80,0,0.4)'); fr.addColorStop(1,'rgba(200,20,0,0)');
+    ctx.fillStyle = fr; ctx.beginPath(); ctx.arc(x,y,26,0,Math.PI*2); ctx.fill();
+    ctx.strokeStyle = '#cc3300'; ctx.lineWidth = 4; ctx.lineCap = 'round';
+    const tailSwing = Math.sin(ft * 4) * 8;
+    ctx.beginPath(); ctx.moveTo(x-f*8,y+6); ctx.quadraticCurveTo(x-f*16,y+14,x-f*20+tailSwing,y+20); ctx.stroke();
+    ctx.fillStyle = '#5c1500'; ctx.fillRect(x-5+f*leg*0.3,y+6,5,10); ctx.fillRect(x+0-f*leg*0.3,y+6,5,10);
+    ctx.fillStyle = '#8b2500'; ctx.fillRect(x-7+f*leg*0.3,y+14,6,5); ctx.fillRect(x+1-f*leg*0.3,y+14,6,5);
+    ctx.fillStyle = '#3d0e00';
+    ctx.beginPath(); ctx.moveTo(x-10,y-8); ctx.lineTo(x+10,y-8); ctx.lineTo(x+12,y+8); ctx.lineTo(x-12,y+8); ctx.closePath(); ctx.fill();
+    ctx.strokeStyle = '#cc3300'; ctx.lineWidth = 0.8;
+    for (let si = -2; si <= 2; si++) {
+      ctx.beginPath(); ctx.arc(x+si*4, y-2, 3, 0, Math.PI); ctx.stroke();
+      ctx.beginPath(); ctx.arc(x+si*4+2, y+3, 3, 0, Math.PI); ctx.stroke();
+    }
+    ctx.strokeStyle = '#ff4400'; ctx.lineWidth = 4; ctx.lineCap = 'round';
+    ctx.beginPath(); ctx.moveTo(x-8,y-3); ctx.lineTo(x-15,y+5); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(x+8,y-3); ctx.lineTo(x+15,y+5); ctx.stroke();
+    ctx.strokeStyle = '#ffaa00'; ctx.lineWidth = 2;
+    for (let ci = 0; ci < 3; ci++) {
+      const ca = (ci-1) * 0.4;
+      ctx.beginPath(); ctx.moveTo(x-15,y+5); ctx.lineTo(x-15+Math.cos(ca+0.5)*6, y+5+Math.sin(ca+0.5)*6); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(x+15,y+5); ctx.lineTo(x+15+Math.cos(Math.PI-ca-0.5)*6, y+5+Math.sin(Math.PI-ca-0.5)*6); ctx.stroke();
+    }
+    ctx.fillStyle = '#ff6600'; ctx.shadowColor = '#ff4400'; ctx.shadowBlur = 6;
+    ctx.beginPath(); ctx.moveTo(x-5,y-20); ctx.lineTo(x-2,y-14); ctx.lineTo(x-8,y-14); ctx.closePath(); ctx.fill();
+    ctx.beginPath(); ctx.moveTo(x+5,y-20); ctx.lineTo(x+8,y-14); ctx.lineTo(x+2,y-14); ctx.closePath(); ctx.fill();
+    ctx.shadowBlur = 0;
+    ctx.fillStyle = '#4a1000';
+    ctx.beginPath(); ctx.ellipse(x,y-14,8,7,0,0,Math.PI*2); ctx.fill();
+    ctx.fillStyle = '#6a1800'; ctx.beginPath(); ctx.ellipse(x+f*3,y-12,5,4,0,0,Math.PI*2); ctx.fill();
+    ctx.fillStyle = '#ffaa00'; ctx.shadowColor = '#ff4400'; ctx.shadowBlur = 10;
+    ctx.beginPath(); ctx.arc(x-2,y-15,2.5,0,Math.PI*2); ctx.fill();
+    ctx.beginPath(); ctx.arc(x+4,y-15,2.5,0,Math.PI*2); ctx.fill();
+    ctx.shadowBlur = 0;
+    const fA = Math.sin(ft * 8) * 0.3;
+    ctx.strokeStyle = '#ff8800'; ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.moveTo(x+f*7,y-12); ctx.lineTo(x+f*13+Math.cos(fA)*2,y-12+Math.sin(fA)*3); ctx.stroke();
+  }
+
+  /* ── 9. Băng Vương ── */
+  _drawBangVuong(ctx, sx, sy, f, leg, t) {
+    const x = sx, y = sy;
+    const bt = performance.now() / 1000;
+    const ir = ctx.createRadialGradient(x,y-5,2,x,y-5,24);
+    ir.addColorStop(0,'rgba(136,238,255,0.3)'); ir.addColorStop(1,'rgba(0,100,180,0)');
+    ctx.fillStyle = ir; ctx.beginPath(); ctx.arc(x,y-5,24,0,Math.PI*2); ctx.fill();
+    ctx.fillStyle = 'rgba(50,150,220,0.7)';
+    ctx.beginPath(); ctx.moveTo(x-12,y-6); ctx.lineTo(x+12,y-6); ctx.lineTo(x+14,y+12); ctx.lineTo(x-14,y+12); ctx.closePath(); ctx.fill();
+    ctx.strokeStyle = '#88eeff'; ctx.lineWidth = 0.8;
+    ctx.beginPath(); ctx.moveTo(x-14,y+12); ctx.lineTo(x+14,y+12); ctx.stroke();
+    ctx.strokeStyle = 'rgba(200,240,255,0.5)'; ctx.lineWidth = 0.5;
+    for (let fi = -10; fi <= 10; fi += 5) {
+      ctx.beginPath(); ctx.moveTo(x+fi,y-4); ctx.lineTo(x+fi-2,y+6); ctx.stroke();
+    }
+    ctx.fillStyle = '#003355'; ctx.fillRect(x-5+f*leg*0.3,y+6,4,10); ctx.fillRect(x+1-f*leg*0.3,y+6,4,10);
+    ctx.fillStyle = '#005577'; ctx.fillRect(x-7+f*leg*0.3,y+14,6,4); ctx.fillRect(x-0-f*leg*0.3,y+14,6,4);
+    ctx.fillStyle = '#001828';
+    ctx.beginPath(); ctx.moveTo(x-9,y-8); ctx.lineTo(x+9,y-8); ctx.lineTo(x+11,y+8); ctx.lineTo(x-11,y+8); ctx.closePath(); ctx.fill();
+    ctx.strokeStyle = '#88eeff'; ctx.lineWidth = 1.2; ctx.shadowColor = '#88eeff'; ctx.shadowBlur = 5;
+    for (let si = 0; si < 6; si++) {
+      const sa2 = si * Math.PI / 3;
+      ctx.beginPath(); ctx.moveTo(x,y); ctx.lineTo(x+Math.cos(sa2)*6,y+Math.sin(sa2)*6); ctx.stroke();
+    }
+    ctx.shadowBlur = 0;
+    ctx.strokeStyle = '#4488aa'; ctx.lineWidth = 4; ctx.lineCap = 'round';
+    ctx.beginPath(); ctx.moveTo(x-7,y-3); ctx.lineTo(x-13,y+5); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(x+7,y-3); ctx.lineTo(x+13,y+5); ctx.stroke();
+    ctx.fillStyle = '#88eeff'; ctx.shadowColor = '#00ccff'; ctx.shadowBlur = 12;
+    ctx.beginPath(); ctx.arc(x-13,y+5,4.5,0,Math.PI*2); ctx.fill();
+    ctx.beginPath(); ctx.arc(x+13,y+5,4.5,0,Math.PI*2); ctx.fill();
+    ctx.shadowBlur = 0;
+    ctx.fillStyle = '#001833'; ctx.beginPath(); ctx.arc(x,y-14,7,0,Math.PI*2); ctx.fill();
+    ctx.fillStyle = '#88eeff'; ctx.shadowColor = '#00ccff'; ctx.shadowBlur = 8;
+    for (let cr = 0; cr < 5; cr++) {
+      const ca2 = (cr/5)*Math.PI - Math.PI*0.1;
+      const ch = cr % 2 === 0 ? 7 : 5;
+      ctx.beginPath(); ctx.moveTo(x-8+cr*4, y-20); ctx.lineTo(x-10+cr*4, y-20-ch); ctx.lineTo(x-6+cr*4, y-20); ctx.closePath(); ctx.fill();
+    }
+    ctx.shadowBlur = 0;
+    ctx.fillStyle = '#00eeff'; ctx.shadowColor = '#0088ff'; ctx.shadowBlur = 8;
+    ctx.beginPath(); ctx.arc(x-3,y-15,2.2,0,Math.PI*2); ctx.fill();
+    ctx.beginPath(); ctx.arc(x+3,y-15,2.2,0,Math.PI*2); ctx.fill();
+    ctx.shadowBlur = 0;
+    const bAngle = bt * 2;
+    ctx.fillStyle = '#ccf8ff'; ctx.shadowColor = '#88eeff'; ctx.shadowBlur = 10;
+    ctx.beginPath(); ctx.arc(x+Math.cos(bAngle)*16, y+Math.sin(bAngle)*10-5, 3.5, 0, Math.PI*2); ctx.fill();
+    ctx.shadowBlur = 0;
+  }
 }
 
 /* ============================================================
@@ -6343,6 +7439,11 @@ class Enemy {
 
   takeDamage(dmg, source, type) {
     if (this.dead) return;
+    // Map18 Boss bất tử — chặn toàn bộ sát thương cho đến khi giết đủ quái
+    if (this.isBoss && (this._immortalPct || 0) > 0) {
+      Game.particles.spawn(this.x, this.y, { count: 4, color: '#00d4ff', speedMin: 40, speedMax: 120, life: 0.25 });
+      return;
+    }
 
     // Armor penetration: bypass shield proportionally + bonus dmg vs boss/elite
     const armorPen = (source && source.armorPen) ? source.armorPen : 0;
@@ -6376,15 +7477,27 @@ class Enemy {
       dmg *= 1 + armorPen * 0.8; // up to +36% dmg vs boss at max armorPen (45%)
     }
 
+    // Tuyệt Đối Không Độ (Băng Vương) — địch đang chậm/đóng băng nhận thêm 35% ST
+    if (source && source.charData && source.charData.id === 'bang_vuong') {
+      if ((this.slowT > 0 && this.slowFactor < 1) || this._bvFrozen) {
+        dmg *= 1.35;
+      }
+    }
+
     this.hp  -= dmg;
     this.hitT = 0.1;
 
     DmgNumbers.show(this.x, this.y, Math.ceil(dmg), type === 'crit' ? 'crit' : 'normal');
 
-    // Lifesteal
+    // Lifesteal (đảo ngược trong spiritDrain)
     if (source && source.lifesteal) {
       const heal = dmg * source.lifesteal;
-      source.hp  = Math.min(source.maxHp, source.hp + heal);
+      if (window._spiritDrainActive) {
+        source.hp = Math.max(1, source.hp - heal);
+        DmgNumbers.show(source.x, source.y - 20, '-' + Math.floor(heal), 'dmg');
+      } else {
+        source.hp = Math.min(source.maxHp, source.hp + heal);
+      }
     }
 
     if (this.hp <= 0) this.die(source);
@@ -6604,7 +7717,8 @@ class Enemy {
         this._shootTimer += dt;
         if (this._shootTimer >= 2.5) {
           this._shootTimer = 0;
-          if (!player._shadowActive) this._shootAt(player);
+          // FIX: Chỉ bắn khi player trong tầm hợp lý (<=320 đv), tránh quái xa vẫn bắn trúng
+          if (!player._shadowActive && dist <= 320) this._shootAt(player);
         }
         break;
       }
@@ -6634,7 +7748,7 @@ class Enemy {
       vx: (dx / len) * 220,
       vy: (dy / len) * 220,
       dmg: this.dmg * 0.8,
-      r: 5, life: 2,
+      r: 5, life: 1.4, // FIX: giảm từ 2 xuống 1.4 giây → tầm bắn max ~308 thay vì 440
       color: '#ff8000', owner: 'enemy',
     });
   }
@@ -6724,6 +7838,9 @@ class Enemy {
       case 'map13': this._bossMirror(player);   break;
       case 'map14': this._bossHell(player);     break;
       case 'map15': this._bossVoid(player);     break;
+      case 'map16': this._bossSpiritKing(player);  break;
+      case 'map17': this._bossAbyssChaos(player);  break;
+      case 'map18': this._bossAnnihilator(player); break;
       default:      this._bossGenericSkill(player); break;
     }
   }
@@ -7107,6 +8224,141 @@ class Enemy {
       Game.camera.addShake(25);
     }
   }
+
+  // ── MAP16 — Hồn Vương Cổ Đại: xoáy linh hồn + vệt truy đuổi ────────────
+  _bossSpiritKing(player) {
+    const c = '#cc80ff';
+    const spiritBurst = (count, spd, dmgMult, offsetAngle) => {
+      for (let i = 0; i < count; i++) {
+        const a = (i / count) * Math.PI * 2 + (offsetAngle || 0) + this.animT * 0.5;
+        Game.spawnProjectile({
+          x: this.x, y: this.y,
+          vx: Math.cos(a) * spd, vy: Math.sin(a) * spd,
+          dmg: this.dmg * dmgMult, r: 9, life: 3.0, color: c, owner: 'enemy',
+        });
+      }
+    };
+    if (this.phase === 1) {
+      spiritBurst(8, 200, 1.0, 0);
+      // Di tích xung quanh — 4 vệt tia từ góc map
+      const relics = [{x:200,y:200},{x:1800,y:200},{x:200,y:1800},{x:1800,y:1800}];
+      relics.forEach(r => {
+        const a = Math.atan2(player.y - r.y, player.x - r.x);
+        Game.spawnProjectile({ x: r.x, y: r.y, vx: Math.cos(a)*170, vy: Math.sin(a)*170, dmg: this.dmg*0.7, r: 8, life: 4, color: '#aa60ff', owner: 'enemy' });
+      });
+    } else if (this.phase === 2) {
+      spiritBurst(12, 230, 0.95, 0);
+      // Vệt linh hồn truy đuổi 3 giây
+      if (!this._soulTrailTimer) this._soulTrailTimer = 0;
+      this._soulTrailTimer = 3.0;
+      Toast.show('👑 Vệt Linh Hồn truy đuổi!');
+    } else {
+      // Nghi thức linh hút + xoáy kép 16 đạn x2
+      window._spiritDrainActive = true;
+      setTimeout(() => { window._spiritDrainActive = false; }, 5000);
+      for (let w = 0; w < 2; w++) setTimeout(() => {
+        if (this.dead) return;
+        spiritBurst(16, 260, 0.90, w * Math.PI / 16);
+      }, w * 200);
+      Game.camera.addShake(28);
+      Toast.show('👑 NGHI THỨC LINH HÚT — Hồi máu bị đảo ngược!', 3500);
+    }
+    // Soul trail: shoot homing blobs each tick while timer active
+    if (this._soulTrailTimer > 0) {
+      this._soulTrailTimer -= 0.1;
+      const a = Math.atan2(player.y - this.y, player.x - this.x) + MathU.rand(-0.4, 0.4);
+      Game.spawnProjectile({ x: this.x, y: this.y, vx: Math.cos(a)*160, vy: Math.sin(a)*160, dmg: this.dmg * 0.5, r: 7, life: 2, color: '#ff80ff', owner: 'enemy' });
+    }
+  }
+
+  // ── MAP17 — Thần Hỗn Nguyên: luồng hỗn độn + Cổng Triệu Quái ─────────────
+  _bossAbyssChaos(player) {
+    const c = '#4400cc';
+    const chaosBurst = (streams, dmgMult) => {
+      for (let s = 0; s < streams; s++) {
+        const baseA = (s / streams) * Math.PI * 2 + this.animT;
+        for (let k = 0; k < 4; k++) {
+          const spd = 200 + Math.random() * 300;
+          const a = baseA + MathU.rand(-0.35, 0.35);
+          Game.spawnProjectile({ x: this.x, y: this.y, vx: Math.cos(a)*spd, vy: Math.sin(a)*spd, dmg: this.dmg * dmgMult, r: 8, life: 2.5, color: c, owner: 'enemy' });
+        }
+      }
+    };
+    if (this.phase === 1) {
+      chaosBurst(3, 1.0);
+    } else if (this.phase === 2) {
+      chaosBurst(3, 0.95);
+      // Cổng Hỗn Nguyên — portal triệu 2 quái ngẫu nhiên
+      if (enemies.length < CFG.MAX_ENEMIES - 4) {
+        for (let p = 0; p < 2; p++) {
+          const px2 = this.x + MathU.rand(-200, 200);
+          const py2 = this.y + MathU.rand(-200, 200);
+          Game.particles.spawn(px2, py2, { count: 15, color: '#6600ff', speedMin: 60, speedMax: 200, life: 0.6 });
+          setTimeout(() => { if (!running) return; spawnEnemy(); }, 500 + p * 300);
+        }
+        Toast.show('🕳️ Cổng Hỗn Nguyên mở!');
+      }
+    } else {
+      // 5 luồng + Sụp Đổ Chiều Không Gian
+      chaosBurst(5, 0.90);
+      triggerDimensionCollapse();
+      Game.camera.addShake(32);
+    }
+  }
+
+  // ── MAP18 — Thượng Đế Hủy Diệt: bất tử → tia xuyên suốt → lõi phụ ────────
+  _bossAnnihilator(player) {
+    const c = '#00d4ff';
+    // Bất tử: mất 2% mỗi kill — tracked bên ngoài
+    if (!this._immortalPct) this._immortalPct = 1.0;
+    const isImmortal = this._immortalPct > 0;
+
+    if (this.phase === 1) {
+      // Beam xuyên suốt theo 4 hướng cố định
+      const dirs = [0, Math.PI/2, Math.PI, Math.PI*1.5];
+      dirs.forEach(a => {
+        for (let k = 0; k < 3; k++) {
+          const spd = 380 + k * 60;
+          Game.spawnProjectile({ x: this.x, y: this.y, vx: Math.cos(a)*spd, vy: Math.sin(a)*spd, dmg: this.dmg * 1.1, r: 12, life: 2.5, color: c, owner: 'enemy' });
+        }
+      });
+      if (isImmortal) {
+        // Flash bất tử
+        Game.particles.spawn(this.x, this.y, { count: 8, color: '#ffffff', speedMin: 50, speedMax: 150, life: 0.3 });
+      }
+    } else if (this.phase === 2) {
+      // 8 tia năng lượng xuyên màn hình
+      for (let i = 0; i < 8; i++) {
+        const a = (i / 8) * Math.PI * 2 + this.animT * 0.3;
+        const spd = 400 + Math.random() * 100;
+        Game.spawnProjectile({ x: this.x, y: this.y, vx: Math.cos(a)*spd, vy: Math.sin(a)*spd, dmg: this.dmg * 1.0, r: 11, life: 3, color: c, owner: 'enemy' });
+      }
+      // Ascension stack tăng thêm
+      window._ascensionStacks = Math.min((window._ascensionStacks||0) + 1, 10);
+      Toast.show(`💠 Thượng Đế Thăng Cấp ×${window._ascensionStacks}!`);
+    } else {
+      // 3 lõi bất tử phụ + siêu tia
+      for (let i = 0; i < 8; i++) {
+        const a = (i / 8) * Math.PI * 2;
+        Game.spawnProjectile({ x: this.x, y: this.y, vx: Math.cos(a)*450, vy: Math.sin(a)*450, dmg: this.dmg * 1.15, r: 13, life: 3, color: '#ffffff', owner: 'enemy' });
+      }
+      // Spawn lõi phụ như mini-enemy nếu chưa có
+      if (!this._coresSpawned) {
+        this._coresSpawned = true;
+        for (let k = 0; k < 3; k++) {
+          const ca = (k / 3) * Math.PI * 2;
+          const cx2 = this.x + Math.cos(ca) * 150;
+          const cy2 = this.y + Math.sin(ca) * 150;
+          const core = new Enemy(cx2, cy2, { hp: 50000, dmg: this.dmg * 0.6, spd: 0, r: 18, exp: 30, gold: 0, icon: '💠', color: '#00aaff', isBoss: false, isElite: true, ai: 'ranged' });
+          core.name = 'Lõi Bất Tử';
+          enemies.push(core);
+        }
+        Toast.show('💠 3 LÕI BẤT TỬ xuất hiện — Phá đồng thời!', 4000);
+      }
+      Game.camera.addShake(35);
+    }
+  }
+
 
   // ── Fallback ──────────────────────────────────────────────────────
   _bossGenericSkill(player) {
@@ -8375,10 +9627,15 @@ const Game = (() => {
         // Homing orb — pulsing purple sphere with glowing trail
         const pierce = Math.floor(p.pierce * 10);
         const manaBuff = p.stillTimer >= 0.4 ? 1.20 : 1;
+        // FIX: Orb phải có tốc độ khởi đầu đủ lớn để homing hoạt động đúng.
+        // Trước: rand(-50,50) → tốc độ gần 0 → homing không tăng tốc được → orb ì ạch không tới quái
+        const _hnAng = nearest
+          ? Math.atan2(nearest.y - p.y, nearest.x - p.x) + MathU.rand(-0.6, 0.6)
+          : Math.random() * Math.PI * 2;
         spawnProjectile({ _skillId: 'main_huyen_nguyet',
           x: p.x, y: p.y,
-          vx: MathU.rand(-50, 50),
-          vy: MathU.rand(-50, 50),
+          vx: Math.cos(_hnAng) * 220,
+          vy: Math.sin(_hnAng) * 220,
           dmg: dmg,  // totalDmg getter đã tính manaBuff rồi, không nhân lại
           r: 10 * aoe, life: 3,
           color: '#a060ff',
@@ -8604,7 +9861,6 @@ const Game = (() => {
                 const {val: baseVal} = player.rollCrit(this.dmg);
                 const val = baseVal * returnMult;
                 e.takeDamage(val, player, 'normal');
-                player.dmgDealt += val;
                 player.trackSkillDmg('main_tu_linh', val);
                 if (this.onHit) this.onHit(e, this);
                 this._hitSet.add(e);  // prevent re-hitting same enemy on same trip
@@ -8657,6 +9913,141 @@ const Game = (() => {
           },
         };
         projectiles.push(bp);
+        break;
+      }
+
+      // ─── Lôi Thần — Thiên Lôi Cổ (chain lightning) ───────────────────
+      case 'loi_than': {
+        Audio.playSFX('super_lightning');
+        if (!nearest) return;
+        if (!p.passiveStacks) p.passiveStacks = 0;
+        // Tích stack — double stack khi active đang hoạt động
+        const gainStacks = p._loiDoubleStack ? 2 : 1;
+        p.passiveStacks = Math.min(20, p.passiveStacks + gainStacks);
+        const ltMult = 1 + p.passiveStacks * 0.04;
+        const ltBase = dmg * ltMult;
+        // Auto-discharge at 20 stacks — interval mỗi 3 giây
+        if (p.passiveStacks >= 20 && !p._ltDischargeInterval) {
+          p._ltDischargeInterval = setInterval(() => {
+            if (!p || p.hp <= 0 || p.passiveStacks < 20) {
+              clearInterval(p._ltDischargeInterval);
+              p._ltDischargeInterval = null;
+              return;
+            }
+            Game.explosionAt(p.x, p.y, 130, p.totalDmg * 0.8, '#00ccff', 'main_loi_than');
+            particles.spawn(p.x, p.y, {count:12, color:'#00eeff', speedMin:60, speedMax:160, life:0.35});
+            Game.rings && Game.rings.push(new RingEffect(p.x, p.y, 50, '#00aaff'));
+          }, 3000);
+        }
+        // Chain lightning
+        let ltTarget = nearest;
+        let ltDmg2 = ltBase;
+        const ltHit = new Set([ltTarget]);
+        const chainCount = p.mainWeapon.evolved ? 5 : 3;
+        for (let ci = 0; ci < chainCount; ci++) {
+          if (!ltTarget) break;
+          const {val: ltVal} = p.rollCrit(ltDmg2);
+          ltTarget.takeDamage(ltVal, p, 'normal');
+          p.trackSkillDmg('main_loi_than', ltVal);
+          rings.push(new RingEffect(ltTarget.x, ltTarget.y, 28, '#00aaff'));
+          particles.spawn(ltTarget.x, ltTarget.y, {count:5, color:'#00ccff', speedMin:40, speedMax:120, life:0.3});
+          if (p.mainWeapon.evolved) {
+            const dtTgt = ltTarget; const dtVal2 = ltDmg2 * 0.15; let dtN2 = 0;
+            const dti2 = setInterval(() => { if (dtTgt.dead || dtN2 >= 2) { clearInterval(dti2); return; } dtTgt.takeDamage(dtVal2, p, 'normal'); dtN2++; }, 1000);
+          }
+          let nxt = null; let nxtD = 999;
+          enemies.forEach(e => {
+            if (e.dead || ltHit.has(e)) return;
+            const d2 = MathU.dist(ltTarget.x, ltTarget.y, e.x, e.y);
+            if (d2 < 180 && d2 < nxtD) { nxtD = d2; nxt = e; }
+          });
+          ltDmg2 *= 0.6; ltTarget = nxt; if (nxt) ltHit.add(nxt);
+        }
+        break;
+      }
+
+      // ─── Hỏa Long — Long Hỏa Quyền (fire cone + burn) ────────────────
+      case 'hoa_long': {
+        Audio.playSFX('slam');
+        const hlDmg2 = dmg;
+        const coneR2 = 110 * aoe;
+        Game.explosionAt(p.x, p.y, coneR2, hlDmg2, '#ff5500', 'main_hoa_long');
+        rings.push(new RingEffect(p.x, p.y, coneR2, '#ff3300'));
+        enemies.forEach(e => {
+          if (e.dead || MathU.dist(p.x, p.y, e.x, e.y) > coneR2 + e.r) return;
+          const bTgt2 = e; let bN2 = 0;
+          const bi2 = setInterval(() => { if (bTgt2.dead || bN2 >= 2) { clearInterval(bi2); return; } bTgt2.takeDamage(hlDmg2 * 0.20, p, 'normal'); bN2++; }, 1000);
+        });
+        if (p.mainWeapon.evolved) {
+          const fpx = p.x + (Math.random()-0.5)*50, fpy = p.y + (Math.random()-0.5)*50;
+          let fpLife = 6;
+          const fpi = setInterval(() => {
+            if (--fpLife <= 0) { clearInterval(fpi); return; }
+            Game.explosionAt(fpx, fpy, 90, p.totalDmg * 0.25, '#ff4400', 'main_hoa_long');
+            particles.spawn(fpx, fpy, {count:3, color:'#ff6600', speedMin:20, speedMax:60, life:0.3});
+          }, 500);
+        }
+        particles.spawn(p.x, p.y, {count:14, color:'#ff5500', speedMin:80, speedMax:200, life:0.4});
+        break;
+      }
+
+      // ─── Băng Vương — Băng Linh Nhẫn (4 ice ring projectiles) ─────────
+      case 'bang_vuong': {
+        Audio.playSFX('orb');
+        const iceDmg2 = dmg;
+        const baseAng2 = nearest ? Math.atan2(nearest.y - p.y, nearest.x - p.x) : 0;
+        for (let ri = 0; ri < 4; ri++) {
+          const ra = baseAng2 + (ri / 4) * Math.PI * 2;
+          const irProj = {
+            x: p.x, y: p.y,
+            vx: Math.cos(ra) * 210, vy: Math.sin(ra) * 210,
+            dmg: iceDmg2, r: 11 * aoe,
+            life: 1.0, maxLife: 1.0,
+            color: '#88eeff', owner: 'player',
+            pierce: p.mainWeapon.evolved ? 6 : 2,
+            dead: false, _hitSet: new Set(),
+            update(dt2) {
+              if (this.dead) return;
+              this.life -= dt2; if (this.life <= 0) { this.dead = true; return; }
+              this.x += this.vx * dt2; this.y += this.vy * dt2;
+              for (const e of enemies) {
+                if (e.dead || this._hitSet.has(e)) continue;
+                if (MathU.dist(this.x, this.y, e.x, e.y) < this.r + e.r) {
+                  const {val: iceVal} = player.rollCrit(this.dmg);
+                  e.takeDamage(iceVal, player, 'normal');
+                  if (!e.slowFactor || e.slowFactor > 0.6) { e.slowFactor = 0.6; e.slowTimer = 2000; }
+                  player.trackSkillDmg('main_bang_vuong', iceVal);
+                  if (player.mainWeapon.evolved && e.dead) {
+                    Game.explosionAt(e.x, e.y, 120, iceVal * 0.6, '#88eeff', 'main_bang_vuong');
+                    rings.push(new RingEffect(e.x, e.y, 80, '#ccf8ff'));
+                  }
+                  this._hitSet.add(e);
+                  if (--this.pierce <= 0) { this.dead = true; break; }
+                }
+              }
+            },
+            draw(ctx2, cx, cy) {
+              if (this.dead) return;
+              const sx2 = this.x - cx, sy2 = this.y - cy;
+              const ang2 = performance.now() / 300;
+              ctx2.save(); ctx2.translate(sx2, sy2); ctx2.rotate(ang2);
+              ctx2.strokeStyle = '#88eeff'; ctx2.lineWidth = 3;
+              ctx2.shadowColor = '#00ccff'; ctx2.shadowBlur = 14;
+              ctx2.globalAlpha = Math.min(1, this.life / (this.maxLife * 0.2));
+              ctx2.beginPath(); ctx2.arc(0, 0, this.r * 0.9, 0, Math.PI * 2); ctx2.stroke();
+              for (let s2 = 0; s2 < 6; s2++) {
+                const sa = s2 * Math.PI / 3;
+                ctx2.strokeStyle = '#ccf8ff'; ctx2.lineWidth = 2;
+                ctx2.beginPath();
+                ctx2.moveTo(Math.cos(sa)*this.r, Math.sin(sa)*this.r);
+                ctx2.lineTo(Math.cos(sa)*(this.r+5), Math.sin(sa)*(this.r+5));
+                ctx2.stroke();
+              }
+              ctx2.shadowBlur = 0; ctx2.globalAlpha = 1; ctx2.restore();
+            },
+          };
+          projectiles.push(irProj);
+        }
         break;
       }
     }
@@ -9110,11 +10501,11 @@ const Game = (() => {
     const pos     = getSpawnPos(true);
     const tier    = mapData.tier || 1;
     // HP calibrated per map within tier (map cuối tier ~25% cứng hơn)
-    const tierBaseHP = [0, 14000, 32000, 68000, 145000, 240000];
-    const mapHpMult  = {map01:1.00,map02:1.10,map03:1.22,map04:1.00,map05:1.12,map06:1.25,map07:1.00,map08:1.12,map09:1.25,map10:1.00,map11:1.12,map12:1.25,map13:1.00,map14:1.12,map15:1.25};
-    const mapDmgAdd  = {map01:0,map02:12,map03:25,map04:0,map05:15,map06:30,map07:0,map08:18,map09:35,map10:0,map11:22,map12:42,map13:0,map14:28,map15:55};
-    const mapSpdAdd  = {map01:0,map02:15,map03:5,map04:0,map05:10,map06:-10,map07:5,map08:8,map09:0,map10:5,map11:10,map12:5,map13:0,map14:8,map15:5};
-    const mapColor   = {map01:'#5aaa5a',map02:'#9a7aaa',map03:'#4aaa2a',map04:'#c8960c',map05:'#ff5010',map06:'#60aacc',map07:'#8888ff',map08:'#aa40ff',map09:'#3060cc',map10:'#60aacc',map11:'#cc40ff',map12:'#88aaff',map13:'#aaddff',map14:'#ff2000',map15:'#6040ff'};
+    const tierBaseHP = [0, 14000, 32000, 68000, 145000, 240000, 400000];
+    const mapHpMult  = {map01:1.00,map02:1.10,map03:1.22,map04:1.00,map05:1.12,map06:1.25,map07:1.00,map08:1.12,map09:1.25,map10:1.00,map11:1.12,map12:1.25,map13:1.00,map14:1.12,map15:1.25,map16:1.00,map17:1.12,map18:1.25};
+    const mapDmgAdd  = {map01:0,map02:12,map03:25,map04:0,map05:15,map06:30,map07:0,map08:18,map09:35,map10:0,map11:22,map12:42,map13:0,map14:28,map15:55,map16:0,map17:30,map18:65};
+    const mapSpdAdd  = {map01:0,map02:15,map03:5,map04:0,map05:10,map06:-10,map07:5,map08:8,map09:0,map10:5,map11:10,map12:5,map13:0,map14:8,map15:5,map16:0,map17:12,map18:8};
+    const mapColor   = {map01:'#5aaa5a',map02:'#9a7aaa',map03:'#4aaa2a',map04:'#c8960c',map05:'#ff5010',map06:'#60aacc',map07:'#8888ff',map08:'#aa40ff',map09:'#3060cc',map10:'#60aacc',map11:'#cc40ff',map12:'#88aaff',map13:'#aaddff',map14:'#ff2000',map15:'#6040ff',map16:'#cc80ff',map17:'#4400cc',map18:'#00d4ff'};
     const hpMult  = mapHpMult[mapData.id]  || 1;
     const dmgAdd  = mapDmgAdd[mapData.id]  || 0;
     const spdAdd  = mapSpdAdd[mapData.id]  || 0;
@@ -9179,19 +10570,16 @@ const Game = (() => {
       chaos:         { hp:500,  dmg:110, spd:105, r:13, exp:7,  icon:'🌀', color:'#8a2a8a', ai:'flank', flankDir:-1 },
       phantom:       { hp:400,  dmg:95,  spd:115, r:12, exp:6,  icon:'👁️', color:'#4a2a6a', ai:'chase' },
       stormbird:     { hp:550,  dmg:125, spd:140, r:13, exp:8,  icon:'⚡', color:'#6a7aaa', ai:'flank', flankDir:1 },
-      thunderbeast:  { hp:900,  dmg:150, spd:80,  r:17, exp:9,  icon:'🦬', color:'#4a5a9a', ai:'chase' },
-      lightning:     { hp:200,  dmg:170, spd:160, r:10, exp:7,  icon:'⚡', color:'#8a9aff', ai:'flank', flankDir:1 },
+      // thunderbeast, lightning: defined below with Map12-specific stats
       // ── TIER 5 (avg HP~695, avg DMG~147) ─────────────────
-      mirror:       { hp:500,  dmg:110, spd:90,  r:13, exp:7,  icon:'🪞', color:'#8a9aaa', ai:'chase' },
-      illusion:     { hp:300,  dmg:100, spd:130, r:11, exp:6,  icon:'🌫️', color:'#6a7a9a', ai:'flank', flankDir:-1 },
-      shade:        { hp:700,  dmg:155, spd:75,  r:15, exp:9,  icon:'🌑', color:'#2a2a3a', ai:'chase' },
+      // mirror, illusion, shade: defined below with Map13-specific stats
       hellhound:    { hp:650,  dmg:165, spd:120, r:15, exp:9,  icon:'🔥', color:'#8a2a1a', ai:'chase' },
       demonknight:  { hp:1100, dmg:175, spd:75,  r:18, exp:10, icon:'😈', color:'#6a1a1a', ai:'chase' },
       hellmage:     { hp:550,  dmg:185, spd:65,  r:13, exp:9,  icon:'🧿', color:'#4a1a4a', ai:'ranged' },
       void:         { hp:600,  dmg:145, spd:100, r:14, exp:8,  icon:'⬛', color:'#1a1a2a', ai:'chase' },
       starspawn:    { hp:450,  dmg:115, spd:110, r:12, exp:7,  icon:'⭐', color:'#2a2a6a', ai:'flank', flankDir:1 },
-      nebula:       { hp:700,  dmg:130, spd:65,  r:16, exp:9,  icon:'🌠', color:'#3a1a6a', ai:'ranged' },
       kraken:       { hp:1400, dmg:190, spd:55,  r:22, exp:14, icon:'🐙', color:'#4a1a6a', ai:'chase' },
+      // nebula: defined below with Map15-specific stats (hp:425/dmg:80)
 
       // Map 11 — Vùng Hỗn Mang
       rift:         { hp:200,  dmg:85,  spd:0,   r:18, exp:7,  icon:'🕳️', color:'#5a0a8a', ai:'ranged' },
@@ -9207,6 +10595,22 @@ const Game = (() => {
 
       // Map 15 — Tâm Vũ Trụ
       nebula:       { hp:425,  dmg:80,  spd:65,  r:16, exp:9,  icon:'🌠', color:'#3a1a6a', ai:'ranged' },
+
+      // ── TIER 6 (avg HP~850, avg DMG~215) ──────────────────
+      // Map 16 — Lăng Mộ Tinh Thần
+      spectre:      { hp:800,  dmg:190, spd:85,  r:13, exp:11, icon:'👻', color:'#8a40cc', ai:'chase' },
+      bonecollector:{ hp:1200, dmg:160, spd:65,  r:17, exp:12, icon:'💀', color:'#5a1a8a', ai:'chase' },
+      soulreaper:   { hp:500,  dmg:220, spd:55,  r:12, exp:10, icon:'☠️', color:'#cc20cc', ai:'ranged' },
+
+      // Map 17 — Vực Thẳm Hỗn Nguyên
+      abyssal:      { hp:950,  dmg:200, spd:100, r:14, exp:11, icon:'⬛', color:'#1a004a', ai:'chase' },
+      riftborn:     { hp:650,  dmg:175, spd:130, r:11, exp:10, icon:'🌑', color:'#3a006a', ai:'flank', flankDir:1 },
+      anomaly:      { hp:450,  dmg:240, spd:45,  r:13, exp:11, icon:'🕳️', color:'#6a00aa', ai:'ranged' },
+
+      // Map 18 — Đỉnh Tuyệt Diệt
+      annihilator:  { hp:1100, dmg:215, spd:115, r:16, exp:13, icon:'💠', color:'#0040aa', ai:'chase' },
+      executor:     { hp:800,  dmg:235, spd:95,  r:13, exp:12, icon:'⚡', color:'#0080ff', ai:'flank', flankDir:-1 },
+      obliterator:  { hp:550,  dmg:255, spd:60,  r:14, exp:12, icon:'🔷', color:'#00c0ff', ai:'ranged' },
     };
     return templates[typeKey] || templates['zombie'];
   }
@@ -9326,11 +10730,115 @@ const Game = (() => {
         // Update clones
         updateMirrorClones(dt);
         break;
+
+      case 'spiritDrain':
+        // Nghi Thức Linh Hút: mỗi 20s đảo ngược hồi máu trong 5s
+        if (!window._spiritDrainTimer) window._spiritDrainTimer = 0;
+        if (!window._spiritDrainActive) window._spiritDrainActive = false;
+        if (!window._spiritDrainCooldown) window._spiritDrainCooldown = 0;
+        window._spiritDrainCooldown += dt;
+        if (window._spiritDrainCooldown >= 20 && !window._spiritDrainActive) {
+          window._spiritDrainCooldown = 0;
+          window._spiritDrainActive = true;
+          window._spiritDrainTimer = 5.0;
+          Toast.show('☠️ NGHI THỨC LINH HÚT — Hồi máu đảo ngược trong 5 giây!', 3000);
+          Audio.playSFX('boss');
+        }
+        if (window._spiritDrainActive) {
+          window._spiritDrainTimer -= dt;
+          // Đảo ngược lifesteal & regen: gây dmg thay vì heal
+          if (player.hpRegenRate > 0) {
+            player.hp = Math.max(1, player.hp - player.hpRegenRate * dt);
+          }
+          if (window._spiritDrainTimer <= 0) {
+            window._spiritDrainActive = false;
+            Toast.show('✨ Nghi thức kết thúc — hồi phục bình thường!');
+          }
+        }
+        break;
+
+      case 'dimensionCollapse':
+        // Sụp Đổ Chiều Không Gian: mỗi 35s
+        if (!window._dimCollapseTimer) window._dimCollapseTimer = 0;
+        if (!window._dimCollapseActive) window._dimCollapseActive = false;
+        if (!window._dimCollapseCooldown) window._dimCollapseCooldown = 0;
+        window._dimCollapseCooldown += dt;
+        if (window._dimCollapseCooldown >= 35 && !window._dimCollapseActive) {
+          window._dimCollapseCooldown = 0;
+          triggerDimensionCollapse();
+        }
+        if (window._dimCollapseActive) {
+          window._dimCollapseTimer -= dt;
+          // Vùng nứt gây dmg 120/s liên tục
+          if (window._dimCracks) {
+            window._dimCracks.forEach(crack => {
+              if (!crack) return;
+              const dx = player.x - crack.x, dy = player.y - crack.y;
+              if (Math.sqrt(dx*dx+dy*dy) < 80) {
+                player.takeDamage(120 * dt);
+              }
+            });
+          }
+          if (window._dimCollapseTimer <= 0) {
+            window._dimCollapseActive = false;
+            window._dimCracks = null;
+            Toast.show('✨ Chiều không gian ổn định trở lại!');
+          }
+        }
+        break;
+
+      case 'ascensionMode':
+        // Siêu Việt Thể: +20% ST/HP mỗi 30s, không giới hạn
+        if (!window._ascensionTimer) window._ascensionTimer = 0;
+        if (!window._ascensionStacks) window._ascensionStacks = 0;
+        window._ascensionTimer += dt;
+        if (window._ascensionTimer >= 30) {
+          window._ascensionTimer = 0;
+          window._ascensionStacks++;
+          const mult = 1 + window._ascensionStacks * 0.20;
+          enemies.forEach(e => {
+            if (!e.dead && !e.isBoss) {
+              e.maxHp = Math.floor(e.maxHp * 1.20);
+              e.hp    = Math.min(e.hp * 1.20, e.maxHp);
+              e.dmg   = Math.floor(e.dmg * 1.20);
+            }
+          });
+          // Spawn extra elite from stack 3 onward
+          if (window._ascensionStacks >= 3 && enemies.length < CFG.MAX_ENEMIES - 2) {
+            spawnElite();
+          }
+          Toast.show(`💠 SIÊU VIỆT THỂ ×${window._ascensionStacks} — Quái mạnh hơn 20%!`, 3000);
+          Audio.playSFX('evolve');
+        }
+        break;
     }
   }
 
   let trapTimer = 0, gravityTimer = 0;
-  let _ambientTimer = 0; // timer cho ambient background particles (map01/02/03)
+  let _ambientTimer = 0;
+
+  function triggerDimensionCollapse() {
+    window._dimCollapseActive = true;
+    window._dimCollapseTimer  = 8.0;
+    // Dịch chuyển ngẫu nhiên tất cả quái thường
+    enemies.forEach(e => {
+      if (!e.dead && !e.isBoss) {
+        e.x = MathU.rand(60, CFG.WORLD_W - 60);
+        e.y = MathU.rand(60, CFG.WORLD_H - 60);
+        Game.particles.spawn(e.x, e.y, { count: 10, color: '#8800ff', speedMin: 80, speedMax: 200, life: 0.5 });
+      }
+    });
+    // Tạo 6 vùng nứt chiều không gian
+    window._dimCracks = Array.from({length: 6}, (_, i) => ({
+      x: MathU.rand(200, CFG.WORLD_W - 200),
+      y: MathU.rand(200, CFG.WORLD_H - 200),
+    }));
+    Toast.show('💥 SỤP ĐỔ CHIỀU KHÔNG GIAN — Vùng nứt xuất hiện 8 giây!', 3500);
+    Audio.playSFX('boss');
+    Game.camera.addShake(20);
+  }
+
+ // timer cho ambient background particles (map01/02/03)
   let gravityDir = { x: 0, y: 0 };
 
   // New mechanic state
@@ -9455,6 +10963,58 @@ const Game = (() => {
             sizeMin: 1, sizeMax: 2,
             gravity: 65, fade: true,
           }
+        );
+      }
+    }
+    // ── TIER 6: Ambient particles ─────────────────────────────────────────
+    if (pat === 'tomb') {
+      // Mảnh linh hồn bay lên từ mặt đất lăng mộ
+      if (Math.random() < 0.55) {
+        particles.spawn(
+          px + MathU.rand(-300, 300), py + MathU.rand(-100, 150),
+          { count: 2, color: MathU.randPick(['#cc80ff','#aa40ff','#ffffff']),
+            speedMin: 12, speedMax: 35, angle: -Math.PI * 0.5, spread: 0.6,
+            life: MathU.rand(2.0, 4.0), sizeMin: 1, sizeMax: 2.5, gravity: -10, fade: true }
+        );
+      }
+      // Vàng rune rơi lác đác
+      if (Math.random() < 0.25) {
+        particles.spawn(
+          px + MathU.rand(-250, 250), py - 150,
+          { count: 1, color: '#ffcc40', speedMin: 5, speedMax: 18,
+            angle: Math.PI * 0.5, spread: 0.4, life: MathU.rand(1.5, 3.0),
+            sizeMin: 1, sizeMax: 2, gravity: 8, fade: true }
+        );
+      }
+    }
+    if (pat === 'abyss') {
+      // Mảnh chiều không gian nứt vỡ — hạt tím đen
+      if (Math.random() < 0.60) {
+        particles.spawn(
+          px + MathU.rand(-350, 350), py + MathU.rand(-200, 200),
+          { count: 3, color: MathU.randPick(['#6600ff','#4400aa','#cc00ff','#330088']),
+            speedMin: 20, speedMax: 60, angle: MathU.rand(0, Math.PI*2), spread: Math.PI,
+            life: MathU.rand(0.6, 1.5), sizeMin: 1, sizeMax: 3, gravity: 0, fade: true }
+        );
+      }
+    }
+    if (pat === 'apex') {
+      // Tinh thể năng lượng bay trôi — xanh trắng
+      if (Math.random() < 0.65) {
+        particles.spawn(
+          px + MathU.rand(-300, 300), py + MathU.rand(-200, 200),
+          { count: 2, color: MathU.randPick(['#00ccff','#00aaff','#80e8ff','#ffffff']),
+            speedMin: 15, speedMax: 45, angle: MathU.rand(0, Math.PI*2), spread: Math.PI,
+            life: MathU.rand(1.0, 2.5), sizeMin: 1, sizeMax: 2.5, gravity: -5, fade: true }
+        );
+      }
+      // Tia laser nhỏ ngang (stacks)
+      const stacks = window._ascensionStacks || 0;
+      if (stacks > 0 && Math.random() < 0.3 * stacks) {
+        particles.spawn(
+          px + MathU.rand(-400, 400), py + MathU.rand(-250, 250),
+          { count: 1, color: '#ffffff', speedMin: 5, speedMax: 15,
+            angle: 0, spread: 0.1, life: 0.4, sizeMin: 1, sizeMax: 1.5, gravity: 0, fade: true }
         );
       }
     }
@@ -10198,9 +11758,14 @@ const Game = (() => {
       baseGold = MathU.randInt(goldMin, goldMax);
     } else {
       // Consolation gold scales với thời gian sống — chống farm bằng cách die nhanh
-      // Full 35% rate sau 120 giây, tuyến tính từ 0→120s, tối thiểu 3 vàng
+      // Full 35% rate sau 120 giây, tuyến tính từ 0→120s
+      // Dưới 10 giây: 0 vàng. 10-120s: scale tuyến tính, không có minimum cứng
       const timeFactor = Math.min(elapsedTime / 120, 1.0);
-      baseGold = Math.max(3, Math.floor(MathU.randInt(goldMin, goldMax) * 0.35 * timeFactor));
+      if (elapsedTime < 10) {
+        baseGold = 0;
+      } else {
+        baseGold = Math.floor(MathU.randInt(goldMin, goldMax) * 0.35 * timeFactor);
+      }
     }
 
     // Apply player in-run gold fortune bonus
@@ -12129,14 +13694,85 @@ const Game = (() => {
     ctx.fillStyle = coreGrd; ctx.fillRect(0, 0, W, H * 0.55);
   }
 
+
+  // ── MAP 16: Lăng Mộ Tinh Thần ─────────────────────────────────────────────
+  function _drawMap16Layers(camX, camY, W, H, t) {
+    ctx.fillStyle = '#0d0018'; ctx.fillRect(0, 0, W, H);
+    const aurGrd = ctx.createRadialGradient(W*0.5, H*0.35, 0, W*0.5, H*0.35, H*0.60);
+    const aurP = 0.07 + 0.04 * Math.sin(t * 0.0007);
+    aurGrd.addColorStop(0,`rgba(120,0,180,${aurP*1.4})`); aurGrd.addColorStop(0.4,`rgba(80,0,100,${aurP})`); aurGrd.addColorStop(1,'rgba(8,0,20,0)');
+    ctx.fillStyle = aurGrd; ctx.fillRect(0,0,W,H);
+    // Rune cổ vật xa parallax ×0.10
+    const relicOff = ((camX*0.10)%W+W)%W; ctx.globalAlpha = 0.45;
+    for (let pass=-1;pass<=1;pass++){const ox=-relicOff+pass*W;for(let i=0;i<6;i++){const rx=ox+(i*311+50)%W,ry=H*0.08+(i*97)%(H*0.55),rP=0.4+0.3*Math.sin(t*0.0009+i*1.3);const rGrd=ctx.createRadialGradient(rx,ry,0,rx,ry,28);rGrd.addColorStop(0,`rgba(255,200,40,${rP*0.6})`);rGrd.addColorStop(1,'rgba(180,100,0,0)');ctx.fillStyle=rGrd;ctx.beginPath();ctx.arc(rx,ry,28,0,Math.PI*2);ctx.fill();ctx.strokeStyle=`rgba(255,190,30,${rP*0.5})`;ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(rx,ry-12);ctx.lineTo(rx+8,ry);ctx.lineTo(rx,ry+12);ctx.lineTo(rx-8,ry);ctx.closePath();ctx.stroke();}}
+    ctx.globalAlpha=1;
+    // Cột đá cổ parallax ×0.20
+    const pillarOff=((camX*0.20)%W+W)%W; ctx.globalAlpha=0.60;
+    for(let pass=-1;pass<=1;pass++){const ox=-pillarOff+pass*W,baseY=H*0.70;for(let i=0;i<W;i+=80){const ph=60+(i%5)*18,pw=14+(i%3)*4;ctx.fillStyle=i%2===0?'#180028':'#140020';ctx.fillRect(ox+i,baseY-ph,pw,ph);const runeY=baseY-ph*0.55;ctx.fillStyle=`rgba(160,0,200,${0.25+0.15*Math.sin(t*0.001+i*0.04)})`;ctx.fillRect(ox+i+4,runeY,pw-8,3);}}
+    ctx.globalAlpha=1;
+    // Linh hồn trôi parallax ×0.40
+    const soulOff=((camX*0.40)%W+W)%W; ctx.globalAlpha=0.70;
+    for(let pass=-1;pass<=1;pass++){const ox=-soulOff+pass*W,baseY=H*0.65;for(let i=0;i<W;i+=45){const sh=12+18*Math.abs(Math.sin(i*0.040+t*0.0003)),sw=16+(i%5)*6;const sGrd=ctx.createRadialGradient(ox+i+sw/2,baseY-sh/2,0,ox+i+sw/2,baseY-sh/2,sw*0.8);sGrd.addColorStop(0,'rgba(200,100,255,0.22)');sGrd.addColorStop(1,'rgba(100,0,150,0)');ctx.fillStyle=sGrd;ctx.beginPath();ctx.ellipse(ox+i+sw/2,baseY-sh/2,sw*0.5,sh*0.7,0,0,Math.PI*2);ctx.fill();}}
+    ctx.globalAlpha=1;
+    // Sàn lăng mộ
+    const floorGrd=ctx.createLinearGradient(0,H*0.64,0,H);floorGrd.addColorStop(0,'rgba(16,0,28,0.97)');floorGrd.addColorStop(1,'rgba(8,0,14,1)');ctx.fillStyle=floorGrd;ctx.fillRect(0,H*0.64,W,H*0.36);
+    // Kẽ rune nứt parallax ×0.70
+    const crackOff=((camX*0.70)%W+W)%W; ctx.globalAlpha=0.65;
+    for(let pass=-1;pass<=1;pass++){const ox=-crackOff+pass*W;ctx.strokeStyle=`rgba(180,80,255,${0.30+0.15*Math.sin(t*0.0008)})`;ctx.lineWidth=1.5;ctx.shadowColor='#cc00ff';ctx.shadowBlur=6;for(let i=0;i<W;i+=55){ctx.beginPath();ctx.moveTo(ox+i,H*0.66);ctx.lineTo(ox+i+20,H*0.67);ctx.lineTo(ox+i+10,H*0.70);ctx.stroke();}ctx.shadowBlur=0;}
+    ctx.globalAlpha=1;
+    // Lõi linh hồn
+    const coreAlpha=0.06+0.04*Math.sin(t*0.0011);const coreGrd=ctx.createRadialGradient(W*0.5,H*0.32,0,W*0.5,H*0.32,H*0.20);coreGrd.addColorStop(0,`rgba(200,100,255,${coreAlpha})`);coreGrd.addColorStop(1,'rgba(60,0,100,0)');ctx.fillStyle=coreGrd;ctx.fillRect(0,0,W,H*0.55);
+  }
+
+  // ── MAP 17: Vực Thẳm Hỗn Nguyên ───────────────────────────────────────────
+  function _drawMap17Layers(camX, camY, W, H, t) {
+    ctx.fillStyle='#000000'; ctx.fillRect(0,0,W,H);
+    // Rạn nứt chiều không gian xa parallax ×0.08
+    const riftFarOff=((camX*0.08)%W+W)%W; ctx.globalAlpha=0.50;
+    for(let pass=-1;pass<=1;pass++){const ox=-riftFarOff+pass*W;for(let i=0;i<5;i++){const rfx=ox+(i*277+60)%W,rfy=H*0.05+(i*113)%(H*0.60),rfP=0.5+0.4*Math.sin(t*0.0008+i*1.7);ctx.strokeStyle=`rgba(180,0,255,${rfP*0.55})`;ctx.lineWidth=2+rfP;ctx.shadowColor='#8800ff';ctx.shadowBlur=10;ctx.beginPath();ctx.moveTo(rfx,rfy-40);for(let k=0;k<6;k++)ctx.lineTo(rfx+(k%2===0?8:-8),rfy-40+k*14);ctx.stroke();ctx.shadowBlur=0;const rfGrd=ctx.createRadialGradient(rfx,rfy,0,rfx,rfy,30);rfGrd.addColorStop(0,`rgba(120,0,200,${rfP*0.4})`);rfGrd.addColorStop(1,'rgba(40,0,80,0)');ctx.fillStyle=rfGrd;ctx.beginPath();ctx.arc(rfx,rfy,30,0,Math.PI*2);ctx.fill();}}
+    ctx.globalAlpha=1;
+    // Mảnh vỡ không gian parallax ×0.22
+    const fragOff=((camX*0.22)%W+W)%W; ctx.globalAlpha=0.65;
+    for(let pass=-1;pass<=1;pass++){const ox=-fragOff+pass*W,baseY=H*0.60;for(let i=0;i<W;i+=50){const fh=18+25*Math.abs(Math.sin(i*0.033+t*0.0002)),fw=20+(i%6)*7;ctx.fillStyle=i%3===0?'#070010':'#050008';ctx.save();ctx.translate(ox+i+fw/2,baseY-fh/2);ctx.rotate(i*0.12+t*0.00005);ctx.beginPath();ctx.moveTo(-fw/2,-fh/2);ctx.lineTo(fw/2*0.8,-fh/2*0.6);ctx.lineTo(fw/2,fh/2*0.7);ctx.lineTo(-fw/2*0.7,fh/2);ctx.closePath();ctx.fill();ctx.strokeStyle=`rgba(80,0,160,${0.30+0.15*Math.sin(i*0.05+t*0.0007)})`;ctx.lineWidth=1;ctx.stroke();ctx.restore();}}
+    ctx.globalAlpha=1;
+    // Sóng hỗn nguyên parallax ×0.50
+    const waveOff=((camX*0.50)%W+W)%W; ctx.globalAlpha=0.78;
+    for(let pass=-1;pass<=1;pass++){const ox=-waveOff+pass*W,baseY=H*0.68;ctx.fillStyle='#04000c';ctx.beginPath();ctx.moveTo(ox,baseY);for(let i=0;i<=W+20;i+=10){ctx.lineTo(ox+i,baseY-8-12*Math.abs(Math.sin(i*0.045+t*0.0004)));}ctx.lineTo(ox+W+20,H);ctx.lineTo(ox,H);ctx.closePath();ctx.fill();}
+    ctx.globalAlpha=1;
+    // Xoáy hỗn nguyên trung tâm
+    const vortexAlpha=0.10+0.06*Math.sin(t*0.0006);ctx.save();ctx.translate(W*0.5,H*0.28);for(let ring=0;ring<3;ring++){const rA=vortexAlpha*(1-ring*0.25),rR=(ring+1)*H*0.12;const rGrd=ctx.createRadialGradient(0,0,rR*0.4,0,0,rR);rGrd.addColorStop(0,`rgba(100,0,200,${rA})`);rGrd.addColorStop(1,'rgba(30,0,60,0)');ctx.fillStyle=rGrd;ctx.beginPath();ctx.arc(0,0,rR,0,Math.PI*2);ctx.fill();}ctx.restore();
+    // Mặt đất
+    const abyssFloor=ctx.createLinearGradient(0,H*0.67,0,H);abyssFloor.addColorStop(0,'rgba(4,0,12,0.98)');abyssFloor.addColorStop(1,'rgba(1,0,4,1)');ctx.fillStyle=abyssFloor;ctx.fillRect(0,H*0.67,W,H*0.33);
+  }
+
+  // ── MAP 18: Đỉnh Tuyệt Diệt ────────────────────────────────────────────────
+  function _drawMap18Layers(camX, camY, W, H, t) {
+    ctx.fillStyle='#000003'; ctx.fillRect(0,0,W,H);
+    const stacks=window._ascensionStacks||0;
+    // Tinh thể xa parallax ×0.09
+    const crystalOff=((camX*0.09)%W+W)%W; ctx.globalAlpha=0.45+stacks*0.03;
+    for(let pass=-1;pass<=1;pass++){const ox=-crystalOff+pass*W;for(let i=0;i<7;i++){const cx2=ox+(i*251+40)%W,cy2=H*0.05+(i*107)%(H*0.58),cP=0.6+0.3*Math.sin(t*0.001+i*1.6+stacks*0.2);const cGrd=ctx.createRadialGradient(cx2,cy2,0,cx2,cy2,22);cGrd.addColorStop(0,`rgba(0,220,255,${cP*0.55})`);cGrd.addColorStop(0.5,`rgba(0,100,200,${cP*0.3})`);cGrd.addColorStop(1,'rgba(0,40,80,0)');ctx.fillStyle=cGrd;ctx.save();ctx.translate(cx2,cy2);ctx.rotate(t*0.0002+i*0.5);ctx.beginPath();for(let k=0;k<6;k++){const ka=(k/6)*Math.PI*2,kr=14+cP*6;if(k===0)ctx.moveTo(Math.cos(ka)*kr,Math.sin(ka)*kr);else ctx.lineTo(Math.cos(ka)*kr,Math.sin(ka)*kr);}ctx.closePath();ctx.fill();ctx.strokeStyle=`rgba(0,240,255,${cP*0.6})`;ctx.lineWidth=1;ctx.stroke();ctx.restore();}}
+    ctx.globalAlpha=1;
+    // Trụ năng lượng parallax ×0.25
+    const pillarOff2=((camX*0.25)%W+W)%W; ctx.globalAlpha=0.68;
+    for(let pass=-1;pass<=1;pass++){const ox=-pillarOff2+pass*W,baseY=H*0.72;for(let i=0;i<W;i+=70){const ph=55+(i%4)*20,pw=10+(i%3)*5;ctx.fillStyle=i%2===0?'#000820':'#000614';ctx.fillRect(ox+i,baseY-ph,pw,ph);const bAlpha=0.30+0.20*Math.sin(t*0.0012+i*0.06);const bGrd=ctx.createLinearGradient(ox+i,baseY-ph,ox+i,baseY);bGrd.addColorStop(0,`rgba(0,200,255,${bAlpha})`);bGrd.addColorStop(1,'rgba(0,80,160,0)');ctx.fillStyle=bGrd;ctx.fillRect(ox+i+pw/2-1,baseY-ph,3,ph);}}
+    ctx.globalAlpha=1;
+    // Sóng gần parallax ×0.55
+    const waveOff2=((camX*0.55)%W+W)%W; ctx.globalAlpha=0.82;
+    for(let pass=-1;pass<=1;pass++){const ox=-waveOff2+pass*W,baseY=H*0.70;ctx.fillStyle='#00020c';ctx.beginPath();ctx.moveTo(ox,baseY);for(let i=0;i<=W+20;i+=8)ctx.lineTo(ox+i,baseY-5-9*Math.abs(Math.sin(i*0.055+t*0.0005)));ctx.lineTo(ox+W+20,H);ctx.lineTo(ox,H);ctx.closePath();ctx.fill();}
+    ctx.globalAlpha=1;
+    // Lõi hủy diệt
+    const apexAlpha=0.08+0.05*Math.sin(t*0.0009)+stacks*0.01;const apexGrd=ctx.createRadialGradient(W*0.5,H*0.28,0,W*0.5,H*0.28,H*0.25);apexGrd.addColorStop(0,`rgba(180,240,255,${Math.min(apexAlpha*1.5,0.22)})`);apexGrd.addColorStop(0.4,`rgba(0,160,255,${apexAlpha})`);apexGrd.addColorStop(1,'rgba(0,20,80,0)');ctx.fillStyle=apexGrd;ctx.fillRect(0,0,W,H*0.55);
+    // Tia chéo theo stacks
+    if(stacks>0){ctx.globalAlpha=0.08+stacks*0.02;ctx.strokeStyle='rgba(0,200,255,0.8)';ctx.lineWidth=1;for(let i=0;i<stacks*3;i++){const lx=((i*197+t*0.01)%W+W)%W;ctx.beginPath();ctx.moveTo(lx,0);ctx.lineTo(lx-60,H);ctx.stroke();}ctx.globalAlpha=1;}
+    // Sàn tinh thể
+    const apexFloor=ctx.createLinearGradient(0,H*0.69,0,H);apexFloor.addColorStop(0,'rgba(0,8,28,0.97)');apexFloor.addColorStop(1,'rgba(0,2,10,1)');ctx.fillStyle=apexFloor;ctx.fillRect(0,H*0.69,W,H*0.31);
+    // Lưới
+    const gridOff=((camX*0.75)%60+60)%60;ctx.strokeStyle=`rgba(0,160,255,${0.08+0.04*Math.sin(t*0.0007)})`;ctx.lineWidth=0.5;for(let gx=gridOff-60;gx<W+60;gx+=60){ctx.beginPath();ctx.moveTo(gx,H*0.69);ctx.lineTo(gx,H);ctx.stroke();}
+  }
+
   function drawBackground(camX, camY) {
     const W = canvas.width, H = canvas.height;
-    if (!currentMap) {
-      ctx.fillStyle = '#0a0a12';
-      ctx.fillRect(0, 0, W, H);
-      return;
-    }
-
     // ── Nền chính — parse CSS gradient → canvas gradient thực sự ──
     ctx.fillStyle = _makeBgGradient(currentMap.bgColor, W, H);
     ctx.fillRect(0, 0, W, H);
@@ -12146,7 +13782,7 @@ const Game = (() => {
     const hasCustomBg = [
       'village','forest','swamp','ruins','desert','ice',
       'graveyard','tower','blood','mech','chaos','storm',
-      'mirror','hell','cosmos',
+      'mirror','hell','cosmos','tomb','abyss','apex',
     ].includes(currentMap.bgPattern);
 
     if (!hasCustomBg) {
@@ -12194,6 +13830,9 @@ const Game = (() => {
     else if (_bgPat === 'mirror')    _drawMap13Layers(camX, camY, W, H, _bgT);
     else if (_bgPat === 'hell')      _drawMap14Layers(camX, camY, W, H, _bgT);
     else if (_bgPat === 'cosmos')    _drawMap15Layers(camX, camY, W, H, _bgT);
+    else if (_bgPat === 'tomb')      _drawMap16Layers(camX, camY, W, H, _bgT);
+    else if (_bgPat === 'abyss')     _drawMap17Layers(camX, camY, W, H, _bgT);
+    else if (_bgPat === 'apex')      _drawMap18Layers(camX, camY, W, H, _bgT);
 
     // ── Vignette: tối viền màn hình để tập trung vào trung tâm ──
     // Map01 (ban ngày) dùng alpha thấp hơn để không tối quá
@@ -12235,6 +13874,57 @@ const Game = (() => {
       const cosmos = 0.05 + 0.03 * Math.sin(t / 800);
       ctx.fillStyle = `rgba(60,0,120,${cosmos})`;
       ctx.fillRect(0, 0, W, H);
+    }
+    if (currentMap.specialMech === 'spiritDrain') {
+      // Khi đang trong pha linh hút — overlay đỏ tím xung
+      if (window._spiritDrainActive) {
+        const pulse = 0.10 + 0.08 * Math.sin(t / 120);
+        ctx.fillStyle = `rgba(160,0,100,${pulse})`;
+        ctx.fillRect(0, 0, W, H);
+      } else {
+        const ambientPurple = 0.04 + 0.02 * Math.sin(t / 900);
+        ctx.fillStyle = `rgba(80,0,80,${ambientPurple})`;
+        ctx.fillRect(0, 0, W, H);
+      }
+    }
+    if (currentMap.specialMech === 'dimensionCollapse') {
+      // Vùng nứt chiều không gian — vẽ crack lines
+      if (window._dimCollapseActive) {
+        const crackAlpha = 0.18 + 0.10 * Math.sin(t / 90);
+        ctx.strokeStyle = `rgba(200,80,255,${crackAlpha})`;
+        ctx.lineWidth = 2;
+        ctx.shadowColor = '#cc00ff';
+        ctx.shadowBlur = 8;
+        for (let i = 0; i < 6; i++) {
+          const cx2 = (window._dimCracks && window._dimCracks[i]) ? window._dimCracks[i].x - camX : W * ((i*173+71)%100)/100;
+          const cy2 = (window._dimCracks && window._dimCracks[i]) ? window._dimCracks[i].y - camY : H * ((i*137+51)%100)/100;
+          ctx.beginPath();
+          ctx.moveTo(cx2, cy2);
+          for (let k = 0; k < 5; k++) {
+            ctx.lineTo(cx2 + (Math.random()-0.5)*80, cy2 + (Math.random()-0.5)*80);
+          }
+          ctx.stroke();
+        }
+        ctx.shadowBlur = 0;
+      }
+      const abyssAmb = 0.05 + 0.02 * Math.sin(t / 1100);
+      ctx.fillStyle = `rgba(20,0,60,${abyssAmb})`;
+      ctx.fillRect(0, 0, W, H);
+    }
+    if (currentMap.specialMech === 'ascensionMode') {
+      // Overlay tinh thể năng lượng tăng dần theo stack
+      const stacks = window._ascensionStacks || 0;
+      const apexAlpha = 0.04 + stacks * 0.018 + 0.02 * Math.sin(t / 600);
+      ctx.fillStyle = `rgba(0,180,255,${Math.min(apexAlpha, 0.22)})`;
+      ctx.fillRect(0, 0, W, H);
+      if (stacks > 0) {
+        ctx.strokeStyle = `rgba(0,220,255,${0.06 + stacks * 0.03})`;
+        ctx.lineWidth = 1;
+        for (let i = 0; i < stacks * 2; i++) {
+          const lx = (i * 211 + 33) % W;
+          ctx.beginPath(); ctx.moveTo(lx, 0); ctx.lineTo(lx + 40, H); ctx.stroke();
+        }
+      }
     }
 
     // ── Viền thế giới ──
