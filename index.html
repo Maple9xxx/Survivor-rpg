@@ -4730,8 +4730,8 @@ const UI = (() => {
     // Dragon rage status
     if (player._dragonRageActive) {
       html += row('🐲','Thịnh Nộ Long', '+30% ST · ' + (player._dragonRageTimer || 0).toFixed(1) + 's', 'up');
-    } else if (player._dragonRageCd !== undefined && player._dragonRageCd > 0) {
-      html += row('🐲','Long Vũ CD', player._dragonRageCd.toFixed(1) + 's', 'warn');
+    } else if (player._dragonTriggerCd !== undefined && player._dragonTriggerCd > 0) {
+      html += row('🐲','Long Vũ CD', player._dragonTriggerCd.toFixed(1) + 's', 'warn');
     } else if (player._dragonConsecCrits !== undefined) {
       html += row('🐲','Long Vũ', player._dragonConsecCrits + '/5 crit', player._dragonConsecCrits > 0 ? 'up' : '');
     }
@@ -5202,7 +5202,7 @@ const CharPortrait = (() => {
 const PETS = [
   {
     id: 'pet_fox', icon: '🦊', name: 'Linh Hồ', title: 'Thương Nhân',
-    cost: 6000,
+    cost: 8000,
     passiveDesc: '+25% vàng nhận trong mỗi run.',
     skillName: 'Linh Khí Tích Lũy',
     skillDesc: 'Mỗi 40 quái tiêu diệt → thêm +5% vàng nhận (tối đa +15%, 3 lần). Tích lũy trong suốt run.',
@@ -5212,7 +5212,7 @@ const PETS = [
   },
   {
     id: 'pet_tiger', icon: '🐯', name: 'Bạch Hổ', title: 'Chiến Binh',
-    cost: 14000,
+    cost: 40000,
     passiveName: 'Vuốt Tốc',
     passiveDesc: '+15% tốc độ tấn công vĩnh viễn.',
     skillName: 'Chiến Hào',
@@ -5223,7 +5223,7 @@ const PETS = [
   },
   {
     id: 'pet_snake', icon: '🐍', name: 'Hắc Xà', title: 'Huyết Sát',
-    cost: 26000,
+    cost: 40000,
     passiveName: 'Hút Huyết',
     passiveDesc: 'Hút máu 8%: mỗi đòn đánh trúng hồi lại 8% sát thương gây ra thành HP.',
     skillName: 'Nọc Độc',
@@ -5245,7 +5245,7 @@ const PETS = [
   },
   {
     id: 'pet_turtle', icon: '🐢', name: 'Thần Quy', title: 'Thiết Giáp',
-    cost: 65000,
+    cost: 40000,
     passiveName: 'Mai Thần Hộ Thể',
     passiveDesc: '+30% HP tối đa + giảm 10% sát thương nhận vào.',
     skillName: 'Phản Giáp',
@@ -5256,13 +5256,13 @@ const PETS = [
   },
   {
     id: 'pet_dragon', icon: '🐲', name: 'Ma Long', title: 'Long Thần',
-    cost: 110000,
+    cost: 65000,
     passiveName: 'Nghịch Lân Bùng Nổ',
     passiveDesc: '+8% tỷ lệ bạo kích, bạo kích gây thêm +40% sát thương.',
     skillName: 'Long Vũ Liên Kích',
     skillDesc: 'Sau 5 đòn bạo kích (không cần liên tiếp): kích hoạt Thịnh Nộ Long — +30% ST trong 4 giây + bắn cầu lửa Long Vũ (1.5× DMG, AoE 45). Hồi chiêu: 12 giây sau khi kết thúc.',
     apply: p => { p.critRate += 0.08; p.critDmg += 0.40; },
-    applySkill: p => { p._dragonConsecCrits = 0; p._dragonRageTimer = 0; p._dragonRageActive = false; p._dragonRageCd = 0; },
+    applySkill: p => { p._dragonConsecCrits = 0; p._dragonRageTimer = 0; p._dragonRageActive = false; p._dragonRageCd = 0; p._dragonTriggerCd = 0; p._dragonLastCritTime = 0; },
     color: '#ff4060',
   },
 ];
@@ -5894,12 +5894,19 @@ class Player {
     if (Math.random() < this.critRate) {
       Audio.playSFX('crit');
       // Dragon pet skill — track crit count (resets after 5, no need to be consecutive)
+      // Time-lock: chỉ tích tối đa 1 stack mỗi 0.15s — ngăn AoE tích nhiều stack cùng frame
       if (this._dragonConsecCrits !== undefined) {
-        this._dragonConsecCrits++;
-        if (this._dragonConsecCrits >= 5 && !this._dragonRageActive && (this._dragonRageCd === undefined || this._dragonRageCd <= 0)) {
+        const now = performance.now() / 1000;
+        if ((now - (this._dragonLastCritTime || 0)) >= 0.15) {
+          this._dragonLastCritTime = now;
+          this._dragonConsecCrits++;
+        }
+        // Trigger condition: 5 crits + không đang active + trigger CD (20s từ lần trigger trước) đã hết
+        if (this._dragonConsecCrits >= 5 && !this._dragonRageActive && (this._dragonTriggerCd === undefined || this._dragonTriggerCd <= 0)) {
           this._dragonRageActive = true;
           this._dragonRageTimer = 4.0;
           this._dragonRageCd = 0;
+          this._dragonTriggerCd = 20.0; // CD riêng tính từ lúc trigger, không phải sau khi kết thúc
           this._dragonConsecCrits = 0;
           Toast.show('🐲 Long Vũ Liên Kích! +30% ST 4 giây!');
           Audio.playSFX('pet_skill');
@@ -5941,6 +5948,7 @@ class Player {
       if (this._dragonRageTimer <= 0) { this._dragonRageActive = false; this._dragonRageTimer = 0; this._dragonRageCd = 12.0; }
     }
     if (this._dragonRageCd !== undefined && this._dragonRageCd > 0) { this._dragonRageCd -= dt; }
+    if (this._dragonTriggerCd !== undefined && this._dragonTriggerCd > 0) { this._dragonTriggerCd -= dt; }
     if (this._tigerSkillActive !== undefined) {
       const wasActive = this._tigerSkillActive;
       this._tigerSkillActive = this.hp > this.maxHp * 0.70;
@@ -6085,7 +6093,7 @@ class Player {
     // Active cooldown
     if (!this.activeReady) {
       this.activeTimer += dt;
-      const totalCdReduce = Math.min(this.cdReduce + (this.skillLevels['stat_cd'] || 0) * 0.10, 0.40);
+      const totalCdReduce = Math.min(this.cdReduce, 0.40); // cdReduce đã tích hợp đủ skill stat_cd từ applySkill
       const cd = this.activeCooldown * (1 - totalCdReduce);
       if (this.activeTimer >= cd) {
         this.activeReady = true;
@@ -9150,7 +9158,14 @@ class ExpGem {
 
     // Attract when close or HP low
     const dist = MathU.dist(this.x, this.y, player.x, player.y);
-    const attractRange = dist < 80 || player.hp < player.maxHp * 0.3 ? 180 : 80;
+    const magnetLv = player._magnetLevel || 0;
+    let attractRange;
+    if (magnetLv >= 3) {
+      attractRange = 99999; // Cấp 3: tự động hút toàn màn
+    } else {
+      const baseRange = dist < 80 || player.hp < player.maxHp * 0.3 ? 180 : 80;
+      attractRange = baseRange * (1 + magnetLv * 0.5); // +50% mỗi cấp
+    }
 
     if (dist < attractRange) {
       const dx = player.x - this.x;
@@ -10342,10 +10357,17 @@ const Game = (() => {
             // Mắt Đại Bàng: +25% nếu >150đv
             const rangeDist = MathU.dist(p.x, p.y, e.x, e.y);
             const rangeBonus = rangeDist > 150 ? 0.25 : 0;
-            // Eagle Strike guaranteed crit — handled via rollCrit override
+            // Eagle Strike: guaranteed crit dùng p.critDmg đúng công thức
+            // Shot thường: qua rollCrit chuẩn (đọc critRate + critDmg chính xác)
             const finalDmgHit = dmg * pierceDmgMult * (1 + rangeBonus);
-            const isCrit = isEagleStrike || Math.random() < (p.critChance || 0);
-            const critVal = isCrit ? finalDmgHit * (1 + (p.critDmg || 0.5)) : finalDmgHit;
+            let critVal, isCrit;
+            if (isEagleStrike) {
+              critVal = finalDmgHit * p.critDmg;
+              isCrit  = true;
+            } else {
+              const { val, crit } = p.rollCrit(finalDmgHit);
+              critVal = val; isCrit = crit;
+            }
             e.takeDamage(critVal, p, isCrit ? 'crit' : 'normal');
             p.trackSkillDmg('main_thiet_tam', critVal);
             if (rangeBonus > 0) {
@@ -11036,19 +11058,28 @@ const Game = (() => {
             player.takeDamage(10 * dt, null);
           }
         }
-        // Bubble particles rising from poison zone
+        // Ongoing bubble particles — keep cloud visible for its full 3s lifetime
         if (!z._bubbleT) z._bubbleT = 0;
         z._bubbleT += dt;
         if (z._bubbleT >= 0.35) {
           z._bubbleT = 0;
-          const bAngle = Math.random() * Math.PI * 2;
-          const bDist  = Math.random() * z.r * 0.8;
-          particles.spawn(
-            z.x + Math.cos(bAngle) * bDist,
-            z.y + Math.sin(bAngle) * bDist,
-            { count:1, color:'#40cc40', speedMin:20, speedMax:50,
-              life:0.6, angle:-Math.PI/2, spread:0.4 }
-          );
+          // 2-3 bubbles per tick at random positions within the cloud radius
+          const bubbleCount = 2 + (Math.random() < 0.4 ? 1 : 0);
+          for (let b = 0; b < bubbleCount; b++) {
+            const bAngle = Math.random() * Math.PI * 2;
+            const bDist  = Math.random() * z.r * 0.85;
+            const bColor = ['#40cc40','#60ee60','#20a020'][Math.floor(Math.random()*3)];
+            particles.spawn(
+              z.x + Math.cos(bAngle) * bDist,
+              z.y + Math.sin(bAngle) * bDist,
+              { count:1, color: bColor, speedMin:18, speedMax:48,
+                life:0.65, angle:-Math.PI/2, spread:0.5 }
+            );
+          }
+          // Occasional wisp ring pulse to reinforce cloud presence
+          if (Math.random() < 0.2 && rings.length < 28) {
+            rings.push(new RingEffect(z.x, z.y, z.r * 0.7, '#40cc40'));
+          }
         }
 
       } else if (z.type === 'ice') {
