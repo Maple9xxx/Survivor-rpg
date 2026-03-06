@@ -1462,6 +1462,7 @@ const Save = (() => {
     activePet: null,     // pet id currently equipped
     ownedPets: [],       // [petId, ...]
     firstPlay: true,     // tutorial flag — set false after first run
+    hintsShown: false,   // in-game hints flag — set true the moment hints start, never resets
   };
 
   let data = null;
@@ -3319,7 +3320,7 @@ const UI = (() => {
           '🐍 <b>Hắc Xà (26000◈):</b> Hút máu 8% | Kỹ năng: 20% cơ hội áp độc (12% ST/giây × 4 giây).<br>' +
           '🦅 <b>Thần Ưng (40000◈):</b> +20% di chuyển | Kỹ năng: AoE +15% và tốc đạn +15%.<br>' +
           '🐢 <b>Thần Quy (70000◈):</b> +25% HP + giảm 8% ST nhận | Kỹ năng: HP<30% → giảm thêm 20% ST nhận.<br>' +
-          '🐲 <b>Ma Long (110000◈):</b> +8% crit, crit +40% ST | Kỹ năng: 5 crit liên tiếp → Thịnh Nộ Long (+30% ST 4s + cầu lửa Long Vũ).<br><br>' +
+          '🐲 <b>Ma Long (110000◈):</b> +8% crit, crit +40% ST | Kỹ năng: 5 crit (không cần liên tiếp) → Thịnh Nộ Long (CD 12s) (+30% ST 4s + cầu lửa Long Vũ).<br><br>' +
           'Chỉ trang bị 1 con cùng lúc. Thú cưng hiển thị dưới dạng icon bay quanh nhân vật trong game.'));
       entry('🔮','Hệ Thống Tiềm Năng',
         p('Vàng kiếm được dùng để nâng cấp 4 nhánh Tiềm Năng, có hiệu lực vĩnh viễn qua tất cả các run:<br><br>' +
@@ -4535,6 +4536,15 @@ const UI = (() => {
       }
     }
 
+    // Dragon rage status
+    if (player._dragonRageActive) {
+      html += row('🐲','Thịnh Nộ Long', '+30% ST · ' + (player._dragonRageTimer || 0).toFixed(1) + 's', 'up');
+    } else if (player._dragonRageCd !== undefined && player._dragonRageCd > 0) {
+      html += row('🐲','Long Vũ CD', player._dragonRageCd.toFixed(1) + 's', 'warn');
+    } else if (player._dragonConsecCrits !== undefined) {
+      html += row('🐲','Long Vũ', player._dragonConsecCrits + '/5 crit', player._dragonConsecCrits > 0 ? 'up' : '');
+    }
+
     body.innerHTML = html;
   }
 
@@ -5060,9 +5070,9 @@ const PETS = [
     passiveName: 'Nghịch Lân Bùng Nổ',
     passiveDesc: '+8% tỷ lệ bạo kích, bạo kích gây thêm +40% sát thương.',
     skillName: 'Long Vũ Liên Kích',
-    skillDesc: 'Sau 5 đòn bạo kích liên tiếp: kích hoạt Thịnh Nộ Long — +30% ST trong 4 giây + bắn cầu lửa Long Vũ về kẻ thù gần nhất (1.5× DMG, AoE 45).',
+    skillDesc: 'Sau 5 đòn bạo kích (không cần liên tiếp): kích hoạt Thịnh Nộ Long — +30% ST trong 4 giây + bắn cầu lửa Long Vũ (1.5× DMG, AoE 45). Hồi chiêu: 12 giây sau khi kết thúc.',
     apply: p => { p.critRate += 0.08; p.critDmg += 0.40; },
-    applySkill: p => { p._dragonConsecCrits = 0; p._dragonRageTimer = 0; p._dragonRageActive = false; },
+    applySkill: p => { p._dragonConsecCrits = 0; p._dragonRageTimer = 0; p._dragonRageActive = false; p._dragonRageCd = 0; },
     color: '#ff4060',
   },
 ];
@@ -5678,6 +5688,8 @@ class Player {
       // Long Vảy Linh: bonus ATK từ kill milestone
       d *= (1 + (this._hlAtkBonus || 0));
     }
+    // Dragon rage: +30% ST khi Thịnh Nộ Long đang active
+    if (this._dragonRageActive) d *= 1.30;
     return d;
   }
 
@@ -5688,12 +5700,13 @@ class Player {
 
     if (Math.random() < this.critRate) {
       Audio.playSFX('crit');
-      // Dragon pet skill — track consecutive crits
+      // Dragon pet skill — track crit count (resets after 5, no need to be consecutive)
       if (this._dragonConsecCrits !== undefined) {
         this._dragonConsecCrits++;
-        if (this._dragonConsecCrits >= 5 && !this._dragonRageActive) {
+        if (this._dragonConsecCrits >= 5 && !this._dragonRageActive && (this._dragonRageCd === undefined || this._dragonRageCd <= 0)) {
           this._dragonRageActive = true;
           this._dragonRageTimer = 4.0;
+          this._dragonRageCd = 0;
           this._dragonConsecCrits = 0;
           Toast.show('🐲 Long Vũ Liên Kích! +30% ST 4 giây!');
           Audio.playSFX('pet_skill');
@@ -5714,11 +5727,8 @@ class Player {
           }
         }
       }
-      const rageMult = this._dragonRageActive ? 1.30 : 1.0;
-      return { val: baseDmg * this.critDmg * rageMult, crit: true };
+      return { val: baseDmg * this.critDmg, crit: true };
     }
-    // Dragon: reset consecutive crits on non-crit
-    if (this._dragonConsecCrits !== undefined) this._dragonConsecCrits = 0;
 
     // Snake pet skill — 20% chance to apply poison on any hit
     if (this._snakePoisonChance && Math.random() < this._snakePoisonChance) {
@@ -5735,8 +5745,9 @@ class Player {
     // Pet skill updates
     if (this._dragonRageActive) {
       this._dragonRageTimer -= dt;
-      if (this._dragonRageTimer <= 0) { this._dragonRageActive = false; this._dragonRageTimer = 0; }
+      if (this._dragonRageTimer <= 0) { this._dragonRageActive = false; this._dragonRageTimer = 0; this._dragonRageCd = 12.0; }
     }
+    if (this._dragonRageCd !== undefined && this._dragonRageCd > 0) { this._dragonRageCd -= dt; }
     if (this._tigerSkillActive !== undefined) {
       const wasActive = this._tigerSkillActive;
       this._tigerSkillActive = this.hp > this.maxHp * 0.70;
@@ -15234,7 +15245,7 @@ window.addEventListener('DOMContentLoaded', () => {
 /* ============================================================
    TUTORIAL SYSTEM — Hướng dẫn người mới
    - Modal 5 bước hiện trước lần chơi đầu tiên
-   - Hint bubble nổi trong game (3 lần, tự tắt)
+   - Hint bubble nổi trong game (chỉ run đầu tiên, tự tắt)
    ============================================================ */
 const Tutorial = (() => {
   let _pendingChar = null;
@@ -15280,9 +15291,11 @@ const Tutorial = (() => {
   function _doStart(charId, mapId) {
     UI.showScreen('game');
     Game.startRun(charId, mapId);
-    // Chỉ hiện hint cho các lần chơi đầu (totalRuns <= 3)
+    // Chỉ hiện hint đúng 1 lần duy nhất — dùng flag riêng, không phụ thuộc vào totalRuns
     const sd = Save.get();
-    if (!sd.stats || sd.stats.totalRuns <= 3) {
+    if (!sd.hintsShown) {
+      sd.hintsShown = true;
+      Save.save();
       beginInGameHints();
     }
   }
