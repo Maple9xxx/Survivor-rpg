@@ -4492,7 +4492,7 @@ const UI = (() => {
     const armor     = Math.round((player.armor     || 0) * 100);
     const lifesteal = Math.round((player.lifesteal || 0) * 100);
     const armorPen  = Math.round((player.armorPen  || 0) * 100);
-    const cdReduce  = Math.round((player.cdReduce  || 0) * 100);
+    const cdReduce  = Math.round(Math.min(player.cdReduce || 0, 0.40) * 100);
     const regen     = player.hpRegenRate || 0;
     const hpOnKill  = player.hpOnKill   || 0;
 
@@ -5113,7 +5113,7 @@ const CHARS = [
     id: 'huyen_nguyet', icon: '🌙', name: 'Huyền Nguyệt', title: 'Pháp Sư',
     cost: 1500,
     baseHP: 560, baseSpd: 110, baseDmg: 145, baseAtk: 0.98,
-    weapon: 'Tinh Linh Cầu', weaponDesc: 'Bắn 2 cầu ma thuật (±18°) tự truy đuổi kẻ thù gần nhất.',
+    weapon: 'Tinh Linh Cầu', weaponDesc: 'Bắn 2 cầu ma thuật (±18°) tự truy đuổi — cầu 1 nhắm mục tiêu ưu tiên, cầu 2 nhắm mục tiêu thứ hai (khác nhau nếu có nhiều quái).',
     weaponIcon: '🔮',
     passiveName: 'Mana Tích Tụ',
     passiveDesc: 'Đứng yên 0.4 giây: sát thương +20%. Di chuyển reset về 0. Khi tiến hoá: mini orb và độc cũng hưởng buff — tối đa ×3.54 effective per target.',
@@ -5158,10 +5158,10 @@ const CHARS = [
     id: 'am_sat', icon: '🗡️', name: 'Ám Sát', title: 'Sát Thủ Bóng Đêm',
     cost: 1500,
     baseHP: 530, baseSpd: 155, baseDmg: 165, baseAtk: 1.1,
-    weapon: 'Song Quỷ Đao', weaponDesc: 'Đánh đơn mục tiêu trong tầm 150đv — ưu tiên quái thấp HP nhất để tối đa kill speed. Mỗi đòn tích 1 Sát Khí. Đủ 5 Sát Khí → đòn tiếp theo kích Đột Sát: ×3.5 + splash AoE 50px + chảy máu 3 giây. Khi tàng hình mỗi đòn tích 2 Sát Khí. Sát thương dư (overkill) truyền sang mục tiêu kế tiếp gần nhất.',
+    weapon: 'Song Quỷ Đao', weaponDesc: 'Đánh đơn mục tiêu trong tầm 150đv — ưu tiên quái thấp HP nhất. Hành Quyết: mục tiêu <30% HP nhận thêm +40% ST. Mỗi đòn tích 1 Sát Khí. Đủ 5 Sát Khí → kích Đột Sát: ×3.5 + splash AoE 50px + chảy máu 3 giây. Tàng hình: tích 2 Sát Khí/đòn. Sát thương dư (overkill) truyền sang mục tiêu kế tiếp.',
     weaponIcon: '🗡️',
     passiveName: 'Sát Thủ Thiên Bẩm',
-    passiveDesc: 'Mỗi đòn tích 1 Sát Khí (max 5, hết hạn 3s không đánh). Đủ 5 → Đột Sát: ×3.5 + splash AoE 50px (×0.35) + chảy máu (50% ST/giây × 3s) + hồi 8% HP. HP<20%: khẩn cấp tàng hình 4s + SPD +60% (CD 20s), quái xa hơn ~320đv không đuổi.',
+    passiveDesc: 'Mỗi đòn tích 1 Sát Khí (max 5, hết hạn 3s không đánh). Đủ 5 → Đột Sát: ×3.5 + splash AoE 50px (×0.35) + chảy máu (50% ST/giây × 3s) + hồi 8% HP. Hành Quyết: mục tiêu dưới 30% HP nhận thêm +40% ST. HP<20%: khẩn cấp tàng hình 4s + SPD +60% (CD 20s), quái xa hơn ~320đv không đuổi.',
     activeName: 'Ẩn Hiện Nhất Kiếm',
     activeDesc: 'Tức thì tàng hình 3s: SPD +60%, quái xa hơn ~320đv không đuổi. Khi tàng hình: Sát Khí tích gấp đôi (2/đòn). Đòn đầu tiên ra khỏi tàng hình guaranteed Đột Sát ×5.0 + chảy máu cực mạnh (×1.0 ST/giây × 5 giây), sau đó thoát tàng hình.',
     activeIcon: '🌑', activeCooldown: 11,
@@ -5667,7 +5667,7 @@ class Player {
     this.activeSkills = [];  // special passive effects (rune, clock, etc.)
 
     // Active skill
-    this.activeCooldown    = charData.activeCooldown * (1 - this.cdReduce);
+    this.activeCooldown    = charData.activeCooldown; // KHÔNG bake cdReduce — tính trong update loop
     this.activeTimer       = 0;
     this.activeReady       = true;
 
@@ -5902,7 +5902,7 @@ class Player {
     // Active cooldown
     if (!this.activeReady) {
       this.activeTimer += dt;
-      const totalCdReduce = Math.min(this.cdReduce + (this.skillLevels['stat_cd'] || 0) * 0.10, 0.40);
+      const totalCdReduce = Math.min(this.cdReduce, 0.40);
       const cd = this.activeCooldown * (1 - totalCdReduce);
       if (this.activeTimer >= cd) {
         this.activeReady = true;
@@ -6005,7 +6005,7 @@ class Player {
     if (this._bvShieldActive && this._bvShieldHP > 0) {
       const absorbed = Math.min(this._bvShieldHP, finalDmg);
       this._bvShieldHP -= absorbed;
-      // Phản 50% lại source
+      // Phản 60% lại source
       if (source && source.takeDamage && absorbed > 0) {
         source.takeDamage(absorbed * 0.6, null);
       }
@@ -10061,8 +10061,8 @@ const Game = (() => {
         // Chiến Tốc: tích stack khi đánh trúng liên tục (riêng với passiveStacks kill stacks)
         if (p._chiTocStacks === undefined) { p._chiTocStacks = 0; p._chiTocIdleTimer = 0; p._chiTocDecayTimer = 0; }
         let didHit = false;
-        // Arc slash — luôn nhắm về phía quái gần nhất, bất kể hướng di chuyển
-        const slashTarget = getNearestEnemy(p.x, p.y);
+        // Arc slash — nhắm theo toggle mode (getPreferredTarget), bất kể hướng di chuyển
+        const slashTarget = getPreferredTarget(p.x, p.y);
         const aimAngle = slashTarget
           ? Math.atan2(slashTarget.y - p.y, slashTarget.x - p.x)
           : (p.lastAngle !== undefined ? p.lastAngle : 0);
@@ -12451,6 +12451,11 @@ const Game = (() => {
     Audio.stopBGM();
     // Xoá hint tutorial khi kết thúc run
     if (typeof Tutorial !== 'undefined') Tutorial.clearHints();
+    // Clear Lôi Thần auto-discharge interval để tránh memory leak
+    if (player && player._ltDischargeInterval) {
+      clearInterval(player._ltDischargeInterval);
+      player._ltDischargeInterval = null;
+    }
 
     // ── IN-RUN GOLD: earned from kills during run (already has goldBonus applied) ─
     const mapData = currentMap || {};
