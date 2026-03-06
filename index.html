@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>VONG LINH THỦ</title>
+<title>VONG LINH THỦ v1.5.4</title>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;user-select:none;}
 html,body{width:100%;height:100%;overflow:hidden;background:#000;font-family:'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif;}
@@ -290,7 +290,7 @@ canvas{display:block;image-rendering:pixelated;}
 #damage-layer{position:absolute;inset:0;pointer-events:none;z-index:4;overflow:hidden;}
 #boss-hpbar-wrap{position:absolute;bottom:200px;left:50%;transform:translateX(-50%);width:min(380px,90vw);pointer-events:none;z-index:6;display:none;}
 #boss-hpbar-wrap.visible{display:block;}
-#boss-name-text{text-align:center;font-size:13px;color:#ff6060;letter-spacing:2px;font-weight:700;margin-bottom:6px;text-shadow:0 0 10px rgba(255,0,0,.5);}
+#boss-name-text{text-align:left;font-size:13px;color:#ff6060;letter-spacing:2px;font-weight:700;text-shadow:0 0 10px rgba(255,0,0,.5);}
 #boss-phase-text{text-align:center;font-size:10px;color:#ff4040;margin-bottom:4px;letter-spacing:1px;}
 #boss-hpbar-bg{height:14px;background:rgba(255,255,255,.1);border-radius:7px;border:1px solid rgba(255,60,60,.4);overflow:hidden;}
 #boss-hpbar-fill{height:100%;background:linear-gradient(90deg,#ff2020,#ff6060,#ff2020);background-size:200% 100%;border-radius:7px;transition:width .3s;animation:bossHpAnim 1s linear infinite;}
@@ -628,7 +628,7 @@ canvas{display:block;image-rendering:pixelated;}
 #pet-sticky-header { position:absolute;top:0;left:0;right:0;z-index:2;background:linear-gradient(180deg,rgba(5,10,0,1) 80%,transparent);padding:14px 14px 10px;box-sizing:border-box; }
 #pet-sticky-header h2 { font-size:clamp(18px,5vw,26px);color:#4aff88;letter-spacing:3px;text-align:center;margin:0; }
 #pet-sticky-header p  { font-size:10px;color:#2a6040;margin:3px 0 0;letter-spacing:1px;text-align:center; }
-#pet-scroll-area { position:absolute;top:0;left:0;right:0;bottom:76px;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;touch-action:pan-y;padding:90px 14px 12px;box-sizing:border-box; }
+#pet-scroll-area { position:absolute;top:0;left:0;right:0;bottom:76px;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;touch-action:pan-y;padding:112px 14px 12px;box-sizing:border-box; }
 #pet-footer { position:absolute;left:0;right:0;bottom:0;height:76px;padding:10px 14px 16px;box-sizing:border-box;border-top:1px solid rgba(74,255,136,.1);background:linear-gradient(0deg,rgba(5,10,0,1),rgba(5,10,0,.95)); }
 .pet-active-banner {
   width:100%; max-width:560px; margin:0 auto 12px;
@@ -1067,6 +1067,7 @@ canvas{display:block;image-rendering:pixelated;}
   <div id="pet-sticky-header">
     <h2>🐾 THÚ CƯNG</h2>
     <p>Trang bị Thú Cưng để nhận buff vĩnh viễn trong mỗi run</p>
+    <div id="pet-gold-info" style="text-align:center;font-size:12px;color:#ffd700;margin-top:4px;">Vàng hiện có: <span id="pet-gold-display">0</span> ◈</div>
   </div>
   <div id="pet-scroll-area">
     <div class="pet-active-banner" id="pet-active-banner" style="display:none">
@@ -1223,7 +1224,10 @@ canvas{display:block;image-rendering:pixelated;}
   <!-- Overlays -->
   <div id="damage-layer"></div>
   <div id="boss-hpbar-wrap">
-    <div id="boss-name-text">BOSS</div>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
+      <div id="boss-name-text" style="margin-bottom:0;">BOSS</div>
+      <div id="boss-countdown" style="display:none;font-size:12px;font-weight:700;letter-spacing:1px;color:#ffcc00;background:rgba(0,0,0,0.5);padding:1px 8px;border-radius:4px;border:1px solid rgba(255,200,0,0.4);">⏱ 2:00</div>
+    </div>
     <div id="boss-phase-text">GIAI ĐOẠN 1</div>
     <div id="boss-hpbar-bg">
       <div id="boss-hpbar-fill" style="width:100%"></div>
@@ -1321,7 +1325,8 @@ canvas{display:block;image-rendering:pixelated;}
     <div id="potential-header">
       <h2>🔮 CÂY TIỀM NĂNG</h2>
     </div>
-    <div id="potential-gold-info">Vàng tích luỹ: <span id="pot-gold">0</span> ◈</div>
+
+    <div id="potential-gold-info">Vàng hiện có: <span id="pot-gold">0</span> ◈</div>
     <div class="potential-grid" id="potential-grid"></div>
   </div>
   <div id="potential-footer">
@@ -2665,9 +2670,11 @@ const UI = (() => {
   function updateMenuGold() {
     const el  = document.getElementById('menu-gold');
     const el2 = document.getElementById('pot-gold');
+    const el3 = document.getElementById('pet-gold-display');
     const g   = Save.get().gold;
-    if (el)  el.textContent  = g;
-    if (el2) el2.textContent = g;
+    if (el)  el.textContent  = g.toLocaleString();
+    if (el2) el2.textContent = g.toLocaleString();
+    if (el3) el3.textContent = g.toLocaleString();
   }
 
 
@@ -3060,7 +3067,7 @@ const UI = (() => {
       header.style.borderColor = TIER_COLORS[t] + '50';
       header.style.background  = TIER_COLORS[t] + '18';
       header.style.color       = TIER_COLORS[t];
-      header.innerHTML = `<span>${tierLocked ? '🔒 ' : ''}${TIER_NAMES[t]}</span><span class="tier-gold">◈ ${avgGoldMin}–${avgGoldMax}/run</span>`;
+      header.innerHTML = `<span>${tierLocked ? '🔒 ' : ''}${TIER_NAMES[t]}</span>`;
       group.appendChild(header);
 
       const mapsRow = document.createElement('div');
@@ -3077,7 +3084,6 @@ const UI = (() => {
         div.style.background = m.bgColor;
         div.style.position   = 'relative';
         div.innerHTML = `
-          <div class="map-gold-range">◈${m.goldMin}-${m.goldMax}</div>
           ${streak >= 3 ? `<div class="map-streak-badge">🔥${streak}</div>` : ''}
           <div class="map-bg">
             <div class="map-num" style="padding-top:10px">MAP ${i+1}${completed?' ✓':''}</div>
@@ -3107,6 +3113,45 @@ const UI = (() => {
 
 // [UI.Potential]  renderPotential()  4 branches x 4 nodes, step cost
   /* ---------- POTENTIAL ---------- */
+  // Shared branches definition — used by BOTH renderPotential() and resetPotential()
+  const POTENTIAL_BRANCHES = [
+    {
+      key:'survival', label:'⚔ THỂ CHẤT', color:'#ff6060',
+      nodes:[
+        {name:'HP Tối Đa',       icon:'❤️', shortDesc:'+125 HP/lv (max +1250)', desc:'+125 HP tối đa/cấp + hồi ngay 125 HP. Cấp 10: +1250 HP. Chi phí: 480→960→1920→2880×7◈.',   maxLv:10, baseCost:480},
+        {name:'Giảm Sát Thương', icon:'🛡️', shortDesc:'+5% Giáp/lv (max +20%)', desc:'+5% Armor/cấp (tối đa +20%). Cộng với thẻ/pet → tổng tối đa 78%. Chi phí: 900→1800→3600→5400◈.',   maxLv:4, baseCost:900},
+        {name:'Hồi HP/giây',     icon:'💚', shortDesc:'+4 HP/s/lv (max +16/s)', desc:'+4 HP/s/cấp (tối đa +16 HP/s). Hồi liên tục kể cả trong combat. Chi phí: 1200→2400→4800→7200◈.',   maxLv:4, baseCost:1200},
+        {name:'Hồi HP/kill',     icon:'🩸', shortDesc:'+10 HP/kill/lv (max +40)', desc:'+10 HP/kill/cấp (tối đa +40 HP/kill). Hồi ngay khi tiêu diệt bất kỳ quái nào. Chi phí: 2100→4200→8400→12600◈.',         maxLv:4, baseCost:2100},
+      ]
+    },
+    {
+      key:'damage', label:'💥 SỨC MẠNH', color:'#ff9060',
+      nodes:[
+        {name:'% Sát Thương',    icon:'⚔️', shortDesc:'+10% BaseDMG/lv (max +100%)', desc:'+10% BaseDMG/cấp (tối đa +100%). Nhân với DMGMult. Cấp 10: baseDmg ×2.00. Chi phí: 600→1200→2400→3600×7◈.',     maxLv:10, baseCost:600},
+        {name:'Tỉ Lệ Crit',      icon:'🎯', shortDesc:'+6% Crit Rate/lv (max +24%)', desc:'+6% Crit Rate/cấp (tối đa +24%). Áp dụng vũ khí chính, bản Tiến Hoá và kỹ năng chủ động — không áp dụng vũ khí phụ. Chi phí: 1200→2400→4800→7200◈.',     maxLv:4, baseCost:1200},
+        {name:'Crit Damage',     icon:'💢', shortDesc:'+30% CritDMG/lv (max +90%)', desc:'+30% CritDMG/cấp (tối đa +90%, tổng 240%). Áp dụng vũ khí chính, bản Tiến Hoá và kỹ năng chủ động — không áp dụng vũ khí phụ. Chi phí: 1800→3600→7200◈.',     maxLv:3, baseCost:1800},
+        {name:'Xuyên Giáp',      icon:'🗡️', shortDesc:'+15% ArmorPen/lv (max 45%)', desc:'+15% ArmorPen/cấp (tối đa 45%). Bypass 45% khiên địch + bonus ×1.36 vs Boss/Elite. Chi phí: 2700→5400→10800◈.',  maxLv:3, baseCost:2700},
+      ]
+    },
+    {
+      key:'mobility', label:'💨 TỐC ĐỘ', color:'#60d0ff',
+      nodes:[
+        {name:'Tốc Di Chuyển',   icon:'👟', shortDesc:'+6% SPD/lv (max +30%)', desc:'+6% SPD/cấp (tối đa +30%). Chi phí: 480→960→1920→2880×2◈.',  maxLv:5, baseCost:480},
+        {name:'Giảm Cooldown',   icon:'⏱️', shortDesc:'-10% CD/lv (max -40%)', desc:'-10% CD/cấp (tối đa -40%). CD thực = CD gốc × (1-0.40). Chi phí: 900→1800→3600→5400◈.',  maxLv:4, baseCost:900},
+        {name:'Tốc Đánh',        icon:'⚡', shortDesc:'+10% AtkSpd/lv (max +40%)', desc:'+10% AtkSpeedMult/cấp (tối đa +40%). Không giới hạn trên khi kết hợp thẻ/pet. Chi phí: 1200→2400→4800→7200◈.',      maxLv:4, baseCost:1200},
+        {name:'Phản Dame Move',  icon:'🌀', shortDesc:'-10% ST nhận khi di chuyển/lv', desc:'-10% ST nhận/cấp khi đang di chuyển (tối đa -20%). Áp dụng sau Giáp. Chi phí: 2700→5400◈.', maxLv:2, baseCost:2700},
+      ]
+    },
+    {
+      key:'fortune', label:'🍀 VẬN MAY', color:'#ffd700',
+      nodes:[
+        {name:'% Vàng',          icon:'◈',  shortDesc:'+15% Vàng/lv (max +60%)', desc:'+15% goldBonus/cấp (tối đa +60%). Nhân vào toàn bộ vàng nhận trong run. Chi phí: 720→1440→2880→4320◈.',   maxLv:4, baseCost:720},
+        {name:'Vũ Khí Đầu',      icon:'🎁', shortDesc:'Bắt đầu có 1 vũ khí phụ ngẫu nhiên', desc:'Bắt đầu run với 1 vũ khí phụ ngẫu nhiên (Hào Quang Thánh) đã trang bị sẵn. Chi phí: 4800◈.', maxLv:1, baseCost:4800},
+        {name:'4 Thẻ Chọn',      icon:'🎴', shortDesc:'Rút 4 thẻ thay vì 3 mỗi level-up', desc:'Mỗi lần level-up rút 4 thẻ thay vì 3 thẻ để chọn. Chi phí: 3900◈.',   maxLv:1, baseCost:3900},
+      ]
+    },
+  ];
+
   // Stepped cost: lv0→1:×1, lv1→2:×2, lv2→3:×4, lv3→4:×6, lv4+→×6 (capped)
   function potCost(baseCost, lv) {
     const mults = [1, 2, 4, 6, 6, 6];
@@ -3127,47 +3172,10 @@ const UI = (() => {
     updateMenuGold();
     grid.innerHTML = '';
 
-    const branches = [
-      {
-        key:'survival', label:'⚔ THỂ CHẤT', color:'#ff6060',
-        nodes:[
-          {name:'HP Tối Đa',       icon:'❤️', shortDesc:'+125 HP/lv (max +1250)', desc:'+125 HP tối đa/cấp + hồi ngay 125 HP. Cấp 10: +1250 HP. Chi phí: 80→160→320→480×7◈.',   maxLv:10, baseCost:80},
-          {name:'Giảm Sát Thương', icon:'🛡️', shortDesc:'+5% Giáp/lv (max +20%)', desc:'+5% Armor/cấp (tối đa +20%). Cộng với thẻ/pet → tổng tối đa 78%. Chi phí: 150→300→600→900◈.',   maxLv:4, baseCost:150},
-          {name:'Hồi HP/giây',     icon:'💚', shortDesc:'+4 HP/s/lv (max +16/s)', desc:'+4 HP/s/cấp (tối đa +16 HP/s). Hồi liên tục kể cả trong combat. Chi phí: 200→400→800→1200◈.',   maxLv:4, baseCost:200},
-          {name:'Hồi HP/kill',     icon:'🩸', shortDesc:'+10 HP/kill/lv (max +40)', desc:'+10 HP/kill/cấp (tối đa +40 HP/kill). Hồi ngay khi tiêu diệt bất kỳ quái nào. Chi phí: 350→700→1400→2100◈.',         maxLv:4, baseCost:350},
-        ]
-      },
-      {
-        key:'damage', label:'💥 SỨC MẠNH', color:'#ff9060',
-        nodes:[
-          {name:'% Sát Thương',    icon:'⚔️', shortDesc:'+10% BaseDMG/lv (max +100%)', desc:'+10% BaseDMG/cấp (tối đa +100%). Nhân với DMGMult. Cấp 10: baseDmg ×2.00. Chi phí: 100→200→400→600×7◈.',     maxLv:10, baseCost:100},
-          {name:'Tỉ Lệ Crit',      icon:'🎯', shortDesc:'+6% Crit Rate/lv (max +24%)', desc:'+6% Crit Rate/cấp (tối đa +24%). Áp dụng vũ khí chính, bản Tiến Hoá và kỹ năng chủ động — không áp dụng vũ khí phụ. Chi phí: 200→400→800→1200◈.',     maxLv:4, baseCost:200},
-          {name:'Crit Damage',     icon:'💢', shortDesc:'+30% CritDMG/lv (max +90%)', desc:'+30% CritDMG/cấp (tối đa +90%, tổng 240%). Áp dụng vũ khí chính, bản Tiến Hoá và kỹ năng chủ động — không áp dụng vũ khí phụ. Chi phí: 300→600→1200◈.',     maxLv:3, baseCost:300},
-          {name:'Xuyên Giáp',      icon:'🗡️', shortDesc:'+15% ArmorPen/lv (max 45%)', desc:'+15% ArmorPen/cấp (tối đa 45%). Bypass 45% khiên địch + bonus ×1.36 vs Boss/Elite. Chi phí: 450→900→1800◈.',  maxLv:3, baseCost:450},
-        ]
-      },
-      {
-        key:'mobility', label:'💨 TỐC ĐỘ', color:'#60d0ff',
-        nodes:[
-          {name:'Tốc Di Chuyển',   icon:'👟', shortDesc:'+6% SPD/lv (max +30%)', desc:'+6% SPD/cấp (tối đa +30%). Chi phí: 80→160→320→480×2◈.',  maxLv:5, baseCost:80},
-          {name:'Giảm Cooldown',   icon:'⏱️', shortDesc:'-10% CD/lv (max -40%)', desc:'-10% CD/cấp (tối đa -40%). CD thực = CD gốc × (1-0.40). Chi phí: 150→300→600→900◈.',  maxLv:4, baseCost:150},
-          {name:'Tốc Đánh',        icon:'⚡', shortDesc:'+10% AtkSpd/lv (max +40%)', desc:'+10% AtkSpeedMult/cấp (tối đa +40%). Không giới hạn trên khi kết hợp thẻ/pet. Chi phí: 200→400→800→1200◈.',      maxLv:4, baseCost:200},
-          {name:'Phản Dame Move',  icon:'🌀', shortDesc:'-10% ST nhận khi di chuyển/lv', desc:'-10% ST nhận/cấp khi đang di chuyển (tối đa -20%). Áp dụng sau Giáp. Chi phí: 450→900◈.', maxLv:2, baseCost:450},
-        ]
-      },
-      {
-        key:'fortune', label:'🍀 VẬN MAY', color:'#ffd700',
-        nodes:[
-          {name:'% Vàng',          icon:'◈',  shortDesc:'+15% Vàng/lv (max +60%)', desc:'+15% goldBonus/cấp (tối đa +60%). Nhân vào toàn bộ vàng nhận trong run. Chi phí: 120→240→480→720◈.',   maxLv:4, baseCost:120},
-          {name:'Thẻ Hiếm',        icon:'🃏', shortDesc:'+1 trọng số Hiếm/lv', desc:'Hiếm +1 trọng số/cấp (mặc định 2, cấp 3 → 5 = ×2.5 lần rate). Chi phí: 250→500→1000◈.',    maxLv:3, baseCost:250},
-          {name:'Vũ Khí Đầu',      icon:'🎁', shortDesc:'Bắt đầu có 1 vũ khí phụ ngẫu nhiên', desc:'Bắt đầu run với 1 vũ khí phụ ngẫu nhiên (Hào Quang Thánh) đã trang bị sẵn. Chi phí: 800◈.', maxLv:1, baseCost:800},
-          {name:'4 Thẻ Chọn',      icon:'🎴', shortDesc:'Rút 4 thẻ thay vì 3 mỗi level-up', desc:'Mỗi lần level-up rút 4 thẻ thay vì 3 thẻ để chọn. Chi phí: 650◈.',   maxLv:1, baseCost:650},
-        ]
-      },
-    ];
+    const branches = POTENTIAL_BRANCHES;
 
-    // Avg gold per run at tier1 map = ~120, use that for run estimate
-    const AVG_GOLD_PER_RUN = 120;
+    // Avg gold per run at tier1 map ~1000 (in-run kills + completion bonus)
+    const AVG_GOLD_PER_RUN = 1000;
 
     branches.forEach(b => {
       const wrap = document.createElement('div');
@@ -3180,22 +3188,7 @@ const UI = (() => {
       header.textContent = b.label;
       wrap.appendChild(header);
 
-      // Max cost hint
-      const maxCost = calcBranchMaxCost(b.nodes);
-      const totalSpent = b.nodes.reduce((s, n, idx) => {
-        let spent = 0;
-        const lv = Save.getPotentialLevel(b.key, idx);
-        for (let l = 0; l < lv; l++) spent += potCost(n.baseCost, l);
-        return s + spent;
-      }, 0);
-      const remaining = maxCost - totalSpent;
-      const runsNeeded = Math.ceil(remaining / AVG_GOLD_PER_RUN);
-      const hint = document.createElement('div');
-      hint.className = 'branch-max-hint';
-      hint.innerHTML = remaining > 0
-        ? `Max cần <b>◈${remaining}</b> (~${runsNeeded} run Map 1)`
-        : `<span style="color:#4aff88">✓ Đã max toàn bộ nhánh!</span>`;
-      wrap.appendChild(hint);
+      // Max cost hint removed
 
       const body = document.createElement('div');
       body.className = 'branch-body';
@@ -3256,20 +3249,12 @@ const UI = (() => {
   /* ---------- POTENTIAL RESET ---------- */
   function resetPotential() {
     // Tính tổng vàng đã đầu tư vào toàn bộ cây Tiềm Năng
-    const branches = [
-      { key:'survival', costs:[80,150,200,350],   maxLvs:[10,4,4,4] },
-      { key:'damage',   costs:[100,200,300,450],  maxLvs:[10,4,3,3] },
-      { key:'mobility', costs:[80,150,200,450],   maxLvs:[5,4,4,2]  },
-      { key:'fortune',  costs:[120,250,800,650],  maxLvs:[4,3,1,1]  },
-    ];
+    // Use shared POTENTIAL_BRANCHES so costs are always accurate
     let totalSpent = 0;
-    branches.forEach(b => {
-      b.costs.forEach((baseCost, idx) => {
+    POTENTIAL_BRANCHES.forEach(b => {
+      b.nodes.forEach((n, idx) => {
         const lv = Save.getPotentialLevel(b.key, idx);
-        for (let l = 0; l < lv; l++) {
-          const mults = [1, 2, 4, 6, 6, 6];
-          totalSpent += baseCost * (mults[Math.min(l, mults.length - 1)]);
-        }
+        for (let l = 0; l < lv; l++) totalSpent += potCost(n.baseCost, l);
       });
     });
 
@@ -3312,29 +3297,29 @@ const UI = (() => {
       entry('🔄','Vòng Lặp Cốt Lõi',
         p('Bị chặn ở map khó là bình thường. Quy trình chuẩn: <b>thất bại → quay về cung thấp hơn farm vàng → nâng Tiềm Năng → thử lại</b>. Mỗi run đều kiếm được vàng dù thắng hay thua, nên không có run nào là vô nghĩa.'));
       entry('🏰','5 Cung Bậc Khó',
-        p('<b>Cung 1 (Map 1–3):</b> 80–130 ◈/run — Làm quen, farm ổn định nhất.<br>' +
-          '<b>Cung 2 (Map 4–6):</b> 150–220 ◈/run — Giới thiệu cơ chế đặc biệt.<br>' +
+        p('<b>Cung 1 (Map 1–3):</b> ~900–1100 ◈/run (thắng) — Farm ổn định nhất cho người mới.<br>' +
+          '<b>Cung 2 (Map 4–6):</b> ~1400–2000 ◈/run — Có cơ chế đặc biệt, reward xứng đáng.<br>' +
           '<b>Cung 3 (Map 7–9):</b> 250–350 ◈/run — Áp lực tăng rõ rệt.<br>' +
           '<b>Cung 4 (Map 10–12):</b> 380–500 ◈/run — Cần Tiềm Năng đủ mạnh.<br>' +
           '<b>Cung 5 (Map 13–15):</b> 550–800 ◈/run — Endgame, thử thách tối đa.<br><br>' +
           'Mỗi cung chỉ cần vượt <b>map thứ 3 (boss cung)</b> để mở cung tiếp theo. Hai map đầu của cung có thể farm lại bất cứ lúc nào.'));
       entry('⭐','Thưởng Thành Tích Trong Run',
         p('Ngoài vàng từ quái, mỗi run có thể nhận thêm vàng bonus từ các cột mốc sau:<br><br>' +
-          '⚡ <b>100 kill trước phút thứ 2:</b> +30 ◈<br>' +
-          '🛡 <b>Không bị đánh 30 giây liên tiếp:</b> +15 ◈ (có thể đạt nhiều lần/run)<br>' +
-          '⭐ <b>Hạ tinh anh trong 5 giây kể từ khi xuất hiện:</b> +20 ◈/lần<br><br>' +
+          '⚡ <b>100 kill trước phút thứ 2:</b> +30×tier ◈ (T1: +30, T6: +180)<br>' +
+          '🛡 <b>Không bị đánh 30 giây liên tiếp:</b> +15×tier ◈/lần (có thể đạt nhiều lần/run)<br>' +
+          '⭐ <b>Hạ tinh anh trong 5 giây kể từ khi xuất hiện:</b> +20×tier ◈/lần<br><br>' +
           'Những thưởng này cộng dồn và được tính vào màn hình kết quả cuối run.'));
       entry('🔥','Hệ Số Nhân Vàng — Chuỗi Thắng',
         p('Thắng cùng một map <b>3 lần liên tiếp không thua</b>, từ lần thứ 4 trở đi nhận thêm <b>+20% vàng</b> từ map đó. Chuỗi bị reset khi thua. Biểu tượng 🔥 trên màn hình chọn map cho biết chuỗi hiện tại.<br><br>' +
           'Đây là cách farm hiệu quả nhất: thành thạo một map trước khi leo lên map khó hơn.'));
       entry('🐾','Hệ Thống Thú Cưng',
         p('Thú Cưng cho buff vĩnh viễn trong mỗi run và thêm kỹ năng đặc biệt. Mua tại màn hình <b>Thú Cưng</b>.<br><br>' +
-          '🦊 <b>Linh Hồ (450◈):</b> +20% vàng | Kỹ năng: mỗi 50 quái tiêu diệt → +5% vàng thêm (max +15%).<br>' +
-          '🐯 <b>Bạch Hổ (750◈):</b> +15% tốc đánh | Kỹ năng: HP>70% → +12% sát thương.<br>' +
-          '🐍 <b>Hắc Xà (1000◈):</b> Hút máu 5% | Kỹ năng: 20% cơ hội áp độc (5ST/giây × 3 giây).<br>' +
-          '🦅 <b>Thần Ưng (1200◈):</b> +18% di chuyển | Kỹ năng: AoE toàn bộ vũ khí/kỹ năng +12%.<br>' +
-          '🐢 <b>Thần Quy (1600◈):</b> +25% HP + giảm 8% ST nhận | Kỹ năng: HP<30% → giảm thêm 20% ST nhận.<br>' +
-          '🐲 <b>Ma Long (2500◈):</b> +8% crit, crit +40% ST | Kỹ năng: 5 crit liên tiếp → Thịnh Nộ Long (+30% ST 4s + cầu lửa Long Vũ).<br><br>' +
+          '🦊 <b>Linh Hồ (6000◈):</b> +25% vàng | Kỹ năng: mỗi 40 quái tiêu diệt → +5% vàng thêm (max +15%).<br>' +
+          '🐯 <b>Bạch Hổ (14000◈):</b> +15% tốc đánh +10% ST vĩnh viễn | Kỹ năng: mỗi 10s chiến đấu liên tục → +3% ST (max +12%).<br>' +
+          '🐍 <b>Hắc Xà (26000◈):</b> Hút máu 8% | Kỹ năng: 20% cơ hội áp độc (12% ST/giây × 4 giây).<br>' +
+          '🦅 <b>Thần Ưng (40000◈):</b> +20% di chuyển | Kỹ năng: AoE +15% và tốc đạn +15%.<br>' +
+          '🐢 <b>Thần Quy (70000◈):</b> +25% HP + giảm 8% ST nhận | Kỹ năng: HP<30% → giảm thêm 20% ST nhận.<br>' +
+          '🐲 <b>Ma Long (110000◈):</b> +8% crit, crit +40% ST | Kỹ năng: 5 crit liên tiếp → Thịnh Nộ Long (+30% ST 4s + cầu lửa Long Vũ).<br><br>' +
           'Chỉ trang bị 1 con cùng lúc. Thú cưng hiển thị dưới dạng icon bay quanh nhân vật trong game.'));
       entry('🔮','Hệ Thống Tiềm Năng',
         p('Vàng kiếm được dùng để nâng cấp 4 nhánh Tiềm Năng, có hiệu lực vĩnh viễn qua tất cả các run:<br><br>' +
@@ -3348,42 +3333,42 @@ const UI = (() => {
       const charGuides = [
         {
           c: CHARS.find(c=>c.id==='luu_phong'),
-          dps: 'Base 85 × 1.8/s = 153/s · Full Chiến Tốc ×1.45 = ~222/s',
+          dps: 'Base 85 × 1.5/s = 128/s · Full Chiến Tốc ×1.45 = ~185/s',
           difficulty: '⭐⭐ Trung Bình',
           playstyle: 'Liên Công — đánh liên tục không nghỉ để tích tốc chém',
           guide: `<!--P-->Mỗi đòn đánh TRÚNG tích 1 Chiến Tốc stack (tối đa 30 = +45% tốc chém). Không đánh trong 1.5 giây → stack tan dần. Bị trúng đòn mất 50% Chiến Tốc. Kill quái tích <b>Kill Ý riêng biệt</b> (dùng cho Active).<!--A-->Freeze 0.2s → dash 250đv xuyên quái với sát thương scale theo <b>Kill Ý</b> (giết quái): <b>×(2.5 + killStack×0.05)</b>, tối đa <b>×4.0</b> tại 30 kill. Mỗi quái bị xuyên qua <b>cộng +1 Kill Ý</b>. Kết hợp chảy máu 5 giây (30% ST/giây) + vô địch 0.3s. Giữ và kéo nút skill để chọn hướng.<!--T-->Đánh liên tục không nghỉ là chìa khóa — Chiến Tốc max (+45%) sau khoảng 30 đòn. Kill quái song song để tích Kill Ý cho Active. Full 30 Kill: Active ×4.0 thay vì ×2.5 — chênh lệch 60%.`,
         },
         {
           c: CHARS.find(c=>c.id==='huyen_nguyet'),
-          dps: 'Base 175×0.95/s = 166/s · +20% đứng yên = 199/s · Evolved per target: ×2.95~3.54',
+          dps: 'Base 170×0.98/s ≈ 167/s · +20% đứng yên = 200/s · Evolved per target: ×2.95~3.54',
           difficulty: '⭐ Dễ',
           playstyle: 'Stationary — đứng yên 0.4s để kích passive',
           guide: `<!--P-->Đứng yên ≥0.4 giây → +20% sát thương. Di chuyển reset ngay. Công thức: totalDmg × 1.2.<!--A-->Triệu sét AoE bán kính 200đv trong 3 giây. <b>Có Mana Tích Tụ khi cast:</b> 12 tia ×1.0 thay vì 8 tia ×0.8. <b>Tiếp tục đứng yên suốt 3 giây:</b> tia cuối là Siêu Lôi — nhắm điểm đông quái nhất, ×5.0 AoE. (+1 tia/cấp AoE)<!--T-->Luôn đứng yên ≥0.4s trước khi cast để kích Tĩnh Tâm Điện Bão (12 tia). Tiếp tục đứng yên toàn bộ 3s để nhận Siêu Lôi ×5.0. Đứng góc tường để không bị đẩy. Ưu tiên Hồi HP/s hoặc Giáp để đứng yên an toàn.`,
         },
         {
           c: CHARS.find(c=>c.id==='thiet_tam'),
-          dps: 'Base 155×1.25/s = 194/s · +25% quái xa >150đv = 242/s',
+          dps: 'Base 148×1.2/s ≈ 178/s · +25% quái xa >150đv = 222/s',
           difficulty: '⭐⭐ Trung Bình',
           playstyle: 'Kiter — luôn giữ khoảng cách >150đv',
-          guide: `<!--P-->Quái ở xa >150 đơn vị nhận thêm +25% sát thương. Áp dụng cho vũ khí chính, tiến hoá và active.<!--A-->2 đợt quạt tên phủ 60°: đợt 1 (3 tên ±25°, t=0) + đợt 2 (4 tên ±37°/12°, t=350ms). Tổng 7 tên — đám đông nhận full DPS, mỗi quái chỉ nhận 1 đòn/đợt. Mắt Đại Bàng +25% áp dụng tất cả. Evolved: splash độc 80px/điểm trúng. Giữ và kéo nút skill để chọn hướng.<!--T-->Giữ khoảng cách >150đv để passive luôn kích. Thiết Tâm mạnh nhất khi đứng xa và nhắm vào đám đông.`
+          guide: `<!--P-->Quái ở xa >150 đơn vị nhận thêm +25% sát thương. Áp dụng cho vũ khí chính, tiến hoá và active.<!--A-->2 đợt quạt tên phủ 60°: đợt 1 (3 tên ±25°, t=0) + đợt 2 (4 tên ±37°/12°, t=350ms). Tổng 7 tên — đám đông nhận full DPS, mỗi quái chỉ nhận 1 đòn/đợt. Mắt Đại Bàng +25% áp dụng tất cả. Evolved: splash độc 70px/điểm trúng. Giữ và kéo nút skill để chọn hướng.<!--T-->Giữ khoảng cách >150đv để passive luôn kích. Thiết Tâm mạnh nhất khi đứng xa và nhắm vào đám đông.`
         },
         {
           c: CHARS.find(c=>c.id==='kim_cang'),
-          dps: 'Base 140×0.95/s = 133/s · Block 20% — hồi 5% HP/block + stack tốc đánh +7%/block',
+          dps: 'Base 148×0.98/s ≈ 145/s · Block 20% — hồi 5% HP/block + stack tốc đánh +7%/block',
           difficulty: '⭐ Dễ',
           playstyle: 'Tank — đứng giữa đám quái, chịu đòn counter',
-          guide: `<!--P-->20% xác suất chặn hoàn toàn mọi đòn (dmg=0) + hồi 5% HP tối đa + AtkSpeedMult +0.07 tạm thời 3 giây (stack được). HP tối đa: 1050 (cao nhất game).<!--A-->AoE ×6.0 + <b>kéo quái vào gần 80đv</b> rồi <b>stun 1.5 giây</b> (giữ quái trong tầm Thiền Trượng, không đẩy ra xa). Mỗi block stack đang tích khi cast: <b>+×0.15 sát thương và +0.1 giây stun</b> (tối đa 3 stack → ×6.45 DMG, stun 1.8s).<!--T-->Đứng giữa đám quái để tối đa cơ hội Block — mỗi block tăng damage và stun cho active tiếp theo. Dùng active SAU khi đã tích được 2–3 stack block để kéo quái gom lại và stun → tiếp tục đập AoE Thiền Trượng trong tầm. Ưu tiên Xuyên Giáp để counter quái elite có khiên.`,
+          guide: `<!--P-->20% xác suất chặn hoàn toàn mọi đòn (dmg=0) + hồi 5% HP tối đa + AtkSpeedMult +0.07 tạm thời 3 giây (stack được). HP tối đa: 900.<!--A-->AoE ×6.0 + <b>kéo quái vào gần 80đv</b> rồi <b>stun 1.5 giây</b> (giữ quái trong tầm Thiền Trượng, không đẩy ra xa). Mỗi block stack đang tích khi cast: <b>+×0.15 sát thương và +0.1 giây stun</b> (tối đa 3 stack → ×6.45 DMG, stun 1.8s).<!--T-->Đứng giữa đám quái để tối đa cơ hội Block — mỗi block tăng damage và stun cho active tiếp theo. Dùng active SAU khi đã tích được 2–3 stack block để kéo quái gom lại và stun → tiếp tục đập AoE Thiền Trượng trong tầm. Ưu tiên Xuyên Giáp để counter quái elite có khiên.`,
         },
         {
           c: CHARS.find(c=>c.id==='am_sat'),
-          dps: 'Base 150×1.1/s = 165/s · Đột Sát ×3.5 mỗi 5 đòn · Stealth ×5.0 đòn đầu',
+          dps: 'Base 165×1.1/s ≈ 182/s · Đột Sát ×3.5 mỗi 5 đòn · Stealth ×5.0 đòn đầu',
           difficulty: '⭐⭐⭐ Khó',
           playstyle: 'Combo Burst — tích 5 Sát Khí → Đột Sát, Active để cực hóa đòn tiếp theo',
-          guide: `<!--P-->Mỗi đòn tích 1 Sát Khí (max 5, hết hạn 3s không đánh). Đủ 5 → <b>Đột Sát</b> tự động: ×3.5 + chảy máu (50% ST/giây × 3s) + hồi 8% HP. HP<20%: khẩn cấp tàng hình 4s + SPD +60% (CD 20s riêng).<!--A-->Tức thì tàng hình 3s: <b>SPD +60%</b>, quái xa hơn ~320đv không đuổi. Khi tàng hình: Sát Khí tích <b>gấp đôi (2/đòn)</b> → đạt 5 stack chỉ sau 3 đòn. Đòn đầu ra khỏi tàng hình là guaranteed <b>Tối Thượng Đột Sát ×5.0</b> + chảy máu cực mạnh (×1.0 ST/giây × 5s).<!--T-->Vòng lặp tối ưu: dùng Active → vào shadow → đánh 3 đòn (6 stack) → Đột Sát + guaranteed ×5.0 thoát shadow. Liên tục đánh không nghỉ để Sát Khí không hết hạn. HP<20%: tự tàng hình khẩn cấp — không lãng phí cơ hội này.`,
+          guide: `<!--P-->Mỗi đòn tích 1 Sát Khí (max 5, hết hạn 3s không đánh). Đủ 5 → <b>Đột Sát</b> tự động: ×3.5 + chảy máu (50% ST/giây × 3s) + hồi 8% HP. Tự động nhắm quái <b>thấp HP nhất</b> để tối đa kill speed — sát thương dư (overkill) truyền sang mục tiêu kế tiếp trong tầm. HP<20%: khẩn cấp tàng hình 4s + SPD +60% (CD 20s riêng).<!--A-->Tức thì tàng hình 3s: <b>SPD +60%</b>, quái xa hơn ~320đv không đuổi. Khi tàng hình: Sát Khí tích <b>gấp đôi (2/đòn)</b> → đạt 5 stack chỉ sau 3 đòn. Đòn đầu ra khỏi tàng hình là guaranteed <b>Tối Thượng Đột Sát ×5.0</b> + chảy máu cực mạnh (×1.0 ST/giây × 5s).<!--T-->Vòng lặp tối ưu: dùng Active → vào shadow → đánh 3 đòn (6 stack) → Đột Sát + guaranteed ×5.0 thoát shadow. Liên tục đánh không nghỉ để Sát Khí không hết hạn. HP<20%: tự tàng hình khẩn cấp — không lãng phí cơ hội này.`,
         },
         {
           c: CHARS.find(c=>c.id==='tu_linh'),
-          dps: 'Base 130×1.35/s = 175/s · Active: ×1.5 (0 hồn) → ×4.0 (20 hồn)',
+          dps: 'Base 142×1.3/s ≈ 185/s · Active: ×1.5 (0 hồn) → ×4.0 (20 hồn)',
           difficulty: '⭐⭐ Trung Bình',
           playstyle: 'Resource Manager — tích đủ linh hồn trước boss rồi xả active',
           guide: `<!--P-->Mỗi kill tạo 1 Linh Hồn (tối đa 20). Linh Hồn <b>KHÔNG</b> tăng ST trực tiếp — chỉ tăng sức mạnh của Active khi tiêu. HP<20%: tiêu thụ tất cả → hồi 25 HP/linh hồn.<!--A-->Tiêu thụ toàn bộ Linh Hồn. Triệu 3 bộ xương (tối đa 9) + Lĩnh Vực Tử Thần: AoE 180đv pulse 5 lần / 4 giây. Mỗi pulse = ×(0.3 + hồn×0.025), cap ×0.8. Tại 0 hồn: ×1.5 tổng. Tại 20 hồn: <b>×4.0 tổng</b> — mạnh hơn gần 3 lần.<!--T-->Chiến lược "hold & burst" — không spam active, tích đủ 20 linh hồn rồi xả 1 lần ×4.0. Dùng active non-full (0-5 hồn) chỉ khi cần triệu xương để kéo dài sự sống. Xương cũng giết quái → tạo hồn → rút ngắn thời gian tích tụ.`,
@@ -3404,10 +3389,10 @@ const UI = (() => {
         },
         {
           c: CHARS.find(c=>c.id==='bang_vuong'),
-          dps: 'Base 195×1.0/s × 4 rings = 780/s · vs chậm/đóng băng ×1.45 = 1,131/s (distributed)',
+          dps: 'Base 195×1.0/s × 4 rings = 780/s · vs chậm/đóng băng ×1.35 = 1,053/s (distributed)',
           difficulty: '⭐⭐ Trung Bình',
-          playstyle: 'Control-burst — slow địch → khai thác +45% mọi nguồn ST, active không gián đoạn vũ khí',
-          guide: `<!--P-->Địch chậm/đóng băng nhận thêm +45% ST từ <b>mọi nguồn: vũ khí, active, crit, evolved</b> đều hưởng. Băng Linh Nhẫn tự kích mỗi lần trúng (slow 40% × 2 giây). Giết địch đóng băng: hồi 8 HP. HP<25%: <b>Băng Hộ Thể — hấp thụ 400 ST, phản chiếu 60%</b>.<!--A-->Bão tuyết 200px trong 6 giây: chậm 60% + ×1.2/giây (hưởng +45%). <b>Vũ khí Băng Linh Nhẫn tiếp tục bắn bình thường trong bão</b> — 4 rings/giây × ×1.45 effective. Địch trong bão ≥3 giây → đóng băng 2 giây. Kết thúc: Băng Nổ ×5.5 (địch còn chậm → ×5.5×1.45 = ×7.98 effective).<!--T-->4 rings × 195 × 1.45 × 1.0/s = 1,131/s distributed — cao nhất game với evolved. Active KHÔNG làm mất vũ khí: Bão + rings đồng thời = toàn bộ +45% hoạt động mọi lúc. Dùng Dragon pet — 4 rings/shot = 4 cơ hội crit → Dragon Rage kích liên tục. Ưu tiên AtkSpd + CritDMG.`,
+          playstyle: 'Control-burst — slow địch → khai thác +35% mọi nguồn ST, active không gián đoạn vũ khí',
+          guide: `<!--P-->Địch chậm/đóng băng nhận thêm +35% ST từ <b>mọi nguồn: vũ khí, active, crit, evolved</b> đều hưởng. Băng Linh Nhẫn tự kích mỗi lần trúng (slow 40% × 2 giây). Giết địch đóng băng: hồi 8 HP. HP<25%: <b>Băng Hộ Thể — hấp thụ 400 ST, phản chiếu 60%</b>.<!--A-->Bão tuyết 200px trong 6 giây: chậm 60% + ×1.2/giây (hưởng +35%). <b>Vũ khí Băng Linh Nhẫn tiếp tục bắn bình thường trong bão</b> — 4 rings/giây × ×1.35 effective. Địch trong bão ≥3 giây → đóng băng 2 giây. Kết thúc: Băng Nổ ×5.5 (địch còn chậm → ×5.5×1.35 = ×7.43 effective).<!--T-->4 rings × 195 × 1.35 × 1.0/s = 1,053/s distributed — cao nhất game với evolved. Active KHÔNG làm mất vũ khí: Bão + rings đồng thời = toàn bộ +35% hoạt động mọi lúc. Dùng Dragon pet — 4 rings/shot = 4 cơ hội crit → Dragon Rage kích liên tục. Ưu tiên AtkSpd + CritDMG.`,
         },
       ];
 
@@ -3726,13 +3711,12 @@ const UI = (() => {
           '• Tăng bonus sát thương vs Boss/Elite: tối đa <b>+36%</b> ở cấp 3.<br>' +
           '• Chỉ áp dụng cho vũ khí chính và bản Tiến Hoá.'));
       entry('🏃','Tốc Độ Di Chuyển',
-        p('• Mặc định theo nhân vật. Tiềm Năng Cơ Động[0] +6%/cấp (max +24%). Thần Ưng +18%.<br>' +
+        p('• Mặc định theo nhân vật. Tiềm Năng Cơ Động[0] +6%/cấp (max +24%). Thần Ưng +20%.<br>' +
           '• Thẻ Tốc Độ trong run cộng dồn.<br>' +
           '• Tốc độ cao giúp kích hoạt Giảm ST Di Chuyển thường xuyên hơn.'));
       entry('🃏','Trọng Số Thẻ & May Mắn',
         p('Khi level-up, thẻ được rút theo trọng số rarity:<br><br>' +
           '• Thường (Common): trọng số <b>4</b> &nbsp;|&nbsp; Hiếm (Rare): <b>2</b> &nbsp;|&nbsp; Epic: <b>1</b><br><br>' +
-          '• Tiềm Năng May Mắn[1] — Thẻ Hiếm: +1 trọng số/cấp cho Hiếm. Cấp 3 → Hiếm = <b>5</b> (×2.5).<br>' +
           '• Tiềm Năng May Mắn[2]: thêm <b>1 vũ khí phụ</b> miễn phí khi bắt đầu run.<br>' +
           '• Tiềm Năng May Mắn[3]: rút <b>4 thẻ</b> thay vì 3 khi level-up.'));
     
@@ -3742,12 +3726,12 @@ const UI = (() => {
         ['🔥','Chuỗi Thắng','Thành thạo một map trước khi leo. Thắng 4 lần liên tiếp trên cùng một map → nhận +20% vàng. Chuỗi dài = farm nhanh nhất.'],
         ['✨','Tiến Hoá Là Ưu Tiên Số 1','Nâng vũ khí chính lên cấp 4 càng sớm càng tốt. Tiến hoá cho +30% sát thương và thay đổi hoàn toàn cơ chế — mạnh hơn gộp 3 vũ khí phụ.'],
         ['⚡','Thưởng Trong Run','Đạt 100 kill trước phút 2 (+30 ◈), không bị đánh 30 giây (+15 ◈), hạ tinh anh trong 5 giây (+20 ◈). Chơi tích cực luôn có lợi hơn chỉ tồn tại.'],
-        ['🐾','Thú Cưng','Mỗi pet có lối chơi riêng: Linh Hồ (+20% vàng, +5% mỗi 50 kill) cho econ; Bạch Hổ (+15% tốc đánh) cho damage ổn định; Hắc Xà (hút máu 5% + độc scale theo ST) cho sustain; Thần Ưng (+18% tốc, +12% AoE) cho chars AoE; Thần Quy (+25% HP, phản đòn AoE) cho tank; Ma Long (+8% crit + bạo kích +40% sát thương) cho burst damage.'],
+        ['🐾','Thú Cưng','Mỗi pet có lối chơi riêng: Linh Hồ (+25% vàng, +5% mỗi 40 kill) cho econ; Bạch Hổ (+15% tốc đánh, +10% ST cố định + thêm theo thời gian chiến đấu) cho DPS ổn định; Hắc Xà (hút máu 8% + độc 12% ST×4s) cho sustain; Thần Ưng (+20% tốc, +15% AoE+đạn) cho chars AoE; Thần Quy (+30% HP, phản đòn AoE mạnh) cho tank; Ma Long (+8% crit + bạo kích +40% ST) cho burst damage.'],
         ['⚔️','Lưu Phong — Kiếm Ý','Đánh liên tục tích Chiến Tốc (+1.5%/đòn trúng, tối đa 30 stack = +45% tốc chém). Ngừng đánh 1.5s stack tan dần. Bị đánh mất 50% stack. Active Tàn Phong Trảm scale theo Kill Ý (giết quái): ×(2.5 + kill×0.05), tối đa ×4.0 tại 30 kill — và mỗi quái xuyên qua cộng thêm 1 kill stack.'],
         ['🌙','Huyền Nguyệt — Tĩnh Tâm Điện Bão','Đứng yên ≥0.4 giây kích passive +20% ST. Cast active khi đang có buff → Tĩnh Tâm Điện Bão: 12 tia ×1.0 thay vì 8 tia ×0.8. Tiếp tục đứng yên suốt 3 giây → tia cuối là Siêu Lôi ×5.0 nhắm điểm đông quái nhất. Đứng góc tường để tối đa hóa.'],
         ['🏹','Thiết Tâm — Tàn Sát Tầm Xa','Giữ khoảng cách >150 đơn vị để khai thác +25% ST. Active bắn 5 mũi tên liên tục theo 1 hướng — mỗi mũi tự kiểm tra khoảng cách và áp thêm +25% nếu quái bị trúng ở xa. Nhắm thẳng vào đám đông hoặc boss để tối đa hóa pierce.'],
         ['🥋','Kim Cang — Trấn Áp Bất Động','Để quái tấn công để kích Kim Cang Thể: 20% chặn + hồi 5% HP + stack tốc đánh. Active giờ KÉO quái vào gần 80đv rồi stun 1.5s — không đẩy ra xa, giữ quái trong tầm Thiền Trượng. Mỗi block stack tích lũy khi cast: +×0.15 ST và +0.1s stun (tối đa ×6.45, stun 1.8s).'],
-        ['🗡️','Ám Sát — Sát Thủ Thiên Bẩm','Mỗi đòn tích 1 Sát Khí (max 5, 3s). Đủ 5 → Đột Sát ×3.5 + chảy máu + hồi 8% HP. Active tàng hình 3s + SPD +60%; đòn đầu guaranteed ×5.0. HP<20%: khẩn cấp tàng hình. Đánh liên tục không để Sát Khí hết hạn.'],
+        ['🗡️','Ám Sát — Sát Thủ Thiên Bẩm','Mỗi đòn tích 1 Sát Khí (max 5, 3s). Đủ 5 → Đột Sát ×3.5 + chảy máu + hồi 8% HP. Nhắm quái thấp HP nhất — sát thương dư truyền mục tiêu kế. Active tàng hình 3s + SPD +60%; đòn đầu guaranteed ×5.0. HP<20%: khẩn cấp tàng hình.'],
         ['💀','Tử Linh — Thu Hoạch Linh Hồn','Linh Hồn không buff ST thụ động. Active tiêu thụ toàn bộ hồn → pulse ×(0.3+hồn×0.025), cap ×0.8/pulse. 20 hồn → ×4.0 tổng. Chiến lược: tích đủ hồn trước boss, dùng active 1 lần mạnh thay vì spam.'],
         ['⚡','Lôi Thần — Tầm 200px','Vũ khí sét hoạt động trong tầm 200 đơn vị — luôn di chuyển vào gần đám quái. Tích đủ 20 Lôi Tích (+80% ST) trước khi dùng active để tối đa burst ×12.5. Sau active nhận ATK Speed +50% trong 5 giây — đẩy stack về 20 rất nhanh cho lần tiếp theo.'],
       ];
@@ -3772,7 +3756,7 @@ const UI = (() => {
     };
     const overlay = document.getElementById('confirm-overlay');
     document.getElementById('confirm-title').textContent = title;
-    document.getElementById('confirm-text').textContent  = text;
+    document.getElementById('confirm-text').innerHTML  = text;
     overlay.style.display = 'flex';
   }
 
@@ -3929,6 +3913,8 @@ const UI = (() => {
 
   function hideBossBar() {
     document.getElementById('boss-hpbar-wrap').classList.remove('visible');
+    const cdEl = document.getElementById('boss-countdown');
+    if (cdEl) cdEl.style.display = 'none';
   }
 
   function showWaveAnnounce(text) {
@@ -4011,18 +3997,20 @@ const UI = (() => {
     // ── END SKILL DAMAGE BREAKDOWN ──────────────────────────────
 
     // Gold breakdown section
-    const totalGold = stats.baseGold + (stats.streakBonus||0) + (stats.achievementBonus||0);
+    const totalGold = (stats.baseGold||0) + (stats.completionBonus||0) + (stats.streakBonus||0) + (stats.achievementBonus||0);
     const bonusEl = document.createElement('div');
     bonusEl.className = 'bonus-section';
     let bonusHtml = `<div class="bonus-section-title">◈ VÀNG NHẬN ĐƯỢC</div>`;
-    if (stats.baseGold > 0)
-      bonusHtml += `<div class="bonus-row"><span class="bonus-label">Vàng cơ bản</span><span class="bonus-value">+${stats.baseGold}</span></div>`;
+    if ((stats.baseGold||0) > 0)
+      bonusHtml += `<div class="bonus-row"><span class="bonus-label">🗡 Vàng từ quái/elite/boss</span><span class="bonus-value">+${stats.baseGold}</span></div>`;
+    if ((stats.completionBonus||0) > 0)
+      bonusHtml += `<div class="bonus-row"><span class="bonus-label">🏆 Thưởng hoàn thành map</span><span class="bonus-value">+${stats.completionBonus}</span></div>`;
     if (stats.streakBonus > 0)
-      bonusHtml += `<div class="bonus-row"><span class="bonus-label">Thưởng chuỗi thắng (${stats.winStreak}×)</span><span class="bonus-value">+${stats.streakBonus}</span></div>`;
+      bonusHtml += `<div class="bonus-row"><span class="bonus-label">🔥 Thưởng chuỗi thắng (${stats.winStreak}×)</span><span class="bonus-value">+${stats.streakBonus}</span></div>`;
     if (stats.achievementBonus > 0)
-      bonusHtml += `<div class="bonus-row"><span class="bonus-label">Thưởng thành tích trong run</span><span class="bonus-value">+${stats.achievementBonus}</span></div>`;
+      bonusHtml += `<div class="bonus-row"><span class="bonus-label">⭐ Thưởng thành tích</span><span class="bonus-value">+${stats.achievementBonus}</span></div>`;
     if (totalGold === 0) {
-      bonusHtml += `<div class="bonus-row"><span class="bonus-label" style="color:#666">Chưa đủ thời gian để nhận vàng (tối thiểu 10 giây)</span></div>`;
+      bonusHtml += `<div class="bonus-row"><span class="bonus-label" style="color:#666">Chết quá nhanh — không nhận được vàng</span></div>`;
     }
     bonusHtml += `<div class="bonus-row" style="border-top:1px solid rgba(74,255,136,.2);margin-top:4px;padding-top:6px">
       <span class="bonus-label" style="color:#ffd700;font-weight:700">TỔNG CỘNG</span>
@@ -4146,16 +4134,16 @@ const UI = (() => {
   const CG_CHAR_DATA = [
     {
       extra: {
-        statHP: 120, statSPD: 145, statDMG: 18, statATK: 1.8,
+        statHP: 120, statSPD: 145, statDMG: 18, statATK: 1.5,
         weapon:  { icon:'⚔️', tag:'VŨ KHÍ CHÍNH', name:'Phong Kiếm', desc:'Chém vòng cung ~160° hướng về quái gần nhất, tầm ngắn, tốc độ rất cao. Sát thương tăng dần khi tích lũy stack Kiếm Ý.' },
-        passive: { icon:'🌬️', tag:'PASSIVE', name:'Kiếm Ý', desc:'Mỗi lần giết quái, tốc chém +1.5% (tối đa 30 stack = +45%). Bị trúng đòn mất 50% stack (giữ lại 50%) — tích công bền vững.' },
+        passive: { icon:'🌬️', tag:'PASSIVE', name:'Kiếm Ý', desc:'Mỗi lần đánh trúng quái, tốc chém +1.5% (tối đa 30 stack = +45%). Bị trúng đòn mất 50% stack (giữ lại 50%) — tích công bền vững.' },
         active:  { icon:'💨', tag:'ACTIVE', name:'Tàn Phong Trảm', desc:'Đóng băng thời gian 0.2s rồi lao xuyên tất cả kẻ thù — sát thương scale theo Kiếm Ý: ×(2.5 + stack×0.05), tối đa ×4.0. Mỗi quái xuyên qua cộng +1 stack. Không tiêu thụ stack.', cd:11  },
         evolve:  { icon:'⚡', tag:'TIẾN HÓA', name:'Thiên Phong Kiếm Ý', desc:'Mỗi nhát chém phóng 1 kiếm khí xuyên thẳng (×0.7, pierce tất cả) + cung chém mở rộng ~160°. Tốc đánh cao kết hợp sóng kiếm liên tục = rất nguy hiểm từ xa trung.' },
       }
     },
     {
       extra: {
-        statHP: 90, statSPD: 110, statDMG: 33, statATK: 0.95,
+        statHP: 90, statSPD: 110, statDMG: 33, statATK: 0.98,
         weapon:  { icon:'🔮', tag:'VŨ KHÍ CHÍNH', name:'Tinh Linh Cầu', desc:'Bắn cầu ma thuật tự truy đuổi (homing) kẻ thù gần nhất. Sát thương cao nhất, tốc độ tấn công thấp nhất.' },
         passive: { icon:'🧘', tag:'PASSIVE', name:'Mana Tích Tụ', desc:'Đứng yên 0.4 giây: sát thương +20%. Di chuyển reset về 0. Khi tiến hoá: mini orb và độc cũng hưởng buff — tối đa ×3.54 effective per target.' },
         active:  { icon:'🌩️', tag:'ACTIVE', name:'Hắc Động Lôi', desc:'Thường: 8 tia ×0.8 rải ngẫu nhiên, 3 giây, bán kính 200đv. Khi đang có Mana Tích Tụ khi cast → <b>Tĩnh Tâm Điện Bão</b>: 12 tia ×1.0, 70% tia nhắm trúng quái trong vùng. Tiếp tục đứng yên suốt 3 giây → tia cuối là <b>Siêu Lôi ×5.0</b> AoE nhắm điểm đông quái nhất.', cd:14 },
@@ -4164,16 +4152,16 @@ const UI = (() => {
     },
     {
       extra: {
-        statHP: 100, statSPD: 120, statDMG: 22, statATK: 1.25,
+        statHP: 100, statSPD: 120, statDMG: 22, statATK: 1.2,
         weapon:  { icon:'🏹', tag:'VŨ KHÍ CHÍNH', name:'Cung Xương', desc:'Mũi tên xuyên thấu đường thẳng, tốc độ 600 đ/giây. Tầm xa nhất 6 nhân vật. Passive kích hoạt khi mục tiêu >150 đ.' },
         passive: { icon:'🦅', tag:'PASSIVE', name:'Mắt Đại Bàng', desc:'Quái ở xa (>150 đơn vị) nhận thêm 25% sát thương.' },
-        active:  { icon:'🎯', tag:'ACTIVE', name:'Tàn Sát Tầm Xa', desc:'2 đợt quạt tên phủ 60°: đợt 1 (3 tên ±25°) + đợt 2 (4 tên ±37°/12°) cách 350ms. Mỗi quái chỉ nhận 1 đòn/đợt. Range >150đv: +25% (Mắt Đại Bàng). Evolved: splash độc 80px/điểm trúng.', cd:10 },
+        active:  { icon:'🎯', tag:'ACTIVE', name:'Tàn Sát Tầm Xa', desc:'2 đợt quạt tên phủ 60°: đợt 1 (3 tên ±25°) + đợt 2 (4 tên ±37°/12°) cách 350ms. Mỗi quái chỉ nhận 1 đòn/đợt. Range >150đv: +25% (Mắt Đại Bàng). Evolved: splash độc 70px/điểm trúng.', cd:10 },
         evolve:  { icon:'☠️', tag:'TIẾN HÓA', name:'Tử Thần Chi Tên', desc:'Mỗi tên trúng địch tạo AoE độc 70px (×0.55) — phủ rộng quanh điểm trúng. Không cộng dồn lên cùng 1 mục tiêu.' },
       }
     },
     {
       extra: {
-        statHP: 180, statSPD: 100, statDMG: 24, statATK: 0.95,
+        statHP: 155, statSPD: 100, statDMG: 24, statATK: 0.98,
         weapon:  { icon:'🪄', tag:'VŨ KHÍ CHÍNH', name:'Thiền Trượng', desc:'Đập mặt đất tạo sóng chấn động AoE bán kính 85 đơn vị quanh người. HP cao nhất — thiết kế cho lối chơi chịu đòn.' },
         passive: { icon:'🛡️', tag:'PASSIVE', name:'Kim Cang Thể', desc:'20% xác suất chặn hoàn toàn đòn bất kỳ. Chặn thành công: hồi 5% HP tối đa + cộng dồn +7% tốc đánh (stack được), reset sau 3 giây.' },
         active:  { icon:'☄️', tag:'ACTIVE', name:'Trấn Áp Bất Động', desc:'AoE khổng lồ ×6.0+ kéo quái vào gần 80đv rồi stun 1.5 giây — giữ quái trong tầm Thiền Trượng thay vì đẩy ra xa. Mỗi block stack đang tích: +×0.15 sát thương và +0.1s stun.', cd:13 },
@@ -4182,16 +4170,16 @@ const UI = (() => {
     },
     {
       extra: {
-        statHP: 95, statSPD: 155, statDMG: 27, statATK: 1.1,
-        weapon:  { icon:'🗡️', tag:'VŨ KHÍ CHÍNH', name:'Song Quỷ Đao', desc:'Đánh đơn mục tiêu trong tầm 150đv — ưu tiên boss, sau đó thấp HP nhất. Mỗi đòn tích 1 Sát Khí (max 5). Đủ 5 stack → Đột Sát ×3.5 + chảy máu. Tàng hình: tích 2 Sát Khí/đòn.' },
+        statHP: 95, statSPD: 155, statDMG: 30, statATK: 1.1,
+        weapon:  { icon:'🗡️', tag:'VŨ KHÍ CHÍNH', name:'Song Quỷ Đao', desc:'Đánh đơn mục tiêu trong tầm 150đv — ưu tiên quái thấp HP nhất để tối đa kill speed. Mỗi đòn tích 1 Sát Khí (max 5). Đủ 5 stack → Đột Sát ×3.5 + chảy máu. Sát thương overkill truyền sang mục tiêu kế tiếp. Tàng hình: tích 2 Sát Khí/đòn.' },
         passive: { icon:'🌑', tag:'PASSIVE', name:'Sát Thủ Thiên Bẩm', desc:'Đủ 5 Sát Khí → Đột Sát: ×3.5 + chảy máu 50% ST/s × 3s + hồi 8% HP. HP<20%: tàng hình khẩn cấp 4s, SPD +60%, CD 20s. Tàng hình: quái xa >320đv không đuổi.' },
         active:  { icon:'🌑', tag:'ACTIVE', name:'Ẩn Hiện Nhất Kiếm', desc:'Tức thì tàng hình 3s: SPD +60%, quái xa >320đv không đuổi. Sát Khí tích gấp đôi (2/đòn). Đòn đầu ra khỏi tàng hình: Đột Sát ×5.0 + chảy máu cực mạnh (×1.0 ST/s × 5s), sau đó thoát tàng hình.', cd:11 },
-        evolve:  { icon:'👥', tag:'TIẾN HÓA', name:'Hư Vô Quỷ Đao', desc:'Mỗi Đột Sát tạo phân thân ảo lặp lại đòn đó sau 0.3s (×1.0 DMG). Chảy máu từ Đột Sát áp thêm Làm Chậm 30% trong 2 giây.' },
+        evolve:  { icon:'👥', tag:'TIẾN HÓA', name:'Hư Vô Quỷ Đao', desc:'Mỗi Đột Sát tạo phân thân ảo lặp lại đòn đó sau 0.3s (×1.0 DMG, cũng có overflow). Chảy máu từ Đột Sát áp thêm Làm Chậm 30% trong 2 giây.' },
       }
     },
     {
       extra: {
-        statHP: 105, statSPD: 115, statDMG: 20, statATK: 1.35,
+        statHP: 105, statSPD: 115, statDMG: 20, statATK: 1.3,
         weapon:  { icon:'☠️', tag:'VŨ KHÍ CHÍNH', name:'Lưỡi Liềm Tử Thần', desc:'Boomerang: bay ra rồi tự quay lại, pierce 5 kẻ thù mỗi chiều. Cả đường đi lẫn đường về đều gây sát thương.' },
         passive: { icon:'💀', tag:'PASSIVE', name:'Thu Hoạch Linh Hồn', desc:'Giết quái tạo Linh Hồn (tối đa 20). Linh Hồn không tăng ST trực tiếp — tăng sức mạnh của Active khi tiêu: 0 hồn → ×1.5 tổng, 20 hồn → ×4.0 tổng. HP<20%: tiêu thụ tất cả để hồi 25 HP/linh hồn.' },
         active:  { icon:'💀', tag:'ACTIVE', name:'Quân Đoàn Bất Tử', desc:'Tiêu thụ toàn bộ Linh Hồn đang có → triệu 3 bộ xương (tối đa 9) + Lĩnh Vực Tử Thần: AoE 180px pulse 5 lần trong 4 giây. Pulse/đòn = ×(0.3 + hồn×0.025), tối đa ×0.8. Tích nhiều hồn trước khi cast để tối đa sát thương.', cd:14 },
@@ -4200,7 +4188,7 @@ const UI = (() => {
     },
     {
       extra: {
-        statHP: 116, statSPD: 130, statDMG: 32, statATK: 1.1,
+        statHP: 116, statSPD: 130, statDMG: 32, statATK: 1.35,
         weapon:  { icon:'⚡', tag:'VŨ KHÍ CHÍNH', name:'Thiên Lôi Cổ', desc:'Gọi sét xuống quái gần nhất trong tầm 200đv, dây chuyền sang 3 quái bên (×0.6/chuỗi). Mỗi cú đánh tích 1 Lôi Tích (tối đa 20). Sát thương tăng +4%/stack.' },
         passive: { icon:'⚡', tag:'PASSIVE', name:'Tĩnh Điện Tích Tụ', desc:'Mỗi Lôi Tích +4% sát thương (tối đa +80%). Đủ 20 stack: tự phóng AoE sét mỗi 3 giây. Dùng Active KHÔNG tiêu stack — sát thương Active đã nhân đầy đủ buff Lôi Tích.' },
         active:  { icon:'🌩️', tag:'ACTIVE', name:'Thiên Lôi Giáng Thế', desc:'Phóng 5 tia Thiên Lôi cộng hưởng — mỗi tia = Tổng ST × 2.5 (KHÔNG tiêu stack, dây chuyền 4 mục tiêu). Sau cast: ATK Speed +50% trong 5 giây + tích 2 Lôi Tích/đòn.', cd:16 },
@@ -4209,7 +4197,7 @@ const UI = (() => {
     },
     {
       extra: {
-        statHP: 144, statSPD: 105, statDMG: 29, statATK: 1.05,
+        statHP: 144, statSPD: 110, statDMG: 29, statATK: 1.3,
         weapon:  { icon:'🔥', tag:'VŨ KHÍ CHÍNH', name:'Long Hỏa Quyền', desc:'Đấm lửa rồng tạo hình nón lửa rộng 120° quanh người. Quái cháy nhận 15% ST/giây thêm 2 giây sau khi trúng.' },
         passive: { icon:'🐉', tag:'PASSIVE', name:'Long Vảy Linh', desc:'Giảm 20% mọi ST nhận. Mỗi 25 quái tiêu diệt: ATK +35% vĩnh viễn trong run (stack 3 lần = +105%). HP<40%: kích Cuồng Long — ATK +50%, SPD +25%.' },
         active:  { icon:'🐉', tag:'ACTIVE', name:'Rồng Lửa Thiêu Thân', desc:'Hóa thân Rồng Lửa 5 giây: AoE 200px liên tục (×1.5/giây) + vũ khí Long Hỏa Quyền tiếp tục bắn bình thường với full buff + SPD +20%, miễn knockback. Kết thúc: Thiên Long Nổ ×7.0.', cd:17 },
@@ -4218,10 +4206,10 @@ const UI = (() => {
     },
     {
       extra: {
-        statHP: 100, statSPD: 125, statDMG: 37, statATK: 0.85,
-        weapon:  { icon:'🧊', tag:'VŨ KHÍ CHÍNH', name:'Băng Linh Nhẫn', desc:'Phóng 4 vòng băng trong vòng cung 180° hướng về quái gần nhất, va chạm làm chậm địch 40% trong 2 giây. Địch đang chậm/đóng băng nhận thêm 45% ST từ mọi nguồn.' },
-        passive: { icon:'❄️', tag:'PASSIVE', name:'Tuyệt Đối Không Độ', desc:'Địch đang chậm/đóng băng nhận thêm 45% ST từ mọi nguồn. Giết địch đóng băng: hồi 8 HP. HP<25%: Băng Hộ Thể — hấp thụ 400 ST và phản chiếu 60% về nguồn tấn công.' },
-        active:  { icon:'🌨️', tag:'ACTIVE', name:'Bão Tuyết Tận Thế', desc:'Bão tuyết 200px trong 6 giây: địch chậm 60% + ×1.2/giây (hưởng +45%). Đứng trong bão ≥3 giây liên tiếp → đóng băng 2 giây. Kết thúc: Băng Nổ ×5.5 toàn vùng.', cd:18 },
+        statHP: 100, statSPD: 125, statDMG: 37, statATK: 1.0,
+        weapon:  { icon:'🧊', tag:'VŨ KHÍ CHÍNH', name:'Băng Linh Nhẫn', desc:'Phóng 4 vòng băng trong vòng cung 180° hướng về quái gần nhất, va chạm làm chậm địch 40% trong 2 giây. Địch đang chậm/đóng băng nhận thêm 35% ST từ mọi nguồn.' },
+        passive: { icon:'❄️', tag:'PASSIVE', name:'Tuyệt Đối Không Độ', desc:'Địch đang chậm/đóng băng nhận thêm 35% ST từ mọi nguồn. Giết địch đóng băng: hồi 8 HP. HP<25%: Băng Hộ Thể — hấp thụ 400 ST và phản chiếu 60% về nguồn tấn công.' },
+        active:  { icon:'🌨️', tag:'ACTIVE', name:'Bão Tuyết Tận Thế', desc:'Bão tuyết 200px trong 6 giây: địch chậm 60% + ×1.2/giây (hưởng +35%). Đứng trong bão ≥3 giây liên tiếp → đóng băng 2 giây. Kết thúc: Băng Nổ ×5.5 toàn vùng.', cd:18 },
         evolve:  { icon:'❄️', tag:'TIẾN HÓA', name:'Vong Linh Băng Trận', desc:'Băng Nhẫn trúng địch phân nhánh 2 mảnh băng homing (×0.6/mảnh). Địch đóng băng chết: nổ AoE băng 120px + đóng băng địch xung quanh trong 1 giây.' },
       }
     },
@@ -5013,62 +5001,62 @@ const CharPortrait = (() => {
 const PETS = [
   {
     id: 'pet_fox', icon: '🦊', name: 'Linh Hồ', title: 'Thương Nhân',
-    cost: 450,
+    cost: 6000,
     passiveName: 'Hào Quang Tài Lộc',
-    passiveDesc: '+20% vàng nhận trong mỗi run.',
+    passiveDesc: '+25% vàng nhận trong mỗi run.',
     skillName: 'Linh Khí Tích Lũy',
-    skillDesc: 'Mỗi 50 quái tiêu diệt → thêm +5% vàng nhận (tối đa +15%, 3 lần). Tích lũy trong suốt run.',
-    apply: p => { p.goldBonus += 0.20; },
+    skillDesc: 'Mỗi 40 quái tiêu diệt → thêm +5% vàng nhận (tối đa +15%, 3 lần). Tích lũy trong suốt run.',
+    apply: p => { p.goldBonus += 0.25; },
     applySkill: p => { p._foxKillCount = 0; p._foxGoldBonus = 0; },
     color: '#ffbb20',
   },
   {
     id: 'pet_tiger', icon: '🐯', name: 'Bạch Hổ', title: 'Chiến Binh',
-    cost: 750,
+    cost: 14000,
     passiveName: 'Vuốt Tốc',
     passiveDesc: '+15% tốc độ tấn công vĩnh viễn.',
-    skillName: 'Hổ Uy',
-    skillDesc: 'Khi HP > 70%: sát thương +12% (tự động bật/tắt theo HP hiện tại).',
-    apply: p => { p.atkSpeed += 0.15; },
-    applySkill: p => { p._tigerSkillActive = false; },
+    skillName: 'Chiến Hào',
+    skillDesc: '+10% tổng sát thương vĩnh viễn. Mỗi 10 giây chiến đấu liên tục (không dừng đánh): +3% ST thêm (tối đa +12% từ skill này, cộng dồn).',
+    apply: p => { p.atkSpeed += 0.15; p.baseDmg = Math.floor(p.baseDmg * 1.10); },
+    applySkill: p => { p._tigerCombatTimer = 0; p._tigerBonusDmg = 0; },
     color: '#ff9020',
   },
   {
     id: 'pet_snake', icon: '🐍', name: 'Hắc Xà', title: 'Huyết Sát',
-    cost: 1000,
+    cost: 26000,
     passiveName: 'Hút Huyết',
-    passiveDesc: 'Hút máu 5%: mỗi đòn đánh trúng hồi lại 5% sát thương gây ra thành HP.',
+    passiveDesc: 'Hút máu 8%: mỗi đòn đánh trúng hồi lại 8% sát thương gây ra thành HP.',
     skillName: 'Nọc Độc',
-    skillDesc: '25% cơ hội mỗi đòn áp độc lên kẻ thù: 8% tổng sát thương/giây × 3 giây. Làm mới thời gian nếu trúng lại.',
-    apply: p => { p.lifesteal = Math.min(0.5, (p.lifesteal || 0) + 0.05); },
-    applySkill: p => { p._snakePoisonChance = 0.25; },
+    skillDesc: '20% cơ hội mỗi đòn áp độc lên kẻ thù: 12% tổng sát thương/giây × 4 giây. Làm mới thời gian nếu trúng lại.',
+    apply: p => { p.lifesteal = Math.min(0.5, (p.lifesteal || 0) + 0.08); },
+    applySkill: p => { p._snakePoisonChance = 0.20; },
     color: '#40cc60',
   },
   {
     id: 'pet_eagle', icon: '🦅', name: 'Thần Ưng', title: 'Điểu Vương',
-    cost: 1200,
+    cost: 40000,
     passiveName: 'Cánh Thiên Phong',
-    passiveDesc: '+18% tốc độ di chuyển vĩnh viễn.',
+    passiveDesc: '+20% tốc độ di chuyển vĩnh viễn.',
     skillName: 'Thiên Nhãn',
-    skillDesc: 'AoE của tất cả vũ khí và kỹ năng +12% (cộng dồn với các nâng cấp AoE khác).',
-    apply: p => { p.speed *= 1.18; },
-    applySkill: p => { p.aoeSize = (p.aoeSize || 1) * 1.12; },
+    skillDesc: 'AoE của tất cả vũ khí và kỹ năng +15% + tốc độ đạn/chém +15% (cộng dồn với các nâng cấp khác).',
+    apply: p => { p.speed *= 1.20; },
+    applySkill: p => { p.aoeSize = (p.aoeSize || 1) * 1.15; p.projSpeed = (p.projSpeed || 1) * 1.15; },
     color: '#60d0ff',
   },
   {
     id: 'pet_turtle', icon: '🐢', name: 'Thần Quy', title: 'Thiết Giáp',
-    cost: 1600,
+    cost: 65000,
     passiveName: 'Mai Thần Hộ Thể',
-    passiveDesc: '+25% HP tối đa + giảm 8% sát thương nhận vào.',
+    passiveDesc: '+30% HP tối đa + giảm 10% sát thương nhận vào.',
     skillName: 'Phản Giáp',
-    skillDesc: 'Mỗi khi nhận đòn: phản sát thương AoE 60px (×0.8 tổng sát thương) vào tất cả quái xung quanh. Khi HP<30%: giảm thêm 20% sát thương nhận vào.',
-    apply: p => { const b = Math.floor(p.maxHp * 0.25); p.maxHp += b; p.hp += b; p.armor += 0.08; },
+    skillDesc: 'Mỗi khi nhận đòn: phản sát thương AoE 80px (×1.0 tổng sát thương) vào tất cả quái xung quanh. Khi HP<30%: giảm thêm 25% sát thương nhận vào.',
+    apply: p => { const b = Math.floor(p.maxHp * 0.30); p.maxHp += b; p.hp += b; p.armor += 0.10; },
     applySkill: p => { p._turtleSkillEnabled = true; p._turtleCounterCd = 0; },
     color: '#88cc44',
   },
   {
     id: 'pet_dragon', icon: '🐲', name: 'Ma Long', title: 'Long Thần',
-    cost: 2500,
+    cost: 110000,
     passiveName: 'Nghịch Lân Bùng Nổ',
     passiveDesc: '+8% tỷ lệ bạo kích, bạo kích gây thêm +40% sát thương.',
     skillName: 'Long Vũ Liên Kích',
@@ -5092,13 +5080,13 @@ const CHARS = [
     activeDesc: 'Đóng băng thời gian 0.2 giây rồi lao xuyên tất cả kẻ thù trên đường đi — sát thương scale theo Kiếm Ý: ×(2.5 + stack×0.05), tối đa ×4.0 tại 30 stack. Mỗi quái bị xuyên qua cộng thêm 1 stack. Không tiêu thụ stack.',
     activeIcon: '💨', activeCooldown: 11,
     evolvedWeapon: 'Thiên Phong Kiếm Ý',
-    evolveDesc: 'Mỗi nhát chém tạo 1 kiếm khí phóng thẳng về phía quái (×0.7, xuyên tất cả địch trên đường đi) + cung chém mở rộng từ ~90° lên ~160° (phủ rộng gần hết nửa vòng tròn).',
+    evolveDesc: 'Cung chém mở rộng từ ~90° lên ~160° (phủ rộng gần hết nửa vòng tròn). Đồng thời mỗi nhát chém phóng thêm 1 kiếm khí xuyên thẳng về phía quái (×0.7, xuyên tất cả địch trên đường đi) — chém vẫn giữ nguyên, kiếm khí là hiệu ứng cộng thêm.',
     color: '#60d0ff',
   },
   {
     id: 'huyen_nguyet', icon: '🌙', name: 'Huyền Nguyệt', title: 'Pháp Sư',
     cost: 1500,
-    baseHP: 520, baseSpd: 110, baseDmg: 175, baseAtk: 0.95,
+    baseHP: 560, baseSpd: 110, baseDmg: 170, baseAtk: 0.98,
     weapon: 'Tinh Linh Cầu', weaponDesc: 'Bắn cầu ma thuật tự truy đuổi kẻ thù gần nhất.',
     weaponIcon: '🔮',
     passiveName: 'Mana Tích Tụ',
@@ -5113,7 +5101,7 @@ const CHARS = [
   {
     id: 'thiet_tam', icon: '🏹', name: 'Thiết Tâm', title: 'Xạ Thủ',
     cost: 1500,
-    baseHP: 570, baseSpd: 120, baseDmg: 155, baseAtk: 1.25,
+    baseHP: 570, baseSpd: 120, baseDmg: 148, baseAtk: 1.2,
     weapon: 'Cung Xương', weaponDesc: 'Bắn quạt 3 mũi tên (±18°) xuyên thấu cùng lúc. Mỗi quái chỉ nhận 1 đòn/loạt — AoE tự nhiên không cộng dồn.',
     weaponIcon: '🏹',
     passiveName: 'Mắt Đại Bàng',
@@ -5128,7 +5116,7 @@ const CHARS = [
   {
     id: 'kim_cang', icon: '🥋', name: 'Kim Cang', title: 'Võ Tăng',
     cost: 1500,
-    baseHP: 1050, baseSpd: 100, baseDmg: 140, baseAtk: 0.95,
+    baseHP: 900, baseSpd: 100, baseDmg: 148, baseAtk: 0.98,
     weapon: 'Thiền Trượng', weaponDesc: 'Đập mặt đất tạo sóng chấn động AoE quanh người.',
     weaponIcon: '🪄',
     passiveName: 'Kim Cang Thể',
@@ -5143,8 +5131,8 @@ const CHARS = [
   {
     id: 'am_sat', icon: '🗡️', name: 'Ám Sát', title: 'Sát Thủ Bóng Đêm',
     cost: 1500,
-    baseHP: 510, baseSpd: 155, baseDmg: 150, baseAtk: 1.1,
-    weapon: 'Song Quỷ Đao', weaponDesc: 'Đánh đơn mục tiêu trong tầm 150đv — ưu tiên boss, sau đó mục tiêu thấp HP nhất. Mỗi đòn tích 1 Sát Khí. Đủ 5 Sát Khí → đòn tiếp theo kích Đột Sát: ×3.5 + chảy máu 3 giây. Khi tàng hình mỗi đòn tích 2 Sát Khí.',
+    baseHP: 530, baseSpd: 155, baseDmg: 165, baseAtk: 1.1,
+    weapon: 'Song Quỷ Đao', weaponDesc: 'Đánh đơn mục tiêu trong tầm 150đv — ưu tiên quái thấp HP nhất để tối đa kill speed. Mỗi đòn tích 1 Sát Khí. Đủ 5 Sát Khí → đòn tiếp theo kích Đột Sát: ×3.5 + chảy máu 3 giây. Khi tàng hình mỗi đòn tích 2 Sát Khí. Sát thương dư (overkill) truyền sang mục tiêu kế tiếp gần nhất.',
     weaponIcon: '🗡️',
     passiveName: 'Sát Thủ Thiên Bẩm',
     passiveDesc: 'Mỗi đòn tích 1 Sát Khí (max 5, hết hạn 3s không đánh). Đủ 5 → Đột Sát: ×3.5 + chảy máu (50% ST/giây × 3s) + hồi 8% HP. HP<20%: khẩn cấp tàng hình 4s + SPD +60% (CD 20s), quái xa hơn ~320đv không đuổi.',
@@ -5158,7 +5146,7 @@ const CHARS = [
   {
     id: 'tu_linh', icon: '💀', name: 'Tử Linh', title: 'Thuật Sĩ Xương',
     cost: 1500,
-    baseHP: 600, baseSpd: 115, baseDmg: 130, baseAtk: 1.35,
+    baseHP: 600, baseSpd: 115, baseDmg: 142, baseAtk: 1.3,
     weapon: 'Lưỡi Liềm Tử Thần', weaponDesc: 'Ném liềm quay vòng ra ngoài rồi quay lại (boomerang).',
     weaponIcon: '☠️',
     passiveName: 'Thu Hoạch Linh Hồn',
@@ -5204,12 +5192,12 @@ const CHARS = [
     id: 'bang_vuong', icon: '❄️', name: 'Băng Vương', title: 'Vương Giả Tuyết Lạnh',
     cost: 250000,
     baseHP: 500, baseSpd: 125, baseDmg: 195, baseAtk: 1.0,
-    weapon: 'Băng Linh Nhẫn', weaponDesc: 'Phóng 4 vòng băng trong vòng cung 180° hướng về quái gần nhất, va chạm làm chậm địch 40% trong 2 giây. Địch đang chậm/đóng băng nhận thêm 45% ST từ mọi nguồn.',
+    weapon: 'Băng Linh Nhẫn', weaponDesc: 'Phóng 4 vòng băng trong vòng cung 180° hướng về quái gần nhất, va chạm làm chậm địch 40% trong 2 giây. Địch đang chậm/đóng băng nhận thêm 35% ST từ mọi nguồn.',
     weaponIcon: '🧊',
     passiveName: 'Tuyệt Đối Không Độ',
-    passiveDesc: 'Địch đang chậm/đóng băng nhận thêm 45% ST từ mọi nguồn. Giết địch đóng băng: hồi 8 HP. HP<25%: Băng Hộ Thể — hấp thụ 400 ST và phản chiếu 60% về nguồn tấn công.',
+    passiveDesc: 'Địch đang chậm/đóng băng nhận thêm 35% ST từ mọi nguồn. Giết địch đóng băng: hồi 8 HP. HP<25%: Băng Hộ Thể — hấp thụ 400 ST và phản chiếu 60% về nguồn tấn công.',
     activeName: 'Bão Tuyết Tận Thế',
-    activeDesc: 'Bão tuyết 200px trong 6 giây: địch chậm 60% + ×1.2/giây (vũ khí/crit hưởng +45%). Đứng trong bão 3 giây liên tiếp → đóng băng 2 giây. Kết thúc: Băng Nổ ×5.5 toàn vùng.',
+    activeDesc: 'Bão tuyết 200px trong 6 giây: địch chậm 60% + ×1.2/giây (vũ khí/crit hưởng +35%). Đứng trong bão 3 giây liên tiếp → đóng băng 2 giây. Kết thúc: Băng Nổ ×5.5 toàn vùng.',
     activeIcon: '🌨️', activeCooldown: 18,
     evolvedWeapon: 'Vong Linh Băng Trận',
     evolveDesc: 'Băng Nhẫn trúng địch phân nhánh 2 mảnh băng homing (×0.6/mảnh). Địch đóng băng chết: nổ AoE băng 120px + đóng băng địch xung quanh trong 1 giây.',
@@ -5248,7 +5236,7 @@ const MAPS = [
     bossDesc:'Slam AoE quanh người + triệu zombie. Giai đoạn 3: 3 slam liên tiếp 300ms. Giữ khoảng cách, tránh đứng gần.',
     difficulty:1, enemyTypes:['zombie','crawler'],
     specialMech:'none', bgPattern:'village',
-    tier:1, goldMin:100, goldMax:140,
+    tier:1, goldMin:50, goldMax:80,
   },
   {
     id:'map02', name:'Rừng Tối', icon:'🌲',
@@ -5259,7 +5247,7 @@ const MAPS = [
     bossDesc:'Lao thẳng tốc độ cao (×3 SPD). Giai đoạn 2: 2 lần lao liên tiếp. Giai đoạn 3: 3 lần lao + AoE. Né sang bên khi boss chuẩn bị lao.',
     difficulty:1, enemyTypes:['wolf','bat','lurker'],
     specialMech:'darkFog', bgPattern:'forest',
-    tier:1, goldMin:110, goldMax:150,
+    tier:1, goldMin:55, goldMax:85,
   },
   {
     id:'map03', name:'Đầm Lầy Độc', icon:'🌿',
@@ -5270,7 +5258,7 @@ const MAPS = [
     bossDesc:'Phun độc spread 3→7 hướng về phía người chơi. Giai đoạn 2: thêm AoE độc. Giai đoạn 3: 3 đợt liên tục. Luôn di chuyển để tránh bị trúng loạt đạn.',
     difficulty:2, enemyTypes:['snake','poisonbug','zombie'],
     specialMech:'poisonGround', bgPattern:'swamp',
-    tier:1, goldMin:120, goldMax:160,
+    tier:1, goldMin:60, goldMax:95,
   },
   {
     id:'map04', name:'Thành Cổ Đổ Nát', icon:'🏰',
@@ -5281,7 +5269,7 @@ const MAPS = [
     bossDesc:'Giai đoạn 1: cone 5 đạn phía trước. Giai đoạn 2: ring 12 đạn. Giai đoạn 3: ring 16 đạn + shake. Né sang bên để tránh cone.',
     difficulty:2, enemyTypes:['zombie','archer','shielder'],
     specialMech:'ambush', bgPattern:'ruins',
-    tier:2, goldMin:150, goldMax:185,
+    tier:2, goldMin:80, goldMax:120,
   },
   {
     id:'map05', name:'Sa Mạc Lửa', icon:'🏜️',
@@ -5292,7 +5280,7 @@ const MAPS = [
     bossDesc:'Phun lửa cone + gọi thiên thạch trễ 0.7s. Giai đoạn 3: 3 thiên thạch đồng thời. Tránh xa vùng cảnh báo thiên thạch (ring trắng).',
     difficulty:2, enemyTypes:['firedog','sandcrawler','exploder'],
     specialMech:'meteorShower', bgPattern:'desert',
-    tier:2, goldMin:165, goldMax:200,
+    tier:2, goldMin:90, goldMax:135,
   },
   {
     id:'map06', name:'Hang Động Băng', icon:'❄️',
@@ -5303,7 +5291,7 @@ const MAPS = [
     bossDesc:'Ring băng gai 8→16 đạn + làm chậm người chơi 2.5–3 giây. Giai đoạn 3: ring đôi. Kết hợp sàn trơn cực nguy hiểm — dùng kỹ năng active để thoát.',
     difficulty:3, enemyTypes:['icegolem','snowbat','freezer'],
     specialMech:'iceSlide', bgPattern:'ice',
-    tier:2, goldMin:180, goldMax:220,
+    tier:2, goldMin:100, goldMax:150,
   },
   {
     id:'map07', name:'Nghĩa Địa Cổ', icon:'⚰️',
@@ -5314,7 +5302,7 @@ const MAPS = [
     bossDesc:'Ring linh hồn xoáy theo animT. Giai đoạn 3: double ring 2×16 đạn cách nhau 300ms. Luôn di chuyển — đạn xoáy khó đoán hướng.',
     difficulty:3, enemyTypes:['ghost','skeleton','revenant'],
     specialMech:'revival', bgPattern:'graveyard',
-    tier:3, goldMin:250, goldMax:295,
+    tier:3, goldMin:140, goldMax:200,
   },
   {
     id:'map08', name:'Tháp Phù Thuỷ', icon:'🗼',
@@ -5325,7 +5313,7 @@ const MAPS = [
     bossDesc:'Giai đoạn 2+3: dịch chuyển ngẫu nhiên gần người chơi + xoáy phép. Giai đoạn 3: teleport + 5 phát targeted + ring 14 đạn. Luôn chuẩn bị né khi boss biến mất.',
     difficulty:3, enemyTypes:['mage','familiar','golem'],
     specialMech:'magicTraps', bgPattern:'tower',
-    tier:3, goldMin:270, goldMax:315,
+    tier:3, goldMin:160, goldMax:225,
   },
   {
     id:'map09', name:'Biển Máu', icon:'🌊',
@@ -5336,7 +5324,7 @@ const MAPS = [
     bossDesc:'Xúc tu đập trễ 0.6s tại vị trí người chơi (cảnh báo bằng ring xanh). Giai đoạn 3: 3 xúc tu + ring 10 đạn. Liên tục di chuyển để tránh xúc tu.',
     difficulty:4, enemyTypes:['bloodfish','diver','kraken'],
     specialMech:'bloodSea', bgPattern:'blood',
-    tier:3, goldMin:300, goldMax:350,
+    tier:3, goldMin:185, goldMax:260,
   },
   {
     id:'map10', name:'Rừng Cơ Khí', icon:'⚙️',
@@ -5347,7 +5335,7 @@ const MAPS = [
     bossDesc:'Laser tốc độ cao (SPD 400) — cực khó né. Giai đoạn 2: laser + 6 tên lửa ngẫu nhiên. Giai đoạn 3: overcharge — laser 5 tia + 12 tên lửa. Dùng active để thoát.',
     difficulty:4, enemyTypes:['drone','turretmob','mechdog'],
     specialMech:'mechanicalTurrets', bgPattern:'mech',
-    tier:4, goldMin:380, goldMax:430,
+    tier:4, goldMin:240, goldMax:320,
   },
   {
     id:'map11', name:'Vùng Hỗn Mang', icon:'🌀',
@@ -5358,7 +5346,7 @@ const MAPS = [
     bossDesc:'Đạn bay hướng ngẫu nhiên + tốc độ ngẫu nhiên. Giai đoạn 3: 3 luồng đạn xoáy cùng lúc. Kết hợp hiệu ứng map (chậm/đảo chiều) = cực kỳ hỗn loạn.',
     difficulty:4, enemyTypes:['chaos','phantom','rift'],
     specialMech:'chaosEffects', bgPattern:'chaos',
-    tier:4, goldMin:410, goldMax:460,
+    tier:4, goldMin:270, goldMax:360,
   },
   {
     id:'map12', name:'Bầu Trời Sụp Đổ', icon:'⛈️',
@@ -5369,7 +5357,7 @@ const MAPS = [
     bossDesc:'Hơi thở sét cone 6→8 đạn tốc độ 320–350. Giai đoạn 3: breath + ring xoáy 16 đạn trắng đồng thời. Boss nhanh nhất Tier 4 — dùng kỹ năng dash để thoát.',
     difficulty:5, enemyTypes:['stormbird','thunderbeast','lightning'],
     specialMech:'randomLightning', bgPattern:'storm',
-    tier:4, goldMin:450, goldMax:500,
+    tier:4, goldMin:300, goldMax:400,
   },
   {
     id:'map13', name:'Mê Cung Gương', icon:'🪞',
@@ -5380,7 +5368,7 @@ const MAPS = [
     bossDesc:'Ring 8 đạn lặp lại offset +PI/8 theo phase. Giai đoạn 3: 3 đợt ring cách nhau 250ms. Đạn dày nhưng có kẽ hở — quan sát kỹ để di chuyển xuyên qua.',
     difficulty:5, enemyTypes:['mirror','illusion','shade'],
     specialMech:'mirrorClones', bgPattern:'mirror',
-    tier:5, goldMin:550, goldMax:640,
+    tier:5, goldMin:360, goldMax:480,
   },
   {
     id:'map14', name:'Địa Ngục Thứ 9', icon:'🔥',
@@ -5391,7 +5379,7 @@ const MAPS = [
     bossDesc:'Ring lửa 10→16 đạn. Giai đoạn 2: ring + AoE tại chỗ. Giai đoạn 3: 3 đợt ring 16 đạn liên tiếp 350ms. Tất cả quái + boss có khiên 50% HP — cần xuyên giáp.',
     difficulty:5, enemyTypes:['hellhound','demonknight','hellmage'],
     specialMech:'shieldedEnemies', bgPattern:'hell',
-    tier:5, goldMin:620, goldMax:720,
+    tier:5, goldMin:400, goldMax:540,
   },
   {
     id:'map15', name:'Tâm Vũ Trụ', icon:'🌌',
@@ -5402,7 +5390,7 @@ const MAPS = [
     bossDesc:'Giai đoạn 2+3: hút người chơi về phía boss (-80 đến -120 đơn vị). Giai đoạn 3: 3 xoáy 12 đạn cách nhau 300ms + hút mạnh. Boss nguy hiểm nhất game — cần build tốt nhất.',
     difficulty:5, enemyTypes:['void','starspawn','nebula'],
     specialMech:'gravityShift', bgPattern:'cosmos',
-    tier:5, goldMin:700, goldMax:800,
+    tier:5, goldMin:440, goldMax:590,
   },
   {
     id:'map16', name:'Lăng Mộ Tinh Thần', icon:'🪦',
@@ -5413,7 +5401,7 @@ const MAPS = [
     bossDesc:'Triệu linh hồn xoáy 8 hướng từ di tích xung quanh sàn. Giai đoạn 2: thêm vệt linh hồn truy đuổi 3 giây. Giai đoạn 3: Nghi Thức Linh Hút kích hoạt vĩnh viễn + xoáy kép 16 đạn 2 vòng liên tiếp 200ms.',
     difficulty:6, enemyTypes:['spectre','bonecollector','soulreaper'],
     specialMech:'spiritDrain', bgPattern:'tomb',
-    tier:6, goldMin:850, goldMax:980,
+    tier:6, goldMin:500, goldMax:660,
   },
   {
     id:'map17', name:'Vực Thẳm Hỗn Nguyên', icon:'🌑',
@@ -5424,7 +5412,7 @@ const MAPS = [
     bossDesc:'Bắn 3 luồng đạn hỗn độn tốc độ ngẫu nhiên 200–500đv/s. Giai đoạn 2: mở Cổng Hỗn Nguyên — portal triệu quái tại chỗ liên tục. Giai đoạn 3: Sụp Đổ Chiều Không Gian kích hoạt mỗi 12 giây + 5 luồng đạn + toàn sàn có vùng nứt.',
     difficulty:6, enemyTypes:['abyssal','riftborn','anomaly'],
     specialMech:'dimensionCollapse', bgPattern:'abyss',
-    tier:6, goldMin:920, goldMax:1050,
+    tier:6, goldMin:560, goldMax:740,
   },
   {
     id:'map18', name:'Đỉnh Tuyệt Diệt', icon:'💠',
@@ -5435,7 +5423,7 @@ const MAPS = [
     bossDesc:'Siêu Việt Thể tích lũy mỗi lần dùng skill (max 20 stack): +6% SPD và +5% DMG/stack. Giai đoạn 1: 4 trục tia cố định, 2→4 đạn/trục tùy stack. Giai đoạn 2: 8–12 tia xoáy tốc độ cao. Giai đoạn 3: 3 Lõi Siêu Việt xuất hiện — mỗi lõi còn sống cộng thêm stack khi boss dùng skill. Không bất tử — áp lực đến từ DPS race: hạ boss trước khi stack 20.',
     difficulty:6, enemyTypes:['annihilator','executor','obliterator'],
     specialMech:'ascensionMode', bgPattern:'apex',
-    tier:6, goldMin:1000, goldMax:1200,
+    tier:6, goldMin:620, goldMax:820,
   },
 ];
 
@@ -7646,15 +7634,19 @@ class Enemy {
     this.dead = true;
 
     // Drop loot — boss drops gold but NOT exp (per design)
-    if (!this.isBoss) {
+    // Sau khi boss xuất hiện: quái/tinh anh không rớt exp hoặc vàng nữa (chỉ boss mới có loot)
+    const bossPhaseActive = Game.bossSpawned;
+    if (!this.isBoss && !bossPhaseActive) {
       Game.dropExp(this.x, this.y, this.exp);  // elite exp đã ×4 khi spawn — không nhân thêm
     }
-    // Loot: boss gold đã được set trực tiếp đúng range (50–100) trong spawnBoss
+    // Gold: boss luôn trả gold; quái thường chỉ trả trước khi boss xuất hiện
     const goldAmt = this.gold * (this.isElite ? 5 : 1);
 
     if (killer) {
-      const earned = killer.gainGold(goldAmt);
-      DmgNumbers.show(this.x, this.y, `+${earned}◈`, 'normal');
+      if (!bossPhaseActive || this.isBoss) {
+        const earned = killer.gainGold(goldAmt);
+        DmgNumbers.show(this.x, this.y, `+${earned}◈`, 'normal');
+      }
       killer.onKill(this);
     }
 
@@ -9614,6 +9606,7 @@ const Game = (() => {
   let _ach100KillsBefore2Min = false;
   let _achFastEliteBonus  = 0;   // count of fast elite kills (within 5s of spawn)
   let _achEliteSpawnTime  = 0;   // time when last elite spawned
+  let _bossWarn30         = false; // đã hiện cảnh báo 30s boss chưa
 
   // Pity counter for main weapon upgrade card
   // Tracks consecutive level-ups where the main weapon card was NOT offered
@@ -9713,6 +9706,7 @@ const Game = (() => {
     _achNoHitTimer         = 0;
     _achNoHitBonuses       = 0;
     _ach100KillsBefore2Min = false;
+    _bossWarn30            = false;
     _achFastEliteBonus     = 0;
     _achEliteSpawnTime     = 0;
     _mainWpnPity           = 0;
@@ -9803,7 +9797,7 @@ const Game = (() => {
       if (_achNoHitTimer >= 30) {
         _achNoHitBonuses++;
         _achNoHitTimer = 0;
-        Toast.show('🛡 Vô thương 30 giây: +15 ◈ sau run!');
+        Toast.show('🛡 Vô thương 30 giây: +' + (15 * (currentMap ? currentMap.tier : 1)) + ' ◈ sau run!');
       }
     } else {
       _achNoHitTimer = 0;
@@ -9868,7 +9862,7 @@ const Game = (() => {
         if (e.isElite && !e.isBoss && _achEliteSpawnTime > 0 &&
             (elapsedTime - _achEliteSpawnTime) <= 5) {
           _achFastEliteBonus++;
-          Toast.show('⭐ Hạ tinh anh trong 5 giây: +20 ◈!');
+          Toast.show('⭐ Hạ tinh anh trong 5 giây: +' + (20 * (currentMap ? currentMap.tier : 1)) + ' ◈!');
           _achEliteSpawnTime = 0;
         }
         // Revival mechanic: keep dead elites in pool (map07)
@@ -9921,19 +9915,48 @@ const Game = (() => {
     // Map mechanics
     updateMapMechanics(dt);
 
-    // Boss HP bar — update every frame while boss is alive
+    // Boss HP bar + countdown timer — update every frame while boss is alive
     if (bossSpawned && !bossKilled) {
       const liveBoss = enemies.find(e => e.isBoss && !e.dead);
       if (liveBoss) {
         const bPct   = liveBoss.hp / liveBoss.maxHp;
         const bPhase = bPct > 0.66 ? 1 : bPct > 0.33 ? 2 : 3;
-        // Update phase field on boss object for external use
         liveBoss.phase = bPhase;
         UI.showBossBar(
           liveBoss.name || (currentMap ? currentMap.bossName : 'BOSS'),
           bPct, bPhase,
           liveBoss.hp, liveBoss.maxHp
         );
+
+        // Countdown: 2 phút kể từ lúc boss spawn (elapsedTime = CFG.BOSS_TIME)
+        const BOSS_LIMIT = CFG.BOSS_TIME + 120; // = 300s (5 phút tổng)
+        const timeLeft = Math.max(0, BOSS_LIMIT - elapsedTime);
+        const cdMins = Math.floor(timeLeft / 60);
+        const cdSecs = Math.floor(timeLeft % 60);
+        const cdEl = document.getElementById('boss-countdown');
+        if (cdEl) {
+          cdEl.style.display = 'block';
+          cdEl.textContent = `⏱ ${cdMins}:${String(cdSecs).padStart(2,'0')}`;
+          // Đổi màu đỏ khi < 30s
+          cdEl.style.color = timeLeft < 30 ? '#ff4040' : timeLeft < 60 ? '#ffaa00' : '#ffcc00';
+          cdEl.style.borderColor = timeLeft < 30 ? 'rgba(255,60,60,0.6)' : 'rgba(255,200,0,0.4)';
+          // Rung nhẹ khi < 10s
+          if (timeLeft < 10 && timeLeft > 0) {
+            cdEl.style.animation = 'skb-as 0.4s ease-in-out infinite';
+          }
+        }
+
+        // Cảnh báo 30s
+        if (!_bossWarn30 && timeLeft <= 30 && timeLeft > 29) {
+          _bossWarn30 = true;
+          Toast.show('⚠️ Còn 30 giây để hạ boss!');
+        }
+
+        // Hết giờ → thua
+        if (timeLeft <= 0 && running) {
+          Toast.show('💀 Hết thời gian! Boss không thể bị hạ...');
+          setTimeout(() => { if (running) endRun(false); }, 800);
+        }
       }
     }
 
@@ -10009,8 +10032,8 @@ const Game = (() => {
           if (dist > 80 * aoe) return;
           const angle = Math.atan2(dy, dx);
           const diff  = Math.abs(MathU.angleDiff(angle, aimAngle));
-          // Evolved: slash arc mở rộng ~160° (PI*0.88/2 ~ 79°), thường ~90° (PI*0.45 ~ 81° — giữ nguyên)
-          const arcLimit = p.mainWeapon.evolved ? Math.PI * 0.44 : Math.PI * 0.45;
+          // Normal: ~90° tổng (half = PI*0.25), Evolved: ~160° tổng (half = PI*0.44)
+          const arcLimit = p.mainWeapon.evolved ? Math.PI * 0.44 : Math.PI * 0.25;
           if (diff < arcLimit) {
             const { val, crit } = p.rollCrit(dmg);
             e.takeDamage(val, p, crit ? 'crit' : 'normal');
@@ -10033,10 +10056,11 @@ const Game = (() => {
         }
 
         // ── SLASH ARC VISUAL ──
-        slashArcs.push(new SlashArc(p.x, p.y, aimAngle, 75 * aoe, p.charData.color));
+        // Normal: cung hẹp ~90° (spread = PI*0.25), màu nhân vật, rõ ràng directional
+        slashArcs.push(new SlashArc(p.x, p.y, aimAngle, 75 * aoe, p.charData.color, Math.PI * 0.25));
         // Particle spray toward aim direction
         for (let i = 0; i < 5; i++) {
-          const a = aimAngle + (Math.random() - 0.5) * 0.9;
+          const a = aimAngle + (Math.random() - 0.5) * 0.5;
           particles.spawn(
             p.x + Math.cos(aimAngle) * 30,
             p.y + Math.sin(aimAngle) * 30,
@@ -10046,8 +10070,10 @@ const Game = (() => {
           );
         }
 
-        // Thiên Phong Kiếm Ý evolved: bắn 1 kiếm khí xuyên thẳng về hướng chém
+        // Thiên Phong Kiếm Ý evolved: chém RỘNG ~160° + phóng 1 kiếm khí xuyên thẳng
         if (p.mainWeapon.evolved) {
+          // Thêm arc rộng (~160°) — VẪN giữ arc gốc ~90° ở trên, thêm arc rộng hơn để thấy sự khác biệt
+          slashArcs.push(new SlashArc(p.x, p.y, aimAngle, 85 * aoe, '#e8f8ff', Math.PI * 0.44));
           spawnProjectile({ _skillId: 'main_luu_phong',
             x: p.x, y: p.y,
             vx: Math.cos(aimAngle) * 380,
@@ -10057,8 +10083,6 @@ const Game = (() => {
             color: '#e8f8ff', owner: 'player',
             pierce: 99, shape: 'sword_ki',
           });
-          // Wider slash arc (160° instead of ~90°) — phủ nửa vòng tròn
-          slashArcs.push(new SlashArc(p.x, p.y, aimAngle, 82 * aoe, '#ffffff', Math.PI * 0.88));
         }
         break;
       }
@@ -10216,27 +10240,17 @@ const Game = (() => {
 
       case 'am_sat': {
         // Song Quỷ Đao — ưu tiên mục tiêu thấp HP nhất trong tầm 150đv, tích Sát Khí combo
+        // Sát thương dư (overkill) truyền sang mục tiêu kế tiếp gần nhất trong tầm
         const AM_SAT_RANGE = 150;
         let amTarget = null;
         let lowestHpRatio = Infinity;
         if (Game.enemies) {
-          // Ưu tiên boss nếu trong tầm — sát thủ luôn nhắm mục tiêu lớn nhất trước
+          // Ưu tiên mục tiêu thấp HP nhất (kể cả boss) để tối đa hoá kill rate
           for (const e of Game.enemies) {
-            if (e.dead || !e.isBoss) continue;
-            if (Math.hypot(e.x - p.x, e.y - p.y) <= AM_SAT_RANGE) {
-              amTarget = e;
-              lowestHpRatio = e.hp / (e.maxHp || e.hp || 1); // cho execute check
-              break;
-            }
-          }
-          // Không có boss trong tầm → ưu tiên quái thấp HP nhất (hành vi cũ)
-          if (!amTarget) {
-            for (const e of Game.enemies) {
-              if (e.dead || e.isBoss) continue;
-              if (Math.hypot(e.x - p.x, e.y - p.y) > AM_SAT_RANGE) continue;
-              const hpRatio = e.hp / (e.maxHp || e.hp || 1);
-              if (hpRatio < lowestHpRatio) { lowestHpRatio = hpRatio; amTarget = e; }
-            }
+            if (e.dead) continue;
+            if (Math.hypot(e.x - p.x, e.y - p.y) > AM_SAT_RANGE) continue;
+            const hpRatio = e.hp / (e.maxHp || e.hp || 1);
+            if (hpRatio < lowestHpRatio) { lowestHpRatio = hpRatio; amTarget = e; }
           }
         }
         if (!amTarget) {
@@ -10263,8 +10277,28 @@ const Game = (() => {
         }
 
         const { val, crit } = p.rollCrit(p.totalDmg * dmgMult);
+        const hpBeforeHit = amTarget.hp;
         amTarget.takeDamage(val, p, crit ? 'crit' : 'assassin');
         p.trackSkillDmg('main_am_sat', val);
+
+        // Overflow damage — sát thương dư truyền mục tiêu kế tiếp trong tầm
+        if (amTarget.dead && val > hpBeforeHit) {
+          const overflow = val - hpBeforeHit;
+          let overflowTarget = null;
+          let nearestDist = Infinity;
+          if (Game.enemies) {
+            for (const e of Game.enemies) {
+              if (e.dead || e === amTarget) continue;
+              const d = Math.hypot(e.x - p.x, e.y - p.y);
+              if (d <= AM_SAT_RANGE && d < nearestDist) { nearestDist = d; overflowTarget = e; }
+            }
+          }
+          if (overflowTarget) {
+            overflowTarget.takeDamage(overflow, p, 'assassin');
+            p.trackSkillDmg('main_am_sat', overflow);
+            particles.spawn(overflowTarget.x, overflowTarget.y, { count: 6, color: '#cc44ff', speedMin: 80, speedMax: 200, life: 0.25 });
+          }
+        }
 
         if (isDotSat) {
           // Chảy máu
@@ -10936,6 +10970,7 @@ const Game = (() => {
       Audio.playBGM('boss');
       UI.showBossAppear();
       UI.showWaveAnnounce('☠ BOSS XUẤT HIỆN!');
+      setTimeout(() => Toast.show('⚠️ Quái không còn rớt loot! Hạ boss trong 2 phút!'), 2000);
       // Dùng runId để tránh race condition: timeout cũ không spawn boss vào run mới
       const thisRunId = _currentRunId;
       setTimeout(() => {
@@ -10988,12 +11023,16 @@ const Game = (() => {
     const mapTypes = currentMap ? currentMap.enemyTypes : ['zombie'];
     const typeKey  = mapTypes[MathU.randInt(0, mapTypes.length - 1)];
     const template = getEnemyTemplate(typeKey, wave);
+    // Gold scales with map tier: T1~avg2.5, T2~5, T3~8, T4~13, T5~18, T6~25
+    const _tierNG = [[1,4],[2,8],[3,13],[5,21],[7,29],[10,40]];
+    const [ngMin, ngMax] = _tierNG[Math.min((currentMap ? currentMap.tier : 1) - 1, 5)];
 
     const e = new Enemy(pos.x, pos.y, {
       ...template,
       hp:  template.hp  * (1 + wave * 0.15),
       dmg: template.dmg * (1 + wave * 0.08),
       exp: Math.round(template.exp * (1 + wave * 0.10)),
+      gold: MathU.randInt(ngMin, ngMax),
     });
     enemies.push(e);
   }
@@ -11003,6 +11042,9 @@ const Game = (() => {
     const mapTypes = currentMap ? currentMap.enemyTypes : ['zombie'];
     const typeKey  = mapTypes[MathU.randInt(0, mapTypes.length - 1)];
     const template = getEnemyTemplate(typeKey, wave);
+    // Elite gold (before ×5 multiplier in die()): T1~avg13, T2~19, T3~27, T4~38, T5~53, T6~75
+    const _tierEG = [[8,18],[12,26],[18,36],[25,51],[35,71],[50,100]];
+    const [egMin, egMax] = _tierEG[Math.min((currentMap ? currentMap.tier : 1) - 1, 5)];
 
     const e = new Enemy(pos.x, pos.y, {
       ...template,
@@ -11011,7 +11053,7 @@ const Game = (() => {
       spd:   template.spd * 1.2,
       r:     (template.r || 14) * 1.4,
       exp:   template.exp * 4,
-      gold:  MathU.randInt(8, 18),
+      gold:  MathU.randInt(egMin, egMax),
       isElite: true,
       // Random elite modifiers
       ...getEliteMod(),
@@ -11052,7 +11094,7 @@ const Game = (() => {
       spd:   bossSpd,
       r:     28,
       exp:   80 * wave,
-      gold:  MathU.randInt(40 + tier*15, 80 + tier*20),
+      gold:  MathU.randInt(60 + tier*50, 110 + tier*75),
       icon:  mapData.bossIcon,
       color: mapColor[mapData.id] || '#ff1040',
       isBoss: true,
@@ -12143,7 +12185,6 @@ const Game = (() => {
           !player.subWeapons.find(w => w.id === sk.id) &&
           player.subWeapons.length >= 6) return;
 
-      // Rarity weight — fortune[1] "Thẻ Hiếm" adds +1 weight/lv to rare cards
       const rareBonus = (player.pot && player.pot.fortune && player.pot.fortune[1]) || 0;
       const weight = sk.rarity === 'common' ? 4
                    : sk.rarity === 'rare'   ? (2 + rareBonus) : 1;
@@ -12299,54 +12340,53 @@ const Game = (() => {
     // Xoá hint tutorial khi kết thúc run
     if (typeof Tutorial !== 'undefined') Tutorial.clearHints();
 
-    // ── BASE GOLD: from map tier range ──────────────────────────────
+    // ── IN-RUN GOLD: earned from kills during run (already has goldBonus applied) ─
     const mapData = currentMap || {};
-    const goldMin = mapData.goldMin || 50;
-    const goldMax = mapData.goldMax || 80;
-    let baseGold;
+    const goldMin = mapData.goldMin || 40;
+    const goldMax = mapData.goldMax || 60;
+    const tier    = mapData.tier || 1;
+    const goldBonusMult = player ? player.goldBonus : 1;
+
+    // Vàng từ quái/elite/boss giết trong run — đây là nguồn thu chính
+    const inRunGold = player ? player.gold : 0;
+
+    // Thưởng hoàn thành: chỉ khi thắng, nhân goldBonus
+    let completionBonus = 0;
     if (victory) {
-      baseGold = MathU.randInt(goldMin, goldMax);
-    } else {
-      // Consolation gold scales với thời gian sống — chống farm bằng cách die nhanh
-      // Full 35% rate sau 120 giây, tuyến tính từ 0→120s
-      // Dưới 10 giây: 0 vàng. 10-120s: scale tuyến tính, không có minimum cứng
-      const timeFactor = Math.min(elapsedTime / 120, 1.0);
-      if (elapsedTime < 10) {
-        baseGold = 0;
-      } else {
-        baseGold = Math.floor(MathU.randInt(goldMin, goldMax) * 0.35 * timeFactor);
-      }
+      completionBonus = Math.floor(MathU.randInt(goldMin, goldMax) * goldBonusMult);
     }
 
-    // Apply player in-run gold fortune bonus
-    baseGold = Math.floor(baseGold * (player ? player.goldBonus : 1));
+    const baseGold = inRunGold; // dùng cho display và tính streak
 
     // ── WIN STREAK BONUS ────────────────────────────────────────────
     const mapId = mapData.id || '';
     const newStreak = Save.updateWinStreak(mapId, victory);
     let streakBonus = 0;
     if (victory && newStreak >= 4) {
-      streakBonus = Math.floor(baseGold * 0.20);
+      streakBonus = Math.floor(inRunGold * 0.20);
     }
 
-    // ── IN-RUN ACHIEVEMENT BONUSES ──────────────────────────────────
+    // ── IN-RUN ACHIEVEMENT BONUSES (scale by tier) ──────────────────
     const totalKillsAll = player ? player.kills.normal + player.kills.elite + player.kills.boss : 0;
     let achievementBonus = 0;
     const achievements = [];
     if (_ach100KillsBefore2Min && victory) {
-      achievementBonus += 30;
-      achievements.push('⚡ 100 kill trước 2 phút: +30 ◈');
+      const ach1 = 30 * tier;
+      achievementBonus += ach1;
+      achievements.push(`⚡ 100 kill trước 2 phút: +${ach1} ◈`);
     }
     if (_achNoHitBonuses > 0) {
-      achievementBonus += _achNoHitBonuses * 15;
-      achievements.push(`🛡 Vô thương 30s (×${_achNoHitBonuses}): +${_achNoHitBonuses*15} ◈`);
+      const ach2 = _achNoHitBonuses * (15 * tier);
+      achievementBonus += ach2;
+      achievements.push(`🛡 Vô thương 30s (×${_achNoHitBonuses}): +${ach2} ◈`);
     }
     if (_achFastEliteBonus > 0) {
-      achievementBonus += _achFastEliteBonus * 20;
-      achievements.push(`⭐ Hạ tinh anh nhanh (×${_achFastEliteBonus}): +${_achFastEliteBonus*20} ◈`);
+      const ach3 = _achFastEliteBonus * (20 * tier);
+      achievementBonus += ach3;
+      achievements.push(`⭐ Hạ tinh anh nhanh (×${_achFastEliteBonus}): +${ach3} ◈`);
     }
 
-    const totalGold = baseGold + streakBonus + achievementBonus;
+    const totalGold = inRunGold + completionBonus + streakBonus + achievementBonus;
 
     // Save gold into meta currency
     Save.addGold(totalGold);
@@ -12372,6 +12412,7 @@ const Game = (() => {
       evolvedName: weaponEvolved && player ? player.charData.evolvedWeapon : null,
       skillDmg:    player ? {...player.skillDmg} : {},
       baseGold,
+      completionBonus,
       streakBonus,
       achievementBonus,
       winStreak:   newStreak,
