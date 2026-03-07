@@ -4712,7 +4712,7 @@ const UI = (() => {
           html += row('🧘','Di Chuyển', `+8% ST · ${stillPct}% tích mana`, 'up');
         }
       } else if (cid === 'thiet_tam') {
-        const nearestDist = (() => { let bd=Infinity; for(const e of (typeof enemies!=='undefined'?enemies:[])) { if(e.dead)continue; const d=MathU.dist(player.x,player.y,e.x,e.y); if(d<bd)bd=d; } return bd; })();
+        const nearestDist = (() => { let bd=Infinity; for(const e of (Game.enemies||[])) { if(e.dead)continue; const d=MathU.dist(player.x,player.y,e.x,e.y); if(d<bd)bd=d; } return bd; })();
         const farActive = nearestDist > 150;
         const eagleUp = (player._eagleStrikeTimer || 0) > 0;
         html += row('🦅','Mắt Đại Bàng', farActive ? '+25% ST ✓' : 'Gần quái — inactive', farActive ? 'up' : '');
@@ -5368,7 +5368,7 @@ const CHARS = [
     id: 'tu_linh', icon: '💀', name: 'Tử Linh', title: 'Thuật Sĩ Xương',
     cost: 1500,
     baseHP: 600, baseSpd: 115, baseDmg: 142, baseAtk: 1.0,
-    weapon: 'Tử Khí', weaponDesc: 'Aura 360° quanh người gây ST liên tục cho tất cả địch trong tầm 100px. Tiến hoá → Âm Linh Bùng Phát: aura rộng hơn 40%, mỗi pulse triệu thêm Ghost Wisp truy đuổi địch gần nhất trong 3s.',
+    weapon: 'Tử Khí', weaponDesc: 'Aura 360° quanh người gây ST liên tục cho tất cả địch trong tầm 120px. Tiến hoá → Âm Linh Bùng Phát: aura rộng hơn ~30% (155px), mỗi pulse triệu thêm Ghost Wisp truy đuổi địch gần nhất trong 3s.',
     weaponIcon: '💀',
     passiveName: 'Thu Hồn',
     passiveDesc: 'Mỗi địch chết 40% rơi Soul Orb (max 20). Mỗi hồn: +2% damage aura. Đạt 20 hồn → aura tự pulse ×3 damage mỗi 2s. Thu Hồn của passive không bị active ảnh hưởng.',
