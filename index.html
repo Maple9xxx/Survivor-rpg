@@ -1351,6 +1351,27 @@ canvas{display:block;image-rendering:pixelated;}
      JAVASCRIPT — PHẦN 2: CORE ENGINE
      ============================================================ -->
 <script>
+// ── [PERF] Adaptive quality for mobile/low-end devices ─────────────────
+// Fix #1: shadowBlur là nguyên nhân chính làm chậm GPU trên mobile.
+// Override prototype 1 lần thay vì đụng vào 40+ chỗ gán trong code.
+// Trên desktop: không có tác động gì (early return). Trên mobile: blur * 0.45.
+(function _applyMobileGlowScale() {
+  const _IS_MOBILE = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent)
+                     || window.innerWidth <= 820;
+  if (!_IS_MOBILE) return;
+  const _GLOW = 0.45;
+  try {
+    const _proto = CanvasRenderingContext2D.prototype;
+    const _desc  = Object.getOwnPropertyDescriptor(_proto, 'shadowBlur');
+    if (!_desc || !_desc.set) return;
+    Object.defineProperty(_proto, 'shadowBlur', {
+      configurable: true, enumerable: _desc.enumerable,
+      get: _desc.get,
+      set(v) { _desc.set.call(this, v > 0 ? v * _GLOW : 0); }
+    });
+  } catch(e) { /* không hỗ trợ override — bỏ qua */ }
+})();
+// ── [PERF] End ──────────────────────────────────────────────────────────
 
 /*
  * ================================================================
@@ -3447,14 +3468,14 @@ const UI = (() => {
           dps: 'Base 170×0.98/s ≈ 167/s · Mana +20% = 200/s · Nguyệt Vũ đánh 2 lần/lượt',
           difficulty: '⭐ Dễ',
           playstyle: 'Stationary Controller — đứng yên để Mana buff, active slow để đánh an toàn',
-          guide: `<!--P-->Đứng yên ≥0.4 giây → <b>Mana Tích Tụ</b>: totalDmg ×1.2 (hiển thị trong HUD). Có <b>0.5s grace period</b> khi di chuyển — buff không mất ngay. <b>Active không làm mất Mana Tích Tụ</b> — ưu tiên cast khi đứng yên để nhận cả hai lợi ích đồng thời.<!--A--><b>Nguyệt Thực</b>: vùng nhật thực bán kính 200đv trong 3 giây, làm chậm địch 60%. Địch đang bị chậm nhận +25% ST từ mọi nguồn. Active KHÔNG làm mất Mana — thực tế đây là vừa AoE kiểm soát vừa tăng ST. Nguyệt Vũ (evolved): lưỡi trăng bay ra rồi vòng lại — lượt về mạnh hơn 30%, trúng địch đang slow thêm +20%.<!--T-->Cast Nguyệt Thực khi đứng yên → địch chậm 60% → an toàn bắn liên tục ×1.2 × 1.25 = ×1.5 effective. Evolved cực mạnh vs horde: lượt đi + lượt về đánh 2 lần, cả hai trúng địch đang slow.`,
+          guide: `<!--P--><b>Mana Tích Tụ</b>: luôn nhận +8% ST khi di chuyển. Đứng yên ≥0.4 giây → tăng lên <b>+20% ST</b> (×1.2). Có <b>0.5s grace period</b> khi bắt đầu di chuyển — buff chưa mất ngay. <b>Active không làm mất Mana Tích Tụ</b> — ưu tiên cast khi đứng yên để nhận cả hai lợi ích đồng thời.<!--A--><b>Nguyệt Thực</b>: vùng nhật thực bán kính 200đv trong 3 giây, làm chậm địch 60%. Địch đang bị chậm nhận +25% ST từ mọi nguồn. Active KHÔNG làm mất Mana — thực tế đây là vừa AoE kiểm soát vừa tăng ST. Nguyệt Vũ (evolved): lưỡi trăng bay ra rồi vòng lại — lượt về mạnh hơn 30%, trúng địch đang slow thêm +20%.<!--T-->Cast Nguyệt Thực khi đứng yên → địch chậm 60% → an toàn bắn liên tục ×1.2 × 1.25 = ×1.5 effective. Evolved cực mạnh vs horde: lượt đi + lượt về đánh 2 lần, cả hai trúng địch đang slow.`,
         },
         {
           c: CHARS.find(c=>c.id==='thiet_tam'),
           dps: 'Base 148×1.3/s ≈ 192/s · Mắt Đại Bàng +25% = 240/s · Xuyên Tâm Đạn ×3.36 chain',
           difficulty: '⭐⭐ Trung Bình',
           playstyle: 'Kiter + Eagle Burst — giữ xa, kill minion tích Eagle Strike, burst boss',
-          guide: `<!--P--><b>Mắt Đại Bàng</b>: địch cách >150đv nhận thêm +25% ST từ mọi nguồn. <b>Eagle Strike</b>: mỗi kill → 0.5s guaranteed Crit cho đòn tiếp theo. Eagle Strike KHÔNG bị active xóa — đây là combo chính: kill minion → Eagle Strike → bắn boss guaranteed Crit.<!--A--><b>Bão Đạn</b>: tốc bắn ×3 trong 4 giây. Eagle Strike được giữ nguyên và gia hạn trong suốt active. Thời điểm tốt nhất: khi vừa kill được minion (Eagle Strike up) + nhiều horde để xuyên qua. Xuyên Tâm Đạn (evolved): 5 pierce với 80% falloff — trúng hàng thẳng 5 quái = tổng ×3.36 per shot.<!--T-->Vòng lặp: giữ >150đv → kill minion → Eagle Strike → bắn boss guaranteed Crit ×1.5+. Với Bão Đạn: mỗi đợt 4s tốc bắn ×3 → Eagle Strike trigger nhiều lần → burst boss cực mạnh. Evolved + Bão Đạn = xuyên horde liên tục, tốc đạn nhanh xử lý rất nhiều địch trong 4s.`,
+          guide: `<!--P--><b>Mắt Đại Bàng</b>: địch cách >150đv nhận thêm +25% ST từ mọi nguồn. <b>Eagle Strike</b>: mỗi kill → 0.5s guaranteed Crit cho đòn tiếp theo. Eagle Strike KHÔNG bị active xóa — đây là combo chính: kill minion → Eagle Strike → bắn boss guaranteed Crit.<!--A--><b>Bão Đạn</b>: tốc bắn ×2.5 trong 4 giây. Eagle Strike được giữ nguyên khi cast (không gia hạn). Thời điểm tốt nhất: khi vừa kill được minion (Eagle Strike up) + nhiều horde để xuyên qua. Xuyên Tâm Đạn (evolved): 5 pierce với 80% falloff — trúng hàng thẳng 5 quái = tổng ×3.36 per shot.<!--T-->Vòng lặp: giữ >150đv → kill minion → Eagle Strike → bắn boss guaranteed Crit ×1.5+. Với Bão Đạn: mỗi đợt 4s tốc bắn ×2.5 → combo chặt chẽ hơn với Eagle Strike. Evolved + Bão Đạn = xuyên horde liên tục trong 4s.`,
         },
         {
           c: CHARS.find(c=>c.id==='kim_cang'),
@@ -4281,7 +4302,7 @@ const UI = (() => {
       extra: {
         statHP: 90, statSPD: 110, statDMG: 33, statATK: 0.98,
         weapon:  { icon:'🔮', tag:'VŨ KHÍ CHÍNH', name:'Tinh Linh Cầu', desc:'Bắn cầu ma thuật tự truy đuổi (homing) kẻ thù gần nhất. Sát thương cao nhất, tốc độ tấn công thấp nhất.' },
-        passive: { icon:'🧘', tag:'PASSIVE', name:'Mana Tích Tụ', desc:'Đứng yên 0.4 giây: sát thương +20%. Di chuyển reset về 0. Khi tiến hoá: mini orb và độc cũng hưởng buff — tối đa ×3.54 effective per target.' },
+        passive: { icon:'🧘', tag:'PASSIVE', name:'Mana Tích Tụ', desc:'Di chuyển: +8% ST. Đứng yên 0.4 giây: +20% ST. Khi tiến hoá: mini orb và độc cũng hưởng buff — tối đa ×3.54 effective per target.' },
         active:  { icon:'🌩️', tag:'ACTIVE', name:'Hắc Động Lôi', desc:'Thường: 8 tia ×0.8 rải ngẫu nhiên, 3 giây, bán kính 200đv. Khi đang có Mana Tích Tụ khi cast → <b>Tĩnh Tâm Điện Bão</b>: 12 tia ×1.0, 70% tia nhắm trúng quái trong vùng. Tiếp tục đứng yên suốt 3 giây → tia cuối là <b>Siêu Lôi ×5.0</b> AoE nhắm điểm đông quái nhất.', cd:14 },
         evolve:  { icon:'☄️', tag:'TIẾN HÓA', name:'Hắc Nhật Ma Cầu', desc:'Khi trúng địch: tách 3 mini orb (×0.55 mỗi cái) homing vào 3 quái gần nhất + áp độc 0.15×/s trong 4 giây. Quái thường/tinh anh chỉ nhận 1 orb; boss nhận cả 3 orb. ×3.54 khi đứng yên.' },
       }
@@ -4307,7 +4328,7 @@ const UI = (() => {
     {
       extra: {
         statHP: 95, statSPD: 155, statDMG: 30, statATK: 1.1,
-        weapon:  { icon:'🗡️', tag:'VŨ KHÍ CHÍNH', name:'Song Quỷ Đao', desc:'Đánh đơn mục tiêu gần nhất trong tầm 150đv. Mỗi đòn tích 1 Sát Khí (max 5). Đủ 5 stack → Đột Sát ×3.5 + chảy máu. Mục tiêu <30% HP nhận thêm 30% ST. Sát thương overkill truyền sang mục tiêu kế tiếp. Tàng hình: tích 2 Sát Khí/đòn.' },
+        weapon:  { icon:'🗡️', tag:'VŨ KHÍ CHÍNH', name:'Song Quỷ Đao', desc:'Đánh đơn mục tiêu gần nhất trong tầm 185đv. Mỗi đòn tích 1 Sát Khí (max 5). Đủ 5 stack → Đột Sát ×3.5 + chảy máu. Mục tiêu <30% HP nhận thêm 30% ST. Sát thương overkill truyền sang mục tiêu kế tiếp. Tàng hình: tích 2 Sát Khí/đòn.' },
         passive: { icon:'🌑', tag:'PASSIVE', name:'Sát Thủ Thiên Bẩm', desc:'Đủ 5 Sát Khí → Đột Sát: ×3.5 + chảy máu 50% ST/s × 3s + hồi 8% HP. HP<20%: tàng hình khẩn cấp 4s, SPD +60%, CD 20s. Tàng hình: quái xa >320đv không đuổi.' },
         active:  { icon:'🌑', tag:'ACTIVE', name:'Ẩn Hiện Nhất Kiếm', desc:'Tức thì tàng hình 3s: SPD +60%, quái xa >320đv không đuổi. Sát Khí tích gấp đôi (2/đòn). Đòn đầu ra khỏi tàng hình: Đột Sát ×5.0 + chảy máu cực mạnh (×1.0 ST/s × 5s), sau đó thoát tàng hình.', cd:11 },
         evolve:  { icon:'👥', tag:'TIẾN HÓA', name:'Hư Vô Quỷ Đao', desc:'Mỗi Đột Sát tạo phân thân ảo lặp lại đòn đó sau 0.3s (×1.0 DMG, cũng có overflow). Chảy máu từ Đột Sát áp thêm Làm Chậm 30% trong 2 giây.' },
@@ -4688,7 +4709,7 @@ const UI = (() => {
         if (buffed) {
           html += row('🧘','Mana Tích Tụ', `+20% ST · Grace ${grace.toFixed(1)}s`, 'up');
         } else {
-          html += row('🧘','Tích Mana', `${stillPct}% (đứng yên 0.4s)`, '');
+          html += row('🧘','Di Chuyển', `+8% ST · ${stillPct}% tích mana`, 'up');
         }
       } else if (cid === 'thiet_tam') {
         const nearestDist = (() => { let bd=Infinity; for(const e of (typeof enemies!=='undefined'?enemies:[])) { if(e.dead)continue; const d=MathU.dist(player.x,player.y,e.x,e.y); if(d<bd)bd=d; } return bd; })();
@@ -5290,7 +5311,7 @@ const CHARS = [
     weapon: 'Nguyệt Hoa', weaponDesc: 'Phóng lưỡi trăng bay chậm, xuyên địch theo đường cong. Tiến hoá → Nguyệt Vũ: lưỡi trăng bay ra rồi vòng ngược trở lại, đánh 2 lần trên cùng quỹ đạo.',
     weaponIcon: '🌙',
     passiveName: 'Mana Tích Tụ',
-    passiveDesc: 'Đứng yên 0.4s → +20% ST. Có thêm 0.5s grace period khi di chuyển — không mất buff ngay. Active không làm mất Mana Tích Tụ.',
+    passiveDesc: 'Di chuyển: +8% ST. Đứng yên 0.4s → +20% ST. Có 0.5s grace period khi di chuyển — buff chưa mất ngay. Active không làm mất Mana Tích Tụ.',
     activeName: 'Nguyệt Thực',
     activeDesc: 'Tạo vùng nhật thực bán kính 200px trong 3s: làm chậm tất cả địch trong vùng 60%. Không làm mất Mana Tích Tụ khi cast. Địch đang chậm nhận thêm 25% ST từ mọi nguồn.',
     activeIcon: '🌑', activeCooldown: 13,
@@ -5307,7 +5328,7 @@ const CHARS = [
     passiveName: 'Mắt Đại Bàng + Tiêu Điểm',
     passiveDesc: 'Địch >150đv nhận +25% ST. Mỗi lần kill → Eagle Strike 0.5s: đòn tiếp theo guaranteed Crit. Eagle Strike không bị active xóa.',
     activeName: 'Bão Đạn',
-    activeDesc: 'Tốc bắn ×3 trong 4s. Eagle Strike vẫn giữ nguyên trong và sau active — kết hợp để burst boss sau khi kill minion.',
+    activeDesc: 'Tốc bắn ×2.5 trong 4s. Eagle Strike vẫn giữ nguyên khi cast — kết hợp để burst boss sau khi kill minion.',
     activeIcon: '🎯', activeCooldown: 15,
     evolvedWeapon: 'Xuyên Tâm Đạn',
     evolveDesc: 'Xuyên tối đa 5 mục tiêu, mỗi mục tiêu sau nhận 80% damage so với mục tiêu trước. Trúng 5 địch = 1+0.8+0.64+0.51+0.41 = ×3.36 tổng damage.',
@@ -5865,9 +5886,9 @@ class Player {
     let d = this.baseDmg * this.dmgMult;
     // Char passives
     if (this.charData.id === 'huyen_nguyet') {
-      // Mana Tích Tụ: +20% khi buff active (stillTimer hoặc grace period còn)
+      // Mana Tích Tụ: đứng yên +20% | di chuyển +8%
       const manaOn = (this.stillTimer || 0) >= 0.4 || (this._manaGrace || 0) > 0;
-      d *= (1 + (manaOn ? 0.20 : 0));
+      d *= (1 + (manaOn ? 0.20 : 0.08));
     } else if (this.charData.id === 'am_sat') {
       // Sát Khí: mỗi stack +8% ST (không bao giờ decay)
       d *= (1 + (this._satKhiStacks || 0) * 0.08);
@@ -6637,11 +6658,11 @@ class Player {
     const nearA = Game.enemies.filter(e=>!e.dead).sort((a,b)=>MathU.dist2(playerRef.x,playerRef.y,a.x,a.y)-MathU.dist2(playerRef.x,playerRef.y,b.x,b.y))[0];
     const cA = nearA ? Math.atan2(nearA.y - this.y, nearA.x - this.x) : 0;
     Game.particles.spawn(this.x, this.y, { count:16, color:'#ffcc60', speedMin:80, speedMax:200, life:0.35, angle: cA, spread: 0.6 });
-    Toast.show('🎯 Bão Đạn! — Tốc bắn ×3 · Eagle Strike giữ nguyên!');
+    Toast.show('🎯 Bão Đạn! — Tốc bắn ×2.5 · Eagle Strike giữ nguyên!');
 
     // Tripled attack speed for 4s via atkSpeed multiplier
     const origAtkSpeed = this.atkSpeed;
-    this.atkSpeed = (this.atkSpeed || 1) * 3;
+    this.atkSpeed = (this.atkSpeed || 1) * 2.5;
     // Eagle Strike extension: keep for full duration
     if ((this._eagleStrikeTimer || 0) > 0) this._eagleStrikeTimer = duration;
 
@@ -9800,6 +9821,13 @@ const Game = (() => {
   let poisonZones = [];
   let lightningTimer = 0;
 
+  // [PERF] cached boss reference — tránh enemies.find() mỗi frame
+  let _liveBoss = null;
+  // [PERF] HUD throttle counter — chỉ update DOM mỗi 3 frame
+  let _hudFrame = 0;
+  // [PERF] Boss countdown throttle — chỉ update DOM mỗi 400ms
+  let _cdLastUpdateTime = -1;
+
   let _inputInited = false;
   // ----- INIT -----
   function init() {
@@ -9940,6 +9968,9 @@ const Game = (() => {
     running = true;
     paused  = false;
     lastTime = performance.now();
+    _liveBoss = null; // [PERF] reset cache
+    _hudFrame = 0;
+    _cdLastUpdateTime = -1;
 
     if (raf) cancelAnimationFrame(raf);
     raf = requestAnimationFrame(loop);
@@ -10020,6 +10051,7 @@ const Game = (() => {
         // Đánh dấu boss đã bị tiêu diệt
         if (e.isBoss) {
           bossKilled = true;
+          _liveBoss = null; // [PERF] clear cache
           UI.hideBossBar();
           camera.addShake(30);
           particles.spawn(e.x, e.y, {
@@ -10094,7 +10126,8 @@ const Game = (() => {
 
     // Boss HP bar + countdown timer — update every frame while boss is alive
     if (bossSpawned && !bossKilled) {
-      const liveBoss = enemies.find(e => e.isBoss && !e.dead);
+      // [PERF] dùng _liveBoss cache thay vì enemies.find() O(n) mỗi frame
+      const liveBoss = _liveBoss && !_liveBoss.dead ? _liveBoss : null;
       if (liveBoss) {
         const bPct   = liveBoss.hp / liveBoss.maxHp;
         const bPhase = bPct > 0.66 ? 1 : bPct > 0.33 ? 2 : 3;
@@ -10108,18 +10141,23 @@ const Game = (() => {
         // Countdown: 2 phút kể từ lúc boss spawn (elapsedTime = CFG.BOSS_TIME)
         const BOSS_LIMIT = CFG.BOSS_TIME + 120; // = 300s (5 phút tổng)
         const timeLeft = Math.max(0, BOSS_LIMIT - elapsedTime);
-        const cdMins = Math.floor(timeLeft / 60);
-        const cdSecs = Math.floor(timeLeft % 60);
-        const cdEl = document.getElementById('boss-countdown');
-        if (cdEl) {
-          cdEl.style.display = 'block';
-          cdEl.textContent = `⏱ ${cdMins}:${String(cdSecs).padStart(2,'0')}`;
-          // Đổi màu đỏ khi < 30s
-          cdEl.style.color = timeLeft < 30 ? '#ff4040' : timeLeft < 60 ? '#ffaa00' : '#ffcc00';
-          cdEl.style.borderColor = timeLeft < 30 ? 'rgba(255,60,60,0.6)' : 'rgba(255,200,0,0.4)';
-          // Rung nhẹ khi < 10s
-          if (timeLeft < 10 && timeLeft > 0) {
-            cdEl.style.animation = 'skb-as 0.4s ease-in-out infinite';
+
+        // [PERF] chỉ update DOM countdown mỗi 400ms, không phải mỗi frame
+        if (elapsedTime - _cdLastUpdateTime >= 0.4 || timeLeft < 10) {
+          _cdLastUpdateTime = elapsedTime;
+          const cdMins = Math.floor(timeLeft / 60);
+          const cdSecs = Math.floor(timeLeft % 60);
+          const cdEl = document.getElementById('boss-countdown');
+          if (cdEl) {
+            cdEl.style.display = 'block';
+            cdEl.textContent = `⏱ ${cdMins}:${String(cdSecs).padStart(2,'0')}`;
+            // Đổi màu đỏ khi < 30s
+            cdEl.style.color = timeLeft < 30 ? '#ff4040' : timeLeft < 60 ? '#ffaa00' : '#ffcc00';
+            cdEl.style.borderColor = timeLeft < 30 ? 'rgba(255,60,60,0.6)' : 'rgba(255,200,0,0.4)';
+            // Rung nhẹ khi < 10s
+            if (timeLeft < 10 && timeLeft > 0) {
+              cdEl.style.animation = 'skb-as 0.4s ease-in-out infinite';
+            }
           }
         }
 
@@ -10137,12 +10175,15 @@ const Game = (() => {
       }
     }
 
-    // HUD
-    UI.updateHUD(
-      player, elapsedTime, wave,
-      player.gold, totalKills,
-    );
-    UI.updateStatPanel(player);
+    // HUD — [PERF] chỉ update DOM mỗi 3 frame, không cần 60fps cho text
+    _hudFrame = (_hudFrame + 1) % 3;
+    if (_hudFrame === 0) {
+      UI.updateHUD(
+        player, elapsedTime, wave,
+        player.gold, totalKills,
+      );
+      UI.updateStatPanel(player);
+    }
 
     // Level-up popup
     if (levelUpQueue > 0 && pendingCards.length === 0) {
@@ -10348,7 +10389,7 @@ const Game = (() => {
           vx: Math.cos(baseAngle) * 720,
           vy: Math.sin(baseAngle) * 720,
           dmg,
-          r: 6 * aoe, life: 1.8,
+          r: 6 * aoe, life: 0.49,
           color: isEagleStrike ? '#ffe040' : '#ff9060',
           owner: 'player',
           pierce: maxPierce,
@@ -10392,7 +10433,7 @@ const Game = (() => {
         Audio.playSFX('slam');
         // Thiết Quyền — punch shockwave AoE. 15% stun 0.5s. Evolved: 25% stun, wider, bonus shockwave at 3 blocks
         const isEvolved = p.mainWeapon.evolved;
-        const baseR = (isEvolved ? 105 : 85) * aoe;
+        const baseR = (isEvolved ? 120 : 100) * aoe;
         const stunChance = isEvolved ? 0.25 : 0.15;
         explosionAt(p.x, p.y, baseR, dmg, '#ffd700', 'main_kim_cang');
         // Radial crack / punch shockwave visual
@@ -10427,7 +10468,7 @@ const Game = (() => {
       case 'am_sat': {
         // Ám Nhẫn — 3 shurikens fan ±20°, mỗi hit tích 1 Sát Khí (tối đa 3/lượt)
         // Sát Khí không bao giờ decay. +8% ST/stack. Execute +30% vs <30% HP.
-        const AM_SAT_RANGE = 160;
+        const AM_SAT_RANGE = 185;
         if (!nearest || MathU.dist(p.x, p.y, nearest.x, nearest.y) > AM_SAT_RANGE) {
           if (!p._amOobFlash || p._amOobFlash <= 0) {
             p._amOobFlash = 0.3;
@@ -10512,7 +10553,7 @@ const Game = (() => {
         // Tử Khí — 360° aura pulse, hits all enemies in range
         // Evolved (Âm Linh Bùng Phát): wider range + spawns a Ghost Wisp homing enemy for 3s
         const isEvolved = p.mainWeapon.evolved;
-        const auraR = (isEvolved ? 140 : 100) * aoe;
+        const auraR = (isEvolved ? 155 : 120) * aoe;
         explosionAt(p.x, p.y, auraR, dmg, '#ff4060', 'main_tu_linh');
         // Aura ring visual
         if (rings.length < 28) rings.push(new RingEffect(p.x, p.y, auraR, '#ff2050'));
@@ -11266,6 +11307,7 @@ const Game = (() => {
     boss.shield   = currentMap && currentMap.specialMech === 'shieldedEnemies' ? bossHP * 0.5 : 0;
 
     enemies.push(boss);
+    _liveBoss = boss; // [PERF] cache reference — tránh enemies.find() mỗi frame
     Audio.playSFX('boss');
     UI.showBossBar(mapData.bossName, 1, 1);
   }
@@ -15568,7 +15610,7 @@ const Tutorial = (() => {
     ],
     huyen_nguyet: [
       { delay: 25000, icon: '🧘', title: 'Đứng yên 0.4s — Mana kích hoạt!',
-        text: 'Mana Tích Tụ: đứng yên ≥0.4s → +20% sát thương. Có 0.5s grace period khi di chuyển — buff không mất ngay. Tìm góc tường để đứng yên an toàn.' },
+        text: 'Mana Tích Tụ: di chuyển luôn nhận +8% ST. Đứng yên ≥0.4s → tăng lên +20% ST. Tìm góc tường để đứng yên bắn mạnh hơn.' },
       { delay: 45000, icon: '🌑', title: 'Nguyệt Thực — slow + damage!',
         text: 'Active tạo vùng nhật thực 3s: địch trong 200px bị chậm 60%. Không làm mất Mana Tích Tụ khi cast — địch đang chậm nhận thêm +25% ST từ mọi nguồn!' },
     ],
