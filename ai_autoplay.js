@@ -3,20 +3,32 @@
 
 function isUnlocked(){return new URLSearchParams(location.search).has('ai');}
 
+// Movement profiles — tất cả 12 nhân vật
+// thien_kiem: kiếm homing range 400 → kéo xa tối đa
+// huyet_ma:   aura 155px, cần đứng giữa đám quái
+// vo_cuc:     orb r=135px, cần trong tầm quái
 const CHAR_PROFILE={
-  luu_phong:   {optimalDist:80, fleeDist:35, approachDist:140},
-  kim_cang:    {optimalDist:75, fleeDist:30, approachDist:130},
-  tu_linh:     {optimalDist:90, fleeDist:40, approachDist:150},
-  hoa_long:    {optimalDist:85, fleeDist:35, approachDist:150},
-  am_sat:      {optimalDist:140,fleeDist:70, approachDist:220},
-  huyen_nguyet:{optimalDist:160,fleeDist:80, approachDist:260},
-  thiet_tam:   {optimalDist:220,fleeDist:110,approachDist:340},
-  loi_than:    {optimalDist:200,fleeDist:100,approachDist:320},
-  bang_vuong:  {optimalDist:190,fleeDist:95, approachDist:310},
+  luu_phong:   {optimalDist:80,  fleeDist:35,  approachDist:140},
+  huyen_nguyet:{optimalDist:160, fleeDist:80,  approachDist:260},
+  thiet_tam:   {optimalDist:220, fleeDist:110, approachDist:340},
+  kim_cang:    {optimalDist:75,  fleeDist:30,  approachDist:130},
+  am_sat:      {optimalDist:140, fleeDist:70,  approachDist:220},
+  tu_linh:     {optimalDist:90,  fleeDist:40,  approachDist:150},
+  loi_than:    {optimalDist:200, fleeDist:100, approachDist:320},
+  hoa_long:    {optimalDist:85,  fleeDist:35,  approachDist:150},
+  bang_vuong:  {optimalDist:190, fleeDist:95,  approachDist:310},
+  // FIX: 3 nhân vật mới — trước đây thiếu hoàn toàn
+  thien_kiem:  {optimalDist:320, fleeDist:180, approachDist:420},  // homing 400px → kéo xa
+  huyet_ma:    {optimalDist:80,  fleeDist:25,  approachDist:130},  // aura 155px → cần vào gần
+  vo_cuc:      {optimalDist:110, fleeDist:35,  approachDist:170},  // orb r=135px
 };
 const DEFAULT_PROFILE={optimalDist:150,fleeDist:75,approachDist:250};
 
-const HIGH_PRIO_STATS=new Set(['tốc độ tấn công','sát thương','hút máu']);
+// FIX: cập nhật tên thẻ theo v1.7.0 (thêm tốc độ chém, sát thương chí mạng)
+const HIGH_PRIO_STATS=new Set([
+  'tốc độ tấn công','sát thương','hút máu',
+  'sát thương chí mạng','tốc độ chém','tốc độ di chuyển',
+]);
 function scoreCard(el){
   const cls=el.className||'';
   const t=(el.querySelector('.lv-card-type')?.textContent||'').trim().toUpperCase();
@@ -47,6 +59,8 @@ let aiEnabled=false,_rafId=null,_restartTimer=null;
 let _lastSkillTick=0,_cardPickScheduled=false,_aiSetBossMode=false;
 let _selectedCharId='auto';
 let _wanderAngle=0,_wanderTarget=null;
+// FIX: tracker cho huyen_nguyet Nguyệt Tích
+let _huyenNguyetStillSince=0;
 
 function log(msg){
   console.log('%c[AI] '+msg,'color:#a060ff;font-size:11px');
@@ -54,13 +68,16 @@ function log(msg){
   if(el&&aiEnabled){el.textContent=msg;el.className='active';}
 }
 function sleep(ms){return new Promise(r=>setTimeout(r,ms));}
-function activeScreen(){const el=document.querySelector('.screen.active');return el?el.id.replace('screen-',''):'';}
+function activeScreen(){const el=document.querySelector('.screen.active');return el?el.id.replace('screen-',''):'loading';}
 
+// FIX: dùng while thay for — loop chính xác cho đến khi đạt desired mode
 function setTargetPriority(desired){
   const O=['nearest','boss','elite','lowest_hp'];
-  for(let i=0;i<O.length;i++){
+  let guard=0;
+  while(guard++<O.length){
     const btn=document.getElementById('target-priority-btn');
-    const cur=btn?O.find(m=>btn.classList.contains('mode-'+m))||'nearest':'nearest';
+    if(!btn)return;
+    const cur=O.find(m=>btn.classList.contains('mode-'+m))||'nearest';
     if(cur===desired)return;
     Game.cycleTargetPriority();
   }
@@ -68,8 +85,8 @@ function setTargetPriority(desired){
 function manageBossTargetPriority(){
   if(!Game.isRunning())return;
   const boss=Game.bossSpawned&&!Game.bossKilled;
-  if(boss&&!_aiSetBossMode){_aiSetBossMode=true;setTargetPriority('boss');log('BOSS');}
-  else if(!boss&&_aiSetBossMode){_aiSetBossMode=false;setTargetPriority('nearest');log('Boss ha');}
+  if(boss&&!_aiSetBossMode){_aiSetBossMode=true;setTargetPriority('boss');log('BOSS → target boss');}
+  else if(!boss&&_aiSetBossMode){_aiSetBossMode=false;setTargetPriority('nearest');log('Boss hạ → target nearest');}
 }
 
 async function doMetaSpend(){
@@ -112,18 +129,22 @@ function pickBestCharAndMap(){
     charId=top[Math.floor(Math.random()*top.length)].id;
   }
   let mapIdx=0;
-  for(let i=MAPS.length-1;i>=0;i--){if(i===0||(sd.completedMaps||[]).includes(MAPS[i-1].id)){mapIdx=i;break;}}
+  for(let i=MAPS.length-1;i>=0;i--){
+    if(i===0||(sd.completedMaps||[]).includes(MAPS[i-1].id)){mapIdx=i;break;}
+  }
   return{charId,mapIdx};
 }
 
 async function doStartRun(){
   _aiSetBossMode=false;
+  _huyenNguyetStillSince=0;
   await doMetaSpend();
   await sleep(CFG.META_DELAY);
   const{charId,mapIdx}=pickBestCharAndMap();
   log('Run: '+charId+' map'+mapIdx);
   const sd=Save.get();
   if(sd.firstPlay!==false){sd.firstPlay=false;Save.save();}
+  // FIX: trước đây gọi Tutorial.check(selectedChar, selectedMap) → undefined
   Tutorial.check(charId,mapIdx);
 }
 
@@ -164,6 +185,11 @@ function computeMovement(now){
       const dx=boss.x-px,dy=boss.y-py,dist=Math.sqrt(dx*dx+dy*dy)||1;
       if(dist<p.fleeDist)return{x:-dx/dist,y:-dy/dist};
       if(dist>p.optimalDist)return{x:dx/dist,y:dy/dist};
+      // FIX: huyen_nguyet — khi ở khoảng cách optimal với boss, đứng yên để tích Nguyệt Tích
+      if(charId==='huyen_nguyet'){
+        if(!_huyenNguyetStillSince)_huyenNguyetStillSince=now;
+        return{x:0,y:0};
+      }
       return{x:0,y:0};
     }
   }
@@ -184,6 +210,30 @@ function computeMovement(now){
   const effFlee=crowded?p.optimalDist*0.7:p.fleeDist;
   const effApproach=crowded?p.optimalDist*1.6:p.approachDist;
   const dxN=nearest.x-px,dyN=nearest.y-py,lenN=nearestDist||1;
+
+  // FIX: huyen_nguyet — đứng yên khi an toàn để tích Nguyệt Tích stack
+  // Chỉ di chuyển khi bị áp sát (< flee distance)
+  if(charId==='huyen_nguyet'){
+    if(nearestDist<effFlee){
+      // Nguy hiểm — chạy ra
+      _huyenNguyetStillSince=0;
+      let fx=0,fy=0;
+      for(const e of enemies){
+        if(e.dead)continue;
+        const dx=px-e.x,dy=py-e.y,d=Math.sqrt(dx*dx+dy*dy);
+        if(d<p.optimalDist*2&&d>0){const t=1-d/(p.optimalDist*2);const w=2.5*t*t+0.2;fx+=(dx/d)*w;fy+=(dy/d)*w;}
+      }
+      const fl=Math.sqrt(fx*fx+fy*fy)||1;return{x:fx/fl,y:fy/fl};
+    }
+    if(nearestDist>effApproach){
+      // Quá xa — tiến lại đủ tầm rồi đứng yên
+      _huyenNguyetStillSince=0;
+      return{x:dxN/lenN*0.6,y:dyN/lenN*0.6};
+    }
+    // Trong tầm an toàn → đứng yên tích stack
+    if(!_huyenNguyetStillSince)_huyenNguyetStillSince=now;
+    return{x:0,y:0};
+  }
 
   if(nearestDist<effFlee){
     let fx=0,fy=0;
@@ -224,7 +274,11 @@ function tryUseSkill(now){
   const px=player.x,py=player.y;
   if(Game.bossSpawned&&!Game.bossKilled){
     const boss=enemies.find(e=>e.isBoss&&!e.dead);
-    if(boss){const dx=boss.x-px,dy=boss.y-py,d=Math.sqrt(dx*dx+dy*dy)||1;try{player.useActive({x:dx/d,y:dy/d});}catch(_){}return;}
+    if(boss){
+      const dx=boss.x-px,dy=boss.y-py,d=Math.sqrt(dx*dx+dy*dy)||1;
+      try{player.useActive({x:dx/d,y:dy/d});}catch(_){}
+      return;
+    }
   }
   let nearest=null,nearestDist=Infinity;
   for(const e of enemies){
@@ -258,23 +312,28 @@ function tick(now){
     manageBossTargetPriority();
     const s=Input.getState(),m=computeMovement(now);
     s.joyX=m.x;s.joyY=m.y;
-    tryUseSkill(now);return;
+    tryUseSkill(now);
+    return;
   }
   if(screen==='levelup'){schedulePickCard();return;}
   if(screen==='result'||screen==='menu'){
     if(!_restartTimer){
-      _restartTimer=setTimeout(async()=>{_restartTimer=null;if(aiEnabled)await doStartRun();},
-        screen==='menu'?1200:CFG.RESTART_DELAY);
+      _restartTimer=setTimeout(async()=>{
+        _restartTimer=null;
+        if(aiEnabled)await doStartRun();
+      },screen==='menu'?1200:CFG.RESTART_DELAY);
     }
   }
 }
 
 function startAI(){
   if(aiEnabled)return;
-  aiEnabled=true;_aiSetBossMode=false;_wanderTarget=null;_wanderAngle=0;
-  log('AI bat');updatePanel();_rafId=requestAnimationFrame(tick);
+  aiEnabled=true;_aiSetBossMode=false;_wanderTarget=null;_wanderAngle=0;_huyenNguyetStillSince=0;
+  log('AI bật');updatePanel();_rafId=requestAnimationFrame(tick);
   const s=activeScreen();
-  if(s==='menu'||s==='result'){_restartTimer=setTimeout(async()=>{_restartTimer=null;if(aiEnabled)await doStartRun();},800);}
+  if(s==='menu'||s==='result'){
+    _restartTimer=setTimeout(async()=>{_restartTimer=null;if(aiEnabled)await doStartRun();},800);
+  }
 }
 function stopAI(){
   aiEnabled=false;
@@ -282,7 +341,8 @@ function stopAI(){
   if(_restartTimer){clearTimeout(_restartTimer);_restartTimer=null;}
   try{const s=Input.getState();s.joyX=0;s.joyY=0;}catch(_){}
   if(_aiSetBossMode){setTargetPriority('nearest');_aiSetBossMode=false;}
-  log('AI tat');updatePanel();
+  _huyenNguyetStillSince=0;
+  log('AI tắt');updatePanel();
 }
 
 const CSS=`
@@ -330,7 +390,7 @@ const CSS=`
 function buildCharGridHTML(){
   if(typeof CHARS==='undefined')return'';
   const autoSel=_selectedCharId==='auto'?'selected':'';
-  let html='<button class="ai-char-btn auto-btn '+autoSel+'" data-id="auto">TU CHON</button>';
+  let html='<button class="ai-char-btn auto-btn '+autoSel+'" data-id="auto">TỰ CHỌN</button>';
   for(const c of CHARS){
     const sel=_selectedCharId===c.id?'selected':'';
     const short=(c.name||c.id).replace(/\s+/g,'').slice(0,7);
@@ -355,7 +415,7 @@ function injectPanel(){
   if(document.getElementById('ai-panel'))return;
   const st=document.createElement('style');st.textContent=CSS;document.head.appendChild(st);
   const d=document.createElement('div');d.id='ai-panel';
-  d.innerHTML='<div id="ai-title">AI AUTO-PLAY<button id="ai-min">−</button></div><div id="ai-body"><button id="ai-btn">BAT AI</button><div id="ai-status">Cho lenh...</div><hr id="ai-sep"><div id="ai-char-label">NHAN VAT</div><div id="ai-char-grid"></div><hr id="ai-sep"><div class="ai-row"><label>SKILL R</label><input id="ai-skill-r" type="range" min="100" max="400" step="20" value="280"><span id="ai-skill-val">280</span></div><div id="ai-profile">-</div><div id="ai-log">-</div></div>';
+  d.innerHTML='<div id="ai-title">AI AUTO-PLAY<button id="ai-min">−</button></div><div id="ai-body"><button id="ai-btn">BẬT AI</button><div id="ai-status">Chờ lệnh...</div><hr id="ai-sep"><div id="ai-char-label">NHÂN VẬT</div><div id="ai-char-grid"></div><hr id="ai-sep"><div class="ai-row"><label>SKILL R</label><input id="ai-skill-r" type="range" min="100" max="400" step="20" value="280"><span id="ai-skill-val">280</span></div><div id="ai-profile">-</div><div id="ai-log">-</div></div>';
   document.body.appendChild(d);
   refreshCharGrid();
   document.getElementById('ai-btn').addEventListener('click',()=>aiEnabled?stopAI():startAI());
@@ -372,19 +432,23 @@ function injectPanel(){
     const p=Game?.player,bossNow=Game?.bossSpawned&&!Game?.bossKilled;
     const charId=p?.charData?.id;
     const prof=charId?(CHAR_PROFILE[charId]||DEFAULT_PROFILE):null;
-    document.getElementById('ai-profile').textContent=prof?charId.replace('_',' ')+' | opt:'+prof.optimalDist+'px':'-';
+    const stillInfo=(charId==='huyen_nguyet'&&_huyenNguyetStillSince)?
+      ' [STILL '+(((Date.now()-_huyenNguyetStillSince)/1000)|0)+'s]':'';
+    document.getElementById('ai-profile').textContent=prof?
+      (charId.replace('_',' ')+' | opt:'+prof.optimalDist+'px'+stillInfo):'-';
     const btnEl=document.getElementById('ai-btn'),stEl=document.getElementById('ai-status');
-    if(bossNow){btnEl.className='on boss';stEl.textContent='BOSS';stEl.className='boss';
+    if(bossNow){
+      btnEl.className='on boss';stEl.textContent='⚔️ BOSS';stEl.className='boss';
       const lg=document.getElementById('ai-log');if(lg)lg.className='boss';
-    }else if(aiEnabled){btnEl.className='on';stEl.textContent='Dang chay';stEl.className='on';}
+    }else if(aiEnabled){btnEl.className='on';stEl.textContent='Đang chạy';stEl.className='on';}
   },300);
 }
 
 function updatePanel(){
   const btn=document.getElementById('ai-btn'),st=document.getElementById('ai-status'),lg=document.getElementById('ai-log');
   if(!btn)return;
-  if(aiEnabled){btn.className='on';btn.textContent='TAT AI';st.textContent='Dang chay';st.className='on';}
-  else{btn.className='';btn.textContent='BAT AI';st.textContent='Cho lenh...';st.className='';if(lg){lg.textContent='-';lg.className='';}}
+  if(aiEnabled){btn.className='on';btn.textContent='TẮT AI';st.textContent='Đang chạy';st.className='on';}
+  else{btn.className='';btn.textContent='BẬT AI';st.textContent='Chờ lệnh...';st.className='';if(lg){lg.textContent='-';lg.className='';}}
 }
 
 function watchScreens(){
