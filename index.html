@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>VONG LINH THỦ v1.5.4</title>
+<title>VONG LINH THỦ v1.6.3</title>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;user-select:none;}
 html,body{width:100%;height:100%;overflow:hidden;background:#000;font-family:'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif;}
@@ -1678,6 +1678,12 @@ const Audio = (() => {
       case 'active_loi_than':     _sfxActiveLoiThan(t);  break;
       case 'active_hoa_long':     _sfxActiveHoaLong(t);  break;
       case 'active_bang_vuong':   _sfxActiveBangVuong(t); break;
+      case 'active_thien_kiem':   _sfxActiveThienKiem(t); break;
+      case 'active_huyet_ma':     _sfxActiveHuyetMa(t);   break;
+      case 'active_vo_cuc':       _sfxActiveVoCuc(t);     break;
+      case 'main_thien_kiem':     _sfxMainThienKiem(t);   break;
+      case 'main_huyet_ma':       _sfxMainHuyetMa(t);     break;
+      case 'main_vo_cuc':         _sfxMainVoCuc(t);       break;
       case 'active': _sfxActiveLiu(t); break; 
 
       
@@ -1714,7 +1720,76 @@ const Audio = (() => {
       case 'heartbeat':       _sfxHeartbeat(t);      break;
       case 'flesh_impact':    _sfxFleshImpact(t);    break;
       case 'flesh_switch':    _sfxFleshSwitch(t);    break;
+      // map22 — Cõi Vô Hình
+      case 'phase_cloak':     _sfxPhaseCloak(t);     break;
+      case 'phase_reveal':    _sfxPhaseReveal(t);    break;
+      // map23 — Lõi Địa Ngục
+      case 'magma_erupt':     _sfxMagmaErupt(t);     break;
+      case 'inferno_roar':    _sfxInfernoRoar(t);    break;
+      // map24 — Tận Thế Vĩnh Cửu
+      case 'doom_pulse':      _sfxDoomPulse(t);      break;
+      case 'apocalypse':      _sfxApocalypse(t);     break;
+      // ─── Generic combat SFX ───
+      case 'hit':     _sfxHit(t);    break;
+      case 'slash':   _sfxSlash(t);  break;
+      case 'arrow':   _sfxArrow(t);  break;
+      case 'orb':     _sfxOrb(t);    break;
+      case 'slam':    _sfxSlam(t);   break;
+      case 'block':   _sfxBlock(t);  break;
+      case 'passive': _sfxPassive(t); break;
+      case 'heal':    _sfxHeal(t);   break;
+      case 'crit':    _sfxCrit(t);   break;
+      case 'kill':    _sfxKill(t);   break;
+      case 'damage':  _sfxDamage(t); break;
     }
+  }
+
+
+  // ─── Generic combat SFX functions ─────────────────────────────────────
+  function _sfxHit(t) {
+    _noise(0.02, 0.08, t, 3000);
+    _tone(300, 'sawtooth', 0.03, 0.08, t, 120);
+  }
+  function _sfxSlash(t) {
+    _noise(0.03, 0.10, t, 5000);
+    _tone(1200, 'sawtooth', 0.04, 0.12, t, 300);
+  }
+  function _sfxArrow(t) {
+    _noise(0.02, 0.12, t, 6000);
+    _tone(900, 'square', 0.03, 0.10, t, 400);
+  }
+  function _sfxOrb(t) {
+    _tone(660, 'sine', 0.08, 0.12, t, 880);
+    _tone(880, 'sine', 0.06, 0.08, t + 0.04, 1100);
+  }
+  function _sfxSlam(t) {
+    _tone(80, 'sawtooth', 0.12, 0.25, t, 40);
+    _noise(0.05, 0.15, t, 1000);
+  }
+  function _sfxBlock(t) {
+    _tone(400, 'square', 0.06, 0.20, t, 600);
+    _noise(0.03, 0.06, t, 4000);
+  }
+  function _sfxPassive(t) {
+    _tone(520, 'sine', 0.05, 0.10, t, 780);
+    _tone(780, 'sine', 0.04, 0.07, t + 0.05, 1040);
+  }
+  function _sfxHeal(t) {
+    _tone(440, 'sine', 0.06, 0.10, t, 660);
+    _tone(550, 'sine', 0.05, 0.08, t + 0.04, 770);
+    _tone(660, 'sine', 0.04, 0.06, t + 0.08, 880);
+  }
+  function _sfxCrit(t) {
+    _tone(1200, 'sawtooth', 0.05, 0.20, t, 2400);
+    _noise(0.03, 0.08, t, 8000);
+  }
+  function _sfxKill(t) {
+    _tone(220, 'sawtooth', 0.06, 0.15, t, 110);
+    _tone(110, 'sawtooth', 0.04, 0.12, t + 0.04, 55);
+  }
+  function _sfxDamage(t) {
+    _tone(150, 'sawtooth', 0.05, 0.15, t, 80);
+    _noise(0.04, 0.08, t, 2000);
   }
 
    
@@ -2056,7 +2131,66 @@ const Audio = (() => {
     _noise(0.5, 0.09, t + 0.10, 3000);
   }
 
-   
+  // ── Thiên Kiếm: kim loại sắc bén + burst kiếm
+  function _sfxActiveThienKiem(t) {
+    _tone(1800, 'sawtooth', 0.22, 0.06, t);
+    _tone(2400, 'sawtooth', 0.18, 0.05, t + 0.02);
+    _noise(0.5, 0.08, t, 8000);
+    [0.05, 0.10, 0.15, 0.20, 0.25, 0.30, 0.35, 0.40].forEach((d, i) => {
+      setTimeout(() => {
+        if (!ctx || !sfxGain) return;
+        const t2 = ctx.currentTime;
+        _tone(2200 - i*80, 'sawtooth', 0.12, 0.06, t2);
+        _noise(0.3, 0.05, t2, 6000 + i*200);
+      }, d * 1000);
+    });
+    setTimeout(() => { if(!ctx||!sfxGain) return; _noise(0.9, 0.4, ctx.currentTime, 4000); _tone(400,'sine',0.3,0.3,ctx.currentTime,100); }, 800);
+  }
+  function _sfxMainThienKiem(t) {
+    _tone(1600, 'sawtooth', 0.08, 0.04, t);
+    _noise(0.2, 0.03, t, 7000);
+  }
+
+  // ── Huyết Ma: bass nặng + máu rỉ nhớp nháp
+  function _sfxActiveHuyetMa(t) {
+    _tone(60,  'sawtooth', 0.9, 0.6, t);
+    _tone(90,  'square',   0.5, 0.5, t + 0.03);
+    _noise(0.7, 0.5, t, 400);
+    _tone(200, 'sine', 0.3, 0.8, t + 0.1, 40);
+    [0.1, 0.25, 0.45, 0.70].forEach(d => {
+      setTimeout(() => {
+        if (!ctx || !sfxGain) return;
+        const t2 = ctx.currentTime;
+        _tone(80, 'sawtooth', 0.35, 0.25, t2);
+        _noise(0.4, 0.18, t2, 500);
+      }, d * 1000);
+    });
+  }
+  function _sfxMainHuyetMa(t) {
+    _noise(0.3, 0.12, t, 600);
+    _tone(120, 'sine', 0.15, 0.15, t, 60);
+  }
+
+  // ── Vô Cực: xoáy âm dương huyền bí
+  function _sfxActiveVoCuc(t) {
+    _tone(440, 'sine',   0.25, 1.2, t, 220);
+    _tone(660, 'sine',   0.18, 1.0, t + 0.04, 330);
+    _tone(220, 'triangle', 0.2, 1.4, t + 0.02, 110);
+    _noise(0.15, 0.5, t, 2000);
+    [0, 0.2, 0.4, 0.6, 0.8, 1.0].forEach((d, i) => {
+      setTimeout(() => {
+        if (!ctx || !sfxGain) return;
+        const t2 = ctx.currentTime;
+        _tone(i%2===0 ? 880 : 554, 'sine', 0.1, 0.25, t2, i%2===0?220:330);
+      }, d * 1000);
+    });
+    setTimeout(() => { if(!ctx||!sfxGain) return; _noise(0.5,0.4,ctx.currentTime,3000); _tone(330,'sine',0.25,0.5,ctx.currentTime,110); }, 1200);
+  }
+  function _sfxMainVoCuc(t) {
+    _tone(440, 'sine',   0.07, 0.2, t, 220);
+    _tone(660, 'triangle', 0.05, 0.15, t + 0.01, 330);
+  }
+
   function _sfxLevelup(t) {
     
     [523,659,784,1047].forEach((f,i) => _tone(f,'sine',0.18,0.22,t+i*0.07));
@@ -2180,6 +2314,39 @@ const Audio = (() => {
     // Lõi thật xoay — tiếng ướt nhẹ
     _noise(0.04, 0.15, t, 800);
     _tone(180, 'sine', 0.04, 0.08, t, 120);
+  }
+
+  function _sfxPhaseCloak(t) {
+    // Ẩn thân — tiếng mờ dần vào hư vô
+    _tone(800, 'sine', 0.06, 0.3, t, -600);
+    _noise(0.03, 0.2, t, 200);
+  }
+  function _sfxPhaseReveal(t) {
+    // Hiện ra bất ngờ — tiếng vỡ màng
+    _tone(300, 'sawtooth', 0.08, 0.15, t, 900);
+    _noise(0.05, 0.1, t, 2000);
+  }
+  function _sfxMagmaErupt(t) {
+    // Cột dung nham phun
+    _noise(0.12, 0.5, t, 80);
+    _tone(80, 'sawtooth', 0.1, 0.4, t, 200);
+  }
+  function _sfxInfernoRoar(t) {
+    // Boss địa ngục咆哮
+    _noise(0.1, 0.8, t, 60);
+    _tone(55, 'sawtooth', 0.12, 0.6, t, 150);
+  }
+  function _sfxDoomPulse(t) {
+    // Pulse tận thế — bass nặng
+    _noise(0.08, 0.3, t, 40);
+    _tone(40, 'sine', 0.15, 0.4, t, -10);
+    _tone(80, 'sine', 0.08, 0.3, t + 0.05);
+  }
+  function _sfxApocalypse(t) {
+    // Boss phase 4 — âm thanh địa ngục
+    _noise(0.15, 1.0, t, 30);
+    _tone(30, 'sawtooth', 0.18, 0.8, t, 60);
+    _tone(120, 'square', 0.06, 0.5, t + 0.1);
   }
 
   function _sfxGold(t) {
@@ -2844,8 +3011,9 @@ const UI = (() => {
         ${row('⚡','Tốc Đánh',  baseAtk+'×','', potAtkSp>0?Math.round(potAtkSp*100):0,'%', petAtkSp>0?Math.round(petAtkSp*100):0,'%', finalAPS,'/s')}
         ${row('🏃','Tốc Độ',    baseSpd,'', potSpdP>0?potSpdP:0,'%', 0,'', finalSpd,'')}
         <div class="cu-td v-sep" style="grid-column:1/-1"></div>
-        ${(potCrit+petCrit>0)?row('🎯','Crit Rate',0,'%',potCrit,'%',petCrit,'%',potCrit+petCrit,'%'):''}
-        ${row('💢','Crit DMG', 150,'%', potCritD,'%', petCritD,'%', 150+potCritD+petCritD,'%')}
+
+        ${row('🎯','Crit Rate', Math.round((char.baseCrit||0)*100),'%', potCrit,'%', petCrit,'%', Math.round((char.baseCrit||0)*100)+potCrit+petCrit,'%')}
+        ${row('💢','Crit DMG', Math.round((char.baseCritDmg||1.5)*100),'%', potCritD,'%', petCritD,'%', Math.round((char.baseCritDmg||1.5)*100)+potCritD+petCritD,'%')}
         ${(potArmor+petArmor>0)?row('🛡️','Giáp',0,'%',potArmor,'%',petArmor,'%',potArmor+petArmor,'%'):''}
         ${(potRegen>0)?row('💚','Hồi HP/s',0,'',potRegen,'/s',0,'',potRegen,'/s'):''}
         ${(potHPK>0)?row('🩸','HP/Kill',0,'',potHPK,'',0,'',potHPK,''):''}
@@ -3019,9 +3187,9 @@ const UI = (() => {
     const save = Save.get();
 
     
-    const TIER_UNLOCK_MAP = [null, 'map03', 'map06', 'map09', 'map12', 'map15', 'map18']; 
-    const TIER_NAMES = ['', 'CUNG 1 — Nhập Môn', 'CUNG 2 — Thử Thách', 'CUNG 3 — Áp Lực', 'CUNG 4 — Đỉnh Cao', 'CUNG 5 — Tận Cùng', 'CUNG 6 — Hủy Diệt', 'CUNG 7 — Siêu Việt'];
-    const TIER_COLORS = ['','#c8960c','#60c8ff','#a060ff','#ff6060','#ffd700','#00ffcc','#ff60d0'];
+    const TIER_UNLOCK_MAP = [null, 'map03', 'map06', 'map09', 'map12', 'map15', 'map18', 'map21']; 
+    const TIER_NAMES = ['', 'CUNG 1 — Nhập Môn', 'CUNG 2 — Thử Thách', 'CUNG 3 — Áp Lực', 'CUNG 4 — Đỉnh Cao', 'CUNG 5 — Tận Cùng', 'CUNG 6 — Hủy Diệt', 'CUNG 7 — Siêu Việt', 'CUNG 8 — Nguyên Thủy'];
+    const TIER_COLORS = ['','#c8960c','#60c8ff','#a060ff','#ff6060','#ffd700','#00ffcc','#ff60d0','#ff2020'];
 
     
     const tierGroups = {};
@@ -3059,7 +3227,9 @@ const UI = (() => {
       mapsRow.style.borderColor = TIER_COLORS[t] + '30';
 
       tierGroups[tier].forEach(({ m, i }) => {
-        const mapInTierLocked = tierLocked;
+        const globalIdx = MAPS.indexOf(m);
+        const prevCompleted = globalIdx === 0 || save.completedMaps.includes(MAPS[globalIdx - 1].id);
+        const mapInTierLocked = tierLocked || !prevCompleted;
         const completed = save.completedMaps.includes(m.id);
         const streak    = Save.getMapWinStreak(m.id);
 
@@ -3077,8 +3247,13 @@ const UI = (() => {
           <div class="map-difficulty">${'⭐'.repeat(m.difficulty)}</div>`;
         div.addEventListener('click', () => {
           if (mapInTierLocked) {
-            const req = MAPS.find(x => x.id === tierUnlockReq);
-            Toast.show(`Vượt boss cung ${t-1} (${req ? req.name : ''}) để mở!`);
+            if (tierLocked) {
+              const req = MAPS.find(x => x.id === tierUnlockReq);
+              Toast.show(`Vượt boss cung ${t-1} (${req ? req.name : ''}) để mở!`);
+            } else {
+              const req = MAPS[globalIdx - 1];
+              Toast.show(`Hoàn thành ${req ? req.name : 'map trước'} để mở khoá!`);
+            }
             return;
           }
           Audio.playSFX('select');
@@ -3285,9 +3460,9 @@ const UI = (() => {
           '<b>Cung 4 (Map 10–12):</b> 380–500 ◈/run — Cần Tiềm Năng đủ mạnh.<br>' +
           '<b>Cung 5 (Map 13–15):</b> 550–800 ◈/run — Endgame, thử thách tối đa.<br>' +
           '<b>Cung 6 (Map 16–18):</b> 620–820 ◈/run — Hủy Diệt, quái cơ chế mới cực mạnh.<br>' +
-          '<b>Cung 7 (Map 19–20):</b> 680–950 ◈/run — Siêu Việt, boss cơ chế chưa từng thấy.<br>' +
-          '<b>Cung 8 (Map 21):</b> 800–1080 ◈/run — Nguyên Thủy, khó nhất game.<br><br>' +
-          'Mỗi cung chỉ cần vượt <b>map cuối cung</b> để mở cung tiếp theo. Hai map đầu của cung có thể farm lại bất cứ lúc nào.'));
+          '<b>Cung 7 (Map 19–21):</b> 680–1080 ◈/run — Siêu Việt, boss cơ chế chưa từng thấy.<br>' +
+          '<b>Cung 8 (Map 22–24):</b> 900–1450 ◈/run — Tận Thế, Cổng Địa Ngục / Bão Nguyên Tố / Thiên Khải.<br><br>' +
+          'Mỗi map chỉ mở khi vượt boss <b>map ngay trước đó</b>. Mỗi cung chỉ khả dụng khi hoàn thành map cuối cung trước.'));
       entry('⭐','Thưởng Thành Tích Trong Run',
         p('Ngoài vàng từ quái, mỗi run có thể nhận thêm vàng bonus từ các cột mốc sau:<br><br>' +
           '⚡ <b>100 kill trước phút thứ 2:</b> +30×tier ◈ (T1: +30, T6: +180)<br>' +
@@ -3325,24 +3500,24 @@ const UI = (() => {
         },
         {
           c: CHARS.find(c=>c.id==='huyen_nguyet'),
-          dps: 'Base 170×0.98/s ≈ 167/s · Mana +20% = 200/s · Nguyệt Vũ đánh 2 lần/lượt',
+          dps: 'Base 130×1.0/s = 130/s · Nguyệt Tích +48% = 192/s · Hắc Nhật Ma Cầu tách mini-orb',
           difficulty: '⭐ Dễ',
-          playstyle: 'Stationary Controller — đứng yên để Mana buff, active slow để đánh an toàn',
-          guide: `<!--P--><b>Mana Tích Tụ</b>: luôn nhận +8% ST khi di chuyển. Đứng yên ≥0.4 giây → tăng lên <b>+20% ST</b> (×1.2). Có <b>0.5s grace period</b> khi bắt đầu di chuyển — buff chưa mất ngay. <b>Active không làm mất Mana Tích Tụ</b> — ưu tiên cast khi đứng yên để nhận cả hai lợi ích đồng thời.<!--A--><b>Nguyệt Thực</b>: vùng nhật thực bán kính 200đv trong 3 giây, làm chậm địch 60%. Địch đang bị chậm nhận +25% ST từ mọi nguồn. Active KHÔNG làm mất Mana — thực tế đây là vừa AoE kiểm soát vừa tăng ST. Nguyệt Vũ (evolved): lưỡi trăng bay ra rồi vòng lại — lượt về mạnh hơn 30%, trúng địch đang slow thêm +20%.<!--T-->Cast Nguyệt Thực khi đứng yên → địch chậm 60% → an toàn bắn liên tục ×1.2 × 1.25 = ×1.5 effective. Evolved cực mạnh vs horde: lượt đi + lượt về đánh 2 lần, cả hai trúng địch đang slow.`,
+          playstyle: 'Stationary Controller — đứng yên để Nguyệt Tích buff, active slow để đánh an toàn',
+          guide: `<!--P--><b>Nguyệt Tích</b>: đứng yên ≥0.4 giây → +8% DMG/0.6s (max 6 stack = +48%). Mất TẤT CẢ stack ngay khi di chuyển (grace 0.3s). <b>Active không làm mất Nguyệt Tích</b> — cast khi đứng yên để giữ stack đầy.<!--A--><b>Nguyệt Thực</b>: vùng nhật thực bán kính 200đv trong 3 giây, làm chậm địch 60%. Địch đang bị chậm nhận +25% ST từ mọi nguồn. Active KHÔNG làm mất Mana — thực tế đây là vừa AoE kiểm soát vừa tăng ST. Hắc Nhật Ma Cầu (evolved): orb to hơn, trúng địch tách 2 mini-orb homing ×0.5 — mỗi orb trúng +5% CritRate 3s (max +30%), tổng thêm +20%.<!--T-->Cast Nguyệt Thực khi đứng yên → địch chậm 60% → an toàn bắn liên tục ×1.2 × 1.25 = ×1.5 effective. Evolved cực mạnh vs horde: lượt đi + lượt về đánh 2 lần, cả hai trúng địch đang slow.`,
         },
         {
           c: CHARS.find(c=>c.id==='thiet_tam'),
-          dps: 'Base 148×1.3/s ≈ 192/s · Mắt Đại Bàng +25% = 240/s · Xuyên Tâm Đạn ×3.36 chain',
+          dps: 'Base 148×0.9/s ≈ 133/s · Mắt Đại Bàng +48% = 197/s · Tử Thần Chi Tên xuyên 5 + AoE độc',
           difficulty: '⭐⭐ Trung Bình',
           playstyle: 'Kiter + Eagle Burst — giữ xa, kill minion tích Eagle Strike, burst boss',
-          guide: `<!--P--><b>Mắt Đại Bàng</b>: địch cách >150đv nhận thêm +25% ST từ mọi nguồn. <b>Eagle Strike</b>: mỗi kill → 0.5s guaranteed Crit cho đòn tiếp theo. Eagle Strike KHÔNG bị active xóa — đây là combo chính: kill minion → Eagle Strike → bắn boss guaranteed Crit.<!--A--><b>Bão Đạn</b>: tốc bắn ×2.5 trong 4 giây. Eagle Strike được giữ nguyên khi cast (không gia hạn). Thời điểm tốt nhất: khi vừa kill được minion (Eagle Strike up) + nhiều horde để xuyên qua. Xuyên Tâm Đạn (evolved): 5 pierce với 80% falloff — trúng hàng thẳng 5 quái = tổng ×3.36 per shot.<!--T-->Vòng lặp: giữ >150đv → kill minion → Eagle Strike → bắn boss guaranteed Crit ×1.5+. Với Bão Đạn: mỗi đợt 4s tốc bắn ×2.5 → combo chặt chẽ hơn với Eagle Strike. Evolved + Bão Đạn = xuyên horde liên tục trong 4s.`,
+          guide: `<!--P--><b>Mắt Đại Bàng</b>: địch cách >150đv nhận thêm +25% ST từ mọi nguồn. <b>Eagle Strike</b>: mỗi kill → 0.5s guaranteed Crit cho đòn tiếp theo. Eagle Strike KHÔNG bị active xóa — đây là combo chính: kill minion → Eagle Strike → bắn boss guaranteed Crit.<!--A--><b>Bão Đạn</b>: tốc bắn ×2.5 trong 4 giây. Eagle Strike được giữ nguyên khi cast (không gia hạn). Thời điểm tốt nhất: khi vừa kill được minion (Eagle Strike up) + nhiều horde để xuyên qua. Tử Thần Chi Tên (evolved): xuyên 5 địch + AoE độc 70px mỗi điểm trúng. Địch >150px: +25% CritDmg bonus.<!--T-->Vòng lặp: giữ >150đv → kill minion → Eagle Strike → bắn boss guaranteed Crit ×1.5+. Với Bão Đạn: mỗi đợt 4s tốc bắn ×2.5 → combo chặt chẽ hơn với Eagle Strike. Evolved + Bão Đạn = xuyên horde liên tục trong 4s.`,
         },
         {
           c: CHARS.find(c=>c.id==='kim_cang'),
           dps: 'Base 148×0.98/s ≈ 145/s · HP: 900 (cao nhất) · Block Stack: 3 stack → Active ×3.0',
           difficulty: '⭐ Dễ',
           playstyle: 'Tank Tích Lũy — chịu đòn để tích Block Stack không decay, xả active khi đầy 3',
-          guide: `<!--P--><b>Bất Phá Thể</b>: 20% xác suất chặn hoàn toàn đòn bất kỳ + hồi 5% HP + tích 1 Block Stack (max 3). Mỗi stack +7% ST. <b>Block Stack KHÔNG BAO GIỜ tự decay</b> — chỉ reset sau khi active kích nổ. Điều này có nghĩa: đứng ở góc chờ gom 3 stack hoàn toàn an toàn, không lo mất stack khi di chuyển. Kim Cang Chưởng (evolved): shockwave rộng hơn 40%, stun chance 25%; đủ 3 stack → mỗi đòn tự động phóng shockwave phụ ×0.4.<!--A--><b>Bão Phong Phá</b>: kích nổ toàn bộ Block Stack → AoE = ST × (1.5 + 0.5×stack). 0 stack=×1.5, 1=×2.0, 2=×2.5, <b>3 stack=×3.0</b>. Stun 1.2s tất cả địch. Sau nổ, stack về 0 và tích lại ngay.<!--T-->Đợi đủ 3 Block Stack trước boss để active ×3.0. Stack không decay → có thể tích trước, di chuyển thoải mái. Với evolved + 3 stack: shockwave phụ liên tục + active ×3.0 = DPS thực rất cao dù base thấp.`,
+          guide: `<!--P--><b>Bất Phá Thể</b>: 20% xác suất chặn hoàn toàn đòn bất kỳ + hồi 5% HP + tích 1 Block Stack (max 3). Mỗi stack +7% ST. <b>Block Stack KHÔNG BAO GIỜ tự decay</b> — chỉ reset sau khi active kích nổ. Điều này có nghĩa: đứng ở góc chờ gom 3 stack hoàn toàn an toàn, không lo mất stack khi di chuyển. Kim Cang Chưởng (evolved): shockwave rộng hơn 40%, stun chance 25%; đủ 3 stack → mỗi đòn tự động phóng shockwave phụ ×0.4.<!--A--><b>Kim Cang Bão</b>: kích nổ toàn bộ Block Stack → AoE = ST × (1.5 + 0.5×stack). 0 stack=×1.5, 1=×2.0, 2=×2.5, <b>3 stack=×3.0</b>. Stun 1.2s tất cả địch. Sau nổ, stack về 0 và tích lại ngay.<!--T-->Đợi đủ 3 Block Stack trước boss để active ×3.0. Stack không decay → có thể tích trước, di chuyển thoải mái. Với evolved + 3 stack: shockwave phụ liên tục + active ×3.0 = DPS thực rất cao dù base thấp.`,
         },
         {
           c: CHARS.find(c=>c.id==='am_sat'),
@@ -3356,7 +3531,7 @@ const UI = (() => {
           dps: 'Base 142×1.0/s = 142/s · 20 hồn +40% aura → 199/s · Auto-pulse ×3 mỗi 2s tại max',
           difficulty: '⭐⭐ Trung Bình',
           playstyle: 'Aura Stacker — đứng giữa đám quái để aura hit nhiều nhất, tích hồn → Giải Phóng',
-          guide: `<!--P--><b>Thu Hồn</b>: mỗi quái chết 40% rơi Soul Orb (max 20). Mỗi hồn +2% damage Tử Khí aura. Đạt 20 hồn: <b>aura tự pulse ×3 mỗi 2 giây</b> — passive AoE mạnh mà không cần active. Thu hồn KHÔNG bị active ảnh hưởng.<!--A--><b>Giải Phóng</b>: kích nổ toàn bộ hồn — AoE 200px = số_hồn × baseDmg × 1.8. Tại 20 hồn: 20 × 142 × 1.8 = <b>5,112 ST AoE</b>. Ngay sau đó nhận lại 5 hồn miễn phí (không mất passive thu hồn). Âm Linh Bùng Phát (evolved): aura rộng hơn 40% + mỗi pulse triệu Ghost Wisp homing tồn tại 3s (×0.6 ST/hit).<!--T-->Vào giữa đám quái để aura 360° hit tối đa. Tích đủ 20 hồn trước khi Giải Phóng (20 hồn = ×4.44 effective so với 0). Sau active: 5 hồn trả về → tích tiếp. Evolved cực mạnh cuối run khi aura ×1.40 × auto-pulse ×3 liên tục.`,
+          guide: `<!--P--><b>Thu Hồn</b>: mỗi quái chết 40% rơi Soul Orb (max 20). Mỗi hồn +2% damage Tử Khí aura. Đạt 20 hồn: <b>aura tự pulse ×3 mỗi 2 giây</b> — passive AoE mạnh mà không cần active. Thu hồn KHÔNG bị active ảnh hưởng.<!--A--><b>Giải Phóng</b>: kích nổ toàn bộ hồn — AoE 200px = số_hồn × baseDmg × 1.8. Tại 20 hồn: 20 × 142 × 1.8 = <b>5,112 ST AoE</b>. Ngay sau đó nhận lại 5 hồn miễn phí (không mất passive thu hồn). Vong Hồn Đại Liềm (evolved): liềm to ×1.8, hút địch vào khi bay ra. Khi về: xuyên tất cả + AoE 80px. Kill → +10% AtkSpd 5s (max +60%). ST/hit).<!--T-->Vào giữa đám quái để aura 360° hit tối đa. Tích đủ 20 hồn trước khi Giải Phóng (20 hồn = ×4.44 effective so với 0). Sau active: 5 hồn trả về → tích tiếp. Evolved cực mạnh cuối run khi aura ×1.40 × auto-pulse ×3 liên tục.`,
         },
         {
           c: CHARS.find(c=>c.id==='loi_than'),
@@ -3379,6 +3554,28 @@ const UI = (() => {
           playstyle: 'Control-burst — slow địch → khai thác +35% mọi nguồn ST, active không gián đoạn vũ khí',
           guide: `<!--P-->Địch chậm/đóng băng nhận thêm +35% ST từ <b>mọi nguồn: vũ khí, active, crit, evolved</b> đều hưởng. Băng Linh Nhẫn tự kích mỗi lần trúng (slow 40% × 2 giây). Giết địch đóng băng: hồi 8 HP. HP<25%: <b>Băng Hộ Thể — hấp thụ 400 ST, phản chiếu 60%</b>.<!--A-->Bão tuyết 200px trong 6 giây: chậm 60% + ×1.2/giây (hưởng +35%). <b>Vũ khí Băng Linh Nhẫn tiếp tục bắn bình thường trong bão</b> — 4 rings/giây × ×1.35 effective. Địch trong bão ≥3 giây → đóng băng 2 giây. Kết thúc: Băng Nổ ×5.5 (địch còn chậm → ×5.5×1.35 = ×7.43 effective).<!--T-->4 rings × 195 × 1.35 × 1.0/s = 1,053/s distributed — cao nhất game với evolved. Active KHÔNG làm mất vũ khí: Bão + rings đồng thời = toàn bộ +35% hoạt động mọi lúc. Dùng Dragon pet — 4 rings/shot = 4 cơ hội crit → Dragon Rage kích liên tục. Ưu tiên AtkSpd + CritDMG.`,
         },
+        {
+          c: CHARS.find(c=>c.id==='thien_kiem'),
+          dps: 'Base 225×1.45/s · Kiếm Ý 50: +150% ST × 5 kiếm = ~1,240/s · Active: 5 kiếm ×(2.5+KÝ×0.03) không tiêu stack',
+          difficulty: '⭐⭐⭐ Khó',
+          playstyle: 'Tích Lũy Vĩnh Cửu — Kiếm Ý tích từ hit + kill, KHÔNG bao giờ reset, scale đến cuối run',
+          guide: `<!--P--><b>Kiếm Ý</b>: mỗi kiếm trúng: +1 stack (max 15, +4%/stack = +60%). Milestone 10: +10% CritRate. Milestone 15: auto Kiếm Khí AoE 120px mỗi 3s. Mất 2 stack/2s khi không đánh. Max 15 stack, <b>KHÔNG BAO GIỜ reset</b>. Mỗi stack +3% ST (tối đa +150%). Milestone 25: 4 kiếm/lần. Milestone 30: CD Active reset ngay lập tức (1 lần). Milestone 50: 5 kiếm/lần + sóng kiếm tự động AoE mỗi 2 giây.<!--A--><b>Nhất Kiếm Thiên Hà</b>: phóng 5 kiếm homing đến 5 địch gần nhất, mỗi kiếm = <b>Tổng ST × (2.5 + Kiếm Ý×0.03)</b> xuyên tất cả trên đường. KHÔNG tiêu Kiếm Ý. Sau cast: ATK Speed +60% × 5 giây + mỗi lần bắn thêm 2 kiếm phụ. Tại 50 KÝ: mỗi kiếm active = ×(2.5+1.5) = ×4.0 totalDmg.<!--T-->Ưu tiên giết nhiều quái để tích kill bonus nhanh hơn (hit+kill cộng dồn). Dùng Active ngay khi đạt 30 Kiếm Ý (CD reset → dùng ngay lần 2). Tại 50 KÝ: mỗi lần bắn thường = 5 kiếm pierce 3 địch + sóng auto AoE = DPS diện rộng cực cao. Evolved Thiên Kiếm Thần Ý: kiếm bounce nổ AoE 100px, kiếm return xuyên tất cả — evolved biến mỗi kiếm thành chain AoE.`,
+        },
+        {
+          c: CHARS.find(c=>c.id==='huyet_ma'),
+          dps: 'Base 218×1.32/s · Huyết Tụ 30: +120% ST aura 155px · Active ×(HT×0.04+1.5) × 7s không tiêu stack',
+          difficulty: '⭐⭐ Trung Bình',
+          playstyle: 'Aura Tank — đứng giữa đám quái, chịu đòn tích Huyết Tụ, aura và lifesteal scale theo HP mất · max 12 stack = +60%',
+          guide: `<!--P--><b>Huyết Tụ</b>: mỗi 35 HP mất: +1 Huyết Tụ (max 12, +5%/stack = +60% ST). Milestone 12: auto AoE 200px ×2.5 mỗi 3.5s. <b>KHÔNG reset</b>. Đủ 30 stacks: tự nổ AoE 230px ×3.0 mỗi 3 giây (không tiêu stack). HP<5% lần đầu/run: Bất Tử 3 giây + ATK ×2. Huyết Tụ tích từ bất kỳ nguồn dmg nhận (kể cả minion).<!--A--><b>Cuồng Huyết Vương Thân</b>: khai mạc AoE 220px × (HT×0.3+1.8) + Rỉ Máu 5s. 7 giây tiếp theo: aura pulse bình thường × (1.5+HT×0.04), hút máu ×2, phản 50% ST nhận. Kết thúc: AoE ×(HT×0.6+3.0). <b>Huyết Tụ KHÔNG tiêu</b> → dùng active càng sớm, stack càng cao = AoE càng mạnh.<!--T-->Chủ động nhận một ít đòn sớm để tích Huyết Tụ — mỗi stack +4% ST là vĩnh viễn. Aura pulse 155px → luôn ở giữa đám quái để hit nhiều nhất. Lifesteal 8% (16% khi active) trên mỗi hit → tự hồi HP trong đám đông. Bất Tử 3s có thể cứu run: khi HP<5%, ATK ×2 cộng với Huyết Tụ max = spike DPS cực lớn. Evolved Huyết Hải Thiên La: mỗi pulse 30% sinh cầu máu homing ×1.5 → tăng DPS đáng kể mà không cần micro.`,
+        },
+        {
+          c: CHARS.find(c=>c.id==='vo_cuc'),
+          dps: 'Base 228×1.12/s · Phase Âm +165% × Đạo Nguyên 30 +90% = ~430/s mỗi bi · 2 bi song song',
+          difficulty: '⭐⭐⭐ Khó',
+          playstyle: 'Orbital DPS — bi quỹ đạo tự nhắm mục tiêu, tích Đạo Nguyên vĩnh viễn, phase-swap mỗi 5s',
+          guide: `<!--P--><b>Đạo Nguyên</b>: tự động đổi phase mỗi 5 giây (evolved: 3 giây). Dương: +20% SPD. Âm: absorb 15% dmg nhận. Mỗi phase switch: +1 Đạo Nguyên (max 15, +4%/stack = +60%). Âm: +65% ST, hấp thụ 22% ST nhận. Mỗi đổi phase: +1 Đạo Nguyên (max 30, +3%/stack = +90% vĩnh viễn). <b>Đạo Nguyên KHÔNG BAO GIỜ reset</b>. 2 bi quỹ đạo bán kính 135px phóng đạn homing theo ATK rate — bi Dương ×1.3 (đẩy địch), bi Âm ×1.0 (slow 50%).<!--A--><b>Thái Cực Siêu Việt</b>: 5 giây — 2 bi tăng tốc orbit ×2 và <b>mỗi lần trúng địch đồng thời nổ AoE ×(2.0+ĐN×0.05)</b>. Vũ khí KHÔNG bị gián đoạn. Kết thúc: 8 mảnh homing ×(3.0+ĐN×0.1)/mảnh. Tại ĐN 30: AoE active ×3.5, kết thúc 8 mảnh ×6.0/mảnh.<!--T-->Đạo Nguyên là tài nguyên vĩnh viễn — active thường xuyên để phase swap nhanh hơn trong 5s window. Tại 30 ĐN: +90% ST là permanent → mọi burst đều scale. Pha Âm (hấp thụ 22%): có thể đứng giữa horde mà không chết nhanh. Evolved Vô Cực Thiên Địa: phase interval 5s→3s = tích Đạo Nguyên nhanh gấp 1.67×. Ưu tiên AtkSpd + CritDMG để tối đa số lần bi bắn.`,
+        },
+
       ];
 
       charGuides.forEach(({c, dps, difficulty, playstyle, guide}) => {
@@ -3459,8 +3656,8 @@ const UI = (() => {
         'Cần Tiềm Năng đủ mạnh — đừng leo khi chưa sẵn sàng.',
         'Endgame — thử thách tối đa, thưởng cao nhất.',
         'Giới hạn mới — cơ chế độc và quái cực mạnh. Đỉnh tier 6.',
-        'Siêu Việt — 2 map mới tier 7, cơ chế chưa từng thấy.',
-        'Nguyên Thủy — map cuối cùng, độ khó cực đại, thưởng cao nhất game.',
+        'Siêu Việt — 3 map tier 7, cơ chế chưa từng thấy.',
+        'Nguyên Thủy — 3 map cung 8 cực hạn. Vô hình, dung nham, tận thế. Thưởng cao nhất game.',
       ];
       let lastTier = 0;
       MAPS.forEach((m, i) => {
@@ -3625,15 +3822,36 @@ const UI = (() => {
           {i:'👻',n:'Temporal Wraith Tinh Anh ⭐',hp:1600,d:550,s:240,ai:'Vòng cánh',elite:true,t:'DMG 550 + tốc 240 — tiếp cận từ hông khi đang ẩn. Nguy hiểm nhất khi Nghịch Lưu đảo đạn đang hoạt động.'},
           {i:'⌛',n:'Thời Thần',      hp:690000,d:415,s:90,ai:'BOSS',boss:true,t:'Bóng Pha: chuyển phase tạo bóng lặp lại pattern cũ delay 2 giây. Phase 3: bóng phase 1 + 2 đồng thời (3 entity bắn cùng lúc) + Nghịch Lưu riêng mỗi 10 giây. Học pattern từ phase 1 vì nó lặp lại mãi.'},
         ]},
-        {map:'Map 21 — Vực Thịt Sống',icon:'🫀',tier:8,e:[
+        {map:'Map 21 — Vực Thịt Sống',icon:'🫀',tier:7,e:[
           {i:'🐛',n:'Flesh Crawler',  hp:380, d:185,s:140,ai:'Lao thẳng',  t:'Chui dưới sàn di chuyển — không thể bị tấn công khi đang chui. Nhảy lên tấn công bất ngờ từ dưới. Nguy hiểm nhất khi arena đang co lại.'},
           {i:'🤢',n:'Bile Spitter',   hp:520, d:160,s:60, ai:'Tấn công xa',t:'Bắn acid blob tạo vũng acid tại điểm rơi: 40 DMG/giây × 5 giây. Nhiều con kết hợp với arena co = sàn nguy hiểm liên tục.'},
           {i:'🫀',n:'Meat Titan',     hp:2200,d:250,s:40, ai:'Lao thẳng',  t:'HP cao nhất game thường (2200) nhưng chậm nhất. Khi chết không chết ngay — nổ ra 3–4 Flesh Crawler con. Phá khoảng cách trước khi hạ.'},
           {i:'🫀',n:'Meat Titan Tinh Anh ⭐',hp:11000,d:625,s:48,ai:'Lao thẳng',elite:true,t:'HP 11000 + DMG 625. Khi chết nổ ra 5–6 Flesh Crawler — xuất hiện lúc arena co là tình huống nguy hiểm nhất map.'},
           {i:'🫁',n:'Hồn Thể Nguyên Thủy',hp:900000,d:440,s:70,ai:'BOSS',boss:true,t:'5 mảnh thể di chuyển độc lập, chỉ 1 Lõi Thật — đánh sai không trừ HP. Lõi pulse sáng 0.15s trước khi xoay. Phase 3: arena co liên tục + Lõi xoay mỗi 2.5 giây. Quan sát kỹ hiệu ứng pulse để nhận biết Lõi.'},
         ]},
+        {map:'Map 22 — Cổng Địa Ngục',icon:'👹',tier:8,e:[
+          {i:'⚔️',n:'Void Knight',    hp:2200,d:310,s:90, ai:'Lao thẳng',  t:'HP rất cao (2200), bền và mạnh. Tiếp cận thẳng — nguy hiểm nhất khi cổng đang triệu thêm quái bên cạnh. Ưu tiên trước gate_guardian.'},
+          {i:'🏹',n:'Infernal Archer',hp:800, d:300,s:80, ai:'Tấn công xa',t:'DMG 300 cực cao từ xa. Kết hợp cổng địa ngục triệu quái = bị cắn 2 phía. Tiêu diệt ngay khi thấy — không để bắn 2 phát.'},
+          {i:'👹',n:'Gate Guardian',  hp:3000,d:280,s:55, ai:'Lao thẳng',  t:'HP cao nhất nhóm (3000), chậm nhưng rất bền. Xuất hiện từ cổng địa ngục — dấu hiệu cổng đang hoạt động ở đâu đó. Kite xa.'},
+          {i:'👹',n:'Gate Guardian Tinh Anh ⭐',hp:15000,d:700,s:66,ai:'Lao thẳng',elite:true,t:'HP 15000, DMG 700. Luôn xuất hiện trong 8 giây cổng mở — cực kỳ nguy hiểm khi có thêm Void Knight vây quanh.'},
+          {i:'👹',n:'Diêm Vương Địa Ngục',hp:1350000,d:450,s:95,ai:'BOSS',boss:true,t:'Ring lửa địa ngục 12→18 đạn + 3 targeted. Phase 2: 2 portal xoay quanh boss triệu quái liên tục. Phase 3: 4 portal + ring 20 đạn 280ms + 5 targeted — không có khoảng dừng. Phá portal boss trước nếu có thể.'},
+        ]},
+        {map:'Map 23 — Bão Nguyên Tố',icon:'🌪️',tier:8,e:[
+          {i:'🔥',n:'Fire Lord',      hp:1800,d:320,s:85, ai:'Lao thẳng',  t:'Tốc độ và DMG đều cao. Kết hợp Xoáy Nguyên Tố từ cơ chế map = lửa từ 2 nguồn đồng thời. Ưu tiên diệt trước storm_elemental.'},
+          {i:'⚡',n:'Storm Elemental',hp:600, d:330,s:180,ai:'Vòng cánh',  t:'Nhanh nhất Cung 8 (SPD 180), DMG 330. Tiếp cận từ hông cực nhanh — trúng 1 đòn là mất HP lớn. Ưu tiên tuyệt đối khi thấy.'},
+          {i:'🌑',n:'Void Sentinel',  hp:1200,d:305,s:50, ai:'Tấn công xa',t:'DMG 305 bắn từ xa, đứng yên. Khi Xoáy Nguyên Tố hoạt động: laser tinh thể + vùng nguyên tố = bị kẹp từ 2 phía. Tiêu diệt trước khi xoáy kích.'},
+          {i:'🌑',n:'Void Sentinel Tinh Anh ⭐',hp:6000,d:762,s:60,ai:'Tấn công xa',elite:true,t:'DMG 762, HP 6000. Đứng yên bắn liên tục gấp đôi khi Xoáy Nguyên Tố đang hoạt động = DPS áp lực cực cao. Ưu tiên số 1.'},
+          {i:'🌪️',n:'Nguyên Tố Chi Chúa',hp:1593000,d:490,s:100,ai:'BOSS',boss:true,t:'4 luồng nguyên tố xoáy 90° + cone 3 đạn. Phase 2: ring lửa + ring băng đồng thời. Phase 3: 4 nguyên tố full + ring 22 đạn/2.5 giây + Xoáy Nguyên Tố mỗi 8 giây. Boss không cho phép dừng di chuyển.'},
+        ]},
+        {map:'Map 24 — Thiên Khải Tận Thế',icon:'☄️',tier:8,e:[
+          {i:'🪽',n:'Seraph Knight',  hp:2800,d:350,s:100,ai:'Lao thẳng',  t:'HP cực cao (2800), tốc độ khá (100). Thiên kiếm thần thánh — tiếp cận thẳng hướng. Ưu tiên sau doom_herald.'},
+          {i:'📯',n:'Doom Herald',    hp:900, d:370,s:70, ai:'Tấn công xa',t:'DMG 370 cao nhất map thường, bắn từ xa. Kết hợp Phán Quyết Thiên Khải = không có góc an toàn. Ưu tiên tuyệt đối.'},
+          {i:'🦁',n:'Divine Beast',   hp:4500,d:340,s:60, ai:'Lao thẳng',  t:'HP cao nhất game (4500 thường), DMG 340. Chậm nhưng chiếm không gian rất lớn. Kite liên tục — không bao giờ đứng im.'},
+          {i:'🦁',n:'Divine Beast Tinh Anh ⭐',hp:22500,d:850,s:72,ai:'Lao thẳng',elite:true,t:'HP 22500, DMG 850. Xuất hiện cùng Phán Quyết Thiên Khải = tình huống nguy hiểm nhất toàn game. Dùng active ngay khi xuất hiện.'},
+          {i:'☄️',n:'Thần Hủy Thế',  hp:1890000,d:540,s:105,ai:'BOSS',boss:true,t:'Boss cuối game tuyệt đối. Phase 1: 4 laser xoay + 2 thiên thể/5 giây. Phase 2: 8 laser + 4 thiên thể đồng thời + Phán Quyết/14 giây. Phase 3: 12 laser không ngừng + 3 thiên thể/4 giây + Phán Quyết/8 giây. DPS race sinh tử.'},
+        ]},
       ];
-      const _tc=['','#88cc44','#ffcc00','#ff9040','#ff5050','#cc40ff','#00ffcc','#8060ff','#ff2050'];
+      const _tc=['','#88cc44','#ffcc00','#ff9040','#ff5050','#cc40ff','#00ffcc','#8060ff','#ff4444'];
       MCED.forEach(md=>{
         const tc=_tc[md.tier]||'#888';
         let rows='';
@@ -3675,7 +3893,7 @@ const UI = (() => {
         p('Tốc đánh thực = <b>BaseATK × AtkSpeedMult</b>.<br><br>' +
           '• Tiềm Năng Cơ Động[2]: +10%/cấp (max +40%).<br>' +
           '• Thú Cưng Bạch Hổ: +15% khi HP >70%.<br>' +
-          '• Kim Cang Block Stack: +7% ST/lần chặn (KHÔNG tự decay — chỉ reset sau khi dùng Bão Phong Phá).<br>' +
+          '• Kim Cang Block Stack: +7% ST/lần chặn (KHÔNG tự decay — chỉ reset sau khi dùng Kim Cang Bão).<br>' +
           '• Tiến Hoá: +20%. Thẻ tốc đánh trong run cộng dồn.<br>' +
           '• <b>Không giới hạn trên</b> — có thể vượt 3×+ với đủ stack.'));
       entry('🛡️','Giảm Sát Thương Nhận',
@@ -3699,7 +3917,7 @@ const UI = (() => {
           '— Lưu Phong (Tàn Phong Trảm) 11s → <b>6.6s</b><br>' +
           '— Huyền Nguyệt (Nguyệt Thực) 13s → <b>7.8s</b><br>' +
           '— Thiết Tâm (Bão Đạn) 15s → <b>9s</b><br>' +
-          '— Kim Cang (Bão Phong Phá) 11s → <b>6.6s</b><br>' +
+          '— Kim Cang (Kim Cang Bão) 13s → <b>7.8s</b><br>' +
           '— Ám Sát (Ẩn Kích) 11s → <b>6.6s</b><br>' +
           '— Tử Linh (Giải Phóng) 12s → <b>7.2s</b><br>' +
           '— Lôi Thần (Thiên Lôi) 16s → <b>9.6s</b><br>' +
@@ -3960,7 +4178,15 @@ const UI = (() => {
         if (cid === 'thiet_tam' && stats.eagleKills !== undefined)
           rows.push(`<div class="stat-row"><span class="stat-label">🦅 Kill với Mắt Đại Bàng</span><span class="stat-value good">${stats.eagleKills}</span></div>`);
         if (cid === 'luu_phong' && stats.maxChietTocStack !== undefined)
-          rows.push(`<div class="stat-row"><span class="stat-label">⚡ Chiến Tốc stack cao nhất</span><span class="stat-value good">${stats.maxChietTocStack}/30</span></div>`);
+          rows.push(`<div class="stat-row"><span class="stat-label">⚡ Chiến Tốc stack cao nhất</span><span class="stat-value good">${stats.maxChietTocStack}/10 · +${Math.round((stats.maxChietTocStack||0)*4)}% DMG</span></div>`);
+        if (cid === 'thien_kiem' && stats.finalKiemY !== undefined)
+          rows.push(`<div class="stat-row"><span class="stat-label">⚔️ Kiếm Ý kết thúc run</span><span class="stat-value good">${stats.finalKiemY}/50 · +${Math.round((stats.finalKiemY||0)*3)}% ST</span></div>`);
+        if (cid === 'huyet_ma' && stats.finalHuyetTu !== undefined)
+          rows.push(`<div class="stat-row"><span class="stat-label">🩸 Huyết Tụ kết thúc run</span><span class="stat-value good">${stats.finalHuyetTu}/30 · +${Math.round((stats.finalHuyetTu||0)*4)}% ST</span></div>`);
+        if (cid === 'huyet_ma' && stats.hmAutoBursts !== undefined && stats.hmAutoBursts > 0)
+          rows.push(`<div class="stat-row"><span class="stat-label">💀 Huyết Tụ tự nổ AoE</span><span class="stat-value good">${stats.hmAutoBursts} lần</span></div>`);
+        if (cid === 'vo_cuc' && stats.finalDaoNguyen !== undefined)
+          rows.push(`<div class="stat-row"><span class="stat-label">☯️ Đạo Nguyên kết thúc run</span><span class="stat-value good">${stats.finalDaoNguyen}/30 · +${Math.round((stats.finalDaoNguyen||0)*3)}% ST</span></div>`);
         return rows.join('');
       })()}
       `;
@@ -3983,16 +4209,22 @@ const UI = (() => {
         'main_loi_than':     '⚡ Thiên Lôi Cổ / Thần Lôi Vô Song',
         'main_hoa_long':     '🔥 Long Hỏa Quyền / Thiên Long Hỏa Hải',
         'main_bang_vuong':   '❄️ Băng Linh Nhẫn / Vong Linh Băng Trận',
+        'main_thien_kiem':   '⚔️ Thiên Kiếm Vũ / Thiên Kiếm Thần Ý',
+        'main_huyet_ma':     '🩸 Ma Huyết Triều / Huyết Hải Thiên La',
+        'main_vo_cuc':       '☯️ Âm Dương Lưỡng Nghi / Vô Cực Thiên Địa',
         
         'active_luu_phong':    '⚔️ Tàn Phong Trảm (chủ động)',
         'active_huyen_nguyet': '🌙 Nguyệt Thực (chủ động)',
         'active_thiet_tam':    '🏹 Bão Đạn (chủ động)',
-        'active_kim_cang':     '🥋 Bão Phong Phá (chủ động)',
+        'active_kim_cang':     '🥋 Kim Cang Bão (chủ động)',
         'active_am_sat':       '🗡️ Ẩn Kích (chủ động)',
         'active_tu_linh':      '💀 Giải Phóng (chủ động)',
         'active_loi_than':     '⚡ Thiên Lôi Giáng Thế (chủ động)',
         'active_hoa_long':     '🔥 Rồng Lửa Thiêu Thân (chủ động)',
         'active_bang_vuong':   '❄️ Băng Hà Phong Bạo (chủ động)',
+        'active_thien_kiem':   '🗡️ Nhất Kiếm Thiên Hà (chủ động)',
+        'active_huyet_ma':     '💀 Cuồng Huyết Vương Thân (chủ động)',
+        'active_vo_cuc':       '🌀 Thái Cực Siêu Việt (chủ động)',
         
         'halo':         '✨ Hào Quang Thánh', 'thunder': '⚡ Sét Đánh',
         'icetrail':     '❄️ Vệt Băng',        'poisoncloud': '☠️ Đám Mây Độc',
@@ -4166,83 +4398,110 @@ const UI = (() => {
   const CG_CHAR_DATA = [
     {
       extra: {
-        statHP: 120, statSPD: 145, statDMG: 18, statATK: 1.5,
-        weapon:  { icon:'⚔️', tag:'VŨ KHÍ CHÍNH', name:'Phong Kiếm', desc:'Chém vòng cung ~90° hướng về quái gần nhất, tầm 100đv, tốc độ rất cao. Sát thương tăng dần khi tích lũy stack Chiến Tốc.' },
-        passive: { icon:'🌬️', tag:'PASSIVE', name:'Kiếm Ý', desc:'Mỗi lần đánh trúng quái, tốc chém +1.5% (tối đa 30 stack = +45%). Bị trúng đòn mất 25% stack (giữ lại 75%) — tích công bền vững.' },
-        active:  { icon:'💨', tag:'ACTIVE', name:'Tàn Phong Trảm', desc:'Đóng băng thời gian 0.2s rồi lao xuyên tất cả kẻ thù — sát thương scale theo Kiếm Ý: ×(2.5 + stack×0.05), tối đa ×4.0. Mỗi quái xuyên qua cộng +1 stack. Không tiêu thụ stack.', cd:11  },
-        evolve:  { icon:'⚡', tag:'TIẾN HÓA', name:'Thiên Phong Kiếm Ý', desc:'Tầm chém mở rộng lên 135đv (~160°) + mỗi nhát phóng 1 kiếm khí xuyên thẳng (×0.7, pierce tất cả). Tốc đánh cao kết hợp sóng kiếm liên tục = rất nguy hiểm từ tầm trung.' },
+        statHP: 114, statSPD: 150, statDMG: 16, statATK: 1.5,
+        weapon:  { icon:'⚔️', tag:'VŨ KHÍ CHÍNH', name:'Phong Kiếm', desc:'Chém 1 slash arc 90° phía trước, tầm 120px, xuyên 2 địch. Mỗi nhát trúng → +5% AtkSpd trong 2s, tối đa +30% từ 6 hit liên tiếp.' },
+        passive: { icon:'🌬️', tag:'PASSIVE', name:'Chiến Tốc', desc:'Mỗi hit trúng +1 stack (max 10, +4% DMG/stack = +40%). Mất 1 stack/1.5s khi không đánh, bị trúng đòn mất 2 stack. Đánh liên tục là chìa khoá.' },
+        active:  { icon:'💨', tag:'ACTIVE', name:'Tàn Phong Trảm', desc:'Vũ khí AtkSpd ×2 trong 4s. Mỗi nhát chém thêm 1 kiếm khí phụ ×0.4 không tiêu thêm cooldown. Stack Chiến Tốc không bị ảnh hưởng.', cd:12 },
+        evolve:  { icon:'⚡', tag:'TIẾN HÓA', name:'Thiên Phong Kiếm Ý', desc:'Arc mở rộng 160°, phóng thêm kiếm khí xuyên thẳng (×0.7, pierce tất cả). Mỗi nhát trúng → +8% AtkSpd (max +48%). Kiếm khí trúng cũng cộng AtkSpd.' },
       }
     },
     {
       extra: {
-        statHP: 90, statSPD: 110, statDMG: 33, statATK: 0.98,
-        weapon:  { icon:'🔮', tag:'VŨ KHÍ CHÍNH', name:'Tinh Linh Cầu', desc:'Bắn cầu ma thuật tự truy đuổi (homing) kẻ thù gần nhất. Sát thương cao nhất, tốc độ tấn công thấp nhất.' },
-        passive: { icon:'🧘', tag:'PASSIVE', name:'Mana Tích Tụ', desc:'Di chuyển: +8% ST. Đứng yên 0.4 giây: +20% ST. Khi tiến hoá: mini orb và độc cũng hưởng buff — tối đa ×3.54 effective per target.' },
-        active:  { icon:'🌩️', tag:'ACTIVE', name:'Hắc Động Lôi', desc:'Thường: 8 tia ×0.8 rải ngẫu nhiên, 3 giây, bán kính 200đv. Khi đang có Mana Tích Tụ khi cast → <b>Tĩnh Tâm Điện Bão</b>: 12 tia ×1.0, 70% tia nhắm trúng quái trong vùng. Tiếp tục đứng yên suốt 3 giây → tia cuối là <b>Siêu Lôi ×5.0</b> AoE nhắm điểm đông quái nhất.', cd:14 },
-        evolve:  { icon:'☄️', tag:'TIẾN HÓA', name:'Hắc Nhật Ma Cầu', desc:'Khi trúng địch: tách 3 mini orb (×0.55 mỗi cái) homing vào 3 quái gần nhất + áp độc 0.15×/s trong 4 giây. Quái thường/tinh anh chỉ nhận 1 orb; boss nhận cả 3 orb. ×3.54 khi đứng yên.' },
+        statHP: 102, statSPD: 115, statDMG: 25, statATK: 1.0,
+        weapon:  { icon:'🔮', tag:'VŨ KHÍ CHÍNH', name:'Tinh Linh Cầu', desc:'Phóng 1 orb homing đến địch gần nhất, xuyên 1, range vô hạn. Mỗi orb trúng → +3% CritRate trong 3s, tối đa +18% CritRate từ 6 hit.' },
+        passive: { icon:'🧘', tag:'PASSIVE', name:'Nguyệt Tích', desc:'Đứng yên ≥0.4s: +8% DMG mỗi 0.6s (max 6 stack = +48%). Mất TẤT CẢ stack ngay khi di chuyển (grace 0.3s). Active không làm mất stack.' },
+        active:  { icon:'🌑', tag:'ACTIVE', name:'Nguyệt Thực', desc:'Bắn 3 orb đồng thời liên tục trong 4s (×3 fire rate). Đứng yên trong active = stack Nguyệt Tích giữ nguyên.', cd:14 },
+        evolve:  { icon:'☄️', tag:'TIẾN HÓA', name:'Hắc Nhật Ma Cầu', desc:'Orb to hơn, trúng địch tách 2 mini-orb homing ×0.5 vào 2 địch gần nhất. Mỗi orb (kể cả mini) trúng → +5% CritRate (max +30%).' },
       }
     },
     {
       extra: {
-        statHP: 100, statSPD: 120, statDMG: 22, statATK: 1.2,
-        weapon:  { icon:'🏹', tag:'VŨ KHÍ CHÍNH', name:'Cung Xương', desc:'Mũi tên xuyên thấu đường thẳng, tốc độ 600 đ/giây. Tầm xa nhất 6 nhân vật. Passive kích hoạt khi mục tiêu >150 đ.' },
-        passive: { icon:'🦅', tag:'PASSIVE', name:'Mắt Đại Bàng', desc:'Quái ở xa (>150 đơn vị) nhận thêm 25% sát thương.' },
-        active:  { icon:'🎯', tag:'ACTIVE', name:'Tàn Sát Tầm Xa', desc:'2 đợt quạt tên phủ 60°: đợt 1 (3 tên ±25°) + đợt 2 (4 tên ±37°/12°) cách 350ms. Mỗi quái chỉ nhận 1 đòn/đợt. Range >150đv: +25% (Mắt Đại Bàng). Evolved: splash độc 70px/điểm trúng.', cd:10 },
-        evolve:  { icon:'☠️', tag:'TIẾN HÓA', name:'Tử Thần Chi Tên', desc:'Mỗi tên trúng địch tạo AoE độc 70px (×0.55) — phủ rộng quanh điểm trúng. Không cộng dồn lên cùng 1 mục tiêu.' },
+        statHP: 95, statSPD: 120, statDMG: 28, statATK: 0.9,
+        weapon:  { icon:'🏹', tag:'VŨ KHÍ CHÍNH', name:'Cung Xương', desc:'Bắn 1 mũi tên thẳng xuyên 3 địch, range 450px. Địch >150px: +15% CritDmg bonus áp trực tiếp vào shot đó (stacking với base CritDmg).' },
+        passive: { icon:'🦅', tag:'PASSIVE', name:'Mắt Đại Bàng', desc:'Mỗi crit: +1 stack (max 8, +6% DMG/stack = +48%). Mất 2 stack/3s — bắn trượt mất 1 stack. Thưởng cho lối chơi đứng xa bắn steady.' },
+        active:  { icon:'🎯', tag:'ACTIVE', name:'Bão Đạn', desc:'AtkSpd ×2.5 trong 4s. CritDmg bonus từ tầm xa >150px vẫn áp dụng bình thường. Stack Mắt Đại Bàng không bị ảnh hưởng.', cd:15 },
+        evolve:  { icon:'☠️', tag:'TIẾN HÓA', name:'Tử Thần Chi Tên', desc:'Xuyên 5 địch. Mỗi địch trúng tạo AoE độc 70px (×0.4 dmg/s × 3s). Địch >150px: +25% CritDmg bonus. Độc scale theo totalDmg.' },
       }
     },
     {
       extra: {
-        statHP: 155, statSPD: 100, statDMG: 24, statATK: 0.98,
-        weapon:  { icon:'🪄', tag:'VŨ KHÍ CHÍNH', name:'Thiền Trượng', desc:'Đập mặt đất tạo sóng chấn động AoE bán kính 85 đơn vị quanh người. HP cao nhất — thiết kế cho lối chơi chịu đòn.' },
-        passive: { icon:'🛡️', tag:'PASSIVE', name:'Kim Cang Thể', desc:'20% xác suất chặn hoàn toàn đòn bất kỳ. Chặn thành công: hồi 5% HP tối đa + cộng dồn +7% tốc đánh (stack được), reset sau 3 giây.' },
-        active:  { icon:'☄️', tag:'ACTIVE', name:'Trấn Áp Bất Động', desc:'AoE khổng lồ ×6.0+ kéo quái vào gần 80đv rồi stun 1.5 giây — giữ quái trong tầm Thiền Trượng thay vì đẩy ra xa. Mỗi block stack đang tích: +×0.15 sát thương và +0.1s stun.', cd:13 },
-        evolve:  { icon:'✨', tag:'TIẾN HÓA', name:'Hộ Pháp Thần Trượng', desc:'Quái trong AoE bị áp cột sáng 2 giây: 5 tick × 0.45 DMG. Tổng thêm ×2.25 sát thương bổ sung cho mỗi mục tiêu.' },
+        statHP: 166, statSPD: 100, statDMG: 22, statATK: 1.1,
+        weapon:  { icon:'🪄', tag:'VŨ KHÍ CHÍNH', name:'Thiền Trượng', desc:'Đập AoE 100px quanh thân 360°, range gần. Mỗi địch trúng 1 đợt đập → +2% AtkSpd 2s (tối đa +10% nếu 5 địch cùng lúc).' },
+        passive: { icon:'🛡️', tag:'PASSIVE', name:'Bất Phá Thể', desc:'Mỗi lần bị trúng: +1 stack (max 8, +6% DMG/stack = +48%). 15% chance block + hồi 3% HP. Mất 1 stack/5s khi không bị đánh.' },
+        active:  { icon:'💥', tag:'ACTIVE', name:'Kim Cang Bão', desc:'Slam AoE 180px ×(1.8 + stacks×0.12) dmg tức thì, stun 1.5s tất cả địch. Stack Bất Phá Thể không tiêu, không bị ảnh hưởng.', cd:13 },
+        evolve:  { icon:'✨', tag:'TIẾN HÓA', name:'Hộ Pháp Thần Trượng', desc:'AoE mở rộng 140px + 20% chance stun 1.2s. Mỗi địch trúng → +3% AtkSpd 2s (max +15% nếu 5 địch).' },
       }
     },
     {
       extra: {
-        statHP: 95, statSPD: 155, statDMG: 30, statATK: 1.1,
-        weapon:  { icon:'🗡️', tag:'VŨ KHÍ CHÍNH', name:'Song Quỷ Đao', desc:'Đánh đơn mục tiêu gần nhất trong tầm 185đv. Mỗi đòn tích 1 Sát Khí (max 5). Đủ 5 stack → Đột Sát ×3.5 + chảy máu. Mục tiêu <30% HP nhận thêm 30% ST. Sát thương overkill truyền sang mục tiêu kế tiếp. Tàng hình: tích 2 Sát Khí/đòn.' },
-        passive: { icon:'🌑', tag:'PASSIVE', name:'Sát Thủ Thiên Bẩm', desc:'Đủ 5 Sát Khí → Đột Sát: ×3.5 + chảy máu 50% ST/s × 3s + hồi 8% HP. HP<20%: tàng hình khẩn cấp 4s, SPD +60%, CD 20s. Tàng hình: quái xa >320đv không đuổi.' },
-        active:  { icon:'🌑', tag:'ACTIVE', name:'Ẩn Hiện Nhất Kiếm', desc:'Tức thì tàng hình 3s: SPD +60%, quái xa >320đv không đuổi. Sát Khí tích gấp đôi (2/đòn). Đòn đầu ra khỏi tàng hình: Đột Sát ×5.0 + chảy máu cực mạnh (×1.0 ST/s × 5s), sau đó thoát tàng hình.', cd:11 },
-        evolve:  { icon:'👥', tag:'TIẾN HÓA', name:'Hư Vô Quỷ Đao', desc:'Mỗi Đột Sát tạo phân thân ảo lặp lại đòn đó sau 0.3s (×1.0 DMG, cũng có overflow). Chảy máu từ Đột Sát áp thêm Làm Chậm 30% trong 2 giây.' },
+        statHP: 93, statSPD: 160, statDMG: 27, statATK: 1.15,
+        weapon:  { icon:'🗡️', tag:'VŨ KHÍ CHÍNH', name:'Song Quỷ Đao', desc:'Phóng 3 shuriken fan 40°, pierce 1, range 350px. Mỗi shuriken crit → +6% CritDmg bonus stack trong 2s (max +36% CritDmg từ 6 crit).' },
+        passive: { icon:'🌑', tag:'PASSIVE', name:'Sát Khí', desc:'Mỗi hit trúng: +1 stack (max 10, +5% DMG/stack = +50%). Mất 3 stack khi bị trúng đòn, mất 1 stack/4s tự nhiên. SPD cao + tránh đòn = stack đầy.' },
+        active:  { icon:'🌑', tag:'ACTIVE', name:'Ẩn Kích', desc:'Tàng hình 2s. Đòn phá tàng hình = ×4.0 DMG + guaranteed crit. CritDmg bonus từ weapon vẫn áp dụng. Stack Sát Khí không bị ảnh hưởng.', cd:16 },
+        evolve:  { icon:'👥', tag:'TIẾN HÓA', name:'Hư Vô Quỷ Đao', desc:'3 dao → 5 dao fan 60°. Mỗi dao áp Rỉ Máu 3s (8% dmg/s, cộng dồn). Crit → +8% CritDmg (max +48%). Rỉ Máu scale theo totalDmg.' },
       }
     },
     {
       extra: {
-        statHP: 105, statSPD: 115, statDMG: 20, statATK: 1.3,
-        weapon:  { icon:'☠️', tag:'VŨ KHÍ CHÍNH', name:'Lưỡi Liềm Tử Thần', desc:'Boomerang: bay ra rồi tự quay lại, pierce 5 kẻ thù mỗi chiều. Cả đường đi lẫn đường về đều gây sát thương.' },
-        passive: { icon:'💀', tag:'PASSIVE', name:'Thu Hoạch Linh Hồn', desc:'Giết quái tạo Linh Hồn (tối đa 20). Linh Hồn không tăng ST trực tiếp — tăng sức mạnh của Active khi tiêu: 0 hồn → ×1.5 tổng, 20 hồn → ×4.0 tổng. HP<20%: tiêu thụ tất cả để hồi 25 HP/linh hồn.' },
-        active:  { icon:'💀', tag:'ACTIVE', name:'Quân Đoàn Bất Tử', desc:'Tiêu thụ toàn bộ Linh Hồn đang có → triệu 3 bộ xương (tối đa 9) + Lĩnh Vực Tử Thần: AoE 180px pulse 5 lần trong 4 giây. Pulse/đòn = ×(0.3 + hồn×0.025), tối đa ×0.8. Tích nhiều hồn trước khi cast để tối đa sát thương.', cd:14 },
-        evolve:  { icon:'🌀', tag:'TIẾN HÓA', name:'Vong Hồn Đại Liềm', desc:'Liềm to ×1.8, hút quái vào khi bay đi (knockback ngược). Đường về: xuyên tất cả kẻ thù còn lại, không giới hạn.' },
+        statHP: 107, statSPD: 115, statDMG: 24, statATK: 1.0,
+        weapon:  { icon:'☠️', tag:'VŨ KHÍ CHÍNH', name:'Lưỡi Liềm Tử Thần', desc:'Liềm bay vòng cung 180px, xuyên tất cả, tự quay về. Địch chết vì liềm → +7% AtkSpd 4s (cộng dồn, max +42% từ 6 kill).' },
+        passive: { icon:'💀', tag:'PASSIVE', name:'Thu Hồn', desc:'Mỗi kill: +1 stack (max 10, +5% DMG/stack = +50%). Mất 1 stack/5s — mất 4 stack khi bị boss đánh. Decay chậm, dễ maintain.' },
+        active:  { icon:'💀', tag:'ACTIVE', name:'Giải Phóng', desc:'Liềm xoay 360° liên tục trong 5s ×1.4 dmg + AtkSpd liềm ×2. Stack Thu Hồn không bị ảnh hưởng.', cd:15 },
+        evolve:  { icon:'🌀', tag:'TIẾN HÓA', name:'Vong Hồn Đại Liềm', desc:'Liềm to ×1.8, hút địch vào khi bay ra. Khi về: xuyên tất cả + AoE 80px mỗi điểm trúng. Kill → +10% AtkSpd 5s (max +60%).' },
       }
     },
     {
       extra: {
-        statHP: 116, statSPD: 130, statDMG: 32, statATK: 1.35,
-        weapon:  { icon:'⚡', tag:'VŨ KHÍ CHÍNH', name:'Thiên Lôi Cổ', desc:'Gọi sét xuống quái gần nhất trong tầm 200đv, dây chuyền sang 3 quái bên (×0.6/chuỗi). Mỗi cú đánh tích 1 Lôi Tích (tối đa 20). Sát thương tăng +4%/stack.' },
-        passive: { icon:'⚡', tag:'PASSIVE', name:'Tĩnh Điện Tích Tụ', desc:'Mỗi Lôi Tích +4% sát thương (tối đa +80%). Đủ 20 stack: tự phóng AoE sét mỗi 3 giây. Dùng Active KHÔNG tiêu stack — sát thương Active đã nhân đầy đủ buff Lôi Tích.' },
-        active:  { icon:'🌩️', tag:'ACTIVE', name:'Thiên Lôi Giáng Thế', desc:'Phóng 5 tia Thiên Lôi cộng hưởng — mỗi tia = Tổng ST × 2.5 (KHÔNG tiêu stack, dây chuyền 4 mục tiêu). Sau cast: ATK Speed +50% trong 5 giây + tích 2 Lôi Tích/đòn.', cd:16 },
-        evolve:  { icon:'⚡', tag:'TIẾN HÓA', name:'Thần Lôi Vô Song', desc:'Sét dây chuyền lên 6 mục tiêu/chuỗi. Mỗi dây chuyền để lại vết sét gây 20% ST/giây trong 2 giây. Active chain thêm 2 mục tiêu (tổng 6).' },
+        statHP: 103, statSPD: 130, statDMG: 32, statATK: 1.35,
+        weapon:  { icon:'⚡', tag:'VŨ KHÍ CHÍNH', name:'Thiên Lôi Cổ', desc:'Phóng sét chain đến 3 địch gần nhất, range 200px. Mỗi chain link trúng → +3% AtkSpd 2s (3 link = +9% AtkSpd/lần, cộng dồn).' },
+        passive: { icon:'⚡', tag:'PASSIVE', name:'Lôi Tích', desc:'Mỗi hit: +1 stack (max 12, +4% DMG/stack = +48%). Mất 2 stack/2s — decay nhanh, PHẢI đánh liên tục. AtkSpd từ vũ khí và tiềm năng bổ trợ lẫn nhau.' },
+        active:  { icon:'🌩️', tag:'ACTIVE', name:'Thiên Lôi Giáng Thế', desc:'Phóng 5 tia sét đến 5 địch gần nhất ×2.5 DMG đồng thời. AtkSpd +50% trong 5s sau cast. Stack Lôi Tích không bị ảnh hưởng.', cd:16 },
+        evolve:  { icon:'⚡', tag:'TIẾN HÓA', name:'Thần Lôi Vô Song', desc:'Chain 6 địch. Mỗi link để lại vết sét 15% dmg/s × 2.5s (cộng dồn). Mỗi link → +5% AtkSpd 2s (6 link = +30% AtkSpd/lần).' },
       }
     },
     {
       extra: {
-        statHP: 144, statSPD: 110, statDMG: 29, statATK: 1.3,
-        weapon:  { icon:'🔥', tag:'VŨ KHÍ CHÍNH', name:'Long Hỏa Quyền', desc:'Đấm lửa rồng tạo hình nón lửa rộng 120° quanh người. Quái cháy nhận 15% ST/giây thêm 2 giây sau khi trúng.' },
-        passive: { icon:'🐉', tag:'PASSIVE', name:'Long Vảy Linh', desc:'Giảm 20% mọi ST nhận. Mỗi 25 quái tiêu diệt: ATK +35% vĩnh viễn trong run (stack 3 lần = +105%). HP<40%: kích Cuồng Long — ATK +50%, SPD +25%.' },
-        active:  { icon:'🐉', tag:'ACTIVE', name:'Rồng Lửa Thiêu Thân', desc:'Hóa thân Rồng Lửa 5 giây: AoE 200px liên tục (×1.5/giây) + vũ khí Long Hỏa Quyền tiếp tục bắn bình thường với full buff + SPD +20%, miễn knockback. Kết thúc: Thiên Long Nổ ×7.0.', cd:17 },
-        evolve:  { icon:'🔥', tag:'TIẾN HÓA', name:'Thiên Long Hỏa Hải', desc:'Mỗi cú đấm để lại đám lửa 3 giây (25% ST/giây trong 90px). Khi biến thân: mỗi tick AoE triệu thêm 2 cầu lửa homing truy đuổi quái gần nhất.' },
+        statHP: 130, statSPD: 110, statDMG: 34, statATK: 1.1,
+        weapon:  { icon:'🔥', tag:'VŨ KHÍ CHÍNH', name:'Long Hỏa Quyền', desc:'Đấm AoE 100px quanh thân, range gần 80px. Địch chết bởi đấm → +5% CritRate 5s (cộng dồn, tối đa +30% CritRate từ 6 kill).' },
+        passive: { icon:'🐉', tag:'PASSIVE', name:'Long Vảy Linh', desc:'Giảm 20% ST nhận. Mỗi 25 quái tiêu diệt: ATK +35% vĩnh viễn (stack 3× = +105%). HP<40%: Cuồng Long — ATK +50%, SPD +25%.' },
+        active:  { icon:'🐉', tag:'ACTIVE', name:'Rồng Lửa Thiêu Thân', desc:'Hóa thân Rồng Lửa 5s: AoE 200px liên tục (×1.5/giây) + vũ khí tiếp tục bắn với full buff, +20% SPD, miễn knockback. Kết thúc: Thiên Long Nổ ×7.0.', cd:20 },
+        evolve:  { icon:'🔥', tag:'TIẾN HÓA', name:'Thiên Long Hỏa Hải', desc:'Mỗi cú đấm để lại đám lửa 3s (25% ST/giây trong 90px). Khi biến thân: mỗi tick AoE triệu thêm 2 cầu lửa homing.' },
       }
     },
     {
       extra: {
-        statHP: 100, statSPD: 125, statDMG: 37, statATK: 1.0,
-        weapon:  { icon:'🧊', tag:'VŨ KHÍ CHÍNH', name:'Băng Linh Nhẫn', desc:'Phóng 4 vòng băng trong vòng cung 180° hướng về quái gần nhất, va chạm làm chậm địch 40% trong 2 giây. Địch đang chậm/đóng băng nhận thêm 35% ST từ mọi nguồn.' },
-        passive: { icon:'❄️', tag:'PASSIVE', name:'Tuyệt Đối Không Độ', desc:'Địch đang chậm/đóng băng nhận thêm 35% ST từ mọi nguồn. Giết địch đóng băng: hồi 8 HP. HP<25%: Băng Hộ Thể — hấp thụ 400 ST và phản chiếu 60% về nguồn tấn công.' },
-        active:  { icon:'🌨️', tag:'ACTIVE', name:'Bão Tuyết Tận Thế', desc:'Bão tuyết 200px trong 6 giây: địch chậm 60% + ×1.2/giây (hưởng +35%). Đứng trong bão ≥3 giây liên tiếp → đóng băng 2 giây. Kết thúc: Băng Nổ ×5.5 toàn vùng.', cd:18 },
-        evolve:  { icon:'❄️', tag:'TIẾN HÓA', name:'Vong Linh Băng Trận', desc:'Băng Nhẫn trúng địch phân nhánh 2 mảnh băng homing (×0.6/mảnh). Địch đóng băng chết: nổ AoE băng 120px + đóng băng địch xung quanh trong 1 giây.' },
+        statHP: 90, statSPD: 125, statDMG: 37, statATK: 1.0,
+        weapon:  { icon:'🧊', tag:'VŨ KHÍ CHÍNH', name:'Băng Linh Nhẫn', desc:'Phóng 4 vòng băng vòng cung 180° hướng về quái gần nhất, va chạm làm chậm 40% × 2s. Địch đang chậm/đóng băng nhận thêm 35% ST.' },
+        passive: { icon:'❄️', tag:'PASSIVE', name:'Băng Tinh', desc:'Mỗi ring trúng địch: +1 stack (max 12, +4% DMG/stack = +48%). Mất TẤT CẢ stack ngay khi bị trúng đòn — cơ chế risk cao nhất game.' },
+        active:  { icon:'🌨️', tag:'ACTIVE', name:'Băng Hà Phong Bạo', desc:'Bão tuyết 200px slow 60% × 6s, vũ khí TIẾP TỤC bắn trong bão. Kết thúc: Băng Nổ ×4.5. Stack Băng Tinh không bị ảnh hưởng.', cd:16 },
+        evolve:  { icon:'❄️', tag:'TIẾN HÓA', name:'Vong Linh Băng Trận', desc:'Ring trúng địch đóng băng phân nhánh 2 mảnh homing ×0.6. Địch đóng băng chết: AoE băng 120px. Địch chậm/đóng băng trúng ring → +20% CritDmg.' },
+      }
+    },
+    {
+      extra: {
+        statHP: 114, statSPD: 145, statDMG: 43, statATK: 1.45,
+        weapon:  { icon:'⚔️', tag:'VŨ KHÍ CHÍNH', name:'Thiên Kiếm Vũ', desc:'Phóng 3 kiếm homing, pierce 3, bounce 1 lần, range 400px. Mỗi kiếm trúng → +4% AtkSpd 2.5s (3 kiếm = +12% AtkSpd/lượt). Kiếm Ý ≥25: 4 kiếm; ≥50: 5 kiếm + sóng kiếm AoE mỗi 2s.' },
+        passive: { icon:'⚔️', tag:'PASSIVE', name:'Kiếm Ý', desc:'Mỗi kiếm trúng: +1 stack (max 15, +4% DMG/stack = +60%). Milestone 10: CritRate +10%. Milestone 15: auto Kiếm Khí AoE 120px mỗi 3s. Mất 2 stack/2s khi không đánh.' },
+        active:  { icon:'🗡️', tag:'ACTIVE', name:'Nhất Kiếm Thiên Hà', desc:'Phóng 5 kiếm homing ×3.0 DMG, pierce all, đến 5 địch gần nhất. AtkSpd ×1.8 trong 5s sau cast. Stack Kiếm Ý không tiêu.', cd:18 },
+        evolve:  { icon:'✨', tag:'TIẾN HÓA', name:'Thiên Kiếm Thần Ý', desc:'3→5 kiếm, pierce all, bounce nổ AoE 100px. Sau bounce kiếm tự homing về thêm 1 lần (hit kép). 5 kiếm × 2 hit = +60% AtkSpd potential/lượt.' },
+      }
+    },
+    {
+      extra: {
+        statHP: 161, statSPD: 112, statDMG: 42, statATK: 1.3,
+        weapon:  { icon:'🩸', tag:'VŨ KHÍ CHÍNH', name:'Ma Huyết Triều', desc:'Aura huyết khí 155px pulse theo AtkSpd. Lifesteal 8%/địch trúng. Mỗi địch trúng → +3% AtkSpd 2s (5 địch = +15% AtkSpd/pulse).' },
+        passive: { icon:'💀', tag:'PASSIVE', name:'Huyết Tụ', desc:'Mỗi 35 HP mất: +1 stack (max 12, +5% DMG/stack = +60%). Milestone 12 (max): tự nổ AoE 200px ×2.5 mỗi 3.5s. Mất 1 stack/4s khi không bị đánh.' },
+        active:  { icon:'💀', tag:'ACTIVE', name:'Cuồng Huyết Vương Thân', desc:'Khai mạc: AoE huyết 220px ×2.0. 7s tiếp: Aura dmg ×2.0, lifesteal ×2 (16%), phản chiếu 30% dmg nhận. Stack Huyết Tụ không bị ảnh hưởng.', cd:15 },
+        evolve:  { icon:'🩸', tag:'TIẾN HÓA', name:'Huyết Hải Thiên La', desc:'Aura 155px→185px. 30% pulse sinh cầu máu homing ×1.5. Lifesteal 8%→12%. Mỗi địch trúng → +5% AtkSpd 2s (5 địch = +25%). Cầu máu áp lifesteal.' },
+      }
+    },
+    {
+      extra: {
+        statHP: 107, statSPD: 133, statDMG: 44, statATK: 1.1,
+        weapon:  { icon:'☯️', tag:'VŨ KHÍ CHÍNH', name:'Âm Dương Lưỡng Nghi', desc:'2 bi quỹ đạo r=135px, phóng đạn homing theo AtkSpd. Bi Dương ×1.3 + knockback. Bi Âm ×1.0 + slow 50% × 1.8s. Phase đổi mỗi 5s. Mỗi bi trúng → +4% CritDmg 3s (2 bi = +8% CritDmg/lượt).' },
+        passive: { icon:'☯️', tag:'PASSIVE', name:'Đạo Nguyên', desc:'Mỗi lần phase switch: +1 stack (max 15, +4% DMG/stack = +60%). Phase Dương: +20% SPD. Phase Âm: hấp thụ 15% dmg nhận. Mất 1 stack/3s khi không đánh trúng.' },
+        active:  { icon:'🌀', tag:'ACTIVE', name:'Thái Cực Siêu Việt', desc:'5s: 2 bi quay nhanh ×2, mỗi hit nổ AoE 80px ×1.8. Kết thúc: 8 mảnh homing ×(2.5 + stacks×0.08) DMG. Stack Đạo Nguyên không tiêu.', cd:18 },
+        evolve:  { icon:'☯️', tag:'TIẾN HÓA', name:'Vô Cực Thiên Địa', desc:'Phase 5s→3s. Mỗi bi trúng 35% sinh mini-orb homing ×0.55. Phase Âm absorb 22% dmg. Mỗi bi trúng → +6% CritDmg 3s (max +12%). Mini-orb cũng cộng CritDmg.' },
       }
     },
   ];
@@ -4350,6 +4609,7 @@ const UI = (() => {
         <div id="cg-title-block">
           <div id="cg-char-name">${char.name}</div>
           <div id="cg-char-title">${char.title}</div>
+          ${char.lore ? `<div id="cg-char-lore" style="font-size:11px;color:rgba(255,255,255,0.55);margin-top:6px;line-height:1.4;font-style:italic;">${char.lore}</div>` : ''}
           <div style="font-size:11px;margin-top:6px;">
             ${char.cost===0
               ? '<span style="color:#4aff88">✅ Miễn phí</span>'
@@ -4582,7 +4842,7 @@ const UI = (() => {
         const buffed = still >= 0.4 || grace > 0;
         const stillPct = Math.min(100, Math.floor(still / 0.4 * 100));
         if (buffed) {
-          html += row('🧘','Mana Tích Tụ', `+20% ST · Grace ${grace.toFixed(1)}s`, 'up');
+          html += row('🧘','Nguyệt Tích', `+${stacks||0} stack · ${stacks?'+'+((stacks||0)*8)+'% DMG':'0%'}`, 'up');
         } else {
           html += row('🧘','Di Chuyển', `+8% ST · ${stillPct}% tích mana`, 'up');
         }
@@ -4620,6 +4880,37 @@ const UI = (() => {
           const triggerPct = Math.round(player.hp / player.maxHp * 100);
           html += row('❄️','Băng Hộ Thể', 'Kích hoạt khi HP<25% · Hiện ' + triggerPct + '%', '');
         }
+      } else if (cid === 'thien_kiem') {
+        const tk = player._tkStacks || 0;
+        const tkBonus = Math.round(tk * 3);
+        const tkBuff = player._tkAtkBuff;
+        const swords = tk >= 50 ? 5 : tk >= 25 ? 4 : 3;
+        html += row('⚔️','Kiếm Ý', `${tk}/50 · +${tkBonus}% ST · ${swords} kiếm${tk>=50?' · TỐI ĐA':''}`, tk > 0 ? 'up' : '');
+        if (tkBuff) html += row('🗡️','ATK Buff', `+60% SPD · +2 kiếm · Còn ${(player._tkAtkBuffTimer||0).toFixed(1)}s`, 'up');
+      } else if (cid === 'huyet_ma') {
+        const hm = player._hmStacks || 0;
+        const hmBonus = Math.round(hm * 4);
+        const hmActive = (player._hmActiveDuration||0) > 0;
+        const hmImmortal = player._hmImmortal;
+        if (hmImmortal) {
+          html += row('💀','BẤT TỬ', `${(player._hmImmortalTimer||0).toFixed(1)}s còn lại · ATK ×2!`, 'warn');
+        }
+        html += row('🩸','Huyết Tụ', `${hm}/30 · +${hmBonus}% ST${hm>=30?' · AUTO AoE ×3.0/3s!':''}`, hm > 0 ? 'up' : '');
+        if (hmActive) html += row('💀','Cuồng Huyết', `Còn ${(player._hmActiveDuration||0).toFixed(1)}s · Aura ×(1.5+HT×0.04) · Hồi HP · Phản 50%`, 'up');
+      } else if (cid === 'vo_cuc') {
+        const vcPhase = player._vcPhase || 0;
+        const vcTaiji = player._vcTaiji;
+        const vcTimer = player._vcTaijiTimer || 0;
+        const dn = player._vcDaoNguyen || 0;
+        const dnBonus = Math.round(dn * 3);
+        html += row('☯️','Đạo Nguyên', `${dn}/30 · +${dnBonus}% ST vĩnh viễn${dn>=30?' · TỐI ĐA':''}`, dn > 0 ? 'up' : '');
+        if (vcTaiji) {
+          const tMult = player.mainWeapon && player.mainWeapon.evolved ? 2.8 : (2.0 + dn * 0.05);
+          html += row('🌀','Thái Cực', `Còn ${vcTimer.toFixed(1)}s · Mỗi bi trúng → AoE ×${tMult.toFixed(1)}`, 'up');
+        } else {
+          const phaseLabel = vcPhase === 0 ? '☀️ Dương: +45% ST · +20% SPD' : '🌑 Âm: +65% ST · absorb 22%';
+          html += row('☯️','Phase', phaseLabel, 'up');
+        }
       }
     }
 
@@ -4653,6 +4944,9 @@ const UI = (() => {
       kim_cang:     { ringColor: '#ffe060', ringGlow: '#ffd700' },
       am_sat:       { ringColor: '#e080ff', ringGlow: '#cc44ff' },
       tu_linh:      { ringColor: '#ff8090', ringGlow: '#ff4060' },
+      thien_kiem:   { ringColor: '#ffe060', ringGlow: '#ffd700' },
+      huyet_ma:     { ringColor: '#ff4060', ringGlow: '#cc0044' },
+      vo_cuc:       { ringColor: '#a0ffd0', ringGlow: '#60ffb0' },
     };
     const theme = THEMES[charData.id] || THEMES['huyen_nguyet'];
 
@@ -5051,6 +5345,133 @@ const CharPortrait = (() => {
     ctx.shadowBlur = 0;
   }
 
+  function drawThienKiem(ctx, x, y) {
+    const tt = performance.now() / 1000;
+    // golden aura
+    const tgr = ctx.createRadialGradient(x,y-4,2,x,y-4,24);
+    tgr.addColorStop(0,'rgba(255,220,60,0.45)'); tgr.addColorStop(1,'rgba(200,140,0,0)');
+    ctx.fillStyle = tgr; ctx.beginPath(); ctx.arc(x,y-4,24,0,Math.PI*2); ctx.fill();
+    // legs
+    ctx.fillStyle = '#4a3000'; ctx.fillRect(x-5,y+7,4,9); ctx.fillRect(x+1,y+7,4,9);
+    ctx.fillStyle = '#6a4400'; ctx.fillRect(x-7,y+14,6,4); ctx.fillRect(x+1,y+14,6,4);
+    // robe (white + gold trim)
+    ctx.fillStyle = '#f0e8c0';
+    ctx.beginPath(); ctx.moveTo(x-10,y-7); ctx.lineTo(x+10,y-7); ctx.lineTo(x+12,y+8); ctx.lineTo(x-12,y+8); ctx.closePath(); ctx.fill();
+    ctx.strokeStyle = '#ffd020'; ctx.lineWidth = 1.5;
+    ctx.beginPath(); ctx.moveTo(x-12,y+8); ctx.lineTo(x+12,y+8); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(x,y-7); ctx.lineTo(x,y+8); ctx.stroke();
+    // wide sleeves with sword runes
+    ctx.fillStyle = '#e0d8b0'; ctx.fillRect(x-15,y-5,4,10); ctx.fillRect(x+11,y-5,4,10);
+    ctx.strokeStyle = '#ffd020'; ctx.lineWidth = 0.8; ctx.shadowColor = '#ffe060'; ctx.shadowBlur = 4;
+    for (let ri=0;ri<3;ri++){const ry=y-2+ri*3; ctx.beginPath(); ctx.moveTo(x-15,ry); ctx.lineTo(x-11,ry); ctx.stroke();}
+    ctx.shadowBlur = 0;
+    // head with topknot + crown
+    ctx.fillStyle = '#d4926c'; ctx.beginPath(); ctx.arc(x,y-14,6,0,Math.PI*2); ctx.fill();
+    ctx.fillStyle = '#ffd020'; ctx.shadowColor = '#ffe060'; ctx.shadowBlur = 8;
+    ctx.beginPath(); ctx.moveTo(x-6,y-20); ctx.lineTo(x,y-26); ctx.lineTo(x+6,y-20); ctx.closePath(); ctx.fill(); // crown peak
+    ctx.beginPath(); ctx.arc(x,y-20,3,0,Math.PI*2); ctx.fill(); // crown orb
+    ctx.shadowBlur = 0;
+    // eyes
+    ctx.fillStyle = '#ffe060'; ctx.shadowColor = '#ffe060'; ctx.shadowBlur = 6;
+    ctx.beginPath(); ctx.arc(x-2,y-15,1.5,0,Math.PI*2); ctx.fill();
+    ctx.beginPath(); ctx.arc(x+3,y-15,1.5,0,Math.PI*2); ctx.fill();
+    ctx.shadowBlur = 0;
+    // 3 orbiting sword sparks
+    for (let si=0;si<3;si++){
+      const sa=tt*2+si*Math.PI*2/3;
+      const sx2=x+Math.cos(sa)*19, sy2=y-4+Math.sin(sa)*11;
+      ctx.save(); ctx.translate(sx2,sy2); ctx.rotate(sa+Math.PI/4);
+      ctx.fillStyle = '#ffe060'; ctx.shadowColor='#ffd700'; ctx.shadowBlur=10;
+      ctx.fillRect(-5,-1,10,2); ctx.fillRect(-1,-4,2,8);
+      ctx.shadowBlur=0; ctx.restore();
+    }
+  }
+
+  function drawHuyetMa(ctx, x, y) {
+    const ht = performance.now() / 1000;
+    // blood aura
+    const hgr = ctx.createRadialGradient(x,y-4,2,x,y-4,24);
+    hgr.addColorStop(0,'rgba(180,0,40,0.5)'); hgr.addColorStop(1,'rgba(80,0,20,0)');
+    ctx.fillStyle = hgr; ctx.beginPath(); ctx.arc(x,y-4,24,0,Math.PI*2); ctx.fill();
+    // legs
+    ctx.fillStyle = '#2a0010'; ctx.fillRect(x-5,y+7,4,9); ctx.fillRect(x+1,y+7,4,9);
+    ctx.fillStyle = '#3a0018'; ctx.fillRect(x-7,y+14,6,4); ctx.fillRect(x+1,y+14,6,4);
+    // dark robe
+    ctx.fillStyle = '#1a0008';
+    ctx.beginPath(); ctx.moveTo(x-11,y-7); ctx.lineTo(x+11,y-7); ctx.lineTo(x+13,y+8); ctx.lineTo(x-13,y+8); ctx.closePath(); ctx.fill();
+    ctx.strokeStyle = '#cc0044'; ctx.lineWidth = 1.5;
+    ctx.beginPath(); ctx.moveTo(x-13,y+8); ctx.lineTo(x+13,y+8); ctx.stroke();
+    // wide arms/cloak
+    ctx.fillStyle = '#150006'; ctx.fillRect(x-16,y-6,5,11); ctx.fillRect(x+11,y-6,5,11);
+    // crimson trim
+    ctx.strokeStyle = '#ff0044'; ctx.lineWidth = 1; ctx.shadowColor='#cc0044'; ctx.shadowBlur=6;
+    ctx.beginPath(); ctx.moveTo(x-16,y-6); ctx.lineTo(x-11,y+5); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(x+16,y-6); ctx.lineTo(x+11,y+5); ctx.stroke();
+    ctx.shadowBlur=0;
+    // horned head
+    ctx.fillStyle = '#1a0008'; ctx.beginPath(); ctx.arc(x,y-14,7,0,Math.PI*2); ctx.fill();
+    ctx.fillStyle = '#cc0044'; ctx.shadowColor='#ff0044'; ctx.shadowBlur=10;
+    // horns
+    ctx.beginPath(); ctx.moveTo(x-5,y-18); ctx.lineTo(x-9,y-26); ctx.lineTo(x-3,y-20); ctx.closePath(); ctx.fill();
+    ctx.beginPath(); ctx.moveTo(x+5,y-18); ctx.lineTo(x+9,y-26); ctx.lineTo(x+3,y-20); ctx.closePath(); ctx.fill();
+    ctx.shadowBlur=0;
+    // glowing red eyes
+    ctx.fillStyle = '#ff0040'; ctx.shadowColor='#ff0040'; ctx.shadowBlur=14;
+    ctx.beginPath(); ctx.arc(x-2,y-15,2,0,Math.PI*2); ctx.fill();
+    ctx.beginPath(); ctx.arc(x+3,y-15,2,0,Math.PI*2); ctx.fill();
+    ctx.shadowBlur=0;
+    // 4 blood orbs orbiting
+    for (let bi=0;bi<4;bi++){
+      const ba=ht*1.8+bi*Math.PI/2;
+      const bx=x+Math.cos(ba)*18, by=y-4+Math.sin(ba)*10;
+      ctx.fillStyle = '#ff0040'; ctx.shadowColor='#cc0030'; ctx.shadowBlur=8;
+      ctx.beginPath(); ctx.arc(bx,by,3.5,0,Math.PI*2); ctx.fill();
+      ctx.shadowBlur=0;
+    }
+  }
+
+  function drawVoCuc(ctx, x, y) {
+    const vt = performance.now() / 1000;
+    // jade aura
+    const vgr = ctx.createRadialGradient(x,y-4,2,x,y-4,23);
+    vgr.addColorStop(0,'rgba(160,255,200,0.4)'); vgr.addColorStop(1,'rgba(0,80,50,0)');
+    ctx.fillStyle = vgr; ctx.beginPath(); ctx.arc(x,y-4,23,0,Math.PI*2); ctx.fill();
+    // legs
+    ctx.fillStyle = '#0a2a1a'; ctx.fillRect(x-5,y+7,4,9); ctx.fillRect(x+1,y+7,4,9);
+    ctx.fillStyle = '#0e3a22'; ctx.fillRect(x-7,y+14,6,4); ctx.fillRect(x+1,y+14,6,4);
+    // taoist robe (white + jade belt)
+    ctx.fillStyle = '#eef8f2';
+    ctx.beginPath(); ctx.moveTo(x-10,y-7); ctx.lineTo(x+10,y-7); ctx.lineTo(x+12,y+8); ctx.lineTo(x-12,y+8); ctx.closePath(); ctx.fill();
+    ctx.fillStyle = '#a0ffd0'; ctx.fillRect(x-12,y+2,24,4); // jade belt
+    ctx.strokeStyle = '#20cc80'; ctx.lineWidth = 0.8;
+    ctx.beginPath(); ctx.moveTo(x,y-7); ctx.lineTo(x,y+8); ctx.stroke();
+    // wide sleeves
+    ctx.fillStyle = '#e8f5ee'; ctx.fillRect(x-16,y-5,5,10); ctx.fillRect(x+11,y-5,5,10);
+    // head with yin-yang hat
+    ctx.fillStyle = '#d4926c'; ctx.beginPath(); ctx.arc(x,y-14,6,0,Math.PI*2); ctx.fill();
+    ctx.fillStyle = '#1a1a1a'; // black top hat
+    ctx.beginPath(); ctx.arc(x,y-20,7,Math.PI,0); ctx.fillRect(x-9,y-21,18,3); ctx.fill();
+    // yin-yang symbol on hat
+    const yyr = 5;
+    ctx.fillStyle = '#ffffff'; ctx.beginPath(); ctx.arc(x,y-20,yyr,Math.PI*1.5,Math.PI*0.5); ctx.fill();
+    ctx.fillStyle = '#000000'; ctx.beginPath(); ctx.arc(x,y-20,yyr,Math.PI*0.5,Math.PI*1.5); ctx.fill();
+    ctx.fillStyle = '#ffffff'; ctx.beginPath(); ctx.arc(x,y-20-yyr/2,yyr/2,0,Math.PI*2); ctx.fill();
+    ctx.fillStyle = '#000000'; ctx.beginPath(); ctx.arc(x,y-20+yyr/2,yyr/2,0,Math.PI*2); ctx.fill();
+    // eyes
+    ctx.fillStyle = '#a0ffd0'; ctx.shadowColor='#60ffb0'; ctx.shadowBlur=8;
+    ctx.beginPath(); ctx.arc(x-2,y-15,1.5,0,Math.PI*2); ctx.fill();
+    ctx.beginPath(); ctx.arc(x+3,y-15,1.5,0,Math.PI*2); ctx.fill();
+    ctx.shadowBlur=0;
+    // yin-yang orbiting balls
+    const va1=vt*1.6, va2=vt*1.6+Math.PI;
+    ctx.fillStyle='#ffd700'; ctx.shadowColor='#ffa000'; ctx.shadowBlur=12;
+    ctx.beginPath(); ctx.arc(x+Math.cos(va1)*18,y-4+Math.sin(va1)*10,4.5,0,Math.PI*2); ctx.fill();
+    ctx.shadowBlur=0;
+    ctx.fillStyle='#cc66ff'; ctx.shadowColor='#9900cc'; ctx.shadowBlur=12;
+    ctx.beginPath(); ctx.arc(x+Math.cos(va2)*18,y-4+Math.sin(va2)*10,4.5,0,Math.PI*2); ctx.fill();
+    ctx.shadowBlur=0;
+  }
+
   function draw(canvas, charId, charColor) {
     const ctx = canvas.getContext('2d');
     const W = canvas.width, H = canvas.height;
@@ -5075,6 +5496,9 @@ const CharPortrait = (() => {
       case 'loi_than':     drawLoiThan(ctx, cx, cy);     break;
       case 'hoa_long':     drawHoaLong(ctx, cx, cy);     break;
       case 'bang_vuong':   drawBangVuong(ctx, cx, cy);   break;
+      case 'thien_kiem':   drawThienKiem(ctx, cx, cy);   break;
+      case 'huyet_ma':     drawHuyetMa(ctx, cx, cy);     break;
+      case 'vo_cuc':       drawVoCuc(ctx, cx, cy);       break;
       default:
         ctx.font = '32px serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
         ctx.fillText('❓', cx, cy);
@@ -5157,153 +5581,224 @@ const PETS = [
 
 const CHARS = [
   {
-    id: 'luu_phong', icon: '⚔️', name: 'Kiếm Khách Lưu Phong', title: 'Kiếm Khách',
+    id: 'luu_phong', icon: '⚔️', name: 'Kiếm Khách Lưu Phong', title: 'Chiến Sĩ Lãng Khách',
     cost: 0,
-    baseHP: 670, baseSpd: 145, baseDmg: 85, baseAtk: 1.5,
-    weapon: 'Phong Kiếm', weaponDesc: 'Chém vòng cung ~160° hướng về quái gần nhất, tầm ngắn, tốc độ cao. Đánh liên tục tích "Chiến Tốc" (+1.5%/stack, tối đa 30 stack = +45%). Không đánh trong 1.5s, stack bắt đầu tan dần.',
+    baseHP: 650, baseSpd: 150, baseDmg: 85, baseAtk: 1.5,
+    baseCrit: 0.05, baseCritDmg: 1.5,
+    lore: 'Kiếm sĩ lang thang không danh tính, chiến đấu bằng bản năng thuần túy và tốc độ vô song. Không có sư môn, không cần pháp bảo — chỉ cần một lưỡi kiếm.',
+    weapon: 'Phong Kiếm', weaponDesc: 'Chém 1 slash arc 90° phía trước, tầm 120px, xuyên 2 địch. Mỗi nhát trúng địch → +5% AtkSpd 2s (cộng dồn trực tiếp lên tốc đánh, tối đa +30% từ 6 hit liên tiếp).',
     weaponIcon: '⚔️',
-    passiveName: 'Kiếm Ý',
-    passiveDesc: 'Đánh liên tục tích Chiến Tốc (tối đa 30 stack = +45% tốc chém). Dừng đánh 1.5s → stack tan dần. Bị trúng đòn mất 25% stack. Active Tàn Phong Trảm scale theo stack Kill Ý (tích riêng khi giết quái).',
+    passiveName: 'Chiến Tốc',
+    passiveDesc: 'Mỗi hit trúng +1 stack (max 10, +4% DMG/stack = +40% tại max). Mất 1 stack mỗi 1.5s khi không đánh trúng — bị trúng đòn mất 2 stack. Đánh liên tục là chìa khoá.',
     activeName: 'Tàn Phong Trảm',
-    activeDesc: 'Đóng băng thời gian 0.2 giây rồi lao xuyên tất cả kẻ thù trên đường đi — sát thương scale theo Kiếm Ý: ×(2.5 + stack×0.05), tối đa ×4.0 tại 30 stack. Mỗi quái bị xuyên qua cộng thêm 1 stack. Không tiêu thụ stack.',
-    activeIcon: '💨', activeCooldown: 11,
+    activeDesc: 'Vũ khí AtkSpd ×2 trong 4s. Mỗi nhát chém thêm 1 kiếm khí phụ ×0.4 không tiêu thêm cooldown. Stack Chiến Tốc không bị ảnh hưởng.',
+    activeIcon: '💨', activeCooldown: 12,
     evolvedWeapon: 'Thiên Phong Kiếm Ý',
-    evolveDesc: 'Cung chém mở rộng từ ~90° lên ~160° (phủ rộng gần hết nửa vòng tròn). Đồng thời mỗi nhát chém phóng thêm 1 kiếm khí xuyên thẳng về phía quái (×0.7, xuyên tất cả địch trên đường đi) — chém vẫn giữ nguyên, kiếm khí là hiệu ứng cộng thêm.',
+    evolveDesc: 'Arc mở rộng 160°, đồng thời phóng 1 kiếm khí xuyên thẳng (×0.7 DMG, xuyên tất cả). Mỗi nhát trúng → +8% AtkSpd 2s (max +48% AtkSpd). Kiếm khí trúng cũng cộng AtkSpd.',
     color: '#60d0ff',
   },
   {
-    id: 'huyen_nguyet', icon: '🌙', name: 'Huyền Nguyệt', title: 'Pháp Sư',
+    id: 'huyen_nguyet', icon: '🌙', name: 'Huyền Nguyệt', title: 'Pháp Sư Nguyệt Thần',
     cost: 1500,
-    baseHP: 560, baseSpd: 110, baseDmg: 170, baseAtk: 0.98,
-    weapon: 'Nguyệt Hoa', weaponDesc: 'Phóng lưỡi trăng bay chậm, xuyên địch theo đường cong. Tiến hoá → Nguyệt Vũ: lưỡi trăng bay ra rồi vòng ngược trở lại, đánh 2 lần trên cùng quỹ đạo.',
+    baseHP: 580, baseSpd: 115, baseDmg: 130, baseAtk: 1.0,
+    baseCrit: 0.08, baseCritDmg: 1.6,
+    lore: 'Pháp sư kết nối với nguyệt thần, triệu hồi tinh linh bạch nguyệt tấn công kẻ thù. Đứng yên để tụ pháp lực — di chuyển là mất tất cả.',
+    weapon: 'Tinh Linh Cầu', weaponDesc: 'Phóng 1 orb homing đến địch gần nhất, xuyên 1, range vô hạn. Mỗi orb trúng → +3% CritRate 3s (cộng dồn, tối đa +18% CritRate từ 6 hit).',
     weaponIcon: '🌙',
-    passiveName: 'Mana Tích Tụ',
-    passiveDesc: 'Di chuyển: +8% ST. Đứng yên 0.4s → +20% ST. Có 0.5s grace period khi di chuyển — buff chưa mất ngay. Active không làm mất Mana Tích Tụ.',
+    passiveName: 'Nguyệt Tích',
+    passiveDesc: 'Đứng yên ≥0.4s: +8% DMG mỗi 0.6s (max 6 stack = +48% DMG). Mất TẤT CẢ stack ngay khi di chuyển (grace 0.3s). Active Nguyệt Thực không làm mất stack — cast xong tiếp tục đứng yên.',
     activeName: 'Nguyệt Thực',
-    activeDesc: 'Tạo vùng nhật thực bán kính 200px trong 3s: làm chậm tất cả địch trong vùng 60%. Không làm mất Mana Tích Tụ khi cast. Địch đang chậm nhận thêm 25% ST từ mọi nguồn.',
-    activeIcon: '🌑', activeCooldown: 13,
-    evolvedWeapon: 'Nguyệt Vũ',
-    evolveDesc: 'Lưỡi trăng bay ra rồi vòng ngược trở lại, đánh 2 lần — lượt về mạnh hơn 30%. Khi lưỡi trăng trúng địch đang bị chậm (Nguyệt Thực): cộng thêm 20% ST từ hiệu ứng chậm.',
+    activeDesc: 'Bắn 3 orb đồng thời liên tục trong 4s (×3 fire rate). Đứng yên trong active = stack Nguyệt Tích giữ nguyên.',
+    activeIcon: '🌑', activeCooldown: 14,
+    evolvedWeapon: 'Hắc Nhật Ma Cầu',
+    evolveDesc: 'Orb to hơn, trúng địch tách 2 mini-orb homing ×0.5 vào 2 địch gần nhất. Mỗi orb (kể cả mini) trúng → +5% CritRate 3s (max +30% CritRate).',
     color: '#a060ff',
   },
   {
-    id: 'thiet_tam', icon: '🏹', name: 'Thiết Tâm', title: 'Xạ Thủ',
+    id: 'thiet_tam', icon: '🏹', name: 'Thiết Tâm', title: 'Xạ Thủ Cung Thần',
     cost: 1500,
-    baseHP: 570, baseSpd: 120, baseDmg: 148, baseAtk: 1.3,
-    weapon: 'Thiết Đạn', weaponDesc: 'Bắn đạn đơn tốc độ cao xuyên tối đa 3 địch. Tiến hoá → Xuyên Tâm Đạn: xuyên 5 địch, mỗi mục tiêu sau nhận 80% damage so với mục tiêu trước.',
+    baseHP: 540, baseSpd: 120, baseDmg: 148, baseAtk: 0.9,
+    baseCrit: 0.12, baseCritDmg: 1.75,
+    lore: 'Xạ thủ được mệnh danh Cung Thần — mũi tên xuyên qua tất cả. Chuyên sát thương đơn điểm và chuỗi xuyên hàng ngũ địch.',
+    weapon: 'Cung Xương', weaponDesc: 'Bắn 1 mũi tên thẳng xuyên 3 địch, range 450px. Địch cách >150px: +15% CritDmg bonus áp trực tiếp vào shot đó (stacking với base CritDmg).',
     weaponIcon: '🏹',
-    passiveName: 'Mắt Đại Bàng + Tiêu Điểm',
-    passiveDesc: 'Địch >150đv nhận +25% ST. Mỗi lần kill → Eagle Strike 0.5s: đòn tiếp theo guaranteed Crit. Eagle Strike không bị active xóa.',
+    passiveName: 'Mắt Đại Bàng',
+    passiveDesc: 'Mỗi crit: +1 stack (max 8, +6% DMG/stack = +48%). Mất 2 stack mỗi 3s — bắn trượt hoàn toàn mất 1 stack. Tốc độ decay chậm: thưởng cho lối chơi đứng xa bắn steady.',
     activeName: 'Bão Đạn',
-    activeDesc: 'Tốc bắn ×2.5 trong 4s. Eagle Strike vẫn giữ nguyên khi cast — kết hợp để burst boss sau khi kill minion.',
+    activeDesc: 'AtkSpd ×2.5 trong 4s. CritDmg bonus từ tầm xa >150px vẫn áp dụng bình thường trong thời gian active. Stack Mắt Đại Bàng không bị ảnh hưởng.',
     activeIcon: '🎯', activeCooldown: 15,
-    evolvedWeapon: 'Xuyên Tâm Đạn',
-    evolveDesc: 'Xuyên tối đa 5 mục tiêu, mỗi mục tiêu sau nhận 80% damage so với mục tiêu trước. Trúng 5 địch = 1+0.8+0.64+0.51+0.41 = ×3.36 tổng damage.',
+    evolvedWeapon: 'Tử Thần Chi Tên',
+    evolveDesc: 'Xuyên 5 địch. Mỗi địch trúng tạo AoE độc 70px (×0.4 dmg/s × 3s). Địch cách >150px: +25% CritDmg bonus. Độc scale theo totalDmg tại thời điểm bắn.',
     color: '#ff9060',
   },
   {
-    id: 'kim_cang', icon: '🥋', name: 'Kim Cang', title: 'Võ Tăng',
+    id: 'kim_cang', icon: '🥋', name: 'Kim Cang', title: 'Chiến Sĩ Bất Phá',
     cost: 1500,
-    baseHP: 900, baseSpd: 100, baseDmg: 148, baseAtk: 0.98,
-    weapon: 'Thiết Quyền', weaponDesc: 'Đấm tạo shockwave AoE quanh người. 15% cơ hội stun địch 0.5s. Tiến hoá → Kim Cang Chưởng: shockwave rộng hơn + stun 25% cơ hội.',
+    baseHP: 950, baseSpd: 100, baseDmg: 115, baseAtk: 1.1,
+    baseCrit: 0.05, baseCritDmg: 1.5,
+    lore: 'Võ sĩ luyện thân đến mức kim cương bất hoại. Không tránh đòn — hứng đòn để tích năng lượng, sau đó phản trả gấp bội.',
+    weapon: 'Thiền Trượng', weaponDesc: 'Đập AoE 100px quanh thân 360°, range gần. Mỗi địch trúng trong 1 đợt đập → +2% AtkSpd 2s (tối đa +10% nếu 5 địch cùng lúc).',
     weaponIcon: '🥊',
     passiveName: 'Bất Phá Thể',
-    passiveDesc: '20% xác suất chặn hoàn toàn đòn bất kỳ + hồi 5% HP. Tích 1 Block Stack (max 3, +7% ST/stack). Block Stack KHÔNG tự decay — chỉ reset khi kích nổ qua active.',
-    activeName: 'Bão Phong Phá',
-    activeDesc: 'Kích nổ toàn bộ Block Stack: AoE damage = ST × (1.5 + 0.5 × stack). 0 stack = ×1.5, 3 stack = ×3.0. Sau nổ stack về 0, bắt đầu tích lại. Stun 1.2s tất cả địch trong vùng.',
-    activeIcon: '💥', activeCooldown: 11,
-    evolvedWeapon: 'Kim Cang Chưởng',
-    evolveDesc: 'Shockwave rộng hơn 40%, stun chance tăng lên 25%. Khi đủ 3 Block Stack: mỗi đòn tự động phóng thêm shockwave nhỏ AoE ×0.4 — passive punish liên tục.',
+    passiveDesc: 'Mỗi lần bị trúng đòn: +1 stack (max 8, +6% DMG/stack = +48%). Bonus: 15% chance block + hồi 3% HP. Mất 1 stack mỗi 5s khi không bị đánh. Tốt nhất khi đứng giữa đám quái.',
+    activeName: 'Kim Cang Bão',
+    activeDesc: 'Slam AoE 180px ×(1.8 + stacks×0.12) dmg tức thì, stun 1.5s tất cả địch. Stack Bất Phá Thể không tiêu, không bị ảnh hưởng.',
+    activeIcon: '💥', activeCooldown: 13,
+    evolvedWeapon: 'Hộ Pháp Thần Trượng',
+    evolveDesc: 'AoE mở rộng 140px + 20% chance stun địch 1.2s. Mỗi địch trúng → +3% AtkSpd 2s (max +15% nếu 5 địch). Stun không hưởng bonus riêng.',
     color: '#ffd700',
   },
   {
-    id: 'am_sat', icon: '🗡️', name: 'Ám Sát', title: 'Sát Thủ Bóng Đêm',
+    id: 'am_sat', icon: '🗡️', name: 'Ám Sát', title: 'Sát Thủ Bóng Tối',
     cost: 1500,
-    baseHP: 530, baseSpd: 155, baseDmg: 165, baseAtk: 1.1,
-    weapon: 'Ám Nhẫn', weaponDesc: 'Ném 3 dao nhỏ theo hình nan quạt ±20°. Mỗi dao tích 1 Sát Khí khi trúng (tối đa 3/lượt). Tiến hoá → Độc Nhẫn: mỗi dao gây độc 10% ST × 3s, stack độc cộng dồn per hit.',
+    baseHP: 530, baseSpd: 160, baseDmg: 140, baseAtk: 1.15,
+    baseCrit: 0.15, baseCritDmg: 2.0,
+    lore: 'Kẻ giết người vô hình, sống trong bóng tối và vùng không gian chết. Một cú đánh từ stealth đủ để kết liễu mọi thứ.',
+    weapon: 'Song Quỷ Đao', weaponDesc: 'Phóng 3 dao/shuriken fan 40°, pierce 1, range 350px. Mỗi shuriken crit → +6% CritDmg bonus stack (cộng dồn trong 2s, max +36% CritDmg từ 6 crit liên tiếp).',
     weaponIcon: '🌀',
     passiveName: 'Sát Khí',
-    passiveDesc: 'Mỗi lần trúng địch tích 1 Sát Khí (max 5). Mỗi stack +8% ST. Sát Khí KHÔNG BAO GIỜ decay trong run — chỉ mất 1 stack khi bị trúng đòn. Đủ 5 → Execute +30% trên địch <30% HP.',
+    passiveDesc: 'Mỗi hit trúng: +1 stack (max 10, +5% DMG/stack = +50%). Mất 3 stack mỗi lần bị trúng đòn — mất 1 stack mỗi 4s tự nhiên. Tránh đòn là quan trọng nhất: SPD cao + micro giỏi = stack luôn đầy.',
     activeName: 'Ẩn Kích',
-    activeDesc: 'Ẩn thân 2s, địch mất track. Đòn đầu tiên sau khi hiện = ×5 damage + bonus Sát Khí hiện có. Sát Khí KHÔNG RESET sau cú ×5 — tích lũy tiếp tục.',
-    activeIcon: '🌑', activeCooldown: 11,
-    evolvedWeapon: 'Độc Nhẫn',
-    evolveDesc: 'Mỗi dao gây độc 10% ST × 3s. Stack độc cộng dồn per hit — boss trúng cả 3 dao liên tục nhận độc rất mạnh. Giá trị scale theo totalDmg nên mạnh dần cả run.',
+    activeDesc: 'Tàng hình 2s. Đòn phá tàng hình = ×4.0 DMG + guaranteed crit. CritDmg bonus từ weapon vẫn áp dụng cho đòn phá tàng hình. Stack Sát Khí không bị ảnh hưởng.',
+    activeIcon: '🌑', activeCooldown: 16,
+    evolvedWeapon: 'Hư Vô Quỷ Đao',
+    evolveDesc: '3 dao → 5 dao fan 60°. Mỗi dao áp Rỉ Máu 3s (8% dmg/s, cộng dồn per dao). Crit → +8% CritDmg bonus (max +48% CritDmg). Rỉ Máu scale theo totalDmg.',
     color: '#cc44ff',
   },
   {
-    id: 'tu_linh', icon: '💀', name: 'Tử Linh', title: 'Thuật Sĩ Xương',
+    id: 'tu_linh', icon: '💀', name: 'Tử Linh', title: 'Pháp Sư Tử Khí',
     cost: 1500,
-    baseHP: 600, baseSpd: 115, baseDmg: 142, baseAtk: 1.0,
-    weapon: 'Tử Khí', weaponDesc: 'Aura 360° quanh người gây ST liên tục cho tất cả địch trong tầm 120px. Tiến hoá → Âm Linh Bùng Phát: aura rộng hơn ~30% (155px), mỗi pulse triệu thêm Ghost Wisp truy đuổi địch gần nhất trong 3s.',
+    baseHP: 610, baseSpd: 115, baseDmg: 125, baseAtk: 1.0,
+    baseCrit: 0.07, baseCritDmg: 1.55,
+    lore: 'Pháp sư điều khiển tử khí và linh hồn của kẻ đã chết. Mỗi cái chết là nguồn năng lượng — chiến trường đẫm máu là lúc hắn mạnh nhất.',
+    weapon: 'Lưỡi Liềm Tử Thần', weaponDesc: 'Liềm bay vòng cung 180px, xuyên tất cả, tự quay về player. Địch chết vì liềm → +7% AtkSpd 4s (cộng dồn, max +42% AtkSpd từ 6 kill).',
     weaponIcon: '💀',
     passiveName: 'Thu Hồn',
-    passiveDesc: 'Mỗi địch chết 40% rơi Soul Orb (max 20). Mỗi hồn: +2% damage aura. Đạt 20 hồn → aura tự pulse ×3 damage mỗi 2s. Thu Hồn của passive không bị active ảnh hưởng.',
+    passiveDesc: 'Mỗi kill: +1 stack (max 10, +5% DMG/stack = +50%). Mất 1 stack mỗi 5s — mất 4 stack khi bị boss đánh. Decay chậm nên dễ maintain. Map đông quái thường = tích stack nhanh hơn.',
     activeName: 'Giải Phóng',
-    activeDesc: 'Kích nổ toàn bộ hồn: damage = số_hồn × ST × 1.8 (AoE 200px). Ngay sau đó nhận lại 5 hồn miễn phí. Passive thu hồn tiếp tục bình thường.',
-    activeIcon: '💀', activeCooldown: 12,
-    evolvedWeapon: 'Âm Linh Bùng Phát',
-    evolveDesc: 'Aura rộng hơn 40% + mỗi pulse triệu Ghost Wisp homing (tồn tại 3s, ×0.6 ST/hit, truy đuổi địch gần nhất). Boss trúng cả wisp lẫn aura liên tục.',
+    activeDesc: 'Liềm xoay 360° liên tục trong 5s ×1.4 dmg + AtkSpd liềm ×2. Stack Thu Hồn không bị ảnh hưởng.',
+    activeIcon: '💀', activeCooldown: 15,
+    evolvedWeapon: 'Vong Hồn Đại Liềm',
+    evolveDesc: 'Liềm to ×1.8, hút địch vào khi bay ra. Khi về: xuyên tất cả + AoE 80px tại mỗi điểm trúng. Kill → +10% AtkSpd 5s (max +60%). Mỗi hit về cũng tính AtkSpd bonus.',
     color: '#ff4060',
   },
   {
-    id: 'loi_than', icon: '⚡', name: 'Lôi Thần', title: 'Thần Lôi Vương',
+    id: 'loi_than', icon: '⚡', name: 'Lôi Thần', title: 'Thiên Lôi Chiến Thần',
     cost: 250000,
-    baseHP: 580, baseSpd: 130, baseDmg: 170, baseAtk: 1.35,
-    weapon: 'Thiên Lôi Cổ', weaponDesc: 'Gọi sét xuống quái gần nhất trong tầm 200đv, dây chuyền sang 3 quái bên (×0.6/chuỗi). Mỗi cú tích 1 Lôi Tích (tối đa 20). ST tổng đã bao gồm +4%/stack.',
+    baseHP: 590, baseSpd: 130, baseDmg: 170, baseAtk: 1.35,
+    baseCrit: 0.10, baseCritDmg: 1.65,
+    lore: 'Hóa thân của sấm sét thiên địa, thần chiến tranh mang sét trời xuống thế gian. Mỗi cú đánh kèm theo tiếng sấm — chain sét luôn lan rộng không ngừng.',
+    weapon: 'Thiên Lôi Cổ', weaponDesc: 'Phóng sét chain đến 3 địch gần nhất theo thứ tự, range 200px. Mỗi chain link trúng → +3% AtkSpd 2s (3 link = +9% AtkSpd/lần đánh, cộng dồn giữa các lần).',
     weaponIcon: '⚡',
-    passiveName: 'Tĩnh Điện Tích Tụ',
-    passiveDesc: 'Mỗi cú đánh tích 1 Lôi Tích (tối đa 20), mỗi stack +4% ST (tối đa +80%). Đủ 20 stack: tự phóng AoE sét mỗi 3 giây liên tục. Dùng Active KHÔNG tiêu stack.',
+    passiveName: 'Lôi Tích',
+    passiveDesc: 'Mỗi hit: +1 stack (max 12, +4% DMG/stack = +48%). Mất 2 stack mỗi 2s — decay nhanh, PHẢI đánh liên tục không nghỉ. AtkSpd từ vũ khí và tiềm năng AtkSpd bổ trợ lẫn nhau.',
     activeName: 'Thiên Lôi Giáng Thế',
-    activeDesc: 'Phóng 5 tia Thiên Lôi cộng hưởng trong tầm 200đv — mỗi tia = Tổng ST hiện tại × 2.5 (đã nhân buff Lôi Tích, KHÔNG tiêu stack). Dây chuyền 4 mục tiêu. Sau cast: ATK Speed +50% trong 5 giây + tích 2 Lôi Tích/đòn.',
+    activeDesc: 'Phóng 5 tia sét đến 5 địch gần nhất ×2.5 DMG đồng thời. AtkSpd +50% trong 5s sau cast. Stack Lôi Tích không bị ảnh hưởng.',
     activeIcon: '🌩️', activeCooldown: 16,
     evolvedWeapon: 'Thần Lôi Vô Song',
-    evolveDesc: 'Sét dây chuyền lên 6 mục tiêu/chuỗi. Mỗi dây chuyền để lại vết sét gây 20% ST/giây trong 2 giây. Active chain thêm 2 mục tiêu (tổng 6).',
+    evolveDesc: 'Chain 6 địch. Mỗi link để lại vết sét: 15% dmg/s × 2.5s (cộng dồn nhiều link). Mỗi link → +5% AtkSpd 2s (6 link = +30% AtkSpd/lần, tích tắt nhanh).',
     color: '#00ccff',
   },
   {
-    id: 'hoa_long', icon: '🔥', name: 'Hỏa Long', title: 'Rồng Lửa Thiêu Thân',
+    id: 'hoa_long', icon: '🔥', name: 'Hỏa Long', title: 'Long Diệm Chiến Thần',
     cost: 250000,
-    baseHP: 720, baseSpd: 110, baseDmg: 155, baseAtk: 1.3,
-    weapon: 'Long Hỏa Quyền', weaponDesc: 'Đấm lửa rồng tạo AoE 120° rộng quanh người. Quái cháy nhận 20% ST/giây thêm 2 giây. Trong Dragon Form: vũ khí tiếp tục khai thác toàn bộ buff passive.',
+    baseHP: 740, baseSpd: 110, baseDmg: 180, baseAtk: 1.1,
+    baseCrit: 0.08, baseCritDmg: 1.6,
+    lore: 'Thần lửa khoác lốt rồng lửa, sức mạnh tích lũy từ từng mạng địch. Mỗi lần giết là thêm một ngọn lửa — đến cuối trận là biển lửa thiêu đốt tất cả.',
+    weapon: 'Long Hỏa Quyền', weaponDesc: 'Đấm AoE 100px quanh thân, range gần 80px. Địch chết bởi đấm → +5% CritRate 5s (cộng dồn, tối đa +30% CritRate từ 6 kill).',
     weaponIcon: '🔥',
     passiveName: 'Long Vảy Linh',
     passiveDesc: 'Giảm 20% ST nhận. Mỗi 25 quái tiêu diệt: ATK +35% vĩnh viễn trong run (stack 3 lần = +105%). HP<40%: Cuồng Long — ATK +50%, SPD +25%. Active không gián đoạn vũ khí.',
     activeName: 'Rồng Lửa Thiêu Thân',
-    activeDesc: 'Hóa thân Rồng Lửa 5 giây: AoE 200px liên tục (×1.5/giây) + vũ khí tiếp tục bắn bình thường với full buff, +20% SPD, miễn knockback. Kết thúc: Thiên Long Nổ ×7.0.',
+    activeDesc: 'Hóa thân Rồng Lửa 5s: AoE 200px liên tục (×1.5/giây) + vũ khí tiếp tục bắn với full buff, +20% SPD, miễn knockback. Kết thúc: Thiên Long Nổ ×7.0.',
     activeIcon: '🐉', activeCooldown: 20,
     evolvedWeapon: 'Thiên Long Hỏa Hải',
-    evolveDesc: 'Mỗi cú đấm để lại đám lửa 3 giây (25% ST/giây trong 90px). Khi biến thân: mỗi tick AoE triệu thêm 2 cầu lửa homing tự truy đuổi quái gần nhất.',
+    evolveDesc: 'Mỗi cú đấm để lại đám lửa 3s (25% ST/giây trong 90px). Khi biến thân: mỗi tick AoE triệu thêm 2 cầu lửa homing tự truy đuổi quái gần nhất.',
     color: '#ff6600',
   },
   {
     id: 'bang_vuong', icon: '❄️', name: 'Băng Vương', title: 'Vương Giả Tuyết Lạnh',
     cost: 250000,
-    baseHP: 500, baseSpd: 125, baseDmg: 195, baseAtk: 1.0,
-    weapon: 'Băng Linh Nhẫn', weaponDesc: 'Phóng 4 vòng băng trong vòng cung 180° hướng về quái gần nhất, va chạm làm chậm địch 40% trong 2 giây. Địch đang chậm/đóng băng nhận thêm 35% ST từ mọi nguồn.',
+    baseHP: 510, baseSpd: 125, baseDmg: 195, baseAtk: 1.0,
+    baseCrit: 0.10, baseCritDmg: 1.7,
+    lore: 'Vương giả của tuyết lạnh, dùng 4 vòng băng quỹ đạo phân tán kẻ thù. Địch bị chậm là địch sắp chết.',
+    weapon: 'Băng Linh Nhẫn', weaponDesc: 'Phóng 4 vòng băng vòng cung 180° hướng về quái gần nhất, va chạm làm chậm 40% trong 2s. Địch đang chậm/đóng băng nhận thêm 35% ST từ mọi nguồn.',
     weaponIcon: '🧊',
-    passiveName: 'Tuyệt Đối Không Độ',
-    passiveDesc: 'Địch đang chậm/đóng băng nhận thêm 35% ST từ mọi nguồn. Giết địch đóng băng: hồi 8 HP. HP<25%: Băng Hộ Thể — hấp thụ 400 ST và phản chiếu 60% về nguồn tấn công.',
-    activeName: 'Bão Tuyết Tận Thế',
-    activeDesc: 'Bão tuyết 200px trong 6 giây: địch chậm 60% + ×1.2/giây (vũ khí/crit hưởng +35%). Đứng trong bão 3 giây liên tiếp → đóng băng 2 giây. Kết thúc: Băng Nổ ×5.5 toàn vùng.',
-    activeIcon: '🌨️', activeCooldown: 20,
+    passiveName: 'Băng Tinh',
+    passiveDesc: 'Mỗi ring trúng địch: +1 stack (max 12, +4% DMG/stack = +48%). Mất TẤT CẢ stack ngay lập tức khi bị trúng đòn — cơ chế risk cao nhất game. Chủ động slow địch rồi đứng trong bão active = không bị trúng = stack an toàn.',
+    activeName: 'Băng Hà Phong Bạo',
+    activeDesc: 'Bão tuyết 200px slow 60% × 6s, vũ khí chính TIẾP TỤC bắn trong bão. Kết thúc: Băng Nổ ×4.5 (địch đang chậm hưởng CritDmg bonus từ weapon). Stack Băng Tinh không bị ảnh hưởng.',
+    activeIcon: '🌨️', activeCooldown: 16,
     evolvedWeapon: 'Vong Linh Băng Trận',
-    evolveDesc: 'Băng Nhẫn trúng địch phân nhánh 2 mảnh băng homing (×0.6/mảnh). Địch đóng băng chết: nổ AoE băng 120px + đóng băng địch xung quanh trong 1 giây.',
+    evolveDesc: 'Ring trúng địch đóng băng: phân nhánh 2 mảnh homing ×0.6. Địch đóng băng chết: AoE băng 120px đóng băng xung quanh 1.5s. Địch chậm/đóng băng trúng ring → +20% CritDmg bonus.',
     color: '#88eeff',
   },
+  {
+    id: 'thien_kiem', icon: '⚔️', name: 'Thiên Kiếm Thánh', title: 'Kiếm Tu Đắc Đạo',
+    cost: 750000,
+    baseHP: 650, baseSpd: 145, baseDmg: 225, baseAtk: 1.45,
+    baseCrit: 0.12, baseCritDmg: 1.8,
+    lore: 'Tu luyện kiếm đạo đến cảnh giới Thánh Nhân — kiếm và người hoà làm một. Phong cách tu tiên kiếm tông: tốc độ, chính xác, và thiên kiếm homing không bao giờ trượt mục tiêu.',
+    weapon: 'Thiên Kiếm Vũ', weaponDesc: 'Phóng 3 kiếm homing tự truy địch, pierce 3, bounce 1 lần khi trúng tường/địch cuối, range 400px. Mỗi kiếm trúng → +4% AtkSpd 2.5s (3 kiếm = +12% AtkSpd/lượt bắn, cộng dồn liên tục). Kiếm Ý ≥25: 4 kiếm. Kiếm Ý 50: 5 kiếm + sóng kiếm AoE mỗi 2s.',
+    weaponIcon: '⚔️',
+    passiveName: 'Kiếm Ý',
+    passiveDesc: 'Mỗi kiếm trúng địch: +1 stack (max 15, +4% DMG/stack = +60%). Milestone 10 stack: CritRate +10% thêm. Milestone 15 (max): auto phóng Kiếm Khí AoE 120px mỗi 3s. Mất 2 stack mỗi 2s khi không đánh — KHÔNG bao giờ reset hoàn toàn.',
+    activeName: 'Nhất Kiếm Thiên Hà',
+    activeDesc: 'Phóng 5 kiếm homing ×3.0 DMG, pierce all, tất cả hướng về địch hiện tại. AtkSpd ×1.8 trong 5s sau cast. Stack Kiếm Ý không bị ảnh hưởng.',
+    activeIcon: '🗡️', activeCooldown: 18,
+    evolvedWeapon: 'Thiên Kiếm Thần Ý',
+    evolveDesc: '3 → 5 kiếm, pierce all, bounce nổ AoE 100px. Sau bounce kiếm tự homing trở về thêm 1 lần (hit kép). Mỗi kiếm trúng (đi + về) → +6% AtkSpd 2.5s (5 kiếm × 2 hit = +60% AtkSpd potential/lượt).',
+    color: '#ffe060',
+  },
+  {
+    id: 'huyet_ma', icon: '🔴', name: 'Huyết Ma Tôn', title: 'Ma Đạo Đại Thành',
+    cost: 750000,
+    baseHP: 920, baseSpd: 112, baseDmg: 220, baseAtk: 1.3,
+    baseCrit: 0.08, baseCritDmg: 1.7,
+    lore: 'Đại tông sư ma đạo luyện thân bằng huyết khí — sức mạnh đến từ đau đớn và máu. Càng gần cái chết càng mạnh. Đứng giữa địch, hút máu sống sót bằng sức mạnh thuần túy.',
+    weapon: 'Ma Huyết Triều', weaponDesc: 'Aura huyết khí 155px pulse theo AtkSpd. Lifesteal 8% trên mỗi địch trúng. Mỗi địch trong aura bị trúng → +3% AtkSpd 2s (cộng dồn per địch, 5 địch = +15% AtkSpd/pulse).',
+    weaponIcon: '🩸',
+    passiveName: 'Huyết Tụ',
+    passiveDesc: 'Mỗi 35 HP mất: +1 stack (max 12, +5% DMG/stack = +60%). Milestone 12 (max): auto AoE huyết nổ 200px ×2.5 mỗi 3.5s. Mất 1 stack mỗi 4s khi không bị đánh. Lifesteal từ aura bù lại HP mất = vòng lặp bền vững.',
+    activeName: 'Cuồng Huyết Vương Thân',
+    activeDesc: 'Khai mạc: AoE huyết 220px ×2.0. 7s tiếp: Aura dmg ×2.0, lifesteal ×2 (16%), phản chiếu 30% dmg nhận. Stack Huyết Tụ không bị ảnh hưởng.',
+    activeIcon: '💀', activeCooldown: 15,
+    evolvedWeapon: 'Huyết Hải Thiên La',
+    evolveDesc: 'Aura 155px → 185px. 30% mỗi pulse sinh 1 cầu máu homing ×1.5 vào địch gần nhất. Lifesteal 8% → 12%. Mỗi địch trúng → +5% AtkSpd 2s (5 địch = +25% AtkSpd/pulse). Cầu máu cũng áp lifesteal.',
+    color: '#cc0044',
+  },
+  {
+    id: 'vo_cuc', icon: '☯️', name: 'Vô Cực Chân Nhân', title: 'Đạo Tông Vô Thượng',
+    cost: 750000,
+    baseHP: 610, baseSpd: 133, baseDmg: 230, baseAtk: 1.1,
+    baseCrit: 0.10, baseCritDmg: 1.75,
+    lore: 'Đạt cảnh giới Vô Cực — vượt qua ranh giới âm dương. 2 bi quỹ đạo là hiện thân của Thái Cực, tự chuyển đổi âm dương không ngừng. Phong cách tu tiên đạo gia: orbital combat, phase-switching, tích lũy đạo nguyên.',
+    weapon: 'Âm Dương Lưỡng Nghi', weaponDesc: '2 bi quỹ đạo r=135px, mỗi bi phóng đạn homing theo AtkSpd. Bi Dương ☀️: ×1.3 + knockback. Bi Âm 🌑: ×1.0 + slow 50% × 1.8s. Phase tự đổi mỗi 5s. Mỗi bi trúng → +4% CritDmg 3s (2 bi = +8% CritDmg/lượt, cộng dồn).',
+    weaponIcon: '☯️',
+    passiveName: 'Đạo Nguyên',
+    passiveDesc: 'Mỗi lần phase switch (tự động mỗi 5s): +1 stack (max 15, +4% DMG/stack = +60%). Phase Dương: +20% SPD. Phase Âm: hấp thụ 15% dmg nhận. Mất 1 stack mỗi 3s khi không đánh trúng địch.',
+    activeName: 'Thái Cực Siêu Việt',
+    activeDesc: '5s: 2 bi quay nhanh ×2, mỗi hit nổ AoE 80px ×1.8. Kết thúc: 8 mảnh homing ×(2.5 + stacks×0.08) DMG. Stack Đạo Nguyên không tiêu.',
+    activeIcon: '🌀', activeCooldown: 18,
+    evolvedWeapon: 'Vô Cực Thiên Địa',
+    evolveDesc: 'Phase 5s → 3s. Mỗi bi trúng 35% sinh mini-orb homing ×0.55. Phase Âm: hấp thụ 22% dmg nhận. Mỗi bi trúng → +6% CritDmg 3s (max +12% CritDmg/lượt). Mini-orb cũng cộng CritDmg.',
+    color: '#a0ffd0',
+  },
 ];
-
  
 const AIM_CONFIG = {
   luu_phong:    { type:'direction', range:260, color:'#60d0ff', label:'Tàn Phong Trảm'   },
   thiet_tam:    { type:'direction', range:450, color:'#ff9060', label:'Tàn Sát Tầm Xa'   },
-  huyen_nguyet: { type:'aoe',       range:200, color:'#a060ff', label:'Điện Bão'          },
-  kim_cang:     { type:'aoe',       range:90,  color:'#ffd700', label:'Trấn Áp Bất Động'  },
+  huyen_nguyet: { type:'aoe',       range:200, color:'#a060ff', label:'Nguyệt Thực'        },
+  kim_cang:     { type:'aoe',       range:180, color:'#ffd700', label:'Kim Cang Bão'       },
   am_sat:       { type:'target',    range:450, color:'#cc44ff', maxT:3, label:'Ẩn Kích'   },
   tu_linh:      { type:'aoe',       range:185, color:'#ff4060', label:'Lĩnh Vực Tử Thần' },
   loi_than:     { type:'target',    range:200, color:'#00eeff', maxT:5, label:'Thiên Lôi' },
   hoa_long:     { type:'aoe',       range:200, color:'#ff5500', label:'Rồng Lửa'          },
-  bang_vuong:   { type:'aoe',       range:200, color:'#88eeff', label:'Bão Tuyết'         },
+  bang_vuong:   { type:'aoe',       range:200, color:'#88eeff', label:'Băng Hà Phong Bạo' },
+  thien_kiem:   { type:'target',    range:400, color:'#ffe060', maxT:5, label:'Nhất Kiếm Thiên Hà' },
+  huyet_ma:     { type:'aoe',       range:220, color:'#cc0044', label:'Cuồng Huyết Vương Thân'   },
+  vo_cuc:       { type:'aoe',       range:135, color:'#a0ffd0', label:'Thái Cực Siêu Việt'        },
 };
 
  
@@ -5539,6 +6034,39 @@ const MAPS = [
     specialMech:'livingFlesh', bgPattern:'flesh',
     tier:7, goldMin:800, goldMax:1080,
   },
+  {
+    id:'map22', name:'Cõi Vô Hình', icon:'🫧',
+    bgColor:'linear-gradient(135deg,#000018,#00000f)',
+    groundColor:'#05001a', wallColor:'#0d0038',
+    mechDesc:'Pha Phách Tử Vong: mỗi 20 giây toàn bộ địch ẩn thân 4 giây — vẫn tấn công nhưng vô hình hoàn toàn. Quái tinh anh khi ẩn thân tăng tốc 60%.',
+    bossName:'Thực Thể Vô Hình', bossIcon:'👁',
+    bossDesc:'Bất tử khi đang ẩn thân. Phase 1: tấn công từ hướng ngẫu nhiên khi vô hình — cảnh báo bằng ring tím mờ 0.4s trước. Phase 2: phân thân 2 bản sao vô hình — chỉ 1 thật. Phase 3: ẩn thân vĩnh viễn, hiện ra 1.5s sau mỗi 3 đòn tấn công. DPS race tốc độ cực cao.',
+    difficulty:7, enemyTypes:['phase_wraith','null_entity','void_stalker'],
+    specialMech:'phaseCloak', bgPattern:'void',
+    tier:8, goldMin:900, goldMax:1200,
+  },
+  {
+    id:'map23', name:'Lõi Địa Ngục', icon:'🌋',
+    bgColor:'linear-gradient(135deg,#1a0000,#0f0000)',
+    groundColor:'#2a0000', wallColor:'#480000',
+    mechDesc:'Phún Trào Địa Ngục: mỗi 18 giây 6 cột dung nham phun trào tại vị trí ngẫu nhiên — cảnh báo 1s, gây 150 ST/giây trong 5 giây và đẩy địch xung quanh. Đứng gần cột đang phun nhận buff +30% tốc chạy.',
+    bossName:'Chúa Tể Địa Ngục', bossIcon:'🔱',
+    bossDesc:'Thay đổi kháng tính theo phase: Phase 1 kháng phép 70%, Phase 2 kháng vật lý 70%, Phase 3 kháng cả 2 giảm còn 40% nhưng 4 cột dung nham vĩnh cửu chia đôi arena. Ring lửa địa ngục 20 đạn + triệu 3 tinh anh cùng lúc. Phải phá cột để mở không gian chiến đấu.',
+    difficulty:8, enemyTypes:['magma_titan','hellfire_archer','lava_crawler'],
+    specialMech:'infernoCore', bgPattern:'inferno',
+    tier:8, goldMin:1000, goldMax:1350,
+  },
+  {
+    id:'map24', name:'Tận Thế Vĩnh Cửu', icon:'☄️',
+    bgColor:'linear-gradient(135deg,#000000,#000000)',
+    groundColor:'#020202', wallColor:'#080808',
+    mechDesc:'Tận Diệt: arena từ từ thu nhỏ không ngừng — sau 4 phút chỉ còn 40% diện tích. Quái scale vô hạn: mỗi 15 giây +10% ST và HP, không giới hạn. Sống sót đến boss là thử thách thực sự.',
+    bossName:'Khởi Nguyên Hủy Diệt', bossIcon:'💀',
+    bossDesc:'Boss cuối game — HP 1,500,000 với 4 phase. Phase 1: ring 24 đạn tốc độ cao + triệu elite liên tục. Phase 2: bẻ gãy gravity — người chơi bị kéo về 2 phía ngẫu nhiên. Phase 3: sao chép kỹ năng của player và phản lại với damage ×3. Phase 4 (<20% HP): arena tối hoàn toàn, chỉ thấy boss và cảnh báo đòn — cần học thuộc pattern. Hạ boss này là đỉnh cao của Vòng Linh Thủ.',
+    difficulty:8, enemyTypes:['apocalypse_knight','omega_mage','doom_titan'],
+    specialMech:'apocalypse', bgPattern:'endgame',
+    tier:8, goldMin:1200, goldMax:1600,
+  },
 ];
 
  
@@ -5698,8 +6226,8 @@ class Player {
     this.lifesteal = 0;
     this.aoeSize   = 1.0;
     this.cdReduce  = (potentialBonus.mobility[1] || 0) * 0.10;  
-    this.critRate  = (potentialBonus.damage[1]   || 0) * 0.06;  
-    this.critDmg   = 1.5 + (potentialBonus.damage[2] || 0) * 0.30;  
+    this.critRate  = (charData.baseCrit    || 0) + (potentialBonus.damage[1]   || 0) * 0.06;  
+    this.critDmg   = (charData.baseCritDmg || 1.5) + (potentialBonus.damage[2] || 0) * 0.30;  
     this.pierce    = (potentialBonus.damage[3]   || 0) * 0.12;  
     this.armorPen  = (potentialBonus.damage[3]   || 0) * 0.15;  
     this.moveDmgReduce = (potentialBonus.mobility[3] || 0) * 0.10;  
@@ -5755,8 +6283,8 @@ class Player {
 
     
     this.goldBonus   = 1 + (potentialBonus.fortune[0] || 0) * 0.15;
-    this.hasExtraWeapon = (potentialBonus.fortune[2] || 0) >= 1;
-    this.hasExtraCard   = (potentialBonus.fortune[3] || 0) >= 1;
+    this.hasExtraWeapon = (potentialBonus.fortune[1] || 0) >= 1;
+    this.hasExtraCard   = (potentialBonus.fortune[2] || 0) >= 1;
 
     
     this.vx = 0; this.vy = 0;
@@ -5784,6 +6312,18 @@ class Player {
     } else if (this.charData.id === 'hoa_long') {
       
       d *= (1 + (this._hlAtkBonus || 0));
+    } else if (this.charData.id === 'thien_kiem') {
+      d *= (1 + (this._tkStacks || 0) * 0.03);
+    } else if (this.charData.id === 'huyet_ma') {
+      d *= (1 + (this._hmStacks || 0) * 0.04);
+      if (this._hmActiveBonus) d *= (1 + this._hmActiveBonus);
+    } else if (this.charData.id === 'vo_cuc') {
+      const vcPhase = this._vcPhase || 0;
+      if (vcPhase === 0) d *= 1.45; // Yang
+      else d *= 1.65; // Yin
+      // Đạo Nguyên: permanent +3%/stack (max +90%)
+      d *= (1 + (this._vcDaoNguyen||0) * 0.03);
+      if (this._vcTaiji) d *= 1.15; // slight boost while Thái Cực active
     }
     
     if (this._dragonRageActive) d *= 1.30;
@@ -6064,6 +6604,250 @@ class Player {
         this._cuongLongSpdBonus = 0;
       }
     }
+
+    // ─── THIÊN KIẾM: ATK speed buff countdown ───
+    if (id === 'thien_kiem') {
+      if (this._tkStacks === undefined) this._tkStacks = 0;
+      // ATK speed buff from active (Nhất Kiếm Thiên Hà)
+      if (this._tkAtkBuff) {
+        this._tkAtkBuffTimer = (this._tkAtkBuffTimer||5) - dt;
+        if (this._tkAtkBuffTimer <= 0) {
+          this._tkAtkBuff = false;
+          if (this._tkAtkSpeedBonus) { this.atkSpd -= this._tkAtkSpeedBonus; this._tkAtkSpeedBonus = 0; }
+          Toast.show('⚔️ ATK Speed buff kết thúc!');
+        }
+      }
+      // At max stacks: auto sword wave every 2s
+      if (this._tkStacks >= 50) {
+        this._tkAutoWaveTimer = (this._tkAutoWaveTimer||0) - dt;
+        if (this._tkAutoWaveTimer <= 0) {
+          this._tkAutoWaveTimer = 2.0;
+          const waveDmg = this.totalDmg * 1.5;
+          const waveNear = Game.enemies.filter(e=>!e.dead).slice(0,3);
+          waveNear.forEach(te=>{
+            const wSword={x:this.x,y:this.y,life:0.9,dmg:waveDmg,r:9,dead:false,_t:te,_hs:new Set(),
+              update(dt2){if(this.dead)return;this.life-=dt2;if(this.life<=0){this.dead=true;return;}
+                if(!this._t||this._t.dead){this.dead=true;return;}
+                const wa=MathU.angle(this.x,this.y,this._t.x,this._t.y); this.x+=Math.cos(wa)*320*dt2; this.y+=Math.sin(wa)*320*dt2;
+                Game.enemies.forEach(e=>{if(e.dead||this._hs.has(e))return;if(MathU.dist(this.x,this.y,e.x,e.y)<e.r+this.r){const{val,crit}=player.rollCrit(this.dmg); e.takeDamage(val,player,crit?'crit':'normal'); this._hs.add(e); if(e===this._t)this.dead=true;}});},
+              draw(c2,cx,cy){if(this.dead)return;const wa2=this._t?Math.atan2(this._t.y-this.y,this._t.x-this.x):0; c2.save();c2.translate(this.x-cx,this.y-cy);c2.rotate(wa2);c2.strokeStyle='#fff0a0';c2.lineWidth=2;c2.shadowColor='#ffd700';c2.shadowBlur=10;c2.lineCap='round';c2.beginPath();c2.moveTo(-9,0);c2.lineTo(9,0);c2.stroke();c2.shadowBlur=0;c2.restore();}
+            };
+            if(Game.projectiles) Game.projectiles.push(wSword);
+          });
+        }
+      }
+    }
+
+    // ─── HUYẾT MA: Huyết Tụ auto-burst + immortal check ───
+    if (id === 'huyet_ma') {
+      if (this._hmStacks === undefined) this._hmStacks = 0;
+      if (this._hmHpLost === undefined) this._hmHpLost = 0;
+      // immortal buff countdown
+      if (this._hmImmortal) {
+        this._hmImmortalTimer = (this._hmImmortalTimer||3) - dt;
+        if (this._hmImmortalTimer <= 0) {
+          this._hmImmortal = false;
+          this.invincT = 0;
+          this.dmgMult /= 2.0;
+          Toast.show('💀 Bất Tử kết thúc!');
+        }
+      }
+      // active buff countdown
+      if (this._hmActiveDuration) {
+        this._hmActiveDuration -= dt;
+        if (this._hmActiveDuration <= 0) {
+          this._hmActiveDuration = 0;
+          // final burst scales with current stacks (they were NEVER consumed)
+          const burstMult = (this._hmStacks||0) * 0.6 + 3.0;
+          const burst = this.totalDmg * burstMult;
+          Game.explosionAt(this.x, this.y, 230, burst, '#cc0044', 'active_huyet_ma');
+          if(Game.rings&&Game.rings.length<28)Game.rings.push(new RingEffect(this.x,this.y,230,'#cc0044'));
+          if(Game.rings&&Game.rings.length<28)Game.rings.push(new RingEffect(this.x,this.y,150,'#ff004060'));
+          Game.particles.spawn(this.x,this.y,{count:35,color:'#ff0040',speedMin:100,speedMax:300,life:0.8});
+          Toast.show(`💀 Cuồng Huyết kết thúc! Bùng nổ ×${burstMult.toFixed(1)}!`);
+          Audio.playSFX('explode');
+        }
+      }
+      // Auto-burst at max stacks (30) every 3s — does NOT consume stacks
+      if (this._hmStacks >= 30) {
+        this._hmAutoBurstTimer = (this._hmAutoBurstTimer||0) - dt;
+        if (this._hmAutoBurstTimer <= 0) {
+          this._hmAutoBurstTimer = 3.0;
+          const autoBurstDmg = this.totalDmg * 3.0;
+          Game.explosionAt(this.x, this.y, 230, autoBurstDmg, '#cc0044', 'active_huyet_ma');
+          this._hmAutoBurstCount = (this._hmAutoBurstCount||0) + 1;
+          if(Game.rings&&Game.rings.length<28)Game.rings.push(new RingEffect(this.x,this.y,230,'#cc0044'));
+          Game.particles.spawn(this.x,this.y,{count:20,color:'#ff0040',speedMin:80,speedMax:220,life:0.6});
+          // evolved: chain to 3 nearby
+          if (this.mainWeapon.evolved) {
+            const chains = Game.enemies.filter(e=>!e.dead&&MathU.dist(this.x,this.y,e.x,e.y)<=280).slice(0,3);
+            chains.forEach(ce=>{ Game.explosionAt(ce.x,ce.y,110,autoBurstDmg*1.2,'#cc0044','active_huyet_ma'); });
+          }
+          Toast.show('💀 Huyết Tụ MAX! Tự phóng AoE ×3.0!');
+          Audio.playSFX('slam');
+        }
+      }
+    }
+
+    // ─── VÔ CỰC: update orbital angle + phase switching ───
+    if (id === 'vo_cuc') {
+      if (this._vcPhase === undefined) this._vcPhase = 0;
+      if (this._vcOrbitAngle === undefined) this._vcOrbitAngle = 0;
+      if (this._vcPhaseTimer === undefined) this._vcPhaseTimer = 0;
+      if (this._vcDaoNguyen === undefined) this._vcDaoNguyen = 0; // permanent, NEVER resets
+      const vcInterval = this.mainWeapon.evolved ? 3.0 : 5.0;
+      // Orbit 2× faster during Thái Cực active (visual enhancement)
+      const orbitSpd = this._vcTaiji ? 3.6 : 1.8;
+      this._vcOrbitAngle += dt * orbitSpd;
+      this._vcPhaseTimer += dt;
+      if (this._vcPhaseTimer >= vcInterval) {
+        this._vcPhaseTimer = 0;
+        this._vcPhase = this._vcPhase === 0 ? 1 : 0;
+        // +1 Đạo Nguyên per phase switch — permanent, NEVER resets
+        const prevDN = this._vcDaoNguyen;
+        this._vcDaoNguyen = Math.min(30, this._vcDaoNguyen + 1);
+        if (prevDN < 10 && this._vcDaoNguyen >= 10) Toast.show('☯️ Đạo Nguyên 10! +30% STD vĩnh viễn!');
+        else if (prevDN < 20 && this._vcDaoNguyen >= 20) Toast.show('☯️ Đạo Nguyên 20! +60% STD vĩnh viễn!');
+        else if (prevDN < 30 && this._vcDaoNguyen >= 30) { Toast.show('☯️ Đạo Nguyên TỐI ĐA! +90% STD vĩnh viễn!'); Audio.playSFX('evolve'); }
+        // phase switch AoE
+        const phaseDmg = this.totalDmg * 0.7;
+        Game.explosionAt(this.x, this.y, 110, phaseDmg, this._vcPhase===0?'#ffd700':'#cc66ff', 'main_vo_cuc');
+        if(Game.rings&&Game.rings.length<28)Game.rings.push(new RingEffect(this.x,this.y,110,this._vcPhase===0?'#ffd700':'#cc66ff'));
+        Game.particles.spawn(this.x,this.y,{count:15,color:this._vcPhase===0?'#ffd700':'#cc66ff',speedMin:60,speedMax:180,life:0.45});
+        if (!this._vcSpdBonus) {
+          if (this._vcPhase === 0) { this._vcSpdBonus = this.speed * 0.20; this.speed += this._vcSpdBonus; }
+        } else {
+          if (this._vcPhase === 1) { this.speed -= this._vcSpdBonus; this._vcSpdBonus = 0; }
+          else { this._vcSpdBonus = this.speed * 0.20; this.speed += this._vcSpdBonus; }
+        }
+        Toast.show(this._vcPhase===0?`☀️ Dương: +45% DMG +20% SPD | Đạo Nguyên ${this._vcDaoNguyen}`:`🌑 Âm: +65% DMG, absorb 22% | Đạo Nguyên ${this._vcDaoNguyen}`);
+        Audio.playSFX('evolve');
+      }
+
+      // ── ATK-TIMER based orbital projectile firing ──
+      // Each tick (1/atkSpd seconds) → Yang ball fires at nearest enemy,
+      // Yin ball fires at 2nd nearest (different target). Evolved: each fires 2 targets.
+      if (this._vcAtkTimer === undefined) this._vcAtkTimer = 0;
+      this._vcAtkTimer -= dt;
+
+      if (this._vcAtkTimer <= 0) {
+        // Dùng đúng công thức như tickWeapons: atkSpd × atkSpeed
+        this._vcAtkTimer = 1.0 / (this.atkSpd * this.atkSpeed);
+        const vcR = 135;
+        const vcDmg = this.totalDmg;
+        const evolved = this.mainWeapon && this.mainWeapon.evolved;
+        const pRef = this;
+
+        // Sort living enemies by distance to player
+        const liveEnemies = Game.enemies.filter(e => !e.dead);
+        liveEnemies.sort((a,b) => MathU.dist(pRef.x,pRef.y,a.x,a.y) - MathU.dist(pRef.x,pRef.y,b.x,b.y));
+
+        // Helper: fire one projectile from (bx,by) toward target enemy
+        const fireOrb = (bx, by, target, isYang, dmgMult) => {
+          if (!target) return;
+          const col = isYang ? '#ffd700' : '#cc66ff';
+          const glowCol = isYang ? '#ffaa00' : '#9900cc';
+          const {val, crit} = pRef.rollCrit(vcDmg * dmgMult);
+          const isTaiji = pRef._vcTaiji;
+          const taijiAoEMult = evolved ? 2.8 : (2.0 + (pRef._vcDaoNguyen||0) * 0.05);
+
+          const proj = {
+            x: bx, y: by, life: 1.8, dmg: val, r: isYang ? 9 : 8,
+            dead: false, _t: target, _isYang: isYang, _crit: crit,
+            _isTaiji: isTaiji, _taijiMult: taijiAoEMult * vcDmg,
+            update(dt3) {
+              if (this.dead) return;
+              this.life -= dt3;
+              if (this.life <= 0) { this.dead = true; return; }
+              if (!this._t || this._t.dead) { this.dead = true; return; }
+              const spd = 300;
+              const ang = MathU.angle(this.x, this.y, this._t.x, this._t.y);
+              this.x += Math.cos(ang) * spd * dt3;
+              this.y += Math.sin(ang) * spd * dt3;
+              if (MathU.dist(this.x, this.y, this._t.x, this._t.y) < this._t.r + this.r) {
+                this._t.takeDamage(this.dmg, pRef, this._crit ? 'crit' : 'normal');
+                pRef.trackSkillDmg('main_vo_cuc', this.dmg);
+                // Yang: knockback; Yin: slow
+                if (this._isYang) {
+                  const ka = MathU.angle(pRef.x, pRef.y, this._t.x, this._t.y);
+                  this._t.kbVx = (this._t.kbVx||0) + Math.cos(ka)*100;
+                  this._t.kbVy = (this._t.kbVy||0) + Math.sin(ka)*100;
+                } else {
+                  this._t.slowFactor = 0.45; this._t.slowTimer = Math.max(this._t.slowTimer||0, 1800);
+                }
+                // Thái Cực: AoE burst at impact point
+                if (this._isTaiji) {
+                  Game.explosionAt(this.x, this.y, 90, this._taijiMult, this._isYang?'#ffd700':'#cc66ff', 'active_vo_cuc');
+                  if(Game.rings&&Game.rings.length<28) Game.rings.push(new RingEffect(this.x,this.y,65,(this._isYang?'#ffd700':'#cc66ff')+'70'));
+                }
+                Game.particles.spawn(this._t.x, this._t.y, {count:7, color:this._isYang?'#ffd700':'#cc66ff', speedMin:50, speedMax:130, life:0.35});
+                this.dead = true;
+              }
+            },
+            draw(c2, cx, cy) {
+              if (this.dead) return;
+              const px = this.x - cx, py = this.y - cy;
+              // glow halo
+              const hg = c2.createRadialGradient(px, py, 0, px, py, this.r * 2.2);
+              hg.addColorStop(0, col + '88'); hg.addColorStop(1, col + '00');
+              c2.fillStyle = hg; c2.beginPath(); c2.arc(px, py, this.r * 2.2, 0, Math.PI*2); c2.fill();
+              // core
+              c2.fillStyle = col; c2.shadowColor = glowCol; c2.shadowBlur = 16;
+              c2.beginPath(); c2.arc(px, py, this.r, 0, Math.PI*2); c2.fill();
+              c2.shadowBlur = 0;
+              // inner highlight
+              c2.fillStyle = 'rgba(255,255,255,0.5)';
+              c2.beginPath(); c2.arc(px - this.r*0.3, py - this.r*0.3, this.r*0.32, 0, Math.PI*2); c2.fill();
+            }
+          };
+          if (Game.projectiles) Game.projectiles.push(proj);
+          Audio.playSFX('main_vo_cuc');
+        };
+
+        // Yang ball fires at target[0], Yin ball at target[1] (different targets when possible)
+        [0, Math.PI].forEach((offset, bi) => {
+          const bAng = this._vcOrbitAngle + offset;
+          const bx = this.x + Math.cos(bAng) * vcR;
+          const by = this.y + Math.sin(bAng) * vcR;
+          const isYang = bi === 0;
+          const dmgMult = isYang ? 1.3 : 1.0;
+
+          if (evolved) {
+            // evolved: fire at 2 targets per ball
+            const targets = liveEnemies.slice(bi * 2, bi * 2 + 2);
+            targets.forEach(t => fireOrb(bx, by, t, isYang, dmgMult));
+          } else {
+            // normal: Yang → nearest, Yin → 2nd nearest
+            fireOrb(bx, by, liveEnemies[bi] || liveEnemies[0], isYang, dmgMult);
+          }
+        });
+      }
+      // Taiji active countdown
+      if (this._vcTaiji) {
+        this._vcTaijiTimer = (this._vcTaijiTimer||5) - dt;
+        if (this._vcTaijiTimer <= 0) {
+          this._vcTaiji = false;
+          this.invincT = 0;
+          // end burst: 8 homing shards scaling with Đạo Nguyên
+          const shardDmg = this.totalDmg * (3.0 + (this._vcDaoNguyen||0) * 0.1);
+          const nearby = Game.enemies.filter(e=>!e.dead).slice(0,8);
+          nearby.forEach(te=>{
+            const proj={x:this.x,y:this.y,life:1.2,dmg:shardDmg,r:8,dead:false,_t:te,
+              update(dt2){if(this.dead)return;this.life-=dt2;if(this.life<=0){this.dead=true;return;}
+                if(!this._t||this._t.dead){this.dead=true;return;}
+                const ang=MathU.angle(this.x,this.y,this._t.x,this._t.y);this.x+=Math.cos(ang)*300*dt2;this.y+=Math.sin(ang)*300*dt2;
+                if(MathU.dist(this.x,this.y,this._t.x,this._t.y)<this._t.r+this.r){const{val,crit}=player.rollCrit(this.dmg);this._t.takeDamage(val,player,crit?'crit':'normal');this.dead=true;}},
+              draw(c2,cx,cy){if(this.dead)return; const a=this.life; c2.fillStyle=`rgba(160,255,208,${a})`; c2.shadowColor='#a0ffd0'; c2.shadowBlur=12; c2.beginPath(); c2.arc(this.x-cx,this.y-cy,this.r,0,Math.PI*2); c2.fill(); c2.shadowBlur=0;}
+            };
+            Game.projectiles && Game.projectiles.push(proj);
+          });
+          if(Game.rings&&Game.rings.length<28)Game.rings.push(new RingEffect(this.x,this.y,200,'#a0ffd0'));
+          Game.particles.spawn(this.x,this.y,{count:40,color:'#a0ffd0',speedMin:80,speedMax:260,life:0.7});
+          Toast.show(`🌀 Thái Cực kết thúc! 8 mảnh ×${(3.0+(this._vcDaoNguyen||0)*0.1).toFixed(1)} bùng phát!`);
+          Audio.playSFX('explode');
+        }
+      }
+    }
   }
 
   takeDamage(dmg, source) {
@@ -6091,7 +6875,7 @@ class Player {
       }
       const stackStr = this._blockStacks >= 3 ? ' ★MAX★' : ` (${this._blockStacks}/3)`;
       Toast.show('🛡️ Chặn!' + stackStr);
-      if (this._blockStacks >= 3) Toast.show('💥 Sẵn sàng Bão Phong Phá!');
+      if (this._blockStacks >= 3) Toast.show('💥 Sẵn sàng Kim Cang Bão!');
       Game.particles.spawn(this.x, this.y, {
         count: 8 + this._blockStacks * 3, color:'#ffd700', speedMin:60, speedMax:150, life:0.4,
       });
@@ -6139,15 +6923,60 @@ class Player {
       }
     }
 
-    
+    // ─── THIÊN KIẾM: Kiếm Ý không mất khi bị trúng ───
+
+    // ─── HUYẾT MA: accumulate Huyết Tụ per HP lost — NEVER resets ───
+    if (this.charData.id === 'huyet_ma') {
+      if (!this._hmHpLost) this._hmHpLost = 0;
+      if (!this._hmStacks) this._hmStacks = 0;
+      this._hmHpLost += finalDmg;
+      const newStacks = Math.floor(this._hmHpLost / 40);
+      if (newStacks > 0) {
+        this._hmHpLost -= newStacks * 40;
+        const prevStacks = this._hmStacks;
+        this._hmStacks = Math.min(30, this._hmStacks + newStacks);
+        if (prevStacks < 30 && this._hmStacks >= 30) {
+          Toast.show('💀 Huyết Tụ TỐI ĐA 30! AUTO AoE ×3.0 mỗi 3 giây!');
+          Game.particles.spawn(this.x,this.y,{count:20,color:'#ff0040',speedMin:80,speedMax:200,life:0.6});
+          Audio.playSFX('evolve');
+        }
+      }
+      // During active: reflect 50% damage back to source
+      if (this._hmReflectActive && source && source.takeDamage && finalDmg > 0) {
+        const reflected = finalDmg * 0.50;
+        source.takeDamage(reflected, null);
+        DmgNumbers.show(this.x, this.y, '↩️' + Math.floor(reflected), 'normal');
+      }
+      // Immortal trigger at <5% HP
+      if (!this._hmImmortalUsed && this.hp - finalDmg <= this.maxHp * 0.05 && this.hp > this.maxHp * 0.05) {
+        this._hmImmortalUsed = true;
+        this._hmImmortal = true;
+        this._hmImmortalTimer = 3;
+        this.invincT = 3;
+        this.hp = this.maxHp * 0.10;
+        this.dmgMult *= 2.0;
+        Toast.show('💀 BẤT TỬ! ATK ×2 trong 3 giây!');
+        Audio.playSFX('evolve');
+        Game.rings&&Game.rings.length<28&&Game.rings.push(new RingEffect(this.x,this.y,80,'#ff0040'));
+        Game.particles.spawn(this.x,this.y,{count:30,color:'#ff0040',speedMin:100,speedMax:280,life:0.7});
+        return;
+      }
+    }
+
+    // ─── VÔ CỰC: Yin phase absorb 22% ───
+    if (this.charData.id === 'vo_cuc' && (this._vcPhase||0) === 1) {
+      const absorbPct = this.mainWeapon.evolved ? 0.30 : 0.22;
+      finalDmg *= (1 - absorbPct);
+    }
+
+    // ─── THẦN QUY PET: counter + low-HP damage reduction ───
     if (this._turtleSkillEnabled) {
-      
       if ((this._turtleCounterCd || 0) <= 0) {
         this._turtleCounterCd = 0.5;
         Game.explosionAt(this.x, this.y, 60, this.totalDmg * 0.8, '#88cc44');
         Game.rings && Game.rings.length<28 && Game.rings.push(new RingEffect(this.x, this.y, 60, '#88cc44'));
       }
-      
+
       if (this.hp < this.maxHp * 0.30) {
         finalDmg *= 0.80;
         if (!this._turtleFlash) {
@@ -6354,6 +7183,44 @@ class Player {
       DmgNumbers.show(this.x, this.y, '+8', 'heal');
       Audio.playSFX('heal');
     }
+
+    // ─── THIÊN KIẾM: +1 Kiếm Ý on kill (x2 for elite/boss) — KHÔNG BAO GIỜ RESET ───
+    if (this.charData.id === 'thien_kiem') {
+      const gain = (enemy.isElite || enemy.isBoss) ? 2 : 1;
+      const prevTK = this._tkStacks || 0;
+      this._tkStacks = Math.min(50, prevTK + gain);
+      // Milestone 30: reset CD active (chỉ kích 1 lần khi lần đầu vượt 30)
+      if (prevTK < 30 && this._tkStacks >= 30) {
+        Toast.show('⚔️ Kiếm Ý 30! CD Active reset ngay!');
+        if (!this.activeReady) { this.activeReady = true; this.activeTimer = this.activeCooldown; }
+        if(Game.rings&&Game.rings.length<28)Game.rings.push(new RingEffect(this.x,this.y,50,'#ffd700'));
+        if(Game.rings&&Game.rings.length<28)Game.rings.push(new RingEffect(this.x,this.y,35,'#fff0a0'));
+      }
+      // Milestone 50: thông báo tối đa (đã có trong on-hit handler, nhưng kill cũng có thể đến đây trước)
+      if (prevTK < 50 && this._tkStacks >= 50 && !this._tkMax50Announced) {
+        this._tkMax50Announced = true;
+        Toast.show('⚔️ KIẾM Ý 50! Tối Thượng — 5 kiếm + sóng kiếm tự động!');
+        Audio.playSFX('evolve');
+        if(Game.rings&&Game.rings.length<28)Game.rings.push(new RingEffect(this.x,this.y,70,'#ffd700'));
+        if(Game.rings&&Game.rings.length<28)Game.rings.push(new RingEffect(this.x,this.y,45,'#fff0a0'));
+      }
+      Game.particles&&Game.particles.spawn(this.x,this.y,{count:3,color:'#ffe060',speedMin:50,speedMax:120,life:0.25,angle:-Math.PI/2,spread:0.8});
+    }
+
+    // ─── VÔ CỰC: evolved kill spawns 2 mini orbs ───
+    if (this.charData.id === 'vo_cuc' && this.mainWeapon.evolved) {
+      const near = Game.enemies.filter(e=>!e.dead).slice(0,2);
+      near.forEach(te=>{
+        const ko={x:enemy.x,y:enemy.y,life:1.0,dmg:this.totalDmg*0.5,r:6,dead:false,_t:te,
+          update(dt2){if(this.dead)return;this.life-=dt2;if(this.life<=0){this.dead=true;return;}
+            if(!this._t||this._t.dead){this.dead=true;return;}
+            const ang=MathU.angle(this.x,this.y,this._t.x,this._t.y);this.x+=Math.cos(ang)*240*dt2;this.y+=Math.sin(ang)*240*dt2;
+            if(MathU.dist(this.x,this.y,this._t.x,this._t.y)<this._t.r+this.r){const{val,crit}=player.rollCrit(this.dmg);this._t.takeDamage(val,player,crit?'crit':'normal');this.dead=true;}},
+          draw(c2,cx,cy){if(this.dead)return; const a=this.life; c2.fillStyle=`rgba(160,255,208,${a})`; c2.shadowColor='#a0ffd0'; c2.shadowBlur=8; c2.beginPath(); c2.arc(this.x-cx,this.y-cy,this.r,0,Math.PI*2); c2.fill(); c2.shadowBlur=0;}
+        };
+        if(Game.projectiles)Game.projectiles.push(ko);
+      });
+    }
   }
 
   useActive(dir) {
@@ -6373,6 +7240,9 @@ class Player {
       case 'loi_than':    this._activeLoiThan();         break;
       case 'hoa_long':    this._activeHoaLong();         break;
       case 'bang_vuong':  this._activeBangVuong();       break;
+      case 'thien_kiem':  this._activeThienKiem();        break;
+      case 'huyet_ma':    this._activeHuyetMa();          break;
+      case 'vo_cuc':      this._activeVoCuc();            break;
     }
     return true;
   }
@@ -6493,9 +7363,9 @@ class Player {
     
     if (manaOn) {
       this._manaGrace = Math.max(this._manaGrace || 0, duration + 0.5);
-      Toast.show('🌑 Nguyệt Thực! — Slow 60% · Mana Tích Tụ giữ nguyên!');
+      Toast.show('🌑 Nguyệt Thực! — 3× fire rate 4s · Nguyệt Tích giữ nguyên!');
     } else {
-      Toast.show('🌑 Nguyệt Thực! — Slow 60% trong 3s!');
+      Toast.show('🌑 Nguyệt Thực! — Bắn 3 orb đồng thời trong 4s!');
     }
 
     const castRef = this;
@@ -6616,9 +7486,9 @@ class Player {
     }
 
     if (blockStackCount > 0) {
-      Toast.show(`💥 Bão Phong Phá! ${blockStackCount} khiên → ×${totalDmgMult.toFixed(1)} ST, stun ${stunDur.toFixed(1)}s`);
+      Toast.show(`💥 Kim Cang Bão! ${blockStackCount} khiên → ×${totalDmgMult.toFixed(1)} ST, stun ${stunDur.toFixed(1)}s`);
     } else {
-      Toast.show('💥 Bão Phong Phá!');
+      Toast.show('💥 Kim Cang Bão!');
     }
 
     
@@ -6913,7 +7783,120 @@ class Player {
       }
     }
 
-    
+    // ─── VÔ CỰC: render orbital balls at actual game-world positions ───
+    if (cid === 'vo_cuc') {
+      const vcAngle = this._vcOrbitAngle || 0;
+      const isYang  = (this._vcPhase || 0) === 0;
+      const vcR     = 135;
+      const isTaiji = this._vcTaiji;
+      const dao     = this._vcDaoNguyen || 0;
+      // evolved: extra visual trail orbs
+      const evolved = this.mainWeapon && this.mainWeapon.evolved;
+
+      [0, Math.PI].forEach((offset, bi) => {
+        const bAng = vcAngle + offset;
+        const bx   = sx + Math.cos(bAng) * vcR;
+        const by   = (sy - bob) + Math.sin(bAng) * (vcR * 0.65); // slight vertical squish for depth
+        const isThisBallYang = bi === 0;
+
+        const coreCol  = isThisBallYang ? '#ffd700' : '#cc66ff';
+        const glowCol  = isThisBallYang ? '#ffaa00' : '#9900cc';
+        const trailCol = isThisBallYang ? '#ffe07080' : '#cc66ff80';
+
+        // Orbit trail line (subtle arc)
+        ctx.save();
+        ctx.globalAlpha = 0.18;
+        ctx.strokeStyle = coreCol;
+        ctx.lineWidth = isTaiji ? 3 : 1.5;
+        ctx.setLineDash([4, 6]);
+        ctx.beginPath();
+        ctx.ellipse(sx, sy - bob, vcR, vcR * 0.65, 0, bAng + 0.3, bAng + Math.PI * 0.9);
+        ctx.stroke();
+        ctx.setLineDash([]);
+        ctx.globalAlpha = 1;
+        ctx.restore();
+
+        // Outer glow halo
+        const haloR = isTaiji ? 26 : 18;
+        const haloGrd = ctx.createRadialGradient(bx, by, 0, bx, by, haloR);
+        haloGrd.addColorStop(0, coreCol + (isTaiji ? 'aa' : '55'));
+        haloGrd.addColorStop(1, coreCol + '00');
+        ctx.fillStyle = haloGrd;
+        ctx.beginPath(); ctx.arc(bx, by, haloR, 0, Math.PI * 2); ctx.fill();
+
+        // Core ball
+        const ballR = isTaiji ? 11 : 8;
+        ctx.fillStyle = isTaiji ? (isThisBallYang ? '#fffad0' : '#e8d0ff') : coreCol;
+        ctx.shadowColor = glowCol;
+        ctx.shadowBlur  = isTaiji ? 28 : 18;
+        ctx.beginPath(); ctx.arc(bx, by, ballR, 0, Math.PI * 2); ctx.fill();
+        ctx.shadowBlur = 0;
+
+        // Inner highlight
+        ctx.fillStyle = 'rgba(255,255,255,0.55)';
+        ctx.beginPath(); ctx.arc(bx - ballR * 0.3, by - ballR * 0.3, ballR * 0.35, 0, Math.PI * 2); ctx.fill();
+
+        // Evolved: mini yin-yang symbol on ball
+        if (evolved) {
+          const yr = ballR * 0.42;
+          ctx.fillStyle = isThisBallYang ? '#8b6800' : '#6600aa';
+          ctx.globalAlpha = 0.7;
+          ctx.beginPath(); ctx.arc(bx, by, yr, Math.PI * 0.5, Math.PI * 1.5); ctx.fill();
+          ctx.fillStyle = isThisBallYang ? '#fff8c0' : '#f0d0ff';
+          ctx.beginPath(); ctx.arc(bx, by, yr, Math.PI * 1.5, Math.PI * 0.5); ctx.fill();
+          ctx.fillStyle = '#fff8c0'; ctx.beginPath(); ctx.arc(bx, by - yr*0.5, yr*0.5, 0, Math.PI*2); ctx.fill();
+          ctx.fillStyle = '#8b6800';  ctx.beginPath(); ctx.arc(bx, by + yr*0.5, yr*0.5, 0, Math.PI*2); ctx.fill();
+          ctx.globalAlpha = 1;
+        }
+
+        // Thái Cực active: pulsing ring at ball position + rotation lines
+        if (isTaiji) {
+          ctx.strokeStyle = coreCol;
+          ctx.lineWidth   = 1.5;
+          ctx.globalAlpha = 0.5 + Math.sin(t * 12 + bi * Math.PI) * 0.25;
+          ctx.shadowColor = glowCol; ctx.shadowBlur = 10;
+          ctx.beginPath(); ctx.arc(bx, by, ballR + 5 + Math.sin(t * 10 + bi) * 3, 0, Math.PI * 2); ctx.stroke();
+          ctx.shadowBlur = 0; ctx.globalAlpha = 1;
+
+          // Rotating energy spokes
+          for (let sp = 0; sp < 4; sp++) {
+            const sa = t * 6 + (sp / 4) * Math.PI * 2 + bi * Math.PI;
+            ctx.strokeStyle = coreCol; ctx.lineWidth = 1; ctx.globalAlpha = 0.35;
+            ctx.beginPath();
+            ctx.moveTo(bx + Math.cos(sa) * (ballR + 3), by + Math.sin(sa) * (ballR + 3));
+            ctx.lineTo(bx + Math.cos(sa) * (ballR + 10), by + Math.sin(sa) * (ballR + 10));
+            ctx.stroke();
+            ctx.globalAlpha = 1;
+          }
+        }
+
+        // Connecting line between player and ball (subtle)
+        ctx.strokeStyle = coreCol; ctx.lineWidth = 0.8; ctx.globalAlpha = 0.18;
+        ctx.setLineDash([3, 8]);
+        ctx.beginPath(); ctx.moveTo(sx, sy - bob); ctx.lineTo(bx, by); ctx.stroke();
+        ctx.setLineDash([]); ctx.globalAlpha = 1;
+      });
+
+      // Phase aura ring on player (shows current Yin/Yang)
+      const phaseAuraCol = isYang ? '#ffd70060' : '#cc66ff60';
+      ctx.strokeStyle = phaseAuraCol; ctx.lineWidth = 2.5;
+      ctx.beginPath(); ctx.arc(sx, sy - bob, this.r + 8, 0, Math.PI * 2); ctx.stroke();
+
+      // Dao Nguyen stack indicator dots (up to 6 dots = visual progress)
+      if (dao > 0) {
+        const dotCount = Math.min(dao, 10);
+        for (let di = 0; di < dotCount; di++) {
+          const da = (di / 10) * Math.PI * 2 - Math.PI / 2;
+          const dx = sx + Math.cos(da) * (this.r + 15);
+          const dy = (sy - bob) + Math.sin(da) * (this.r + 15);
+          const dotA = di < dao ? 0.8 : 0.15;
+          ctx.fillStyle = isYang ? `rgba(255,215,0,${dotA})` : `rgba(200,100,255,${dotA})`;
+          ctx.beginPath(); ctx.arc(dx, dy, 2.5, 0, Math.PI * 2); ctx.fill();
+        }
+      }
+    }
+
+    // Colour dot above player head
     ctx.fillStyle = this.charData.color;
     ctx.beginPath();
     ctx.arc(sx, sy - this.r - 6, 3, 0, Math.PI * 2);
@@ -6922,9 +7905,6 @@ class Player {
     ctx.restore();
   }
 
-  
-  
-  
   _activeLoiThan() {
     const p = this;
     
@@ -7081,6 +8061,143 @@ class Player {
     }, 6200);
   }
 
+  // ─── THIÊN KIẾM: 8 orbital swords 4s then converge ───
+  _activeThienKiem() {
+    const p = this;
+    Audio.playSFX('active_thien_kiem');
+    const stacks = p._tkStacks || 0;
+    const beamMult = 2.5 + stacks * 0.03;
+
+    // === 5 INSTANT HOMING BEAMS ===
+    Toast.show(`⚔️ Nhất Kiếm Thiên Hà! ×${beamMult.toFixed(1)} × 5 kiếm (Kiếm Ý ${stacks})`);
+    for(let ri=0;ri<4;ri++) setTimeout(()=>{
+      if(Game.rings&&Game.rings.length<28) Game.rings.push(new RingEffect(p.x,p.y,25+ri*30,'#ffe060'));
+    }, ri*60);
+    Game.particles.spawn(p.x,p.y,{count:50,color:'#ffe060',speedMin:150,speedMax:350,life:0.65});
+    Audio.playSFX('evolve');
+
+    const alive = Game.enemies.filter(e=>!e.dead).sort((a,b)=>MathU.dist(p.x,p.y,a.x,a.y)-MathU.dist(p.x,p.y,b.x,b.y));
+    const swordDmg = p.totalDmg * beamMult;
+
+    for (let si=0; si<5; si++) {
+      const tgt = alive[si % Math.max(1, alive.length)];
+      setTimeout(()=>{
+        if (!tgt || tgt.dead) {
+          const ang = (si/5)*Math.PI*2;
+          Game.explosionAt(p.x+Math.cos(ang)*130, p.y+Math.sin(ang)*130, 90, swordDmg, '#ffe060', 'active_thien_kiem');
+          return;
+        }
+        // giant homing pierce sword
+        const sword = {
+          x:p.x, y:p.y, life:1.4, dmg:swordDmg, r:11, dead:false, _t:tgt, _hitSet:new Set(),
+          update(dt2){
+            if(this.dead)return; this.life-=dt2; if(this.life<=0){this.dead=true;return;}
+            if(!this._t||this._t.dead){this.dead=true;return;}
+            const ang2=MathU.angle(this.x,this.y,this._t.x,this._t.y);
+            this.x+=Math.cos(ang2)*400*dt2; this.y+=Math.sin(ang2)*400*dt2;
+            // pierce ALL enemies along path
+            Game.enemies.forEach(e=>{
+              if(e.dead||this._hitSet.has(e))return;
+              if(MathU.dist(this.x,this.y,e.x,e.y)<e.r+this.r){
+                const{val,crit}=p.rollCrit(this.dmg);
+                e.takeDamage(val,p,crit?'crit':'normal');
+                p.trackSkillDmg('active_thien_kiem',val);
+                this._hitSet.add(e);
+                Game.particles.spawn(e.x,e.y,{count:10,color:'#ffe060',speedMin:80,speedMax:220,life:0.4});
+                if(e===this._t){ this.dead=true; if(Game.rings&&Game.rings.length<28) Game.rings.push(new RingEffect(e.x,e.y,80,'#ffd700')); }
+              }
+            });
+          },
+          draw(c2,cx,cy){
+            if(this.dead)return;
+            const ax=Math.atan2(this._t?(this._t.y-this.y):0, this._t?(this._t.x-this.x):1);
+            c2.save(); c2.translate(this.x-cx,this.y-cy); c2.rotate(ax);
+            c2.strokeStyle='#ffe060'; c2.lineWidth=4; c2.shadowColor='#ffd700'; c2.shadowBlur=20;
+            c2.lineCap='round';
+            c2.beginPath(); c2.moveTo(-18,0); c2.lineTo(18,0); c2.stroke();
+            c2.lineWidth=1.5; c2.strokeStyle='#fff0a0';
+            c2.beginPath(); c2.moveTo(-5,-5); c2.lineTo(0,0); c2.lineTo(-5,5); c2.stroke();
+            c2.shadowBlur=0; c2.restore();
+          }
+        };
+        Game.projectiles && Game.projectiles.push(sword);
+      }, si * 70);
+    }
+
+    // === ATK SPEED BUFF: +60% for 5 seconds, weapon fires +2 extra swords ===
+    // (stacks NOT consumed — Kiếm Ý stays)
+    p._tkAtkBuff = true;
+    p._tkAtkBuffTimer = 5.0;
+    const atkSpeedBonus = p.atkSpd * 0.60;
+    p.atkSpd += atkSpeedBonus;
+    p._tkAtkSpeedBonus = atkSpeedBonus;
+    setTimeout(()=>{
+      if (!p || p.hp <= 0) return;
+      Toast.show('⚔️ ATK Speed +60% trong 5 giây! +2 kiếm phụ/lần!');
+    }, 400);
+  }
+
+  // ─── HUYẾT MA: Cuồng Huyết Vương Thân — amplifies aura, never consumes stacks ───
+  _activeHuyetMa() {
+    const p = this;
+    Audio.playSFX('active_huyet_ma');
+    const stacks = p._hmStacks || 0;
+
+    // === IMMEDIATE OPENING BURST ===
+    const openBurstMult = stacks * 0.3 + 1.8;
+    const openBurstDmg = p.totalDmg * openBurstMult;
+    Game.explosionAt(p.x, p.y, 220, openBurstDmg, '#cc0044', 'active_huyet_ma');
+    // Rỉ Máu 5s on all hit enemies
+    Game.enemies.forEach(e => {
+      if (e.dead || MathU.dist(p.x,p.y,e.x,e.y) > 220+e.r) return;
+      e.bleedT = Math.max(e.bleedT||0, 5.0);
+      e.bleedDmg = Math.max(e.bleedDmg||0, p.totalDmg * 0.25);
+    });
+
+    Toast.show(`💀 Cuồng Huyết Vương Thân! ×${openBurstMult.toFixed(1)} + aura ×${(1.5+stacks*0.04).toFixed(2)} × 7s`);
+    for(let ri=0;ri<3;ri++) setTimeout(()=>{
+      if(Game.rings&&Game.rings.length<28) Game.rings.push(new RingEffect(p.x,p.y,70+ri*55,'#cc0044'));
+    }, ri*100);
+    Game.particles.spawn(p.x,p.y,{count:50,color:'#ff0040',speedMin:100,speedMax:300,life:0.85});
+    Audio.playSFX('explode');
+
+    // === 7s ACTIVE FORM: weapon pulse continues normally (amplified in fireMainWeapon) ===
+    // stacks NOT consumed — _hmActiveDuration flag drives the enhancement in fireMainWeapon
+    p._hmActiveDuration = 7;
+    // reflect damage during active
+    p._hmReflectActive = true;
+
+    // HP regen tick
+    const castRef = p;
+    let regenTime = 0;
+    const hmRegen = setInterval(() => {
+      if (!castRef || castRef.hp <= 0 || regenTime >= 7) { clearInterval(hmRegen); castRef._hmReflectActive = false; return; }
+      regenTime += 0.5;
+      const heal = castRef.maxHp * 0.025;
+      castRef.hp = Math.min(castRef.maxHp, castRef.hp + heal);
+      DmgNumbers.show(castRef.x, castRef.y, '+'+Math.floor(heal), 'heal');
+    }, 500);
+  }
+
+  // ─── VÔ CỰC: Thái Cực Siêu Việt — orbital weapon continues, each hit detonates AoE ───
+  _activeVoCuc() {
+    const p = this;
+    Audio.playSFX('active_vo_cuc');
+    const dao = p._vcDaoNguyen || 0;
+    // Activate Taiji state — orbs orbit 2× faster (visual) and each hit detonates AoE
+    // Orbital damage itself continues at same ATK rate (fireMainWeapon drives it)
+    p._vcTaiji = true;
+    p._vcTaijiTimer = 5;
+    if(Game.rings&&Game.rings.length<28)Game.rings.push(new RingEffect(p.x,p.y,140,'#a0ffd0'));
+    if(Game.rings&&Game.rings.length<28)Game.rings.push(new RingEffect(p.x,p.y,80,'#ffd700'));
+    if(Game.rings&&Game.rings.length<28)Game.rings.push(new RingEffect(p.x,p.y,40,'#cc66ff'));
+    Game.particles.spawn(p.x,p.y,{count:45,color:'#a0ffd0',speedMin:90,speedMax:260,life:0.75});
+    const taijiMult = p.mainWeapon.evolved ? 2.8 : (2.0 + dao * 0.05);
+    Toast.show(`🌀 Thái Cực Siêu Việt! Mỗi bi trúng → AoE ×${taijiMult.toFixed(1)} trong 5s! (Đạo Nguyên ${dao})`);
+    Audio.playSFX('evolve');
+    // Đạo Nguyên NOT consumed
+  }
+
   _drawChar(ctx, sx, sy) {
     const c   = this.charData;
     const spd = Math.sqrt(this.vx * this.vx + this.vy * this.vy);
@@ -7108,6 +8225,9 @@ class Player {
       case 'loi_than':     this._drawLoiThan(ctx, sx, sy, f, leg, t);     break;
       case 'hoa_long':     this._drawHoaLong(ctx, sx, sy, f, leg, t);     break;
       case 'bang_vuong':   this._drawBangVuong(ctx, sx, sy, f, leg, t);   break;
+      case 'thien_kiem':   this._drawThienKiem(ctx, sx, sy, f, leg, t);   break;
+      case 'huyet_ma':     this._drawHuyetMa(ctx, sx, sy, f, leg, t);     break;
+      case 'vo_cuc':       this._drawVoCuc(ctx, sx, sy, f, leg, t);       break;
       default:
         ctx.fillStyle = c.color;
         ctx.beginPath(); ctx.arc(sx, sy, this.r, 0, Math.PI*2); ctx.fill();
@@ -7558,6 +8678,205 @@ class Player {
     ctx.fillStyle = '#ccf8ff'; ctx.shadowColor = '#88eeff'; ctx.shadowBlur = 10;
     ctx.beginPath(); ctx.arc(x+Math.cos(bAngle)*16, y+Math.sin(bAngle)*10-5, 3.5, 0, Math.PI*2); ctx.fill();
     ctx.shadowBlur = 0;
+  }
+
+   
+  _drawThienKiem(ctx, sx, sy, f, leg, t) {
+    const x = sx, y = sy;
+    const tt = performance.now() / 1000;
+    // golden aura — reuse cached gradient when position unchanged
+    if (!this._tkAuraGrd || this._tkAuraX !== x || this._tkAuraY !== y) {
+      const tgr = ctx.createRadialGradient(x,y-5,2,x,y-5,26);
+      tgr.addColorStop(0,'rgba(255,220,60,0.35)'); tgr.addColorStop(1,'rgba(200,120,0,0)');
+      this._tkAuraGrd = tgr; this._tkAuraX = x; this._tkAuraY = y;
+    }
+    ctx.fillStyle = this._tkAuraGrd; ctx.beginPath(); ctx.arc(x,y-5,26,0,Math.PI*2); ctx.fill();
+    // legs
+    ctx.fillStyle = '#3a2800'; ctx.fillRect(x-5+f*leg*0.3,y+6,4,10); ctx.fillRect(x+1-f*leg*0.3,y+6,4,10);
+    ctx.fillStyle = '#5a3c00'; ctx.fillRect(x-7+f*leg*0.3,y+14,6,4); ctx.fillRect(x-0-f*leg*0.3,y+14,6,4);
+    // white robe + gold trim
+    ctx.fillStyle = '#f0e8c0';
+    ctx.beginPath(); ctx.moveTo(x-11,y-8); ctx.lineTo(x+11,y-8); ctx.lineTo(x+13,y+8); ctx.lineTo(x-13,y+8); ctx.closePath(); ctx.fill();
+    ctx.strokeStyle = '#ffd020'; ctx.lineWidth = 1.5;
+    ctx.beginPath(); ctx.moveTo(x-13,y+8); ctx.lineTo(x+13,y+8); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(x,y-8); ctx.lineTo(x,y+8); ctx.stroke();
+    // kiếm Ý stack glow effect — single shadow op
+    const tkStacks = this._tkStacks || 0;
+    if (tkStacks > 0) {
+      const glowA = (tkStacks / 30) * 0.6;
+      ctx.strokeStyle = `rgba(255,220,30,${glowA})`; ctx.lineWidth = 2 + tkStacks/10;
+      ctx.shadowColor = '#ffe060'; ctx.shadowBlur = 4 + tkStacks/4;
+      ctx.beginPath(); ctx.arc(x,y-5,14+tkStacks/6,0,Math.PI*2); ctx.stroke();
+      ctx.shadowBlur = 0;
+    }
+    // sleeves
+    ctx.fillStyle = '#e8e0b0'; ctx.fillRect(x-16,y-5,5,10); ctx.fillRect(x+11,y-5,5,10);
+    // arms
+    ctx.strokeStyle = '#c8a030'; ctx.lineWidth = 4; ctx.lineCap = 'round';
+    ctx.beginPath(); ctx.moveTo(x-8,y-2); ctx.lineTo(x-14,y+6); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(x+8,y-2); ctx.lineTo(x+14,y+6); ctx.stroke();
+    // main sword in hand (right side)
+    ctx.save(); ctx.translate(x+14,y+6); ctx.rotate(-Math.PI/5);
+    ctx.strokeStyle = '#ffe060'; ctx.lineWidth = 3; ctx.lineCap = 'round';
+    ctx.beginPath(); ctx.moveTo(0,0); ctx.lineTo(0,-18); ctx.stroke();
+    ctx.fillStyle = '#c8960c'; ctx.fillRect(-3,0,6,3);
+    ctx.restore();
+    // batch shadow: crown + eyes together
+    ctx.shadowColor = '#ffe060'; ctx.shadowBlur = 8;
+    ctx.fillStyle = '#d4926c'; ctx.beginPath(); ctx.arc(x,y-14,7,0,Math.PI*2); ctx.fill();
+    ctx.fillStyle = '#ffd700';
+    ctx.beginPath();
+    ctx.moveTo(x-8,y-20); ctx.lineTo(x-6,y-26); ctx.lineTo(x-2,y-22);
+    ctx.lineTo(x,y-28); ctx.lineTo(x+2,y-22); ctx.lineTo(x+6,y-26);
+    ctx.lineTo(x+8,y-20); ctx.closePath(); ctx.fill();
+    ctx.fillStyle = '#ff4488'; ctx.beginPath(); ctx.arc(x,y-23,2.5,0,Math.PI*2); ctx.fill();
+    ctx.fillStyle = '#ffe060';
+    ctx.beginPath(); ctx.arc(x-2,y-15,2,0,Math.PI*2); ctx.fill();
+    ctx.beginPath(); ctx.arc(x+3,y-15,2,0,Math.PI*2); ctx.fill();
+    ctx.shadowBlur = 0;
+    // 3 orbiting sword sparks — no shadowBlur for performance
+    ctx.strokeStyle = '#ffe060'; ctx.lineWidth = 2.5; ctx.lineCap = 'round';
+    for (let si = 0; si < 3; si++) {
+      const sa = tt*2.2 + si*Math.PI*2/3;
+      const bx2 = x + Math.cos(sa)*22, by2 = y-5 + Math.sin(sa)*13;
+      ctx.save(); ctx.translate(bx2,by2); ctx.rotate(sa + Math.PI/4);
+      ctx.beginPath(); ctx.moveTo(-6,0); ctx.lineTo(6,0); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(0,-3); ctx.lineTo(0,3); ctx.stroke();
+      ctx.restore();
+    }
+  }
+
+   
+  _drawHuyetMa(ctx, sx, sy, f, leg, t) {
+    const x = sx, y = sy;
+    const ht = performance.now() / 1000;
+    // blood aura — cache gradient
+    if (!this._hmAuraGrd || this._hmAuraX !== x || this._hmAuraY !== y) {
+      const hgr = ctx.createRadialGradient(x,y-5,2,x,y-5,28);
+      hgr.addColorStop(0,'rgba(180,0,40,0.4)'); hgr.addColorStop(1,'rgba(60,0,15,0)');
+      this._hmAuraGrd = hgr; this._hmAuraX = x; this._hmAuraY = y;
+    }
+    ctx.fillStyle = this._hmAuraGrd; ctx.beginPath(); ctx.arc(x,y-5,28,0,Math.PI*2); ctx.fill();
+    // immortal flash — single shadow op
+    if (this._hmImmortal) {
+      ctx.strokeStyle = '#ff0040'; ctx.lineWidth = 3; ctx.shadowColor='#ff0040'; ctx.shadowBlur=20;
+      ctx.beginPath(); ctx.arc(x,y-5,20+Math.sin(ht*12)*4,0,Math.PI*2); ctx.stroke();
+      ctx.shadowBlur=0;
+    }
+    // Huyết Tụ stacks glow — single shadow op
+    const hmStacks = this._hmStacks || 0;
+    if (hmStacks >= 10) {
+      const ha = Math.min(hmStacks/25,1)*0.5;
+      ctx.strokeStyle = `rgba(200,0,40,${ha})`; ctx.lineWidth = 1.5+hmStacks/15;
+      ctx.shadowColor='#cc0044'; ctx.shadowBlur=6+hmStacks/4;
+      ctx.beginPath(); ctx.arc(x,y-5,16+hmStacks/5,0,Math.PI*2); ctx.stroke();
+      ctx.shadowBlur=0;
+    }
+    // legs
+    ctx.fillStyle = '#200010'; ctx.fillRect(x-5+f*leg*0.3,y+6,4,10); ctx.fillRect(x+1-f*leg*0.3,y+6,4,10);
+    ctx.fillStyle = '#380020'; ctx.fillRect(x-7+f*leg*0.3,y+14,6,4); ctx.fillRect(x-0-f*leg*0.3,y+14,6,4);
+    // dark robe
+    ctx.fillStyle = '#180008';
+    ctx.beginPath(); ctx.moveTo(x-12,y-8); ctx.lineTo(x+12,y-8); ctx.lineTo(x+14,y+8); ctx.lineTo(x-14,y+8); ctx.closePath(); ctx.fill();
+    ctx.strokeStyle = '#cc0044'; ctx.lineWidth = 1.5;
+    ctx.beginPath(); ctx.moveTo(x-14,y+8); ctx.lineTo(x+14,y+8); ctx.stroke();
+    // cloak/arms — no shadow for performance
+    ctx.fillStyle = '#100004';
+    ctx.fillRect(x-17,y-6,5,12); ctx.fillRect(x+12,y-6,5,12);
+    ctx.strokeStyle = '#ff0044'; ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(x-17,y-6); ctx.lineTo(x-12,y+6); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(x+17,y-6); ctx.lineTo(x+12,y+6); ctx.stroke();
+    // batch shadow: head + horns + eyes
+    ctx.shadowColor='#ff0040'; ctx.shadowBlur=10;
+    ctx.fillStyle = '#150006'; ctx.beginPath(); ctx.arc(x,y-14,8,0,Math.PI*2); ctx.fill();
+    ctx.fillStyle = '#cc0044';
+    ctx.beginPath(); ctx.moveTo(x-5,y-19); ctx.lineTo(x-9,y-28); ctx.lineTo(x-2,y-21); ctx.closePath(); ctx.fill();
+    ctx.beginPath(); ctx.moveTo(x+5,y-19); ctx.lineTo(x+9,y-28); ctx.lineTo(x+2,y-21); ctx.closePath(); ctx.fill();
+    ctx.shadowBlur=14;
+    ctx.fillStyle = '#ff0040';
+    ctx.beginPath(); ctx.arc(x-2,y-15,2.2,0,Math.PI*2); ctx.fill();
+    ctx.beginPath(); ctx.arc(x+3,y-15,2.2,0,Math.PI*2); ctx.fill();
+    ctx.shadowBlur=0;
+    // blood orbs orbiting — no shadowBlur for performance (use bright fill instead)
+    ctx.fillStyle = '#ff2050';
+    for (let bi = 0; bi < 4; bi++) {
+      const ba = ht*1.9 + bi*Math.PI/2;
+      const bx3 = x + Math.cos(ba)*22, by3 = y-5 + Math.sin(ba)*12;
+      ctx.beginPath(); ctx.arc(bx3,by3,3.5,0,Math.PI*2); ctx.fill();
+    }
+  }
+
+   
+  _drawVoCuc(ctx, sx, sy, f, leg, t) {
+    const x = sx, y = sy;
+    const vt = performance.now() / 1000;
+    const isYang = (this._vcPhase || 0) === 0;
+    const phaseCol = isYang ? '#ffd700' : '#cc66ff';
+    // jade aura — cache gradient
+    if (!this._vcAuraGrd || this._vcAuraX !== x || this._vcAuraY !== y) {
+      const vgr = ctx.createRadialGradient(x,y-5,2,x,y-5,26);
+      vgr.addColorStop(0,isYang?'rgba(255,210,0,0.25)':'rgba(200,100,255,0.25)');
+      vgr.addColorStop(1,'rgba(0,0,0,0)');
+      this._vcAuraGrd = vgr; this._vcAuraX = x; this._vcAuraY = y;
+    }
+    ctx.fillStyle = this._vcAuraGrd; ctx.beginPath(); ctx.arc(x,y-5,26,0,Math.PI*2); ctx.fill();
+    // Thái Cực active state — single shadow op
+    if (this._vcTaiji) {
+      ctx.strokeStyle = '#a0ffd0'; ctx.lineWidth = 2; ctx.shadowColor='#a0ffd0'; ctx.shadowBlur=18;
+      ctx.beginPath(); ctx.arc(x,y-5,20+Math.sin(vt*8)*3,0,Math.PI*2); ctx.stroke();
+      ctx.shadowBlur=0;
+    }
+    // legs
+    ctx.fillStyle = '#0a2a18'; ctx.fillRect(x-5+f*leg*0.3,y+6,4,10); ctx.fillRect(x+1-f*leg*0.3,y+6,4,10);
+    ctx.fillStyle = '#0e3a22'; ctx.fillRect(x-7+f*leg*0.3,y+14,6,4); ctx.fillRect(x-0-f*leg*0.3,y+14,6,4);
+    // white taoist robe
+    ctx.fillStyle = '#eef8f2';
+    ctx.beginPath(); ctx.moveTo(x-11,y-8); ctx.lineTo(x+11,y-8); ctx.lineTo(x+13,y+8); ctx.lineTo(x-13,y+8); ctx.closePath(); ctx.fill();
+    // jade belt
+    ctx.fillStyle = '#a0ffd0'; ctx.fillRect(x-13,y+2,26,4);
+    ctx.strokeStyle = '#20cc80'; ctx.lineWidth = 0.8;
+    ctx.beginPath(); ctx.moveTo(x,y-8); ctx.lineTo(x,y+8); ctx.stroke();
+    // sleeves + arms — batch shadow
+    ctx.fillStyle = '#e8f5ee'; ctx.fillRect(x-16,y-5,5,10); ctx.fillRect(x+11,y-5,5,10);
+    ctx.strokeStyle = '#a0ffd0'; ctx.lineWidth = 4; ctx.lineCap = 'round';
+    ctx.beginPath(); ctx.moveTo(x-8,y-2); ctx.lineTo(x-14,y+6); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(x+8,y-2); ctx.lineTo(x+14,y+6); ctx.stroke();
+    ctx.fillStyle = '#a0ffd0'; ctx.shadowColor='#60ffb0'; ctx.shadowBlur=8;
+    ctx.beginPath(); ctx.arc(x-14,y+6,3.5,0,Math.PI*2); ctx.fill();
+    ctx.beginPath(); ctx.arc(x+14,y+6,3.5,0,Math.PI*2); ctx.fill();
+    // head + hat + yin-yang symbol
+    ctx.fillStyle = '#d4926c'; ctx.beginPath(); ctx.arc(x,y-14,7,0,Math.PI*2); ctx.fill();
+    ctx.fillStyle = '#1a1a1a';
+    ctx.beginPath(); ctx.arc(x,y-20,7,Math.PI,0); ctx.fill();
+    ctx.fillRect(x-9,y-21,18,3);
+    const yyr2 = 5;
+    ctx.fillStyle = '#ffffff'; ctx.beginPath(); ctx.arc(x,y-20,yyr2,Math.PI*1.5,Math.PI*0.5); ctx.fill();
+    ctx.fillStyle = '#111'; ctx.beginPath(); ctx.arc(x,y-20,yyr2,Math.PI*0.5,Math.PI*1.5); ctx.fill();
+    ctx.fillStyle = '#ffffff'; ctx.beginPath(); ctx.arc(x,y-20-yyr2/2,yyr2/2,0,Math.PI*2); ctx.fill();
+    ctx.fillStyle = '#111'; ctx.beginPath(); ctx.arc(x,y-20+yyr2/2,yyr2/2,0,Math.PI*2); ctx.fill();
+    // eyes — batch with arm balls shadow already set
+    ctx.fillStyle = '#a0ffd0';
+    ctx.beginPath(); ctx.arc(x-2,y-15,2,0,Math.PI*2); ctx.fill();
+    ctx.beginPath(); ctx.arc(x+3,y-15,2,0,Math.PI*2); ctx.fill();
+    ctx.shadowBlur=0;
+    // 2 orbiting Yin-Yang balls — single shadow set per ball
+    const va1 = vt*1.8;
+    const va2 = va1 + Math.PI;
+    const ballR = this._vcTaiji ? 7 : 5;
+    const sBl = this._vcTaiji ? 16 : 10;
+    ctx.shadowColor = this._vcTaiji ? '#ffff80' : '#ffaa00'; ctx.shadowBlur = sBl;
+    ctx.fillStyle = this._vcTaiji ? '#fffad0' : '#ffd700';
+    ctx.beginPath(); ctx.arc(x+Math.cos(va1)*22,y-5+Math.sin(va1)*13,ballR,0,Math.PI*2); ctx.fill();
+    ctx.shadowColor = this._vcTaiji ? '#d080ff' : '#9900cc';
+    ctx.fillStyle = this._vcTaiji ? '#e0c0ff' : '#cc66ff';
+    ctx.beginPath(); ctx.arc(x+Math.cos(va2)*22,y-5+Math.sin(va2)*13,ballR,0,Math.PI*2); ctx.fill();
+    ctx.shadowBlur=0;
+    // Taiji active: one pulsing aura ring
+    if (this._vcTaiji) {
+      ctx.strokeStyle = '#a0ffd0'; ctx.lineWidth = 2.5; ctx.shadowColor='#a0ffd0'; ctx.shadowBlur=14;
+      ctx.beginPath(); ctx.arc(x,y-5,24+Math.sin(vt*8)*3,0,Math.PI*2); ctx.stroke();
+      ctx.shadowBlur=0;
+    }
   }
 }
 
@@ -8975,7 +10294,150 @@ class Enemy {
     ctx.textBaseline = 'middle';
     ctx.fillText(this.icon, sx, sy - bob);
 
-    
+    // ─── MAP 22-24 SPECIAL ENEMY VISUALS ───
+    ctx.filter = 'none';
+    const _at = this.animT;
+    if (this.opts && this.opts._phaseCloak) {
+      // phase_wraith: ethereal ghost rings + void wisps
+      const alpha = 0.4 + Math.sin(_at * 4) * 0.2;
+      ctx.strokeStyle = `rgba(128,64,255,${alpha})`; ctx.lineWidth = 2;
+      ctx.shadowColor = '#8040ff'; ctx.shadowBlur = 12;
+      ctx.beginPath(); ctx.arc(sx, sy-bob, dr+4+Math.sin(_at*3)*2, 0, Math.PI*2); ctx.stroke();
+      ctx.beginPath(); ctx.arc(sx, sy-bob, dr+10+Math.sin(_at*3+1)*2, 0, Math.PI*2); ctx.stroke();
+      ctx.shadowBlur = 0;
+      // void wisps
+      for (let wi=0;wi<3;wi++) {
+        const wa = _at*2 + wi*Math.PI*2/3;
+        const wr = dr+14; const wx=sx+Math.cos(wa)*wr, wy=sy-bob+Math.sin(wa)*wr*0.6;
+        ctx.fillStyle=`rgba(160,80,255,${0.5+Math.sin(_at*3+wi)*0.3})`;
+        ctx.shadowColor='#8040ff'; ctx.shadowBlur=8;
+        ctx.beginPath(); ctx.arc(wx,wy,3,0,Math.PI*2); ctx.fill(); ctx.shadowBlur=0;
+      }
+    }
+    if (this.opts && this.opts._nullField) {
+      // null_entity: distortion rings + void static
+      ctx.strokeStyle = `rgba(80,20,180,${0.3+Math.sin(_at*5)*0.15})`; ctx.lineWidth = 1.5;
+      ctx.setLineDash([4,4]);
+      ctx.beginPath(); ctx.arc(sx, sy-bob, dr+6, 0, Math.PI*2); ctx.stroke();
+      ctx.beginPath(); ctx.arc(sx, sy-bob, dr+12, 0, Math.PI*2); ctx.stroke();
+      ctx.setLineDash([]);
+      // static dots
+      ctx.shadowColor='#6020cc'; ctx.shadowBlur=6;
+      for (let ni=0;ni<5;ni++) {
+        const na = _at*1.5 + ni*Math.PI*2/5;
+        const nr = dr+8; const nx=sx+Math.cos(na)*nr, ny=sy-bob+Math.sin(na)*nr*0.65;
+        ctx.fillStyle=`rgba(100,40,200,0.7)`; ctx.beginPath(); ctx.arc(nx,ny,2,0,Math.PI*2); ctx.fill();
+      }
+      ctx.shadowBlur=0;
+    }
+    if (this.opts && this.opts._voidBlink) {
+      // void_stalker: dark blink trail + shadow aura
+      for (let ti=0;ti<3;ti++) {
+        const ta2 = _at-ti*0.08;
+        const tx2=sx+Math.sin(ta2*3)*6, ty2=sy-bob+Math.cos(ta2*2)*4;
+        ctx.fillStyle=`rgba(60,0,120,${0.25-ti*0.07})`;
+        ctx.beginPath(); ctx.arc(tx2,ty2,dr*(0.9-ti*0.15),0,Math.PI*2); ctx.fill();
+      }
+      ctx.strokeStyle='rgba(80,0,160,0.5)'; ctx.lineWidth=1;
+      ctx.shadowColor='#400080'; ctx.shadowBlur=8;
+      ctx.beginPath(); ctx.arc(sx,sy-bob,dr+5+Math.sin(_at*6)*2,0,Math.PI*2); ctx.stroke();
+      ctx.shadowBlur=0;
+    }
+    if (this.opts && this.opts._magmaShell) {
+      // magma_titan: molten cracks + heat shimmer rings
+      ctx.strokeStyle = `rgba(255,80,0,${0.5+Math.sin(_at*3)*0.2})`; ctx.lineWidth = 2.5;
+      ctx.shadowColor = '#ff4000'; ctx.shadowBlur = 16;
+      ctx.beginPath(); ctx.arc(sx, sy-bob, dr+3, 0, Math.PI*2); ctx.stroke();
+      ctx.shadowBlur = 0;
+      // lava cracks (lines across body)
+      ctx.strokeStyle = `rgba(255,140,0,0.7)`; ctx.lineWidth = 1.5;
+      for (let ci=0;ci<4;ci++) {
+        const ca=ci*Math.PI/2+Math.sin(_at+ci)*0.4;
+        ctx.beginPath(); ctx.moveTo(sx,sy-bob); ctx.lineTo(sx+Math.cos(ca)*dr*0.7,sy-bob+Math.sin(ca)*dr*0.7); ctx.stroke();
+      }
+      // heat distortion pulse
+      const heatA = 0.2+Math.sin(_at*5)*0.1;
+      ctx.fillStyle=`rgba(255,60,0,${heatA})`;
+      ctx.beginPath(); ctx.arc(sx,sy-bob,dr+18+Math.sin(_at*4)*4,0,Math.PI*2); ctx.fill();
+    }
+    if (this.opts && this.opts._hellfireVolley) {
+      // hellfire_archer: fire arrows orbit + inferno aura
+      ctx.shadowColor='#ff6020'; ctx.shadowBlur=10;
+      for (let ai=0;ai<3;ai++) {
+        const aa = _at*2.5 + ai*Math.PI*2/3;
+        const ax2=sx+Math.cos(aa)*(dr+10), ay2=sy-bob+Math.sin(aa)*(dr+10)*0.7;
+        ctx.save(); ctx.translate(ax2,ay2); ctx.rotate(aa);
+        ctx.strokeStyle='#ff6020'; ctx.lineWidth=2; ctx.lineCap='round';
+        ctx.beginPath(); ctx.moveTo(-6,0); ctx.lineTo(5,0); ctx.stroke(); // arrow shaft
+        ctx.fillStyle='#ff4000'; ctx.beginPath(); ctx.moveTo(5,-2); ctx.lineTo(10,0); ctx.lineTo(5,2); ctx.closePath(); ctx.fill();
+        ctx.restore();
+      }
+      ctx.shadowBlur=0;
+    }
+    if (this.opts && this.opts._lavaTrail) {
+      // lava_crawler: speed trail + lava drips
+      for (let li=0;li<4;li++) {
+        const la2=_at-li*0.06;
+        ctx.fillStyle=`rgba(220,60,0,${0.3-li*0.06})`;
+        ctx.beginPath(); ctx.ellipse(sx-Math.cos(_at*4)*li*5,sy-bob+li*2,dr*(0.8-li*0.15),dr*(0.5-li*0.1),0,0,Math.PI*2); ctx.fill();
+      }
+      ctx.strokeStyle='rgba(255,100,0,0.4)'; ctx.lineWidth=1;
+      ctx.beginPath(); ctx.arc(sx,sy-bob,dr+4,0,Math.PI*2); ctx.stroke();
+    }
+    if (this.opts && this.opts._apocShield) {
+      // apocalypse_knight: dark energy shield + doom ring
+      ctx.strokeStyle=`rgba(200,0,20,${0.6+Math.sin(_at*4)*0.2})`; ctx.lineWidth=3;
+      ctx.shadowColor='#ff0020'; ctx.shadowBlur=18;
+      ctx.beginPath(); ctx.arc(sx,sy-bob,dr+4,0,Math.PI*2); ctx.stroke();
+      ctx.shadowBlur=0;
+      ctx.setLineDash([6,4]);
+      ctx.strokeStyle=`rgba(150,0,10,0.4)`; ctx.lineWidth=1.5;
+      ctx.beginPath(); ctx.arc(sx,sy-bob,dr+10+Math.sin(_at*3)*2,0,Math.PI*2); ctx.stroke();
+      ctx.setLineDash([]);
+      // doom particles around
+      for (let di=0;di<4;di++) {
+        const da=_at*1.5+di*Math.PI/2;
+        const dx2=sx+Math.cos(da)*(dr+14), dy2=sy-bob+Math.sin(da)*(dr+14)*0.65;
+        ctx.fillStyle='rgba(255,0,20,0.6)'; ctx.shadowColor='#ff0020'; ctx.shadowBlur=6;
+        ctx.beginPath(); ctx.arc(dx2,dy2,3.5,0,Math.PI*2); ctx.fill(); ctx.shadowBlur=0;
+      }
+    }
+    if (this.opts && this.opts._omegaBurst) {
+      // omega_mage: reality-warping void orbs + destruction sigils
+      ctx.strokeStyle=`rgba(180,0,0,${0.4+Math.sin(_at*6)*0.2})`; ctx.lineWidth=2;
+      ctx.shadowColor='#cc0000'; ctx.shadowBlur=14;
+      ctx.beginPath(); ctx.arc(sx,sy-bob,dr+6+Math.sin(_at*4)*3,0,Math.PI*2); ctx.stroke();
+      ctx.shadowBlur=0;
+      // rotating sigil lines
+      ctx.save(); ctx.translate(sx,sy-bob); ctx.rotate(_at*1.2);
+      ctx.strokeStyle='rgba(140,0,0,0.5)'; ctx.lineWidth=1.5;
+      for (let si2=0;si2<6;si2++) {
+        const sa2=si2*Math.PI/3;
+        ctx.beginPath(); ctx.moveTo(Math.cos(sa2)*dr,Math.sin(sa2)*dr); ctx.lineTo(Math.cos(sa2+Math.PI/6)*(dr+8),Math.sin(sa2+Math.PI/6)*(dr+8)); ctx.stroke();
+      }
+      ctx.restore();
+    }
+    if (this.opts && this.opts._doomAura) {
+      // doom_titan: massive doom energy rings + dark core pulse
+      for (let ri2=0;ri2<3;ri2++) {
+        const rpulse=dr+8+ri2*10+Math.sin(_at*3+ri2)*4;
+        const ralpha=0.5-ri2*0.12+Math.sin(_at*3+ri2)*0.08;
+        ctx.strokeStyle=`rgba(120,0,0,${ralpha})`; ctx.lineWidth=2.5-ri2*0.5;
+        ctx.shadowColor='#800000'; ctx.shadowBlur=12-ri2*3;
+        ctx.beginPath(); ctx.arc(sx,sy-bob,rpulse,0,Math.PI*2); ctx.stroke();
+        ctx.shadowBlur=0;
+      }
+      // dark core
+      ctx.fillStyle=`rgba(0,0,0,${0.3+Math.sin(_at*5)*0.1})`;
+      ctx.beginPath(); ctx.arc(sx,sy-bob,dr*0.6,0,Math.PI*2); ctx.fill();
+      // doom particles
+      for (let pi2=0;pi2<6;pi2++) {
+        const pa=_at*0.8+pi2*Math.PI/3;
+        const pr=dr+22+Math.sin(_at*2+pi2)*6;
+        ctx.fillStyle='rgba(100,0,0,0.5)'; ctx.shadowColor='#600000'; ctx.shadowBlur=4;
+        ctx.beginPath(); ctx.arc(sx+Math.cos(pa)*pr,sy-bob+Math.sin(pa)*pr*0.7,4,0,Math.PI*2); ctx.fill(); ctx.shadowBlur=0;
+      }
+    }
     if (!this.isBoss) {
       const bw = dr * 2.2;
       const bx = sx - bw / 2;
@@ -10338,7 +11800,7 @@ const Game = (() => {
       ? getNearestEnemy(p.x, p.y, 0, 200)
       : getWeaponTargetEnemy(p.x, p.y);
     
-    if (!nearest && id !== 'kim_cang' && id !== 'am_sat' && id !== 'luu_phong' && id !== 'huyen_nguyet') return;
+    if (!nearest && id !== 'kim_cang' && id !== 'am_sat' && id !== 'luu_phong' && id !== 'huyen_nguyet' && id !== 'huyet_ma' && id !== 'vo_cuc') return;
 
     switch (id) {
       case 'luu_phong': {
@@ -10917,6 +12379,169 @@ const Game = (() => {
         }
         break;
       }
+
+      // ─── THIÊN KIẾM: 3 bouncing sword projectiles ───
+      case 'thien_kiem': {
+        Audio.playSFX('slash');
+        if (!p._tkStacks) p._tkStacks = 0;
+        const tkDmg = dmg;
+        const baseAngTK = nearest ? Math.atan2(nearest.y - p.y, nearest.x - p.x) : 0;
+        // Sword count scales with Kiếm Ý stacks (never resets)
+        let tkSwordCount = 3;
+        if (p._tkStacks >= 50) tkSwordCount = 5;
+        else if (p._tkStacks >= 25) tkSwordCount = 4;
+        // Active bonus: +2 extra swords during Nhất Kiếm buff
+        if (p._tkAtkBuff) tkSwordCount = Math.min(7, tkSwordCount + 2);
+        for (let si = 0; si < tkSwordCount; si++) {
+          const sa = baseAngTK + (si - Math.floor(tkSwordCount/2)) * (Math.PI * 2 / Math.max(3, tkSwordCount));
+          const tkProj = {
+            x: p.x, y: p.y,
+            vx: Math.cos(sa)*260, vy: Math.sin(sa)*260,
+            dmg: tkDmg, r: 8 * aoe,
+            life: 1.4, maxLife: 1.4,
+            color: '#ffe060', owner: 'player',
+            pierce: 3, dead: false, _hitSet: new Set(),
+            _bounces: 0, _maxBounces: 1,
+            update(dt2) {
+              if (this.dead) return;
+              this.life -= dt2; if (this.life <= 0) { this.dead = true; return; }
+              this.x += this.vx * dt2; this.y += this.vy * dt2;
+              // bounce off world edges
+              if (this.x < 20 || this.x > CFG.WORLD_W - 20) {
+                this.vx *= -1; this._bounces++; this.dmg *= 0.85;
+                if (this._bounces > this._maxBounces) { this.dead = true; return; }
+                if (p.mainWeapon.evolved) Game.explosionAt(this.x, this.y, 100, this.dmg * 0.5, '#ffe060', 'main_thien_kiem');
+              }
+              if (this.y < 20 || this.y > CFG.WORLD_H - 20) {
+                this.vy *= -1; this._bounces++; this.dmg *= 0.85;
+                if (this._bounces > this._maxBounces) { this.dead = true; return; }
+                if (p.mainWeapon.evolved) Game.explosionAt(this.x, this.y, 100, this.dmg * 0.5, '#ffe060', 'main_thien_kiem');
+              }
+              for (const e of enemies) {
+                if (e.dead || this._hitSet.has(e)) continue;
+                if (MathU.dist(this.x, this.y, e.x, e.y) < this.r + e.r) {
+                  const {val: tkVal, crit: tkCrit} = p.rollCrit(this.dmg);
+                  e.takeDamage(tkVal, p, tkCrit ? 'crit' : 'normal');
+                  p.trackSkillDmg('main_thien_kiem', tkVal);
+                  // ── Kiếm Ý: accumulate, NEVER reset ──
+                  const prevStacks = p._tkStacks;
+                  p._tkStacks = Math.min(50, (p._tkStacks||0) + 1);
+                  // Milestone notifications (first time crossing)
+                  if (prevStacks < 25 && p._tkStacks >= 25) {
+                    Toast.show('⚔️ Kiếm Ý 25! Bắn 4 kiếm/lần!');
+                    Game.particles.spawn(p.x, p.y, {count:20, color:'#ffe060', speedMin:80, speedMax:220, life:0.5});
+                    if(rings.length<28)rings.push(new RingEffect(p.x,p.y,50,'#ffd700'));
+                  } else if (prevStacks < 50 && p._tkStacks >= 50 && !p._tkMax50Announced) {
+                    p._tkMax50Announced = true;
+                    Toast.show('⚔️ KIẾM Ý 50! Tối Thượng — 5 kiếm + sóng kiếm tự động!');
+                    Game.particles.spawn(p.x, p.y, {count:35, color:'#ffe060', speedMin:120, speedMax:300, life:0.7});
+                    if(rings.length<28)rings.push(new RingEffect(p.x,p.y,70,'#ffd700'));
+                    if(rings.length<28)rings.push(new RingEffect(p.x,p.y,45,'#fff0a0'));
+                    Audio.playSFX('evolve');
+                  }
+                  // At max stacks: evolved bonus sword
+                  if (p._tkStacks >= 50 && p.mainWeapon.evolved && Math.random() < 0.4) {
+                    const nearRnd = enemies.filter(e2=>!e2.dead&&e2!==e);
+                    if (nearRnd.length > 0) {
+                      const rndT = nearRnd[Math.floor(Math.random()*nearRnd.length)];
+                      const bonusSword = {
+                        x:p.x, y:p.y, life:1.0, dmg:tkDmg*1.5, r:9, dead:false, _t:rndT, _hitSet:new Set(),
+                        update(dt3){if(this.dead)return;this.life-=dt3;if(this.life<=0){this.dead=true;return;}
+                          if(!this._t||this._t.dead){this.dead=true;return;}
+                          const ang=MathU.angle(this.x,this.y,this._t.x,this._t.y); this.x+=Math.cos(ang)*350*dt3; this.y+=Math.sin(ang)*350*dt3;
+                          for(const e2 of Game.enemies){if(e2.dead||this._hitSet.has(e2))continue;if(MathU.dist(this.x,this.y,e2.x,e2.y)<e2.r+this.r){const{val,crit}=p.rollCrit(this.dmg); e2.takeDamage(val,p,crit?'crit':'normal'); p.trackSkillDmg('main_thien_kiem',val); this._hitSet.add(e2); if(e2===this._t){this.dead=true;break;}}}},
+                        draw(c2,cx,cy){if(this.dead)return;const ax=this._t?Math.atan2(this._t.y-this.y,this._t.x-this.x):0; c2.save();c2.translate(this.x-cx,this.y-cy);c2.rotate(ax);c2.strokeStyle='#fff0a0';c2.lineWidth=2.5;c2.shadowColor='#ffd700';c2.shadowBlur=12;c2.lineCap='round';c2.beginPath();c2.moveTo(-11,0);c2.lineTo(11,0);c2.stroke();c2.shadowBlur=0;c2.restore();}
+                      };
+                      projectiles.push(bonusSword);
+                    }
+                  }
+                  if (p.mainWeapon.evolved) {
+                    // return homing orb (full pierce on evolved)
+                    const tkH = { x: e.x, y: e.y, life: 0.8, dmg: tkVal*0.85, r:7, dead:false, _hitSet2: new Set(),
+                      update(dt3){ if(this.dead)return; this.life-=dt3; if(this.life<=0){this.dead=true;return;}
+                        const near=enemies.reduce((b,e2)=>{ if(e2.dead||this._hitSet2.has(e2))return b; const d=MathU.dist(this.x,this.y,e2.x,e2.y); return(!b||d<b.d)?{e:e2,d}:b; },null);
+                        if(near){const ang=MathU.angle(this.x,this.y,near.e.x,near.e.y); this.x+=Math.cos(ang)*300*dt3; this.y+=Math.sin(ang)*300*dt3;
+                          if(MathU.dist(this.x,this.y,near.e.x,near.e.y)<near.e.r+this.r){const{val,crit}=p.rollCrit(this.dmg); near.e.takeDamage(val,p,crit?'crit':'normal'); this._hitSet2.add(near.e);}} },
+                      draw(c2,cx,cy){ if(this.dead)return; c2.fillStyle='#ffe060'; c2.shadowColor='#ffd700'; c2.shadowBlur=10; c2.beginPath(); c2.arc(this.x-cx,this.y-cy,this.r,0,Math.PI*2); c2.fill(); c2.shadowBlur=0; }
+                    };
+                    projectiles.push(tkH);
+                  }
+                  particles.spawn(e.x, e.y, {count:6, color:'#ffe060', speedMin:50, speedMax:130, life:0.3});
+                  this._hitSet.add(e);
+                  if (--this.pierce <= 0) { this.dead = true; break; }
+                }
+              }
+            },
+            draw(ctx2, cx, cy) {
+              if (this.dead) return;
+              const px2 = this.x - cx, py2 = this.y - cy;
+              const ang2 = Math.atan2(this.vy, this.vx);
+              ctx2.save(); ctx2.translate(px2, py2); ctx2.rotate(ang2);
+              ctx2.strokeStyle = '#ffe060'; ctx2.lineWidth = 3;
+              ctx2.shadowColor = '#ffd700'; ctx2.shadowBlur = 14;
+              ctx2.lineCap = 'round';
+              ctx2.beginPath(); ctx2.moveTo(-10,0); ctx2.lineTo(10,0); ctx2.stroke();
+              ctx2.beginPath(); ctx2.moveTo(0,-4); ctx2.lineTo(0,4); ctx2.stroke();
+              ctx2.shadowBlur = 0; ctx2.restore();
+            },
+          };
+          projectiles.push(tkProj);
+        }
+        particles.spawn(p.x, p.y, {count:8, color:'#ffe060', speedMin:60, speedMax:160, life:0.25});
+        if(rings.length<28)rings.push(new RingEffect(p.x,p.y,28,'#ffd700'));
+        break;
+      }
+
+      // ─── HUYẾT MA: blood aura pulse at ATK rate ───
+      case 'huyet_ma': {
+        if (!p._hmStacks) p._hmStacks = 0;
+        const hmRange = p.mainWeapon.evolved ? 185 : 155;
+        // During active: enhanced multiplier. Otherwise base.
+        const hmActiveMult = p._hmActiveDuration > 0 ? (1.5 + p._hmStacks * 0.04) : 1.0;
+        const hmDmg = dmg * hmActiveMult;
+        let hmHit = false;
+        enemies.forEach(e => {
+          if (e.dead || MathU.dist(p.x, p.y, e.x, e.y) > hmRange + e.r) return;
+          const {val: hmVal, crit: hmCrit} = p.rollCrit(hmDmg);
+          e.takeDamage(hmVal, p, hmCrit ? 'crit' : 'normal');
+          p.trackSkillDmg('main_huyet_ma', hmVal);
+          // lifesteal: doubled during active
+          const lsMult = p._hmActiveDuration > 0 ? 0.16 : 0.08;
+          const ls = hmVal * lsMult;
+          p.hp = Math.min(p.maxHp, p.hp + ls);
+          // bleed debuff
+          e.bleedT = Math.max(e.bleedT||0, 2.5); e.bleedDmg = Math.max(e.bleedDmg||0, dmg*0.20);
+          hmHit = true;
+          if (p.mainWeapon.evolved && Math.random() < 0.30) {
+            const hmH = { x: p.x, y: p.y, life: 1.0, dmg: dmg*1.5, r:8, dead:false, _target: e,
+              update(dt3){if(this.dead)return;this.life-=dt3;if(this.life<=0){this.dead=true;return;}
+                const t2=this._target; if(!t2||t2.dead){this.dead=true;return;}
+                const ang=MathU.angle(this.x,this.y,t2.x,t2.y); this.x+=Math.cos(ang)*250*dt3; this.y+=Math.sin(ang)*250*dt3;
+                if(MathU.dist(this.x,this.y,t2.x,t2.y)<t2.r+this.r){const{val,crit}=p.rollCrit(this.dmg); t2.takeDamage(val,p,crit?'crit':'normal'); this.dead=true;
+                  // evolved chain
+                  const near=Game.enemies.filter(e2=>!e2.dead&&e2!==t2).slice(0,3); near.forEach(e2=>{const{val:v2}=p.rollCrit(this.dmg*1.2); e2.takeDamage(v2,p,'normal');});
+                }},
+              draw(c2,cx,cy){if(this.dead)return; const al=this.life; c2.fillStyle=`rgba(200,0,60,${al})`; c2.shadowColor='#ff0040'; c2.shadowBlur=10; c2.beginPath(); c2.arc(this.x-cx,this.y-cy,this.r,0,Math.PI*2); c2.fill(); c2.shadowBlur=0;}
+            };
+            projectiles.push(hmH);
+          }
+        });
+        if (hmHit) {
+          particles.spawn(p.x, p.y, {count:10, color:'#cc0044', speedMin:40, speedMax:120, life:0.35});
+          Audio.playSFX('slam');
+        } else {
+          Audio.playSFX('orb');
+        }
+        if(rings.length<28)rings.push(new RingEffect(p.x,p.y,hmRange,'#cc004440'));
+        break;
+      }
+
+      // ─── VÔ CỰC: orbital damage handled per-frame in player.update ───
+      case 'vo_cuc': {
+        // fireMainWeapon tick only drives audio cue; real damage is in player.update
+        Audio.playSFX(p._vcPhase===0?'passive':'orb');
+        break;
+      }
     }
   }
 
@@ -11333,8 +12958,8 @@ const Game = (() => {
     const typeKey  = mapTypes[MathU.randInt(0, mapTypes.length - 1)];
     const template = getEnemyTemplate(typeKey, wave);
     
-    const _tierNG = [[1,4],[2,8],[3,13],[5,21],[7,29],[10,40],[14,55]];
-    const [ngMin, ngMax] = _tierNG[Math.min((currentMap ? currentMap.tier : 1) - 1, 6)];
+    const _tierNG = [[1,4],[2,8],[3,13],[5,21],[7,29],[10,40],[14,55],[20,80]];
+    const [ngMin, ngMax] = _tierNG[Math.min((currentMap ? currentMap.tier : 1) - 1, 7)];
 
     const e = new Enemy(pos.x, pos.y, {
       ...template,
@@ -11352,8 +12977,8 @@ const Game = (() => {
     const typeKey  = mapTypes[MathU.randInt(0, mapTypes.length - 1)];
     const template = getEnemyTemplate(typeKey, wave);
     
-    const _tierEG = [[8,18],[12,26],[18,36],[25,51],[35,71],[50,100],[70,140]];
-    const [egMin, egMax] = _tierEG[Math.min((currentMap ? currentMap.tier : 1) - 1, 6)];
+    const _tierEG = [[8,18],[12,26],[18,36],[25,51],[35,71],[50,100],[70,140],[100,200]];
+    const [egMin, egMax] = _tierEG[Math.min((currentMap ? currentMap.tier : 1) - 1, 7)];
 
     const e = new Enemy(pos.x, pos.y, {
       ...template,
@@ -11385,7 +13010,7 @@ const Game = (() => {
     const pos     = getSpawnPos(true);
     const tier    = mapData.tier || 1;
     
-    const tierBaseHP = [0, 14000, 32000, 68000, 145000, 240000, 400000, 600000, 900000];
+    const tierBaseHP = [0, 14000, 32000, 68000, 145000, 240000, 400000, 600000, 1350000];
     const mapHpMult  = {map01:1.00,map02:1.10,map03:1.22,map04:1.00,map05:1.12,map06:1.25,map07:1.00,map08:1.12,map09:1.25,map10:1.00,map11:1.12,map12:1.25,map13:1.00,map14:1.12,map15:1.25,map16:1.00,map17:1.12,map18:1.25,map19:1.00,map20:1.15,map21:1.30};
     const mapDmgAdd  = {map01:0,map02:12,map03:25,map04:0,map05:15,map06:30,map07:0,map08:18,map09:35,map10:0,map11:22,map12:42,map13:0,map14:28,map15:55,map16:0,map17:30,map18:65,map19:60,map20:95,map21:135};
     const mapSpdAdd  = {map01:0,map02:15,map03:5,map04:0,map05:10,map06:-10,map07:5,map08:8,map09:0,map10:5,map11:10,map12:5,map13:0,map14:8,map15:5,map16:0,map17:12,map18:8,map19:5,map20:10,map21:0};
@@ -11511,6 +13136,21 @@ const Game = (() => {
       flesh_crawler:    { hp:850,  dmg:265, spd:140, r:12, exp:13, icon:'🐛', color:'#cc2040', ai:'chase',  _fleshBurrow:true },
       bile_spitter:     { hp:800,  dmg:245, spd:60,  r:14, exp:14, icon:'🤢', color:'#80c020', ai:'ranged', _bilePool:true },
       meat_titan:       { hp:2400, dmg:285, spd:40,  r:24, exp:17, icon:'🫀', color:'#ff1040', ai:'chase',  _meatSpawn:true },
+
+      // map22 — Cõi Vô Hình
+      phase_wraith:     { hp:900,  dmg:310, spd:180, r:12, exp:16, icon:'👻', color:'#8040ff', ai:'flank',  flankDir:1, _phaseCloak:true },
+      null_entity:      { hp:1100, dmg:295, spd:90,  r:15, exp:16, icon:'🫧', color:'#6020cc', ai:'chase',  _nullField:true },
+      void_stalker:     { hp:680,  dmg:330, spd:220, r:11, exp:15, icon:'🌑', color:'#400080', ai:'flank',  flankDir:-1, _voidBlink:true },
+
+      // map23 — Lõi Địa Ngục
+      magma_titan:      { hp:3200, dmg:320, spd:45,  r:26, exp:20, icon:'🌋', color:'#ff4000', ai:'chase',  _magmaShell:true },
+      hellfire_archer:  { hp:850,  dmg:310, spd:70,  r:14, exp:17, icon:'🏹', color:'#ff6020', ai:'ranged', _hellfireVolley:true },
+      lava_crawler:     { hp:950,  dmg:300, spd:150, r:13, exp:16, icon:'🔥', color:'#ff2000', ai:'chase',  _lavaTrail:true },
+
+      // map24 — Tận Thế Vĩnh Cửu
+      apocalypse_knight:{ hp:4000, dmg:350, spd:80,  r:26, exp:24, icon:'⚔️', color:'#ff0020', ai:'chase',  _apocShield:true },
+      omega_mage:       { hp:1200, dmg:370, spd:55,  r:15, exp:22, icon:'☄️', color:'#cc0000', ai:'ranged', _omegaBurst:true },
+      doom_titan:       { hp:5500, dmg:380, spd:30,  r:30, exp:28, icon:'💀', color:'#800000', ai:'chase',  _doomAura:true },
     };
     return templates[typeKey] || templates['zombie'];
   }
@@ -11836,6 +13476,163 @@ const Game = (() => {
             window._lfScale = 1.0;
             Audio.playSFX('heartbeat');
             Toast.show('🫀 Arena phồng lại.');
+          }
+        }
+        break;
+
+      case 'hellPortals':
+        if (!window._hpTimer) window._hpTimer = 0;
+        if (!window._hpPortals) window._hpPortals = [];
+        if (!window._hpActive) window._hpActive = false;
+        if (!window._hpDuration) window._hpDuration = 0;
+        if (!window._hpSpawnTimer) window._hpSpawnTimer = 0;
+        window._hpTimer += dt;
+        if (window._hpTimer >= 20 && !window._hpActive) {
+          window._hpTimer = 0;
+          window._hpActive = true;
+          window._hpDuration = 8.0;
+          window._hpSpawnTimer = 0;
+          window._hpPortals = Array.from({length: 3}, () => ({
+            x: MathU.rand(120, CFG.WORLD_W - 120),
+            y: MathU.rand(120, CFG.WORLD_H - 120),
+          }));
+          Toast.show('👹 CỔNG ĐỊA NGỤC MỞ — Quái triệu tập từ cổng ma năng!', 3000);
+          Audio.playSFX('boss');
+          Game.camera.addShake(12);
+        }
+        if (window._hpActive) {
+          window._hpDuration -= dt;
+          window._hpSpawnTimer += dt;
+          if (window._hpSpawnTimer >= 2.0 && enemies.length < CFG.MAX_ENEMIES) {
+            window._hpSpawnTimer = 0;
+            window._hpPortals.forEach(portal => {
+              if (enemies.length < CFG.MAX_ENEMIES) {
+                const mapTypes = currentMap ? currentMap.enemyTypes : ['zombie'];
+                const typeKey = mapTypes[MathU.randInt(0, mapTypes.length - 1)];
+                const tpl = getEnemyTemplate(typeKey, wave);
+                const e = new Enemy(portal.x + MathU.rand(-30, 30), portal.y + MathU.rand(-30, 30), {
+                  ...tpl,
+                  hp: tpl.hp * (1 + wave * 0.15),
+                  dmg: tpl.dmg * (1 + wave * 0.08),
+                  exp: Math.round(tpl.exp * (1 + wave * 0.10)),
+                  gold: MathU.randInt(10, 20),
+                });
+                enemies.push(e);
+                Game.particles.spawn(portal.x, portal.y, { count:8, color:'#cc00ff', speedMin:40, speedMax:120, life:0.5 });
+              }
+            });
+          }
+          if (window._hpDuration <= 0) {
+            window._hpActive = false;
+            window._hpPortals = [];
+            Toast.show('👹 Cổng Địa Ngục đóng lại!');
+          }
+        }
+        break;
+
+      case 'elementalCyclone':
+        if (!window._ecTimer) window._ecTimer = 0;
+        if (!window._ecActive) window._ecActive = false;
+        if (!window._ecDuration) window._ecDuration = 0;
+        if (!window._ecZones) window._ecZones = [];
+        window._ecTimer += dt;
+        if (window._ecTimer >= 22 && !window._ecActive) {
+          window._ecTimer = 0;
+          window._ecActive = true;
+          window._ecDuration = 6.0;
+          window._ecWarn = 1.0;
+          const elems = [
+            { type:'fire',    color:'#ff4400' },
+            { type:'ice',     color:'#44aaff' },
+            { type:'thunder', color:'#ffff00' },
+            { type:'poison',  color:'#44ff00' },
+          ];
+          window._ecZones = elems.map((el,i) => ({
+            x: player.x + Math.cos(i * Math.PI * 0.5) * (100 + MathU.rand(0, 120)) + MathU.rand(-60, 60),
+            y: player.y + Math.sin(i * Math.PI * 0.5) * (100 + MathU.rand(0, 120)) + MathU.rand(-60, 60),
+            type: el.type,
+            color: el.color,
+          }));
+          Toast.show('🌪️ XOÁY NGUYÊN TỐ — Tránh vùng năng lượng!', 3000);
+          Audio.playSFX('boss');
+        }
+        if (window._ecActive) {
+          window._ecDuration -= dt;
+          if (window._ecWarn > 0) { window._ecWarn -= dt; }
+          else {
+            window._ecZones.forEach(zone => {
+              const dx = player.x - zone.x, dy = player.y - zone.y;
+              if (Math.sqrt(dx*dx+dy*dy) < 70) {
+                player.takeDamage(80 * dt);
+              }
+            });
+          }
+          if (window._ecDuration <= 0) {
+            window._ecActive = false;
+            window._ecZones = [];
+            Toast.show('🌪️ Xoáy nguyên tố tan biến!');
+          }
+        }
+        break;
+
+      case 'apocalypseRain':
+        if (!window._apMeteorTimer) window._apMeteorTimer = 0;
+        if (!window._apTimer) window._apTimer = 0;
+        if (!window._apBeamActive) window._apBeamActive = false;
+        if (!window._apBeamDur) window._apBeamDur = 0;
+        if (!window._apBeams) window._apBeams = [];
+        if (!window._apBeamWarn) window._apBeamWarn = 0;
+        window._apMeteorTimer += dt;
+        window._apTimer += dt;
+        // Meteor shower mỗi 15 giây
+        if (window._apMeteorTimer >= 15) {
+          window._apMeteorTimer = 0;
+          Toast.show('☄️ Mưa Thiên Thể Tận Thế!', 2000);
+          Audio.playSFX('boss');
+          for (let mi = 0; mi < 6 + wave; mi++) {
+            setTimeout(() => {
+              if (!running) return;
+              const tx = player.x + MathU.rand(-350, 350);
+              const ty = player.y + MathU.rand(-350, 350);
+              if (rings && rings.length < 30) rings.push(new RingEffect(tx, ty, 55, '#ffffff'));
+              setTimeout(() => {
+                if (!running) return;
+                explosionAt(tx, ty, 60, 55 + wave * 4, '#e0c0ff');
+                enemies.forEach(e => {
+                  if (MathU.dist(e.x,e.y,tx,ty) < 60) e.takeDamage(120, null, 'normal');
+                });
+              }, 800);
+            }, mi * 250);
+          }
+        }
+        // Phán Quyết Thiên Khải mỗi 28 giây
+        if (window._apTimer >= 28 && !window._apBeamActive) {
+          window._apTimer = 0;
+          window._apBeamActive = true;
+          window._apBeamDur = 3.5;
+          window._apBeamWarn = 1.5;
+          window._apBeams = Array.from({length:8}, (_,i) => ({ angle: i * Math.PI / 4 }));
+          Toast.show('☄️ PHÁN QUYẾT THIÊN KHẢI — Tìm khe hở giữa tia sáng!', 3500);
+          Audio.playSFX('boss');
+          Game.camera.addShake(20);
+        }
+        if (window._apBeamActive) {
+          window._apBeamDur -= dt;
+          if (window._apBeamWarn > 0) { window._apBeamWarn -= dt; }
+          else {
+            // Tia đang bắn
+            const cx3 = CFG.WORLD_W / 2, cy3 = CFG.WORLD_H / 2;
+            window._apBeams.forEach(beam => {
+              const bx = Math.cos(beam.angle), by2 = Math.sin(beam.angle);
+              const dx = player.x - cx3, dy = player.y - cy3;
+              const cross = Math.abs(dx * by2 - dy * bx);
+              if (cross < 55) { player.takeDamage(220 * dt); }
+            });
+          }
+          if (window._apBeamDur <= 0) {
+            window._apBeamActive = false;
+            window._apBeams = [];
+            Toast.show('☄️ Ánh sáng phán xét tan biến...');
           }
         }
         break;
@@ -12841,6 +14638,7 @@ const Game = (() => {
     running = false;
     if (raf) { cancelAnimationFrame(raf); raf = null; }
     Audio.stopBGM();
+    UI.hideBossBar();
     
     if (typeof Tutorial !== 'undefined') Tutorial.clearHints();
 
@@ -12922,6 +14720,17 @@ const Game = (() => {
       winStreak:   newStreak,
       mapId,
       achievements,
+      charId:      player ? player.charData.id : null,
+      // Per-character special stats
+      maxChietTocStack: player && player.charData.id === 'luu_phong' ? (player._chiTocStacks||0) : undefined,
+      finalKiemY:       player && player.charData.id === 'thien_kiem' ? (player._tkStacks||0) : undefined,
+      finalHuyetTu:     player && player.charData.id === 'huyet_ma'   ? (player._hmStacks||0) : undefined,
+      hmAutoBursts:     player && player.charData.id === 'huyet_ma'   ? (player._hmAutoBurstCount||0) : undefined,
+      finalDaoNguyen:   player && player.charData.id === 'vo_cuc'     ? (player._vcDaoNguyen||0) : undefined,
+      maxSoulsAchieved: player && player.charData.id === 'tu_linh'    ? (player._maxSoulsAchieved||0) : undefined,
+      totalBlocks:      player && player.charData.id === 'kim_cang'   ? (player._totalBlocks||0) : undefined,
+      manaBonusTime:    player && player.charData.id === 'huyen_nguyet'? Math.round(player._manaBonusTime||0) : undefined,
+      eagleKills:       player && player.charData.id === 'thiet_tam'  ? (player._eagleKills||0) : undefined,
     };
 
     
@@ -13208,6 +15017,44 @@ const Game = (() => {
           ctx.lineTo(_psx + Math.cos(mid) * (arcR + 7 + Math.random() * 5), _psy + Math.sin(mid) * (arcR + 7 + Math.random() * 5));
           ctx.lineTo(_psx + Math.cos(a2) * arcR, _psy + Math.sin(a2) * arcR);
           ctx.stroke();
+        }
+        ctx.shadowBlur = 0;
+        ctx.restore();
+      }
+
+      // ─── HUYẾT MA: persistent blood aura ───
+      if (player.charData && player.charData.id === 'huyet_ma') {
+        ctx.save();
+        const hmStacks = player._hmStacks || 0;
+        const hmAct    = (player._hmActiveDuration || 0) > 0;
+        const hmRange  = player.mainWeapon && player.mainWeapon.evolved ? 185 : 155;
+        const hmPulse  = 0.45 + Math.sin(_pft * (hmAct ? 6 : 3)) * 0.18;
+        const hmAlpha  = hmAct ? (0.55 + hmPulse * 0.25) : (0.25 + hmStacks / 30 * 0.20 + hmPulse * 0.10);
+        // outer aura ring
+        ctx.strokeStyle = `rgba(204,0,68,${hmAlpha})`;
+        ctx.lineWidth   = hmAct ? 2.5 : 1.8;
+        ctx.shadowColor = '#cc0044';
+        ctx.shadowBlur  = hmAct ? 18 : (8 + hmStacks / 5);
+        ctx.setLineDash([8, 6]);
+        ctx.lineDashOffset = -_pft * 40;
+        ctx.beginPath(); ctx.arc(_psx, _psy, hmRange, 0, Math.PI * 2); ctx.stroke();
+        ctx.setLineDash([]);
+        // inner fill shimmer
+        const hmFill = ctx.createRadialGradient(_psx, _psy, 0, _psx, _psy, hmRange);
+        hmFill.addColorStop(0, `rgba(180,0,40,${hmAct ? 0.12 : 0.04})`);
+        hmFill.addColorStop(0.7, `rgba(120,0,30,${hmAct ? 0.07 : 0.02})`);
+        hmFill.addColorStop(1, 'rgba(80,0,20,0)');
+        ctx.fillStyle = hmFill;
+        ctx.beginPath(); ctx.arc(_psx, _psy, hmRange, 0, Math.PI * 2); ctx.fill();
+        // blood particles orbiting when active
+        if (hmAct) {
+          for (let bi = 0; bi < 6; bi++) {
+            const ba = _pft * 1.4 + bi * Math.PI / 3;
+            const br = hmRange * (0.75 + Math.sin(_pft * 3 + bi) * 0.15);
+            ctx.fillStyle = `rgba(255,0,60,${0.5 + Math.sin(_pft * 4 + bi) * 0.3})`;
+            ctx.shadowColor = '#ff0040'; ctx.shadowBlur = 8;
+            ctx.beginPath(); ctx.arc(_psx + Math.cos(ba) * br, _psy + Math.sin(ba) * br, 3.5, 0, Math.PI * 2); ctx.fill();
+          }
         }
         ctx.shadowBlur = 0;
         ctx.restore();
@@ -14995,7 +16842,7 @@ const Game = (() => {
       'village','forest','swamp','ruins','desert','ice',
       'graveyard','tower','blood','mech','chaos','storm',
       'mirror','hell','cosmos','tomb','abyss','apex',
-      'crystal','timple','flesh',
+      'crystal','timple','flesh','void','inferno','endgame',
     ].includes(currentMap.bgPattern);
 
     if (!hasCustomBg) {
@@ -15049,6 +16896,9 @@ const Game = (() => {
     else if (_bgPat === 'crystal')   _drawMap19Layers(camX, camY, W, H, _bgT);
     else if (_bgPat === 'timple')    _drawMap20Layers(camX, camY, W, H, _bgT);
     else if (_bgPat === 'flesh')     _drawMap21Layers(camX, camY, W, H, _bgT);
+    else if (_bgPat === 'void')      _drawMap22Layers(camX, camY, W, H, _bgT);
+    else if (_bgPat === 'inferno')   _drawMap23Layers(camX, camY, W, H, _bgT);
+    else if (_bgPat === 'endgame')   _drawMap24Layers(camX, camY, W, H, _bgT);
 
     
     
@@ -15450,6 +17300,217 @@ const Game = (() => {
     aG.addColorStop(0, `rgba(100,0,20,${0.06 + heartPhase * 0.06})`);
     aG.addColorStop(1, 'rgba(30,0,5,0)');
     ctx.fillStyle = aG; ctx.fillRect(0, 0, W, H);
+  }
+
+  // ──────────────── MAP 22 — Cổng Địa Ngục ────────────────
+  function _drawMap22Layers(camX, camY, W, H, t) {
+    ctx.fillStyle = '#0e0010'; ctx.fillRect(0, 0, W, H);
+
+    // Lưới địa ngục tím-đỏ (giảm tần suất)
+    const gridOff = ((camX * 0.35) % 80 + 80) % 80;
+    ctx.globalAlpha = 0.18;
+    ctx.strokeStyle = '#660033';
+    ctx.lineWidth = 1;
+    for (let x = gridOff - 80; x < W + 80; x += 80) {
+      ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x + 20, H); ctx.stroke();
+    }
+    for (let y = ((((-camY * 0.35) % 80) + 80) % 80) - 80; y < H + 80; y += 80) {
+      ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y + 15); ctx.stroke();
+    }
+    ctx.globalAlpha = 1;
+
+    // Rune sàn — giảm từ 8 xuống 4
+    const runeOff = ((camX * 0.22) % W + W) % W;
+    ctx.globalAlpha = 0.22;
+    for (let pass = -1; pass <= 1; pass++) {
+      const ox = -runeOff + pass * W;
+      for (let i = 0; i < 4; i++) {
+        const rx = ox + (i * 193 + 40) % W;
+        const ry = H * 0.55 + Math.sin(t * 0.0003 + i * 0.7) * H * 0.18;
+        const rR = 20 + (i % 3) * 10;
+        const rAngle = t * 0.0004 + i * 0.8;
+        ctx.strokeStyle = i % 2 === 0 ? '#cc0044' : '#8800cc';
+        ctx.lineWidth = 1.5;
+        ctx.beginPath();
+        for (let k = 0; k <= 6; k++) {
+          const a = rAngle + k * Math.PI / 3;
+          k === 0 ? ctx.moveTo(rx + Math.cos(a)*rR, ry + Math.sin(a)*rR)
+                  : ctx.lineTo(rx + Math.cos(a)*rR, ry + Math.sin(a)*rR);
+        }
+        ctx.closePath(); ctx.stroke();
+      }
+    }
+    ctx.globalAlpha = 1;
+
+    // Vũng lửa địa ngục — giảm từ 10 xuống 5
+    const lavaOff = ((camX * 0.50) % W + W) % W;
+    ctx.globalAlpha = 0.38;
+    for (let pass = -1; pass <= 1; pass++) {
+      const ox = -lavaOff + pass * W;
+      for (let i = 0; i < 5; i++) {
+        const lx = ox + (i * 167 + 30) % W;
+        const ly = H * 0.72 + Math.sin(t * 0.0005 + i * 1.2) * H * 0.08;
+        const lR = (15 + (i % 4) * 8) * (0.88 + 0.12 * Math.sin(t * 0.004 + i));
+        const gL = ctx.createRadialGradient(lx, ly, 0, lx, ly, lR);
+        gL.addColorStop(0, `rgba(255,60,0,0.75)`);
+        gL.addColorStop(0.5, `rgba(180,20,0,0.45)`);
+        gL.addColorStop(1, 'rgba(80,0,0,0)');
+        ctx.fillStyle = gL;
+        ctx.beginPath(); ctx.ellipse(lx, ly, lR*1.2, lR*0.7, Math.sin(i)*0.5, 0, Math.PI*2); ctx.fill();
+      }
+    }
+    ctx.globalAlpha = 1;
+
+    // Gradient sàn dưới — đen nền
+    const floorG = ctx.createLinearGradient(0, H*0.6, 0, H);
+    floorG.addColorStop(0, 'rgba(20,0,10,0.7)');
+    floorG.addColorStop(1, 'rgba(8,0,4,1)');
+    ctx.fillStyle = floorG; ctx.fillRect(0, H*0.6, W, H*0.4);
+
+    // Ambient glow trung tâm đỏ-tím
+    const amG = ctx.createRadialGradient(W*0.5, H*0.45, 0, W*0.5, H*0.45, H*0.6);
+    const phA = Math.sin(t*0.003);
+    amG.addColorStop(0, `rgba(120,0,40,${0.07 + phA*0.04})`);
+    amG.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.fillStyle = amG; ctx.fillRect(0, 0, W, H);
+  }
+
+  // ──────────────── MAP 23 — Bão Nguyên Tố ────────────────
+  function _drawMap23Layers(camX, camY, W, H, t) {
+    ctx.fillStyle = '#04101e'; ctx.fillRect(0, 0, W, H);
+
+    // Xoáy nguyên tố nền — 4 mảng màu xoay, dùng fillRect thay arc dày
+    const spinOff = t * 0.0006;
+    const elemColors = ['rgba(255,68,0,0.07)','rgba(68,170,255,0.07)','rgba(255,255,0,0.06)','rgba(68,255,136,0.07)'];
+    for (let elem = 0; elem < 4; elem++) {
+      const baseAngle = spinOff + elem * Math.PI * 0.5;
+      const ox2 = W*0.5 + Math.cos(baseAngle)*H*0.3;
+      const oy2 = H*0.5 + Math.sin(baseAngle)*H*0.3;
+      const eg = ctx.createRadialGradient(ox2, oy2, 0, ox2, oy2, H*0.45);
+      eg.addColorStop(0, elemColors[elem]);
+      eg.addColorStop(1, 'rgba(0,0,0,0)');
+      ctx.fillStyle = eg; ctx.fillRect(0, 0, W, H);
+    }
+
+    // Sàn đại dương nguyên tố — step 20 (giảm 50% lineTo)
+    const waveOff = ((camX * 0.30) % W + W) % W;
+    ctx.globalAlpha = 0.30;
+    for (let pass = -1; pass <= 1; pass++) {
+      const ox = -waveOff + pass * W;
+      for (let i = 0; i < 8; i++) {
+        ctx.strokeStyle = ['#ff4400','#44aaff','#ffff00','#44ff88'][i%4];
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        for (let x2 = ox; x2 < ox + W + 20; x2 += 20) {
+          const y2 = H * 0.55 + Math.sin(x2 * 0.012 + t * 0.003 + i * 0.9) * 25 + i * 18;
+          x2 === ox ? ctx.moveTo(x2, y2) : ctx.lineTo(x2, y2);
+        }
+        ctx.stroke();
+      }
+    }
+    ctx.globalAlpha = 1;
+
+    // Tinh cầu nguyên tố — giảm từ 12 xuống 6
+    const orbOff = ((camX * 0.42) % W + W) % W;
+    ctx.globalAlpha = 0.32;
+    for (let pass = -1; pass <= 1; pass++) {
+      const ox = -orbOff + pass * W;
+      for (let i = 0; i < 6; i++) {
+        const orbX = ox + (i * 173 + 50) % W;
+        const orbY = H * 0.45 + Math.sin(t*0.0004 + i*1.1) * H*0.2;
+        const orbR = 8 + (i%3)*5;
+        const col = ['#ff4400','#44aaff','#ffff00','#44ff88'][i%4];
+        const gOrb = ctx.createRadialGradient(orbX, orbY, 0, orbX, orbY, orbR);
+        gOrb.addColorStop(0, col);
+        gOrb.addColorStop(0.6, col + '88');
+        gOrb.addColorStop(1, 'rgba(0,0,0,0)');
+        ctx.fillStyle = gOrb;
+        ctx.beginPath(); ctx.arc(orbX, orbY, orbR, 0, Math.PI*2); ctx.fill();
+      }
+    }
+    ctx.globalAlpha = 1;
+
+    // Gradient sàn — xanh tối
+    const flG2 = ctx.createLinearGradient(0, H*0.65, 0, H);
+    flG2.addColorStop(0, 'rgba(4,14,24,0.75)');
+    flG2.addColorStop(1, 'rgba(2,8,16,1)');
+    ctx.fillStyle = flG2; ctx.fillRect(0, H*0.65, W, H*0.35);
+
+    // Trung tâm sáng nguyên tố
+    const amG2 = ctx.createRadialGradient(W*0.5, H*0.4, 0, W*0.5, H*0.4, H*0.7);
+    amG2.addColorStop(0, `rgba(0,80,120,${0.06 + 0.03*Math.sin(t*0.004)})`);
+    amG2.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.fillStyle = amG2; ctx.fillRect(0, 0, W, H);
+  }
+
+  // ──────────────── MAP 24 — Thiên Khải Tận Thế ────────────────
+  function _drawMap24Layers(camX, camY, W, H, t) {
+    ctx.fillStyle = '#030008'; ctx.fillRect(0, 0, W, H);
+
+    // Nền không gian — nebula tím
+    const nebG = ctx.createRadialGradient(W*0.4, H*0.4, 0, W*0.4, H*0.4, H*0.8);
+    nebG.addColorStop(0, `rgba(40,0,80,${0.25 + 0.08*Math.sin(t*0.002)})`);
+    nebG.addColorStop(0.5, 'rgba(20,0,50,0.12)');
+    nebG.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.fillStyle = nebG; ctx.fillRect(0, 0, W, H);
+
+    // Sao nền — giảm từ 40 xuống 20
+    const starOff = ((camX * 0.05) % W + W) % W;
+    ctx.globalAlpha = 0.55;
+    for (let pass = -1; pass <= 1; pass++) {
+      const ox = -starOff + pass * W;
+      for (let i = 0; i < 20; i++) {
+        const sx2 = ox + (i * 137 + 23) % W;
+        const sy2 = H * 0.35 + Math.sin(t * 0.0001 + i * 0.4) * H * 0.35;
+        const sr = 0.8 + (i % 3) * 0.6;
+        const starBright = 0.5 + 0.5 * Math.sin(t * 0.002 + i * 1.3);
+        ctx.fillStyle = i % 5 === 0 ? `rgba(200,180,255,${starBright})` : `rgba(255,255,255,${starBright * 0.7})`;
+        ctx.beginPath(); ctx.arc(sx2, sy2, sr, 0, Math.PI*2); ctx.fill();
+      }
+    }
+    ctx.globalAlpha = 1;
+
+    // Retícula sáng — đường giao cắt tâm (giữ nhẹ)
+    const linesOff = ((camX * 0.18) % W + W) % W;
+    ctx.globalAlpha = 0.12;
+    ctx.strokeStyle = '#ccaaff';
+    ctx.lineWidth = 1;
+    for (let pass = -1; pass <= 1; pass++) {
+      const ox = -linesOff + pass * W;
+      for (let i = 0; i < 6; i++) {
+        const lx2 = ox + (i * 200 + 40) % W;
+        ctx.beginPath(); ctx.moveTo(lx2, 0); ctx.lineTo(lx2 + 30, H); ctx.stroke();
+      }
+    }
+    ctx.globalAlpha = 1;
+
+    // Tia sáng từ trung tâm — chỉ 2 tia nhẹ thay vì 4 tia dày
+    const cx2 = CFG.WORLD_W/2 - camX, cy2 = CFG.WORLD_H/2 - camY;
+    ctx.globalAlpha = 0.04 + 0.02 * Math.sin(t * 0.0015);
+    ctx.strokeStyle = '#ccaaff';
+    ctx.lineWidth = 40;
+    for (let i = 0; i < 2; i++) {
+      const a2 = i * Math.PI + t * 0.0002;
+      ctx.beginPath();
+      ctx.moveTo(cx2, cy2);
+      ctx.lineTo(cx2 + Math.cos(a2)*H, cy2 + Math.sin(a2)*H);
+      ctx.stroke();
+    }
+    ctx.globalAlpha = 1; ctx.lineWidth = 1;
+
+    // Sàn void — gradient đậm
+    const flG3 = ctx.createLinearGradient(0, H*0.62, 0, H);
+    flG3.addColorStop(0, 'rgba(6,0,12,0.8)');
+    flG3.addColorStop(1, 'rgba(2,0,6,1)');
+    ctx.fillStyle = flG3; ctx.fillRect(0, H*0.62, W, H*0.38);
+
+    // Vòng thánh hào quang trung tâm
+    const haloR = H * 0.22 + 10 * Math.sin(t * 0.002);
+    const hG = ctx.createRadialGradient(cx2, cy2, haloR*0.85, cx2, cy2, haloR);
+    hG.addColorStop(0, 'rgba(0,0,0,0)');
+    hG.addColorStop(0.5, `rgba(200,180,255,${0.06 + 0.03*Math.sin(t*0.003)})`);
+    hG.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.fillStyle = hG; ctx.fillRect(0, 0, W, H);
   }
 
   function drawPoisonZones(camX, camY) {
@@ -15980,10 +18041,10 @@ const Tutorial = (() => {
         text: 'Active Tàn Phong Trảm scale theo số quái đã giết: 30 kill = ×4.0. Tích Kill Ý trước boss để burst mạnh nhất.' },
     ],
     huyen_nguyet: [
-      { delay: 25000, icon: '🧘', title: 'Đứng yên 0.4s — Mana kích hoạt!',
-        text: 'Mana Tích Tụ: di chuyển luôn nhận +8% ST. Đứng yên ≥0.4s → tăng lên +20% ST. Tìm góc tường để đứng yên bắn mạnh hơn.' },
+      { delay: 25000, icon: '🧘', title: 'Đứng yên 0.4s — Nguyệt Tích kích hoạt!',
+        text: 'Nguyệt Tích: đứng yên ≥0.4s → +8% DMG/0.6s, max 6 stack = +48%. Mất TẤT CẢ stack khi di chuyển. Tìm góc an toàn để đứng yên bắn mạnh hơn.' },
       { delay: 45000, icon: '🌑', title: 'Nguyệt Thực — slow + damage!',
-        text: 'Active tạo vùng nhật thực 3s: địch trong 200px bị chậm 60%. Không làm mất Mana Tích Tụ khi cast — địch đang chậm nhận thêm +25% ST từ mọi nguồn!' },
+        text: 'Active tạo vùng nhật thực 3s: địch trong 200px bị chậm 60%. Không làm mất Nguyệt Tích khi cast — bắn 3 orb đồng thời trong 4s!' },
     ],
     thiet_tam: [
       { delay: 25000, icon: '🦅', title: 'Giữ khoảng cách >150!',
@@ -15995,7 +18056,7 @@ const Tutorial = (() => {
       { delay: 25000, icon: '🛡️', title: 'Block = sức mạnh!',
         text: 'Chặn đòn (20%) → hồi 5% HP + tích stack tốc đánh. Đứng giữa đám quái để tối đa cơ hội block!' },
       { delay: 45000, icon: '☄️', title: 'Active: kéo + stun toàn bộ!',
-        text: 'Bão Phong Phá kéo quái vào gần rồi stun. Dùng SAU khi có 3 block stack để sát thương max ×3.0!' },
+        text: 'Kim Cang Bão: Slam AoE stun 1.5s, scale theo Bất Phá Thể stack. Dùng khi có nhiều stack để sát thương max ×3.0!' },
     ],
     am_sat: [
       { delay: 25000, icon: '🗡️', title: 'Tích Sát Khí — không bao giờ mất!',
@@ -16008,6 +18069,24 @@ const Tutorial = (() => {
         text: '40% quái chết rơi Soul Orb (max 20). Mỗi hồn +2% ST aura. Đạt 20 hồn → aura tự pulse ×3 mỗi 2s. Tích đủ trước boss để Giải Phóng mạnh nhất!' },
       { delay: 45000, icon: '☠️', title: 'Giải Phóng — nổ tung linh hồn!',
         text: 'Kích nổ toàn bộ hồn: 20 hồn × ST × 1.8 = AoE khổng lồ. Ngay sau đó nhận lại 5 hồn miễn phí — thu hồn tiếp tục bình thường!' },
+    ],
+    thien_kiem: [
+      { delay: 20000, icon: '⚔️', title: 'Kiếm Ý — tích vĩnh viễn, KHÔNG bao giờ reset!',
+        text: 'Mỗi lần trúng địch +1 Kiếm Ý (max 50, +3%/stack = +150% tối đa). Bị đánh hay dùng active đều KHÔNG mất stack — tích lũy suốt run! Đạt 25 → bắn 4 kiếm. Đạt 50 → 5 kiếm + sóng kiếm tự động!' },
+      { delay: 40000, icon: '🗡️', title: 'Nhất Kiếm Thiên Hà — khuếch đại, không thay thế!',
+        text: 'Active phóng 5 kiếm thiên hà ×(2.5+Kiếm Ý×0.03) về 5 địch. Sau đó: ATK Speed +60% và vũ khí bắn thêm 2 kiếm phụ trong 5 giây. Kiếm Ý KHÔNG bị tiêu — mọi buff tăng lên theo stack!' },
+    ],
+    huyet_ma: [
+      { delay: 20000, icon: '🩸', title: 'Huyết Tụ — sức mạnh từ máu, KHÔNG bao giờ reset!',
+        text: 'Mỗi 40 HP mất → +1 Huyết Tụ (max 30, +4%/stack = +120%). Stack KHÔNG bao giờ reset khi dùng active! Đạt 30 stacks → tự nổ AoE ×3.0 mỗi 3 giây liên tục!' },
+      { delay: 40000, icon: '💀', title: 'Cuồng Huyết Vương Thân — aura tiếp tục, stack giữ nguyên!',
+        text: 'Active không thay thế aura — aura tiếp tục pulse bình thường nhưng được khuếch đại ×(1.5+HT×0.04). Stacks tiếp tục tích trong suốt 7 giây. Kết thúc bùng nổ ×(HT×0.6+3.0) — mạnh hơn khi stack cao!' },
+    ],
+    vo_cuc: [
+      { delay: 20000, icon: '☯️', title: 'Đạo Nguyên — tích vĩnh viễn mỗi lần đổi phase!',
+        text: 'Mỗi 5 giây bi đổi phase (Dương⟷Âm) → +1 Đạo Nguyên (max 30, +3%/stack = +90% vĩnh viễn). Đạo Nguyên KHÔNG bao giờ reset! Orbit tốc đánh của bi = ATK rate thực sự — upgrade tốc đánh làm bi hit nhiều hơn.' },
+      { delay: 40000, icon: '🌀', title: 'Thái Cực Siêu Việt — bi tiếp tục, mỗi trúng nổ AoE!',
+        text: 'Active không dừng bi — bi vẫn orbit và hit theo ATK rate, nhưng MỖI LẦN trúng địch đồng thời nổ AoE ×(2.0+Đạo Nguyên×0.05)! Kết thúc: 8 mảnh ×(3.0+ĐN×0.1). Đạo Nguyên KHÔNG bị tiêu!' },
     ],
   };
 
